@@ -65,7 +65,14 @@ let onEnd = null;
 let speaking = 0;        // id of the current request, so a stop cancels a pending one
 let onTime = null;       // playback position, for the word highlight
 
-audio.addEventListener('ended', () => onEnd?.());
+// Finished on its own: run the end callback once and drop it. Keeping it around meant the next
+// speak()'s stop() ran it again, which reset the new read's stop button in the same box.
+audio.addEventListener('ended', () => {
+  const done = onEnd;
+  onEnd = null;
+  onTime = null;
+  done?.();
+});
 // Media events keep firing in a background window, so they're the reliable clock for other
 // windows (the bubble); animation frames give smooth steps while this window is on screen.
 audio.addEventListener('timeupdate', () => onTime?.(audio.currentTime * 1000, true, audio.playbackRate));
