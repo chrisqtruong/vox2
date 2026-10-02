@@ -79,9 +79,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .lang {
   appearance: none; -webkit-appearance: none;
-  font: 600 13px/1 var(--font);
+  font: 600 13px/1.3 var(--font); /* room for descenders: the name below clips its overflow (for "…") */
   color: var(--muted); background: transparent;
-  border: 0; border-radius: 6px; padding: 6px 22px 6px 6px; margin-left: -6px;
+  border: 0; border-radius: 6px; padding: 4px 22px 4px 6px; margin-left: -6px;
   cursor: pointer; max-width: 70%;
   background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
   background-position: right 10px top 50%, right 6px top 50%;
