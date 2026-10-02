@@ -294,12 +294,14 @@ body.conversation .pane-head .mic { color: var(--accent); background: var(--hove
   background: var(--hover); border: 1px solid transparent; border-radius: 6px; padding: 7px 9px;
 }
 .fields select:focus { outline: none; border-color: var(--accent); }
-.chip { padding: 0 10px; border-radius: 6px; background: var(--hover); color: var(--muted); font-size: 12px; }
+.chip { padding: 3px 10px; border-radius: 6px; background: var(--hover); color: var(--muted); font-size: 12px; }
 .chip:hover { color: var(--ink); }
 .segmented small { display: block; font-size: 10px; opacity: .7; }
-#stt-whisper .hint, #stt-openai .hint { margin-top: 6px; }
+#stt-whisper .hint, #stt-openai .hint { margin-top: 8px; }
 
 .row-line { display: flex; align-items: center; gap: 10px; }
+/* a note or status line right under a control gets a little air, like the rest of settings */
+.segmented + .hint, .segmented + .row-line, .volume + .hint, .shortcut-row + .hint { margin-top: 8px; }
 .shortcut-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; }
 .shortcut-row .key-chip.off { color: var(--pending); }
 
