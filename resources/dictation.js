@@ -10,6 +10,10 @@ const PAUSE_MS = 700;        // silence that ends a segment
 const MAX_SEGMENT_S = 25;    // Whisper sees 30 s at most
 const PREROLL_S = 0.4;       // keep a little audio before speech starts so first syllables aren't cut
 const VOICE_RMS = 0.012;     // loudness that counts as speech
+// macOS (WebKit) garbles the mic when asked for a 16 kHz AudioContext, which Whisper hears as
+// noise and answers with nonsense ("FIND FIND FIND"). There the context runs at the mic's own
+// rate and we convert to 16 kHz ourselves. Windows keeps asking for 16 kHz directly.
+const MAC = /Mac/.test(navigator.platform);
 
 // Whisper's languages, keyed by Google Translate codes where they differ.
 const WHISPER = new Set(('en zh de es ru ko fr ja pt tr pl ca nl ar sv it id hi fi vi he uk el ms cs ro da hu ta no th ur hr bg lt la mi ml cy sk te fa lv bn sr az sl kn et mk br eu is hy ne mn bs kk sq sw gl mr pa si km sn yo so af oc ka be tg sd gu am yi lo uz fo ht ps tk nn mt sa lb my bo tl mg as tt haw ln ha ba jw su').split(' '));
@@ -126,7 +130,34 @@ async function openai(audio, { key, model, language }) {
 }
 
 // Whisper invents text for noise and silence ("[BLANK_AUDIO]", "(music)", "♪").
-const clean = (t) => t.replace(/[[(][^\])]*[\])]|♪+/g, '').replace(/\s+/g, ' ').trim();
+const tidy = (t) => t.replace(/[[(][^\])]*[\])]|♪+/g, '').replace(/\s+/g, ' ').trim();
+// On macOS also drop runaway repeats ("find find find find…"): a word or two said 4+ times in a
+// row is Whisper looping, not speech.
+const clean = MAC ? (t) => tidy(t.replace(/\b(\S+(?:\s+\S+)?)(?:[\s,.!?]+\1\b){3,}/gi, '$1')) : tidy;
+
+// Box-filter downsampler to 16 kHz that carries leftovers between audio blocks.
+function makeResampler(fromRate) {
+  const ratio = fromRate / SAMPLE_RATE;
+  if (ratio === 1) return (data) => data;
+  let carry = new Float32Array(0);
+  let pos = 0; // where the next output sample starts in carry + data (fractional)
+  return (data) => {
+    const buf = carry.length ? concat([carry, data]) : data;
+    const n = Math.max(0, Math.floor((buf.length - pos) / ratio));
+    const out = new Float32Array(n);
+    for (let i = 0; i < n; i++, pos += ratio) {
+      const start = Math.floor(pos);
+      const end = Math.max(start + 1, Math.floor(pos + ratio));
+      let sum = 0;
+      for (let j = start; j < end; j++) sum += buf[j];
+      out[i] = sum / (end - start);
+    }
+    const used = Math.floor(pos);
+    carry = buf.slice(used);
+    pos -= used;
+    return out;
+  };
+}
 
 function concat(chunks) {
   const out = new Float32Array(chunks.reduce((n, c) => n + c.length, 0));
@@ -150,7 +181,8 @@ export class Dictation {
         channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true,
       },
     });
-    this.ctx = new AudioContext({ sampleRate: SAMPLE_RATE });
+    this.ctx = MAC ? new AudioContext() : new AudioContext({ sampleRate: SAMPLE_RATE });
+    const to16k = makeResampler(this.ctx.sampleRate);
     await this.ctx.audioWorklet.addModule(tapWorklet);
     this.src = this.ctx.createMediaStreamSource(this.stream);
     this.tap = new AudioWorkletNode(this.ctx, 'tap');
@@ -165,7 +197,8 @@ export class Dictation {
     this.partialBusy = false;
     this.segment = 0;
     this.finals = Promise.resolve();
-    this.tap.port.onmessage = ({ data }) => {
+    this.tap.port.onmessage = ({ data: raw }) => {
+      const data = to16k(raw);
       this.chunks.push(data);
       for (const s of data) this.recent += s * s;
       this.recentN += data.length;

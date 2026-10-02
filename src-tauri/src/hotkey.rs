@@ -104,6 +104,18 @@ fn code_of(key: Key) -> Option<&'static str> {
 // to forget stale key state whenever focus changes.
 static RESET: AtomicBool = AtomicBool::new(false);
 
+// On macOS the watcher also hears keys pressed in Vox2 itself; the page already handles those,
+// so it steps aside while the main window is in front (Windows' watcher can't hear them at all).
+#[cfg(target_os = "macos")]
+static MAIN_FOCUSED: AtomicBool = AtomicBool::new(false);
+
+pub fn set_main_focused(focused: bool) {
+    #[cfg(target_os = "macos")]
+    MAIN_FOCUSED.store(focused, Ordering::Relaxed);
+    #[cfg(not(target_os = "macos"))]
+    let _ = focused;
+}
+
 #[tauri::command]
 pub fn reset_keys() {
     RESET.store(true, Ordering::Relaxed);
@@ -166,8 +178,11 @@ fn grab_selection(app: AppHandle, held: Arc<Mutex<HashSet<&'static str>>>) {
             use enigo::{Direction, Enigo, Key, Keyboard, Settings};
             if let Ok(mut enigo) = Enigo::new(&Settings::default()) {
                 let modifier = if cfg!(target_os = "macos") { Key::Meta } else { Key::Control };
+                // On macOS press C by its key number: Key::Unicode looks up the keyboard layout,
+                // which macOS only allows on the main thread (it crashes the app here).
+                let c = if cfg!(target_os = "macos") { Key::Other(0x08) } else { Key::Unicode('c') }; // kVK_ANSI_C
                 let _ = enigo.key(modifier, Direction::Press);
-                let _ = enigo.key(Key::Unicode('c'), Direction::Click);
+                let _ = enigo.key(c, Direction::Click);
                 let _ = enigo.key(modifier, Direction::Release);
             }
         }
@@ -195,6 +210,10 @@ pub fn start(app: AppHandle) {
         let mut down: HashSet<String> = HashSet::new(); // shortcuts currently pressed
         #[cfg_attr(target_os = "macos", allow(unused_mut))] // only Windows calls it in place
         let mut on_key = move |pressed: bool, code: &'static str| {
+            #[cfg(target_os = "macos")]
+            if MAIN_FOCUSED.load(Ordering::Relaxed) {
+                return;
+            }
             // Key-ups get lost while Vox2 itself is in front; start clean whenever focus changes.
             if RESET.swap(false, Ordering::Relaxed) {
                 held.lock().unwrap().clear();

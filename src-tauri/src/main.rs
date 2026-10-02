@@ -256,6 +256,11 @@ fn main() {
             Ok(())
         })
         .on_window_event(|window, event| {
+            if let WindowEvent::Focused(focused) = event {
+                if window.label() == "main" {
+                    hotkey::set_main_focused(*focused);
+                }
+            }
             if let WindowEvent::CloseRequested { api, .. } = event {
                 if window.label() != "main" {
                     return;
