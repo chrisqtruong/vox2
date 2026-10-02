@@ -1,7 +1,17 @@
 # Every push: make sure the Windows app still compiles.
-# On demand (Actions → build → Run workflow): also build an unsigned macOS app on GitHub's Macs
-# and attach it to the run as a download. Unsigned means macOS will ask you to allow it once
-# (System Settings → Privacy & Security → Open Anyway).
+# On demand (Actions → build → Run workflow): also build the macOS app on GitHub's Macs and
+# attach it to the run as a download.
+# When a release is published (from Chris's PC, Windows installer + latest.json): build the
+# macOS app for that tag, attach it to the release (Vox2-mac.dmg for people, plus the signed
+# .app.tar.gz for the updater) and add the Mac entries to the release's latest.json, so Macs
+# update themselves like Windows does. Needs the updater key in TAURI_SIGNING_PRIVATE_KEY /
+# _PASSWORD; without it the .dmg is still attached, just no Mac auto-update.
+#
+# The Mac app is signed with Vox2's own self-made certificate (repo secrets
+# APPLE_CERTIFICATE / _PASSWORD / APPLE_SIGNING_IDENTITY), not an Apple-issued one, so macOS
+# still asks you to allow it once (System Settings → Privacy & Security → Open Anyway).
+# What the signature buys: every build counts as the same app, so permissions like
+# Accessibility and Screen Recording stay granted across updates.
 name: build
 
 on:
@@ -9,10 +19,13 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   windows:
     name: Windows check
+    if: github.event_name != 'release'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v7
@@ -25,20 +38,102 @@ jobs:
         run: cargo check --release --locked
 
   macos:
-    name: macOS app (unsigned)
-    if: github.event_name == 'workflow_dispatch'
+    name: macOS app
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'release'
     runs-on: macos-latest
+    permissions:
+      contents: write # attach the Mac files to the release
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: src-tauri
+      - name: Put the signing certificate in a keychain
+        # Tauri's own certificate import only accepts Apple-issued certificates, so load ours
+        # here and let Tauri sign by name. It's self-made, so this machine also has to trust it.
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          kc="$RUNNER_TEMP/vox2-signing.keychain-db"
+          kcpw=$(openssl rand -hex 16)
+          echo "$APPLE_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/vox2.p12"
+          security create-keychain -p "$kcpw" "$kc"
+          security set-keychain-settings -lut 21600 "$kc"
+          security unlock-keychain -p "$kcpw" "$kc"
+          security import "$RUNNER_TEMP/vox2.p12" -k "$kc" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$kcpw" "$kc" > /dev/null
+          security list-keychains -d user -s "$kc" $(security list-keychains -d user | tr -d '"')
+          security find-certificate -p -c "Vox2 Self-Signed" "$kc" > "$RUNNER_TEMP/vox2.pem"
+          sudo security add-trusted-cert -d -r trustRoot -p codeSign -k /Library/Keychains/System.keychain "$RUNNER_TEMP/vox2.pem"
+          rm "$RUNNER_TEMP/vox2.p12"
+          security find-identity -p codesigning "$kc"
       - name: Build
-        # Release signing keys stay on Chris's PC, so skip the updater files here.
-        run: npx --yes @tauri-apps/cli@2 build --bundles app,dmg --config '{"bundle":{"createUpdaterArtifacts":false}}'
+        # Updater files only for releases, and only when the updater key is set. Hardened
+        # runtime is only needed for Apple notarization, and would block the mic without extra
+        # entitlements, so it stays off.
+        env:
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ github.event_name == 'release' && secrets.TAURI_SIGNING_PRIVATE_KEY || '' }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ github.event_name == 'release' && secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD || '' }}
+        run: |
+          updater=false
+          [ -n "$TAURI_SIGNING_PRIVATE_KEY" ] && updater=true
+          npx --yes @tauri-apps/cli@2 build --bundles app,dmg \
+            --config "{\"bundle\":{\"createUpdaterArtifacts\":$updater,\"macOS\":{\"hardenedRuntime\":false}}}"
+      - name: Check the signature
+        # Fail rather than hand out an app that would lose its permissions on the next update.
+        run: |
+          app=src-tauri/target/release/bundle/macos/Vox2.app
+          codesign --verify --deep --strict "$app"
+          codesign -dvv "$app" 2>&1 | grep -E "Identifier=|Authority="
+          codesign -d -r- "$app"
+          codesign -dvv "$app" 2>&1 | grep -q "Authority=Vox2 Self-Signed"
       - uses: actions/upload-artifact@v7
         with:
-          name: Vox2-macOS-unsigned
+          name: Vox2-macOS
           path: src-tauri/target/release/bundle/dmg/*.dmg
           if-no-files-found: error
+      - name: Attach to the release and add Mac to latest.json
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          ver="${TAG#v}"
+          b=src-tauri/target/release/bundle
+          cp "$b/dmg/Vox2_${ver}_aarch64.dmg" "$RUNNER_TEMP/Vox2-mac.dmg" # stable name for download links
+          files=("$b/dmg/Vox2_${ver}_aarch64.dmg" "$RUNNER_TEMP/Vox2-mac.dmg")
+          sig="$b/macos/Vox2.app.tar.gz.sig"
+          if [ -f "$sig" ]; then
+            cp "$b/macos/Vox2.app.tar.gz" "$RUNNER_TEMP/Vox2_${ver}_aarch64.app.tar.gz"
+            files+=("$RUNNER_TEMP/Vox2_${ver}_aarch64.app.tar.gz")
+          fi
+          gh release upload "$TAG" "${files[@]}" --clobber
+          if [ ! -f "$sig" ]; then
+            echo "::warning::TAURI_SIGNING_PRIVATE_KEY isn't set, so Macs won't get this as an automatic update"
+            exit 0
+          fi
+          # The PC uploads latest.json with the release; wait for this version's copy, then
+          # add the Mac entries to it.
+          json="$RUNNER_TEMP/latest.json"
+          for i in $(seq 1 40); do
+            rm -f "$json"
+            gh release download "$TAG" -p latest.json -O "$json" 2>/dev/null \
+              && python3 -c 'import json,sys; sys.exit(json.load(open(sys.argv[1]))["version"] != sys.argv[2])' "$json" "$ver" \
+              && break
+            sleep 15
+          done
+          [ -f "$json" ] || { echo "::error::no latest.json for $ver on the release"; exit 1; }
+          python3 - "$json" "$sig" "https://github.com/$GH_REPO/releases/download/$TAG/Vox2_${ver}_aarch64.app.tar.gz" <<'PY'
+          import json, sys
+          path, sig, url = sys.argv[1:]
+          data = json.load(open(path))
+          entry = {"signature": open(sig).read().strip(), "url": url}
+          data["platforms"]["darwin-aarch64"] = entry
+          data["platforms"]["darwin-aarch64-app"] = entry
+          json.dump(data, open(path, "w"), indent=2)
+          PY
+          gh release upload "$TAG" "$json" --clobber

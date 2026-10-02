@@ -6,7 +6,8 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct Permissions {
-    accessibility: bool,      // shortcuts from any app, typing dictation, grabbing selected text
+    input: bool,              // Input Monitoring: hearing shortcuts pressed in other apps
+    accessibility: bool,      // typing dictation, grabbing selected text
     screen: bool,             // snip & translate
     microphone: &'static str, // "granted", "denied", or "ask" (not asked yet)
 }
@@ -38,6 +39,12 @@ pub fn open_privacy(name: String) {
     let _ = name;
 }
 
+/// Whether macOS lets Vox2 hear keys pressed in other apps (Input Monitoring).
+#[cfg(target_os = "macos")]
+pub fn keyboard_allowed() -> bool {
+    mac::check().input
+}
+
 #[cfg(target_os = "macos")]
 mod mac {
     use core_foundation::base::TCFType;
@@ -59,6 +66,8 @@ mod mac {
     extern "C" {
         fn CGPreflightScreenCaptureAccess() -> bool;
         fn CGRequestScreenCaptureAccess() -> bool;
+        fn CGPreflightListenEventAccess() -> bool;
+        fn CGRequestListenEventAccess() -> bool;
     }
 
     // For AVCaptureDevice, looked up by name below.
@@ -67,6 +76,7 @@ mod mac {
 
     pub fn check() -> super::Permissions {
         super::Permissions {
+            input: unsafe { CGPreflightListenEventAccess() },
             accessibility: unsafe { AXIsProcessTrusted() },
             screen: unsafe { CGPreflightScreenCaptureAccess() },
             microphone: match mic_status() {
@@ -94,6 +104,9 @@ mod mac {
             "screen" => {
                 unsafe { CGRequestScreenCaptureAccess() };
             }
+            "input" => {
+                unsafe { CGRequestListenEventAccess() };
+            }
             // The microphone prompt comes from the page asking for the mic.
             _ => {}
         }
@@ -103,6 +116,7 @@ mod mac {
         let pane = match name {
             "accessibility" => "Privacy_Accessibility",
             "screen" => "Privacy_ScreenCapture",
+            "input" => "Privacy_ListenEvent",
             "microphone" => "Privacy_Microphone",
             _ => return,
         };

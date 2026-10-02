@@ -4,8 +4,7 @@
 //   summon  – show/hide the window (handled here)
 //   select  – copy whatever is selected in the current app and translate it (handled here)
 
-#[cfg(target_os = "macos")]
-use rdev_mac as rdev;
+#[cfg(not(target_os = "macos"))]
 use rdev::{listen, EventType, Key};
 use serde::Deserialize;
 use serde_json::json;
@@ -49,6 +48,7 @@ fn is_chord(hk: &Hotkey) -> bool {
 }
 
 // rdev key → browser KeyboardEvent.code, so shortcuts recorded in the UI match.
+#[cfg(not(target_os = "macos"))]
 fn code_of(key: Key) -> Option<&'static str> {
     use Key::*;
     Some(match key {
@@ -103,6 +103,18 @@ fn code_of(key: Key) -> Option<&'static str> {
 // from just before), so the window handles its own shortcuts while focused and tells us
 // to forget stale key state whenever focus changes.
 static RESET: AtomicBool = AtomicBool::new(false);
+
+// On macOS the watcher also hears keys pressed in Vox2 itself; the page already handles those,
+// so it steps aside while the main window is in front (Windows' watcher can't hear them at all).
+#[cfg(target_os = "macos")]
+static MAIN_FOCUSED: AtomicBool = AtomicBool::new(false);
+
+pub fn set_main_focused(focused: bool) {
+    #[cfg(target_os = "macos")]
+    MAIN_FOCUSED.store(focused, Ordering::Relaxed);
+    #[cfg(not(target_os = "macos"))]
+    let _ = focused;
+}
 
 #[tauri::command]
 pub fn reset_keys() {
@@ -166,8 +178,11 @@ fn grab_selection(app: AppHandle, held: Arc<Mutex<HashSet<&'static str>>>) {
             use enigo::{Direction, Enigo, Key, Keyboard, Settings};
             if let Ok(mut enigo) = Enigo::new(&Settings::default()) {
                 let modifier = if cfg!(target_os = "macos") { Key::Meta } else { Key::Control };
+                // On macOS press C by its key number: Key::Unicode looks up the keyboard layout,
+                // which macOS only allows on the main thread (it crashes the app here).
+                let c = if cfg!(target_os = "macos") { Key::Other(0x08) } else { Key::Unicode('c') }; // kVK_ANSI_C
                 let _ = enigo.key(modifier, Direction::Press);
-                let _ = enigo.key(Key::Unicode('c'), Direction::Click);
+                let _ = enigo.key(c, Direction::Click);
                 let _ = enigo.key(modifier, Direction::Release);
             }
         }
@@ -191,19 +206,14 @@ fn grab_selection(app: AppHandle, held: Arc<Mutex<HashSet<&'static str>>>) {
 
 pub fn start(app: AppHandle) {
     std::thread::spawn(move || {
-        // This thread isn't the main one, so have rdev look up the keyboard layout on the main
-        // thread; doing it here crashes on macOS 14+.
-        #[cfg(target_os = "macos")]
-        rdev::set_is_main_thread(false);
         let held: Arc<Mutex<HashSet<&'static str>>> = Arc::default();
         let mut down: HashSet<String> = HashSet::new(); // shortcuts currently pressed
-        let result = listen(move |event| {
-            let (pressed, key) = match event.event_type {
-                EventType::KeyPress(k) => (true, k),
-                EventType::KeyRelease(k) => (false, k),
-                _ => return,
-            };
-            let Some(code) = code_of(key) else { return };
+        #[cfg_attr(target_os = "macos", allow(unused_mut))] // only Windows calls it in place
+        let mut on_key = move |pressed: bool, code: &'static str| {
+            #[cfg(target_os = "macos")]
+            if MAIN_FOCUSED.load(Ordering::Relaxed) {
+                return;
+            }
             // Key-ups get lost while Vox2 itself is in front; start clean whenever focus changes.
             if RESET.swap(false, Ordering::Relaxed) {
                 held.lock().unwrap().clear();
@@ -269,9 +279,158 @@ pub fn start(app: AppHandle) {
                     let _ = app.emit_to("main", "hotkey", json!({ "name": name, "type": "other" }));
                 }
             }
+        };
+
+        #[cfg(not(target_os = "macos"))]
+        let result = listen(move |event| {
+            let (pressed, key) = match event.event_type {
+                EventType::KeyPress(k) => (true, k),
+                EventType::KeyRelease(k) => (false, k),
+                _ => return,
+            };
+            if let Some(code) = code_of(key) {
+                on_key(pressed, code);
+            }
         });
+        #[cfg(target_os = "macos")]
+        let result = {
+            // Without Input Monitoring macOS only passes modifier keys to the watcher, so wait
+            // for it (macOS usually wants a restart after it's switched on).
+            while !crate::permissions::keyboard_allowed() {
+                std::thread::sleep(Duration::from_secs(2));
+            }
+            mac::listen(on_key)
+        };
         if let Err(err) = result {
             eprintln!("keyboard watcher stopped: {err:?}");
         }
     });
+}
+
+// macOS keyboard watcher. rdev's does a keyboard-layout lookup for every key (on the main
+// thread, or it crashes); when that's slow, macOS switches the watcher off for good. This one
+// only reads which key went down or up, and switches itself back on if macOS ever turns it off.
+// Needs Input Monitoring; Accessibility alone isn't enough on current macOS.
+#[cfg(target_os = "macos")]
+mod mac {
+    use core_foundation::base::TCFType;
+    use core_foundation::mach_port::{CFMachPort, CFMachPortRef};
+    use core_foundation::runloop::{kCFRunLoopCommonModes, CFRunLoop};
+    use std::ffi::c_void;
+    use std::sync::atomic::{AtomicPtr, Ordering};
+
+    type CGEventRef = *mut c_void;
+    type TapCallback = extern "C" fn(*mut c_void, u32, CGEventRef, *mut c_void) -> CGEventRef;
+    type OnKey = Box<dyn FnMut(bool, &'static str)>;
+
+    #[link(name = "CoreGraphics", kind = "framework")]
+    extern "C" {
+        fn CGEventTapCreate(
+            tap: u32,
+            place: u32,
+            options: u32,
+            events_of_interest: u64,
+            callback: TapCallback,
+            user_info: *mut c_void,
+        ) -> CFMachPortRef;
+        fn CGEventTapEnable(tap: CFMachPortRef, enable: bool);
+        fn CGEventGetIntegerValueField(event: CGEventRef, field: u32) -> i64;
+        fn CGEventGetFlags(event: CGEventRef) -> u64;
+    }
+
+    const SESSION_TAP: u32 = 1; // kCGSessionEventTap
+    const HEAD_INSERT: u32 = 0; // kCGHeadInsertEventTap
+    const LISTEN_ONLY: u32 = 1; // kCGEventTapOptionListenOnly
+    const KEY_DOWN: u32 = 10;
+    const KEY_UP: u32 = 11;
+    const FLAGS_CHANGED: u32 = 12;
+    const DISABLED_BY_TIMEOUT: u32 = 0xFFFF_FFFE;
+    const DISABLED_BY_USER_INPUT: u32 = 0xFFFF_FFFF;
+    const KEYCODE: u32 = 9; // kCGKeyboardEventKeycode
+
+    static TAP: AtomicPtr<c_void> = AtomicPtr::new(std::ptr::null_mut());
+
+    pub fn listen(on_key: impl FnMut(bool, &'static str) + 'static) -> Result<(), &'static str> {
+        let user_info = Box::into_raw(Box::new(Box::new(on_key) as OnKey)) as *mut c_void;
+        let mask = (1 << KEY_DOWN) | (1 << KEY_UP) | (1 << FLAGS_CHANGED);
+        let tap = unsafe { CGEventTapCreate(SESSION_TAP, HEAD_INSERT, LISTEN_ONLY, mask, on_event, user_info) };
+        if tap.is_null() {
+            return Err("couldn't watch the keyboard");
+        }
+        TAP.store(tap as *mut c_void, Ordering::Relaxed);
+        let port = unsafe { CFMachPort::wrap_under_create_rule(tap) };
+        let source = port.create_runloop_source(0).map_err(|_| "couldn't watch the keyboard")?;
+        CFRunLoop::get_current().add_source(&source, unsafe { kCFRunLoopCommonModes });
+        unsafe { CGEventTapEnable(tap, true) };
+        CFRunLoop::run_current();
+        Ok(())
+    }
+
+    extern "C" fn on_event(_proxy: *mut c_void, kind: u32, event: CGEventRef, user_info: *mut c_void) -> CGEventRef {
+        if kind == DISABLED_BY_TIMEOUT || kind == DISABLED_BY_USER_INPUT {
+            let tap = TAP.load(Ordering::Relaxed);
+            if !tap.is_null() {
+                unsafe { CGEventTapEnable(tap as CFMachPortRef, true) };
+            }
+            return event;
+        }
+        let keycode = unsafe { CGEventGetIntegerValueField(event, KEYCODE) } as u16;
+        let Some(code) = code_of(keycode) else { return event };
+        let pressed = match kind {
+            KEY_DOWN => true,
+            KEY_UP => false,
+            // Modifiers only send "flags changed": it's down if its own bit is now set.
+            FLAGS_CHANGED => match modifier_bit(keycode) {
+                Some(bit) => (unsafe { CGEventGetFlags(event) } & bit) != 0,
+                None => return event,
+            },
+            _ => return event,
+        };
+        let on_key = unsafe { &mut *(user_info as *mut OnKey) };
+        on_key(pressed, code);
+        event
+    }
+
+    // Left/right-specific modifier bits in the event flags (NX_DEVICE*KEYMASK).
+    fn modifier_bit(keycode: u16) -> Option<u64> {
+        Some(match keycode {
+            0x3B => 0x0001, // left control
+            0x38 => 0x0002, // left shift
+            0x3C => 0x0004, // right shift
+            0x37 => 0x0008, // left command
+            0x36 => 0x0010, // right command
+            0x3A => 0x0020, // left option
+            0x3D => 0x0040, // right option
+            0x3E => 0x2000, // right control
+            _ => return None,
+        })
+    }
+
+    // macOS virtual key code (kVK_*) → browser KeyboardEvent.code, matching the UI's names.
+    fn code_of(keycode: u16) -> Option<&'static str> {
+        Some(match keycode {
+            0x3B => "ControlLeft", 0x3E => "ControlRight",
+            0x3A => "AltLeft", 0x3D => "AltRight",
+            0x38 => "ShiftLeft", 0x3C => "ShiftRight",
+            0x37 => "MetaLeft", 0x36 => "MetaRight",
+            0x31 => "Space", 0x30 => "Tab", 0x24 => "Enter", 0x35 => "Escape",
+            0x33 => "Backspace", 0x39 => "CapsLock", 0x32 => "Backquote",
+            0x1B => "Minus", 0x18 => "Equal", 0x21 => "BracketLeft", 0x1E => "BracketRight",
+            0x29 => "Semicolon", 0x27 => "Quote", 0x2A => "Backslash",
+            0x2B => "Comma", 0x2F => "Period", 0x2C => "Slash",
+            0x72 => "Insert", 0x75 => "Delete", 0x73 => "Home", 0x77 => "End",
+            0x74 => "PageUp", 0x79 => "PageDown",
+            0x7A => "F1", 0x78 => "F2", 0x63 => "F3", 0x76 => "F4", 0x60 => "F5", 0x61 => "F6",
+            0x62 => "F7", 0x64 => "F8", 0x65 => "F9", 0x6D => "F10", 0x67 => "F11", 0x6F => "F12",
+            0x1D => "Digit0", 0x12 => "Digit1", 0x13 => "Digit2", 0x14 => "Digit3", 0x15 => "Digit4",
+            0x17 => "Digit5", 0x16 => "Digit6", 0x1A => "Digit7", 0x1C => "Digit8", 0x19 => "Digit9",
+            0x00 => "KeyA", 0x0B => "KeyB", 0x08 => "KeyC", 0x02 => "KeyD", 0x0E => "KeyE",
+            0x03 => "KeyF", 0x05 => "KeyG", 0x04 => "KeyH", 0x22 => "KeyI", 0x26 => "KeyJ",
+            0x28 => "KeyK", 0x25 => "KeyL", 0x2E => "KeyM", 0x2D => "KeyN", 0x1F => "KeyO",
+            0x23 => "KeyP", 0x0C => "KeyQ", 0x0F => "KeyR", 0x01 => "KeyS", 0x11 => "KeyT",
+            0x20 => "KeyU", 0x09 => "KeyV", 0x0D => "KeyW", 0x07 => "KeyX", 0x10 => "KeyY",
+            0x06 => "KeyZ",
+            _ => return None,
+        })
+    }
 }

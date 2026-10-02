@@ -562,6 +562,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 for (const b of $('#zoom-controls').children) {
+  if (MAC) b.title = b.title.replace('Ctrl ', '⌘');
   b.addEventListener('click', () => stepZoom(Number(b.dataset.zoom)));
 }
 
@@ -957,10 +958,14 @@ const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform);
 const MODIFIER_CODES = new Set(['ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'ShiftLeft', 'ShiftRight', 'MetaLeft', 'MetaRight']);
 const isLone = (sc) => MODIFIER_CODES.has(sc.code) && !sc.ctrl && !sc.alt && !sc.shift && !sc.meta;
 
+// Macs write shortcuts with symbols in this order, e.g. ⌥⌘T, like the menu bar does.
+const MAC_SYMBOLS = { Control: '⌃', Alt: '⌥', Shift: '⇧', Meta: '⌘' };
+
 function keyName(code) {
   const side = code.endsWith('Right') ? 'Right ' : code.endsWith('Left') ? 'Left ' : '';
   const base = code.replace(/(Left|Right)$/, '');
-  const names = { Control: 'Ctrl', Alt: IS_MAC ? 'Option' : 'Alt', Shift: 'Shift', Meta: IS_MAC ? 'Cmd' : 'Win', Space: 'Space', Backquote: '`' };
+  const names = { Control: IS_MAC ? 'Control' : 'Ctrl', Alt: IS_MAC ? 'Option' : 'Alt', Shift: 'Shift', Meta: IS_MAC ? 'Cmd' : 'Win', Space: 'Space', Backquote: '`' };
+  if (IS_MAC && MAC_SYMBOLS[base]) return `${side}${MAC_SYMBOLS[base]} ${names[base]}`; // "Right ⌥ Option"
   if (names[base]) return side + names[base];
   return code.replace(/^Key|^Digit|^Numpad/, '');
 }
@@ -976,6 +981,10 @@ const needs = (sc) => {
 
 function shortcutLabel(sc = settings.sttShortcut) {
   const n = isChord(sc) ? needs(sc) : sc;
+  if (IS_MAC && !isLone(sc)) {
+    const syms = [n.ctrl && '⌃', n.alt && '⌥', n.shift && '⇧', n.meta && '⌘'].filter(Boolean).join('');
+    return isChord(sc) ? syms : syms + keyName(sc.code);
+  }
   const mods = [n.ctrl && 'Ctrl', n.alt && (IS_MAC ? 'Option' : 'Alt'), n.shift && 'Shift', n.meta && (IS_MAC ? 'Cmd' : 'Win')];
   return [...mods, !isChord(sc) && keyName(sc.code)].filter(Boolean).join(' + ');
 }
@@ -1507,8 +1516,12 @@ async function checkForUpdates(manual = false) {
       $('#update-pill').title = `Vox2 v${update.version} is ready · click to install and restart`;
     }
   } catch (err) {
-    // Offline, GitHub hiccup, etc. Only worth mentioning if you asked.
-    setUpdateStatus(manual ? `couldn't check right now (${err?.message || err})` : '');
+    // Offline, GitHub hiccup, etc. Only worth mentioning if you asked. A release with no build
+    // for this computer yet (the Mac one is added a few minutes after the Windows one) isn't
+    // an error, there's just nothing to install.
+    const msg = err?.message || String(err);
+    if (/fallback platforms|platforms` object/.test(msg)) setUpdateStatus(manual ? `you have the latest version for this computer (v${appVersion})` : '');
+    else setUpdateStatus(manual ? `couldn't check right now (${msg})` : '');
   }
 }
 
@@ -1910,11 +1923,13 @@ $('#history-clear').addEventListener('click', () => {
    getPermissions() returns null there and none of this shows. */
 const permSheet = $('#perms');
 const PERMS = [
-  { id: 'accessibility', name: 'accessibility', why: 'shortcuts from any app, typing what you dictate, translating selected text' },
+  { id: 'input', name: 'input monitoring', why: 'hears your shortcuts while you’re in other apps' },
+  { id: 'accessibility', name: 'accessibility', why: 'typing what you dictate, translating selected text' },
   { id: 'screen', name: 'screen recording', why: 'snip & translate: reads the part of the screen you box' },
   { id: 'microphone', name: 'microphone', why: 'dictation' },
 ];
-let permsAtLaunch = null; // Accessibility and Screen Recording only take effect after a restart
+const RESTART_PERMS = ['screen', 'input']; // macOS only notices these after a restart
+let permsAtLaunch = null; // what was allowed when Vox2 started
 let perms = null;
 let permTimer = 0;
 const asked = new Set(); // asked once this session: the next click opens System Settings instead
@@ -1950,15 +1965,15 @@ function renderPerms() {
       btn.textContent = first ? 'allow' : 'open settings';
       btn.addEventListener('click', () => askPermission(x.id));
       li.append(btn);
-      // macOS only re-checks Screen Recording when Vox2 starts, so this row can't tick itself off.
-      if (x.id === 'screen' && asked.has('screen')) {
+      // macOS only re-checks these when Vox2 starts, so the row can't tick itself off.
+      if (RESTART_PERMS.includes(x.id) && asked.has(x.id)) {
         $('small', li).textContent = 'switched it on in System Settings? restart Vox2 to finish';
       }
     }
     return li;
   }));
-  $('#perm-restart').hidden = !(['accessibility', 'screen'].some((id) => perms[id] && !permsAtLaunch[id])
-    || (asked.has('screen') && !perms.screen));
+  $('#perm-restart').hidden = !(['accessibility', ...RESTART_PERMS].some((id) => perms[id] && !permsAtLaunch[id])
+    || RESTART_PERMS.some((id) => asked.has(id) && !perms[id]));
   $('#perm-startup').checked = settings.permCheck;
 }
 
@@ -1990,9 +2005,10 @@ function closePerms() {
   panes[source].el.focus();
 }
 
-// The entry in settings → window & updates, macOS only.
+// The permissions section at the top of settings (with its own jump link), macOS only.
 function renderPermEntry() {
   $('#perm-entry').hidden = !perms;
+  $('#nav-perms').hidden = !perms;
   if (!perms) return;
   const missing = permsMissing(perms).length;
   $('#perm-summary').textContent = missing ? `${missing} still needed` : 'all allowed';
