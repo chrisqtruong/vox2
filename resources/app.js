@@ -1950,10 +1950,15 @@ function renderPerms() {
       btn.textContent = first ? 'allow' : 'open settings';
       btn.addEventListener('click', () => askPermission(x.id));
       li.append(btn);
+      // macOS only re-checks Screen Recording when Vox2 starts, so this row can't tick itself off.
+      if (x.id === 'screen' && asked.has('screen')) {
+        $('small', li).textContent = 'switched it on in System Settings? restart Vox2 to finish';
+      }
     }
     return li;
   }));
-  $('#perm-restart').hidden = !['accessibility', 'screen'].some((id) => perms[id] && !permsAtLaunch[id]);
+  $('#perm-restart').hidden = !(['accessibility', 'screen'].some((id) => perms[id] && !permsAtLaunch[id])
+    || (asked.has('screen') && !perms.screen));
   $('#perm-startup').checked = settings.permCheck;
 }
 
