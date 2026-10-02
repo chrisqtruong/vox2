@@ -1332,52 +1332,70 @@ $('#snip-btn').addEventListener('click', () => startSnip());
 // ask:  show an "update" pill in the footer; click to install
 // off:  never check unless you press "check now"
 const updater = window.__TAURI__?.updater;
-let pendingUpdate = null; // found (and, in auto mode, downloaded) but not installed yet
-let updateDownloaded = false;
+// The update we found. `downloaded` belongs to this exact object: a later check must not
+// swap in a fresh, undownloaded copy while we think it's ready (that broke installs in 0.4.0).
+let found = null; // { update, downloaded }
 let appVersion = '';
+
+function setUpdateStatus(text) { $('#update-status').textContent = text; }
 
 async function checkForUpdates(manual = false) {
   if (!updater || (!manual && settings.updates === 'off')) return;
-  const status = $('#update-status');
-  if (manual) status.textContent = 'checking…';
+  if (manual) setUpdateStatus('checking…');
   try {
     const update = await updater.check();
-    if (!update) {
-      status.textContent = `you have the latest version (v${appVersion})`;
-      return;
-    }
-    pendingUpdate = update;
-    status.textContent = `v${update.version} is available`;
-    if (settings.updates === 'auto' && !manual) {
-      await update.download();
-      updateDownloaded = true;
+    if (!update) { setUpdateStatus(`you have the latest version (v${appVersion})`); return; }
+    if (!found || found.update.version !== update.version) found = { update, downloaded: false };
+    setUpdateStatus(`v${update.version} is available`);
+    if (settings.updates === 'auto') {
+      if (manual) return installUpdate(); // you asked: install right now
+      await downloadUpdate();
       installWhenIdle();
     } else {
       $('#update-pill').hidden = false;
       $('#update-pill').title = `Vox2 v${update.version} is ready · click to install and restart`;
     }
   } catch (err) {
-    // Not published yet, offline, etc. Only worth mentioning if you asked.
-    status.textContent = manual ? `couldn't check right now (${err.message || err})` : '';
+    // Offline, GitHub hiccup, etc. Only worth mentioning if you asked.
+    setUpdateStatus(manual ? `couldn't check right now (${err?.message || err})` : '');
   }
 }
 
+async function downloadUpdate() {
+  if (!found || found.downloaded) return;
+  let got = 0;
+  let total = 0;
+  await found.update.download((e) => {
+    if (e.event === 'Started') total = e.data.contentLength || 0;
+    if (e.event === 'Progress') {
+      got += e.data.chunkLength;
+      if (total) setUpdateStatus(`downloading v${found.update.version} · ${Math.round((got / total) * 100)}%`);
+    }
+  });
+  found.downloaded = true;
+  setUpdateStatus(`v${found.update.version} downloaded`);
+}
+
 async function installUpdate() {
-  if (!pendingUpdate) return;
+  if (!found) return;
   $('#update-pill').textContent = 'updating…';
   try {
-    if (updateDownloaded) await pendingUpdate.install();
-    else await pendingUpdate.downloadAndInstall();
+    await downloadUpdate();
+    setUpdateStatus(`installing v${found.update.version}… Vox2 will restart`);
+    await found.update.install(); // on Windows the installer takes over and Vox2 closes here
     await window.__TAURI__.process.relaunch();
   } catch (err) {
     $('#update-pill').textContent = 'update';
-    setStatus('error', `update failed: ${err.message || err}`);
+    const msg = err?.message || String(err);
+    setUpdateStatus(`update failed: ${msg}`);
+    setStatus('error', `update failed: ${msg}`);
+    found.downloaded = false; // start clean next time
   }
 }
 
 // Auto mode never interrupts: install only when Vox2 isn't in front and you're not dictating.
 function installWhenIdle() {
-  if (!updateDownloaded || settings.updates !== 'auto') return;
+  if (!found?.downloaded || settings.updates !== 'auto') return;
   if (!document.hasFocus() && !dictation && !speakingPane) installUpdate();
 }
 addEventListener('blur', () => setTimeout(installWhenIdle, 2000));
