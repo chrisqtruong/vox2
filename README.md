@@ -125,7 +125,7 @@ Remember steps 1, 2 and 5 (number formatting, exact match, number cap) when comp
 - **Idioms confuse it.** "Raining cats and dogs" vs "raining heavily" scores 54 even though the meaning matches.
 - **The number is a hint, not proof.** Read the ↩ line, and use the number to spot what to look at.
 
-### Roadmap
+### Next steps for the score
 
 - When an AI engine is selected, optionally ask it to judge meaning preservation directly. That would catch swaps and idioms, but costs an API call.
 - Compare your text against the translation itself with cross-lingual embeddings, which removes the Google back-translation step as a source of error.
@@ -170,6 +170,16 @@ Windows 10/11, 64-bit. macOS can be built from the same code; not published yet.
 - Text goes only to the engine you choose. Voice, screen snips and the back-translation score are processed locally (models download once from Hugging Face).
 - Settings and history are stored in your user profile. API keys are kept in the system credential store (Windows Credential Manager; the macOS Keychain on Mac), never in the settings file. Keys saved by versions before 0.4.6 are moved there automatically on first launch.
 - The free Google Translate and Microsoft voice services are unofficial endpoints and may break; the API engines are the official route.
+
+## Roadmap
+
+Planned or being considered, roughly in order. Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues).
+
+- [ ] **macOS version.** The same app built for Mac. API keys are already set up to use the Mac Keychain.
+- [ ] **Mini mode.** A one-line bar version of the window to keep open while you work.
+- [ ] **Smarter match score.** An optional check by the AI engine that catches swapped words (left/right, he/she) and idioms, and a direct comparison with the translation that skips the trip back. See [next steps for the score](#next-steps-for-the-score).
+- [ ] **Better snip on "detect".** More accurate screen-text reading when the source language isn't set.
+- [ ] **Code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install).
 
 ## Build
 
