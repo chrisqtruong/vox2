@@ -97,3 +97,8 @@ export function openUrl(url) {
   if (native) tauri.opener.openUrl(url);
   else window.open(url, '_blank');
 }
+
+// API keys go to the system's credential store (Windows Credential Manager / macOS Keychain),
+// not into settings. In a plain browser there's no store, so these do nothing.
+export const getSecret = (name) => (native ? tauri.core.invoke('secret_get', { name }) : Promise.resolve(null));
+export const setSecret = (name, value) => (native ? tauri.core.invoke('secret_set', { name, value }) : Promise.resolve());

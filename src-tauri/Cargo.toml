@@ -26,6 +26,8 @@ image = { version = "0.25", default-features = false, features = ["png"] }
 tungstenite = { version = "0.30", features = ["native-tls"] }
 sha2 = "0.10"
 uuid = { version = "1", features = ["v4"] }
+# API keys in Windows Credential Manager / macOS Keychain instead of settings.json
+keyring = { version = "3", features = ["windows-native", "apple-native"] }
 
 # Small, fast release binary.
 [profile.release]

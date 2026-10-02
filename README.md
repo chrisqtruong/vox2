@@ -168,7 +168,7 @@ Windows 10/11, 64-bit. macOS can be built from the same code; not published yet.
 
 - No account, no server, no analytics.
 - Text goes only to the engine you choose. Voice, screen snips and the back-translation score are processed locally (models download once from Hugging Face).
-- Settings, history and API keys are stored in your user profile (keys unencrypted).
+- Settings and history are stored in your user profile. API keys are kept in the system credential store (Windows Credential Manager; the macOS Keychain on Mac), never in the settings file. Keys saved by versions before 0.4.6 are moved there automatically on first launch.
 - The free Google Translate and Microsoft voice services are unofficial endpoints and may break; the API engines are the official route.
 
 ## Build

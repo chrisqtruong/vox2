@@ -11,7 +11,7 @@ import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, 
 import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
-  sendBubble, openBubble, showWindow, startSnip, takeSnip,
+  sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret,
 } from './platform.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -60,10 +60,51 @@ async function loadSettings() {
   // Speed used to be a percent change baked into the voice (-20 / 0 / +15).
   if (saved.ttsRate != null && saved.ttsSpeed == null) saved.ttsSpeed = saved.ttsRate < 0 ? 0.75 : saved.ttsRate > 0 ? 1.25 : 1;
   delete saved.ttsRate;
-  settings = { ...DEFAULTS, ...saved };
+  settings = { ...DEFAULTS, ...saved, keys: { ...saved.keys } };
+  await loadKeys();
 }
 
-const saveSettings = () => save('settings', settings);
+/* API keys: kept in the system's credential store (Windows Credential Manager / macOS Keychain),
+   never in settings.json. Older versions saved them in the file; the first launch after updating
+   moves them over, checks each one reads back, and only then drops them from the file. If the
+   store isn't available, keys stay in the file as before, so nobody loses a key. */
+
+const KEY_ENGINES = Object.keys(ENGINES).filter((id) => ENGINES[id].keyUrl);
+let keysInVault = false;
+const vaultKeys = {}; // what the store holds, so saving only writes keys that changed
+
+async function loadKeys() {
+  if (!native) return; // plain browser (development): no store, keys stay in local storage
+  try {
+    const fromFile = KEY_ENGINES.filter((id) => settings.keys[id]);
+    for (const id of KEY_ENGINES) {
+      if (settings.keys[id]) {
+        await setSecret(id, settings.keys[id]);
+        if ((await getSecret(id)) !== settings.keys[id]) throw new Error(`${id} key didn't read back`);
+      } else {
+        settings.keys[id] = (await getSecret(id)) || '';
+      }
+      vaultKeys[id] = settings.keys[id];
+    }
+    keysInVault = true;
+    if (fromFile.length) saveSettings(); // rewrite settings.json without them
+  } catch (err) {
+    keysInVault = false;
+    console.warn('credential store unavailable; API keys stay in settings.json:', err);
+  }
+}
+
+function saveSettings() {
+  if (!keysInVault) return save('settings', settings);
+  const { keys, ...rest } = settings;
+  save('settings', rest);
+  for (const id of KEY_ENGINES) {
+    const value = keys[id] || '';
+    if (value === (vaultKeys[id] || '')) continue;
+    vaultKeys[id] = value;
+    setSecret(id, value).catch((err) => setStatus('error', `couldn't save the ${ENGINES[id].name} key: ${err}`));
+  }
+}
 
 /* ---------- panes ---------- */
 
@@ -1819,6 +1860,7 @@ $('#history-clear').addEventListener('click', () => {
 /* ---------- start ---------- */
 
 await loadSettings();
+if (keysInVault) $('#key-store').textContent = `locked in ${MAC ? "your Mac's Keychain" : 'Windows Credential Manager'}, only on this computer`;
 history = await load('history', []);
 for (const pane of Object.values(panes)) {
   attachLangPicker(pane.lang, {

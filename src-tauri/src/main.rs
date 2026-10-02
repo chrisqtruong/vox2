@@ -3,6 +3,7 @@
 
 mod hotkey;
 mod overlay;
+mod secrets;
 mod tts;
 
 use std::{fs, path::PathBuf};
@@ -192,6 +193,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             load_data,
             save_data,
+            secrets::secret_get,
+            secrets::secret_set,
             type_text,
             set_close_to_tray,
             set_window_alpha,
