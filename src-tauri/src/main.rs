@@ -37,6 +37,15 @@ fn save_data(app: AppHandle, key: String, value: String) -> Result<(), String> {
     fs::rename(tmp, path).map_err(|e| e.to_string())
 }
 
+// Total and currently available memory in MB, so the page can decide how long to keep
+// the voice model loaded (shorter on smaller machines, released early when memory runs low).
+#[tauri::command]
+fn memory_info() -> (u64, u64) {
+    let mut sys = sysinfo::System::new();
+    sys.refresh_memory();
+    (sys.total_memory() / 1_048_576, sys.available_memory() / 1_048_576)
+}
+
 // Types dictated text into whichever app has focus.
 #[tauri::command]
 async fn type_text(text: String) -> Result<(), String> {
@@ -193,6 +202,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             load_data,
             save_data,
+            memory_info,
             secrets::secret_get,
             secrets::secret_set,
             type_text,

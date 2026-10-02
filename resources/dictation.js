@@ -34,8 +34,10 @@ let workerListener = null; // app-level progress / ready events
 let nextId = 1;
 
 // A loaded model holds ~2–2.5 GB of memory (RAM + graphics card; measured with base and small).
-// Keep it through a working session, then let it go; waking it again from the disk cache takes ~2 s.
-const UNLOAD_AFTER_MS = 30 * 60e3;
+// It's let go after a while without dictation; how long depends on the computer's memory (the app
+// sets it, see setIdleRelease). Waking it again from the disk cache takes ~2 s.
+let idleMs = 5 * 60e3;
+export function setIdleRelease(ms) { idleMs = ms; }
 let unloadTimer = null;
 
 let keepLoaded = false; // the "always ready" setting
@@ -56,7 +58,7 @@ export async function isModelSaved(model) {
   }
 }
 
-export function scheduleUnload(ms = UNLOAD_AFTER_MS) {
+export function scheduleUnload(ms = idleMs) {
   clearTimeout(unloadTimer);
   if (keepLoaded) return;
   unloadTimer = setTimeout(() => {

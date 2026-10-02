@@ -6,12 +6,13 @@ import { matchScore, tier } from './meaning.js';
 import { THEME_GROUPS, applyTheme } from './themes.js';
 import {
   Dictation, STT_MODELS, listMics, onWhisperEvent, preloadWhisper, whisperAwake, setKeepLoaded, scheduleUnload, isModelSaved,
+  setIdleRelease,
 } from './dictation.js';
 import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
 import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
-  sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret,
+  sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret, memoryInfo,
 } from './platform.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -927,9 +928,15 @@ for (const pane of Object.values(panes)) {
     addEventListener('pointerup', pressEnd, { once: true });
   });
   // Pointing at the mic usually means a click is coming: start waking the voice model now
-  // (~1.5 s from cold). If no dictation follows, it's let go again after a minute.
-  mic.addEventListener('pointerenter', () => {
+  // (~2 s from cold), if the computer has memory to spare. If no dictation follows, it's let
+  // go again after a minute.
+  mic.addEventListener('pointerenter', async () => {
     if (dictation || whisperAwake() || !settings.sttEnabled || settings.sttEngine !== 'whisper') return;
+    try {
+      const mem = await memoryInfo();
+      if (mem.availableMb != null && mem.availableMb < PREWAKE_FREE_MB) return;
+    } catch {}
+    if (dictation || whisperAwake()) return; // clicked while we were checking
     preloadWhisper(settings.sttModel);
     scheduleUnload(60e3);
   });
@@ -1237,9 +1244,34 @@ async function refreshMics(ask = false) {
   }
 }
 
+/* The voice model holds ~2–2.5 GB while loaded, so how long it's kept depends on the computer:
+   smaller machines get it back sooner. And whatever the timer says, it's let go early when the
+   computer runs low on memory, so Vox2 never slows down a machine just by being open. */
+const AWAKE_MINUTES = [[24 * 1024, 30], [12 * 1024, 10], [0, 2]]; // [total memory ≥ MB, minutes after dictating]
+const LOW_MEMORY_MB = 2048;     // free memory under this (or under 15% of the total) counts as low
+const PREWAKE_FREE_MB = 4096;   // only pre-wake on mic hover with at least this much free
+let awakeMinutes = 5;
+
+async function applyMemoryPolicy() {
+  try {
+    const { totalMb } = await memoryInfo();
+    awakeMinutes = AWAKE_MINUTES.find(([min]) => totalMb >= min)[1];
+  } catch {}
+  setIdleRelease(awakeMinutes * 60e3);
+}
+
+const lowOnMemory = ({ totalMb, availableMb }) =>
+  availableMb != null && (availableMb < LOW_MEMORY_MB || availableMb < totalMb * 0.15);
+
+setInterval(async () => {
+  if (!whisperAwake() || dictation || settings.sttKeep === 'always') return;
+  try { if (lowOnMemory(await memoryInfo())) scheduleUnload(0); } catch {}
+}, 60e3);
+
 const KEEP_HINTS = {
-  always: 'dictation starts instantly · the model stays in memory while Vox2 is open (about 2–2.5 GB)',
-  save: 'instant for 30 minutes after you dictate, then frees that memory · waking it again takes about 2 seconds (no re-download)',
+  always: () => 'dictation starts instantly · the model stays in memory while Vox2 is open (about 2–2.5 GB)',
+  save: () => `instant for ${awakeMinutes} minute${awakeMinutes === 1 ? '' : 's'} after you dictate (set by this computer's memory), `
+    + 'then frees it, sooner if memory runs low · waking it again takes about 2 seconds',
 };
 
 function renderVoice() {
@@ -1247,7 +1279,7 @@ function renderVoice() {
   $('#stt-body').hidden = !settings.sttEnabled;
   $('#dictate-shortcut-row').hidden = !settings.sttEnabled;
   for (const b of $('#stt-keep').children) b.setAttribute('aria-pressed', String(b.dataset.keep === settings.sttKeep));
-  $('#stt-keep-hint').textContent = KEEP_HINTS[settings.sttKeep];
+  $('#stt-keep-hint').textContent = KEEP_HINTS[settings.sttKeep]();
   for (const b of $('#stt-silence').children) b.setAttribute('aria-pressed', String(Number(b.dataset.s) === settings.sttSilence));
   $('#stt-output-row').hidden = !native;
   for (const b of $('#stt-output').children) b.setAttribute('aria-pressed', String(b.dataset.out === settings.sttOutput));
@@ -1880,6 +1912,7 @@ applyTheme(settings.theme);
 applyFont();
 applyZoom();
 applyOnTop();
+await applyMemoryPolicy(); // how long the voice model stays loaded, from this computer's memory
 applyDictationSettings(); // dictate shortcut, mic buttons, keep-ready preload
 setHotkey('summon', settings.summonShortcut);
 setHotkey('select', settings.selectShortcut);

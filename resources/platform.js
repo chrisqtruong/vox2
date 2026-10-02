@@ -102,3 +102,12 @@ export function openUrl(url) {
 // not into settings. In a plain browser there's no store, so these do nothing.
 export const getSecret = (name) => (native ? tauri.core.invoke('secret_get', { name }) : Promise.resolve(null));
 export const setSecret = (name, value) => (native ? tauri.core.invoke('secret_set', { name, value }) : Promise.resolve());
+
+// This computer's memory in MB: { totalMb, availableMb }. A plain browser only gives a rough total.
+export async function memoryInfo() {
+  if (native) {
+    const [totalMb, availableMb] = await tauri.core.invoke('memory_info');
+    return { totalMb, availableMb };
+  }
+  return { totalMb: (navigator.deviceMemory || 8) * 1024, availableMb: null };
+}

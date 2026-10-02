@@ -28,6 +28,8 @@ sha2 = "0.10"
 uuid = { version = "1", features = ["v4"] }
 # API keys in Windows Credential Manager / macOS Keychain instead of settings.json
 keyring = { version = "3", features = ["windows-native", "apple-native"] }
+# total and free memory, so the voice model is held for less time on smaller machines
+sysinfo = { version = "0.39", default-features = false, features = ["system"] }
 
 # Small, fast release binary.
 [profile.release]
