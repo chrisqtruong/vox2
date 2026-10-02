@@ -1923,11 +1923,13 @@ $('#history-clear').addEventListener('click', () => {
    getPermissions() returns null there and none of this shows. */
 const permSheet = $('#perms');
 const PERMS = [
-  { id: 'accessibility', name: 'accessibility', why: 'shortcuts from any app, typing what you dictate, translating selected text' },
+  { id: 'input', name: 'input monitoring', why: 'hears your shortcuts while you’re in other apps' },
+  { id: 'accessibility', name: 'accessibility', why: 'typing what you dictate, translating selected text' },
   { id: 'screen', name: 'screen recording', why: 'snip & translate: reads the part of the screen you box' },
   { id: 'microphone', name: 'microphone', why: 'dictation' },
 ];
-let permsAtLaunch = null; // Accessibility and Screen Recording only take effect after a restart
+const RESTART_PERMS = ['screen', 'input']; // macOS only notices these after a restart
+let permsAtLaunch = null; // what was allowed when Vox2 started
 let perms = null;
 let permTimer = 0;
 const asked = new Set(); // asked once this session: the next click opens System Settings instead
@@ -1963,15 +1965,15 @@ function renderPerms() {
       btn.textContent = first ? 'allow' : 'open settings';
       btn.addEventListener('click', () => askPermission(x.id));
       li.append(btn);
-      // macOS only re-checks Screen Recording when Vox2 starts, so this row can't tick itself off.
-      if (x.id === 'screen' && asked.has('screen')) {
+      // macOS only re-checks these when Vox2 starts, so the row can't tick itself off.
+      if (RESTART_PERMS.includes(x.id) && asked.has(x.id)) {
         $('small', li).textContent = 'switched it on in System Settings? restart Vox2 to finish';
       }
     }
     return li;
   }));
-  $('#perm-restart').hidden = !(['accessibility', 'screen'].some((id) => perms[id] && !permsAtLaunch[id])
-    || (asked.has('screen') && !perms.screen));
+  $('#perm-restart').hidden = !(['accessibility', ...RESTART_PERMS].some((id) => perms[id] && !permsAtLaunch[id])
+    || RESTART_PERMS.some((id) => asked.has(id) && !perms[id]));
   $('#perm-startup').checked = settings.permCheck;
 }
 

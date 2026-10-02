@@ -275,9 +275,9 @@ pub fn start(app: AppHandle) {
         });
         #[cfg(target_os = "macos")]
         let result = {
-            // macOS won't let us watch the keyboard until Accessibility is allowed; wait for it
-            // here, so granting it from the permissions sheet works without a restart.
-            while !crate::permissions::accessibility_allowed() {
+            // Without Input Monitoring macOS only passes modifier keys to the watcher, so wait
+            // for it (macOS usually wants a restart after it's switched on).
+            while !crate::permissions::keyboard_allowed() {
                 std::thread::sleep(Duration::from_secs(2));
             }
             mac::listen(on_key)
@@ -291,6 +291,7 @@ pub fn start(app: AppHandle) {
 // macOS keyboard watcher. rdev's does a keyboard-layout lookup for every key (on the main
 // thread, or it crashes); when that's slow, macOS switches the watcher off for good. This one
 // only reads which key went down or up, and switches itself back on if macOS ever turns it off.
+// Needs Input Monitoring; Accessibility alone isn't enough on current macOS.
 #[cfg(target_os = "macos")]
 mod mac {
     use core_foundation::base::TCFType;
