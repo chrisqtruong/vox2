@@ -8,8 +8,8 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 <p align="center"><a href="https://github.com/chrisqtruong/vox2/releases/latest/download/Vox2-setup.exe"><b>Download for Windows</b></a> · <a href="https://chrisqtruong.github.io/vox2">Website</a> · <a href="https://github.com/chrisqtruong/vox2/releases">Releases</a></p>
 
 <p align="center">
-  <img src="docs/screenshot-dark.jpg" width="320" alt="English to Japanese with romaji and back-translation">
-  <img src="docs/screenshot-light.jpg" width="320" alt="English to Vietnamese">
+  <img src="docs/screenshot-dark.jpg" width="320" alt="English to Japanese with romaji, and a reworded back-translation that still scores 100% match">
+  <img src="docs/screenshot-light.jpg" width="320" alt="English to Vietnamese with a back-translation scored 100% match">
 </p>
 
 ## What it does
