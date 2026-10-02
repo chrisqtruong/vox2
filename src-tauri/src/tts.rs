@@ -1,6 +1,6 @@
 // Read-aloud with Microsoft's neural voices (the free service behind Edge's "Read Aloud").
 // Unofficial: it speaks the same WebSocket protocol Edge does (see github.com/rany2/edge-tts),
-// so Microsoft could change it. Returns MP3 bytes for the page to play.
+// so Microsoft could change it. Returns MP3 bytes for the page to play, plus when each word is spoken.
 
 use sha2::{Digest, Sha256};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -120,13 +120,17 @@ fn synthesize(text: &str, voice: &str, rate: i32) -> Result<Vec<u8>, String> {
 
     ws.send(Message::text(format!(
         "X-Timestamp:{}\r\nContent-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n\
-         {{\"context\":{{\"synthesis\":{{\"audio\":{{\"metadataoptions\":{{\"sentenceBoundaryEnabled\":\"false\",\"wordBoundaryEnabled\":\"false\"}},\"outputFormat\":\"audio-24khz-48kbitrate-mono-mp3\"}}}}}}}}\r\n",
+         {{\"context\":{{\"synthesis\":{{\"audio\":{{\"metadataoptions\":{{\"sentenceBoundaryEnabled\":\"false\",\"wordBoundaryEnabled\":\"true\"}},\"outputFormat\":\"audio-24khz-48kbitrate-mono-mp3\"}}}}}}}}\r\n",
         js_date()
     )))
     .map_err(|e| e.to_string())?;
 
     let mut audio = Vec::new();
+    let mut words: Vec<serde_json::Value> = Vec::new(); // [start ms, length ms, word]
     for part in chunks(text) {
+        // Word times restart at 0 for each chunk. The MP3 is a constant 48 kbit/s,
+        // so the audio received so far says where this chunk starts.
+        let base_ms = audio.len() as f64 * 8.0 / 48.0;
         let ssml = format!(
             "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-US'>\
              <voice name='{}'><prosody pitch='+0Hz' rate='{:+}%' volume='+0%'>{}</prosody></voice></speak>",
@@ -143,6 +147,20 @@ fn synthesize(text: &str, voice: &str, rate: i32) -> Result<Vec<u8>, String> {
         loop {
             match ws.read().map_err(|e| format!("voice service: {e}"))? {
                 Message::Text(t) if t.contains("Path:turn.end") => break,
+                Message::Text(t) if t.contains("Path:audio.metadata") => {
+                    // Offsets and durations come in 100-nanosecond ticks.
+                    let body = t.split("\r\n\r\n").nth(1).unwrap_or("");
+                    let Ok(meta) = serde_json::from_str::<serde_json::Value>(body) else { continue };
+                    for m in meta["Metadata"].as_array().into_iter().flatten() {
+                        let d = &m["Data"];
+                        if m["Type"] != "WordBoundary" {
+                            continue;
+                        }
+                        let (Some(off), Some(word)) = (d["Offset"].as_f64(), d["text"]["Text"].as_str()) else { continue };
+                        let dur = d["Duration"].as_f64().unwrap_or(0.0);
+                        words.push(serde_json::json!([base_ms + off / 10_000.0, dur / 10_000.0, word]));
+                    }
+                }
                 Message::Binary(data) if data.len() >= 2 => {
                     // [2-byte header length][headers][audio]
                     let header_len = u16::from_be_bytes([data[0], data[1]]) as usize;
@@ -160,9 +178,16 @@ fn synthesize(text: &str, voice: &str, rate: i32) -> Result<Vec<u8>, String> {
     if audio.is_empty() {
         return Err("voice service returned no audio (voice may not exist)".into());
     }
-    Ok(audio)
+    // Packed for the page: [4-byte little-endian length][word timings JSON][MP3].
+    let json = serde_json::to_vec(&words).map_err(|e| e.to_string())?;
+    let mut out = Vec::with_capacity(4 + json.len() + audio.len());
+    out.extend_from_slice(&(json.len() as u32).to_le_bytes());
+    out.extend_from_slice(&json);
+    out.extend_from_slice(&audio);
+    Ok(out)
 }
 
+/// Returns [4-byte length][word timings JSON][MP3]; see the end of `synthesize`.
 /// rate: speed change in percent, e.g. -20 (slower) … +30 (faster).
 #[tauri::command]
 pub async fn tts_speak(text: String, voice: String, rate: i32) -> Result<Response, String> {

@@ -75,8 +75,14 @@ export const showWindow = () => invoke('show_window').catch(() => {});
 export const startSnip = () => invoke('start_snip_cmd').catch(() => {});
 export const takeSnip = () => invoke('take_snip');
 
-// Natural neural voice → MP3 bytes (ArrayBuffer). rate is a percent change, e.g. -15.
-export const speakNeural = (text, voice, rate) => invoke('tts_speak', { text, voice, rate });
+// Natural neural voice → { audio: MP3 bytes, words: [[start ms, length ms, word], …] }.
+// rate is a percent change, e.g. -15.
+export async function speakNeural(text, voice, rate) {
+  const buf = await invoke('tts_speak', { text, voice, rate });
+  const len = new DataView(buf).getUint32(0, true);
+  const words = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 4, len)));
+  return { audio: buf.slice(4 + len), words };
+}
 
 // The native keyboard watcher is blind while Vox2 is in front; the page handles keys then,
 // and clears the watcher's key state whenever focus changes hands.

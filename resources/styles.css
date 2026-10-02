@@ -153,6 +153,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .text .pending { color: var(--pending); }
 .text .settle { animation: settle .28s ease-out; }
 @keyframes settle { from { color: var(--pending); } to { color: var(--ink); } }
+/* the word being read aloud: accent ink on a faint accent wash (the wash also shows when accent = ink) */
+::highlight(vox-word) { color: var(--accent); background-color: color-mix(in srgb, var(--accent) 18%, transparent); }
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }

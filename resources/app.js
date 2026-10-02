@@ -1439,10 +1439,59 @@ function setSpeakUI(pane, on) {
   }
 }
 
+// While reading aloud, the word being spoken lights up. It's a CSS highlight (styles.css,
+// ::highlight(vox-word)), drawn over the text without touching it, so the box stays editable.
+const wordMark = typeof Highlight === 'function' ? new Highlight() : null;
+if (wordMark) CSS.highlights.set('vox-word', wordMark);
+let reading = null; // { pane, full, lead, words: [[ms, from, to], …], i, range }
+
+// A Range over characters [from, to) of a box's text (line breaks count as one character).
+function textRange(el, from, to) {
+  const range = document.createRange();
+  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+  let pos = 0;
+  let started = false;
+  for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+    const len = n.nodeType === Node.TEXT_NODE ? n.length : n.nodeName === 'BR' ? 1 : 0;
+    if (!len || n.nodeType !== Node.TEXT_NODE) { pos += len; continue; }
+    if (!started && from < pos + len) { range.setStart(n, from - pos); started = true; }
+    if (started && to <= pos + len) { range.setEnd(n, to - pos); return range; }
+    pos += len;
+  }
+  return null;
+}
+
+function followReading(ms, fromMedia) {
+  const r = reading;
+  if (!r) return;
+  if (fromMedia && quick.active && quick.dst === r.pane) sendBubble({ session: quick.session, sayMs: ms, sayAt: Date.now() });
+  if (!wordMark) return;
+  if (getText(r.pane) !== r.full) { wordMark.clear(); r.i = -1; return; } // edited mid-read: let go
+  let i = r.i;
+  while (i + 1 < r.words.length && r.words[i + 1][0] <= ms) i++;
+  while (i >= 0 && r.words[i][0] > ms) i--;
+  // Repaints swap the text nodes out from under the range, which collapses it: rebuild then too.
+  if (i === r.i && !(r.range?.collapsed)) return;
+  r.i = i;
+  wordMark.clear();
+  if (i < 0) return;
+  r.range = textRange(r.pane.el, r.lead + r.words[i][1], r.lead + r.words[i][2]);
+  if (r.range) wordMark.add(r.range);
+}
+
+function endReading(pane) {
+  if (reading?.pane !== pane) return;
+  if (quick.active && quick.dst === pane) sendBubble({ session: quick.session, words: null });
+  reading = null;
+  wordMark?.clear();
+}
+
 async function readAloud(pane) {
   if (speakingPane === pane) { stopSpeech(); return; }
-  const text = getText(pane).trim();
+  const full = getText(pane);
+  const text = full.trim();
   if (!text) return;
+  const lead = full.indexOf(text);
   const lang = langOf(pane);
   // No natural voice for this language → fall back to the computer's own voices.
   const engine = settings.ttsEngine === 'neural' && !voicesFor(lang).length ? 'system' : settings.ttsEngine;
@@ -1459,9 +1508,22 @@ async function readAloud(pane) {
       openaiVoice: settings.ttsOpenaiVoice,
       rate: settings.ttsRate,
       key: settings.keys.openai,
-      onEnd: () => { if (speakingPane === pane) { speakingPane = null; setSpeakUI(null, false); } },
+      onStart: () => { reading = { pane, full, lead, words: [], i: -1, range: null }; },
+      onWords: (words) => {
+        if (reading?.pane !== pane) return;
+        reading.words = words;
+        if (quick.active && quick.dst === pane) {
+          sendBubble({ session: quick.session, words: words.map(([ms, a, b]) => [ms, a + lead, b + lead]) });
+        }
+      },
+      onTime: followReading,
+      onEnd: () => {
+        endReading(pane);
+        if (speakingPane === pane) { speakingPane = null; setSpeakUI(null, false); }
+      },
     });
   } catch (err) {
+    endReading(pane);
     speakingPane = null;
     setSpeakUI(null, false);
     setStatus('error', `read aloud: ${err.message || err}`, 'read');

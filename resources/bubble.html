@@ -27,6 +27,7 @@
     button:hover, button:focus-visible { background: var(--line); color: var(--ink); outline: none; }
     button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
     .close { padding: 2px; }
+    ::highlight(vox-word) { color: var(--accent); background-color: color-mix(in srgb, var(--accent) 18%, transparent); }
   </style>
 </head>
 <body>
@@ -75,6 +76,7 @@
         shown = false;
         $('src').textContent = ''; $('roman').textContent = '';
         $('out').textContent = '…'; $('out').className = 'out pending';
+        startReading(null);
       }
       if (p.colors) for (const [k, v] of Object.entries(p.colors)) document.documentElement.style.setProperty(`--${k}`, v);
       if (p.status) $('langs').textContent = p.status;
@@ -83,8 +85,45 @@
       if (p.translation != null) { $('out').textContent = p.translation || '…'; $('out').className = p.done ? 'out' : 'out pending'; }
       if (p.roman != null) $('roman').textContent = p.roman;
       if (p.error) { $('out').textContent = p.error; $('out').className = 'out error'; }
+      if ('words' in p) startReading(p.words);
+      if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt };
       requestAnimationFrame(place);
     });
+
+    // Read aloud: the main window sends when each word is spoken ([[ms, from, to], …]) and the
+    // playback position every so often; between updates we run the clock forward ourselves.
+    const wordMark = new Highlight();
+    CSS.highlights.set('vox-word', wordMark);
+    let reading = null; // { words, i, node }
+    let clock = { ms: 0, at: 0 }; // last known playback position, and when it was sent
+    let looping = false;
+    function startReading(words) {
+      wordMark.clear();
+      if (!words) { reading = null; clock = { ms: -1e9, at: Date.now() }; return; } // wait for the next position
+      reading = { words, i: -1, node: null };
+      if (!looping) { looping = true; requestAnimationFrame(follow); }
+    }
+    function follow() {
+      const r = reading;
+      if (!r) { looping = false; return; }
+      const ms = clock.ms + (Date.now() - clock.at);
+      let i = -1;
+      while (i + 1 < r.words.length && r.words[i + 1][0] <= ms) i++;
+      const node = $('out').firstChild;
+      if ((i !== r.i || node !== r.node) && node?.nodeType === Node.TEXT_NODE) {
+        r.i = i;
+        r.node = node;
+        wordMark.clear();
+        const [, from, to] = r.words[i] || [];
+        if (i >= 0 && to <= node.length) {
+          const range = document.createRange();
+          range.setStart(node, from);
+          range.setEnd(node, to);
+          wordMark.add(range);
+        }
+      }
+      requestAnimationFrame(follow);
+    }
 
     const act = (action) => T.event.emitTo('main', 'bubble-action', { action });
     $('speak').addEventListener('click', () => act('speak'));
