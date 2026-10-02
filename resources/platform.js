@@ -89,6 +89,13 @@ export async function speakNeural(text, voice, rate) {
 export const resetKeys = () => invoke('reset_keys').catch(() => {});
 export const hideWindow = () => invoke('hide_main').catch(() => {});
 
+// macOS permissions, all in one place: { accessibility, screen, microphone: 'granted' | 'denied' | 'ask' },
+// or null on Windows and in a plain browser, where there's nothing to set up.
+export const getPermissions = () => (native ? tauri.core.invoke('permissions').catch(() => null) : Promise.resolve(null));
+export const requestPermission = (name) => invoke('request_permission', { name }).catch(() => {});
+export const openPrivacy = (name) => invoke('open_privacy', { name }).catch(() => {});
+export const relaunch = () => (native ? tauri.process.relaunch() : Promise.resolve());
+
 export const setCloseToTray = (on) => invoke('set_close_to_tray', { on }).catch(() => {});
 export const setWindowAlpha = (alpha) => invoke('set_window_alpha', { alpha }).catch(() => {});
 export const setAutostart = (on) => invoke(`plugin:autostart|${on ? 'enable' : 'disable'}`).catch(() => {});

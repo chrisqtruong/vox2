@@ -305,6 +305,23 @@ body.conversation .pane-head .mic { color: var(--accent); background: var(--hove
 .shortcut-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; }
 .shortcut-row .key-chip.off { color: var(--pending); }
 
+/* Permissions (macOS) */
+.perm-entry { justify-content: space-between; padding: 0 10px; }
+.perm-intro { line-height: 1.5; margin: 14px 0 10px; padding: 0 10px; }
+.perm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.perm-list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
+.perm-list li > div { flex: 1; min-width: 0; }
+.perm-list b { font-weight: 500; display: block; }
+.perm-list small { color: var(--muted); font-size: 12px; line-height: 1.4; display: block; }
+.perm-list .ok { color: var(--accent); font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
+.perm-list .ok svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+.perm-list .chip, .perm-restart .chip { flex: none; white-space: nowrap; }
+.perm-list .chip.go { color: var(--bg); background: var(--accent); }
+.perm-restart { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 10px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--hover); }
+.perm-restart[hidden] { display: none; }
+.perm-restart .hint { color: var(--ink); }
+.perm-note { line-height: 1.5; margin: 14px 0 6px; padding: 0 10px; }
+
 /* History stars: kept forever, listed first */
 .history-list li { position: relative; }
 .history-list .star {

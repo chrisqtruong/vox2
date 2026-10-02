@@ -13,6 +13,7 @@ import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret, memoryInfo,
+  getPermissions, requestPermission, openPrivacy, relaunch,
 } from './platform.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -42,6 +43,7 @@ const DEFAULTS = {
   showRoman: true, showBack: false, showMatch: true, // showMatch: meaning score on the back-translation
   fade: true, closeToTray: true, autostart: false,
   updates: 'auto', // 'auto' (install when you're not using Vox2), 'ask', or 'off'
+  permCheck: true, // macOS: open the permissions sheet at startup while something's missing
 };
 let settings = { ...DEFAULTS };
 
@@ -421,6 +423,7 @@ $('#swap').addEventListener('click', () => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && sheet.classList.contains('open')) closeSettings();
   else if (e.key === 'Escape' && historySheet.classList.contains('open')) closeHistory();
+  else if (e.key === 'Escape' && permSheet.classList.contains('open')) closePerms();
   else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); }
 });
 
@@ -619,12 +622,14 @@ $('#key-link').addEventListener('click', (e) => {
 
 function openSettings(target) {
   if (historySheet.classList.contains('open')) closeHistory();
+  if (permSheet.classList.contains('open')) closePerms();
   renderEngines();
   renderVoice();
   renderShortcuts();
   renderTone();
   renderWindowOpts();
   renderUpdates();
+  renderPermEntry();
   renderTTS();
   renderThemes();
   applyFont();
@@ -1875,6 +1880,7 @@ function restoreHistory(h) {
 
 function openHistory() {
   if (sheet.classList.contains('open')) closeSettings();
+  if (permSheet.classList.contains('open')) closePerms();
   renderHistory();
   historySheet.classList.add('open');
   historySheet.setAttribute('aria-hidden', 'false');
@@ -1895,6 +1901,104 @@ $('#history-clear').addEventListener('click', () => {
   save('history', history);
   renderHistory();
 });
+
+/* ---------- permissions (macOS) ---------- */
+
+/* macOS asks for each permission separately, and Accessibility and Screen Recording can only be
+   switched on in System Settings. This sheet lists everything Vox2 needs with a button for each,
+   and keeps checking while it's open, so it ticks off as you go. Windows has nothing to set up:
+   getPermissions() returns null there and none of this shows. */
+const permSheet = $('#perms');
+const PERMS = [
+  { id: 'accessibility', name: 'accessibility', why: 'shortcuts from any app, typing what you dictate, translating selected text' },
+  { id: 'screen', name: 'screen recording', why: 'snip & translate: reads the part of the screen you box' },
+  { id: 'microphone', name: 'microphone', why: 'dictation' },
+];
+let permsAtLaunch = null; // Accessibility and Screen Recording only take effect after a restart
+let perms = null;
+let permTimer = 0;
+const asked = new Set(); // asked once this session: the next click opens System Settings instead
+
+const permGranted = (p, id) => (id === 'microphone' ? p[id] === 'granted' : !!p[id]);
+const permsNeeded = () => PERMS.filter((x) => x.id !== 'microphone' || settings.sttEnabled);
+const permsMissing = (p) => permsNeeded().filter((x) => !permGranted(p, x.id));
+
+async function askPermission(id) {
+  if (id === 'microphone' && perms.microphone === 'ask') {
+    try { (await navigator.mediaDevices.getUserMedia({ audio: true })).getTracks().forEach((t) => t.stop()); } catch {}
+  } else if (id !== 'microphone' && !asked.has(id)) {
+    requestPermission(id); // macOS's own prompt, and Vox2 shows up in the list in System Settings
+  } else {
+    openPrivacy(id);
+  }
+  asked.add(id);
+  checkPerms(true); // the button changes to "open settings" even if nothing else did
+}
+
+function renderPerms() {
+  $('#perm-list').replaceChildren(...permsNeeded().map((x) => {
+    const li = document.createElement('li');
+    li.innerHTML = '<div><b></b><small></small></div>';
+    $('b', li).textContent = x.name;
+    $('small', li).textContent = x.why;
+    if (permGranted(perms, x.id)) {
+      li.insertAdjacentHTML('beforeend', '<span class="ok"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg>allowed</span>');
+    } else {
+      const btn = document.createElement('button');
+      const first = x.id === 'microphone' ? perms.microphone === 'ask' : !asked.has(x.id);
+      btn.className = first ? 'chip go' : 'chip';
+      btn.textContent = first ? 'allow' : 'open settings';
+      btn.addEventListener('click', () => askPermission(x.id));
+      li.append(btn);
+    }
+    return li;
+  }));
+  $('#perm-restart').hidden = !['accessibility', 'screen'].some((id) => perms[id] && !permsAtLaunch[id]);
+  $('#perm-startup').checked = settings.permCheck;
+}
+
+// Redraws only when something changed, so a click never lands on a button that's being replaced.
+async function checkPerms(force = false) {
+  const p = await getPermissions();
+  if (!p) return;
+  const changed = JSON.stringify(p) !== JSON.stringify(perms);
+  perms = p;
+  if ((changed || force) && permSheet.classList.contains('open')) renderPerms();
+}
+
+function openPerms() {
+  if (!perms) return;
+  if (sheet.classList.contains('open')) closeSettings();
+  if (historySheet.classList.contains('open')) closeHistory();
+  renderPerms();
+  permSheet.classList.add('open');
+  permSheet.setAttribute('aria-hidden', 'false');
+  $('#perms-done').focus();
+  clearInterval(permTimer);
+  permTimer = setInterval(checkPerms, 1000);
+}
+
+function closePerms() {
+  clearInterval(permTimer);
+  permSheet.classList.remove('open');
+  permSheet.setAttribute('aria-hidden', 'true');
+  panes[source].el.focus();
+}
+
+// The entry in settings → window & updates, macOS only.
+function renderPermEntry() {
+  $('#perm-entry').hidden = !perms;
+  if (!perms) return;
+  const missing = permsMissing(perms).length;
+  $('#perm-summary').textContent = missing ? `${missing} still needed` : 'all allowed';
+}
+
+$('#perms-done').addEventListener('click', closePerms);
+$('#perm-open').addEventListener('click', () => openPerms());
+$('#perm-restart-btn').addEventListener('click', () => relaunch());
+$('#perm-startup').addEventListener('change', (e) => { settings.permCheck = e.target.checked; saveSettings(); });
+// Coming back from System Settings: check right away instead of waiting for the next tick.
+addEventListener('focus', () => { if (permSheet.classList.contains('open')) checkPerms(); });
 
 /* ---------- start ---------- */
 
@@ -1926,3 +2030,6 @@ updateEmpty();
 renderVoice();
 setStatus('idle');
 panes.top.el.focus();
+perms = await getPermissions();
+permsAtLaunch = perms;
+if (perms && settings.permCheck && permsMissing(perms).length) openPerms();

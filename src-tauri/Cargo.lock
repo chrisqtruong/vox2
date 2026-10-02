@@ -5762,9 +5762,12 @@ name = "vox2"
 version = "0.4.10"
 dependencies = [
  "arboard",
+ "core-foundation 0.9.4",
  "enigo",
  "image",
  "keyring",
+ "objc2",
+ "objc2-foundation",
  "rdev 0.5.0-2",
  "rdev 0.5.3",
  "serde",

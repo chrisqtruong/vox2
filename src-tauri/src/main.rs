@@ -3,6 +3,7 @@
 
 mod hotkey;
 mod overlay;
+mod permissions;
 mod secrets;
 mod tts;
 
@@ -220,7 +221,10 @@ fn main() {
             overlay::cancel_snip,
             overlay::take_snip,
             overlay::start_snip_cmd,
-            tts::tts_speak
+            tts::tts_speak,
+            permissions::permissions,
+            permissions::request_permission,
+            permissions::open_privacy
         ])
         .setup(|app| {
             create_tray(app)?;
