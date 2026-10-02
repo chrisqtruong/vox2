@@ -562,6 +562,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 for (const b of $('#zoom-controls').children) {
+  if (MAC) b.title = b.title.replace('Ctrl ', '⌘');
   b.addEventListener('click', () => stepZoom(Number(b.dataset.zoom)));
 }
 
@@ -957,10 +958,14 @@ const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform);
 const MODIFIER_CODES = new Set(['ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'ShiftLeft', 'ShiftRight', 'MetaLeft', 'MetaRight']);
 const isLone = (sc) => MODIFIER_CODES.has(sc.code) && !sc.ctrl && !sc.alt && !sc.shift && !sc.meta;
 
+// Macs write shortcuts with symbols in this order, e.g. ⌥⌘T, like the menu bar does.
+const MAC_SYMBOLS = { Control: '⌃', Alt: '⌥', Shift: '⇧', Meta: '⌘' };
+
 function keyName(code) {
   const side = code.endsWith('Right') ? 'Right ' : code.endsWith('Left') ? 'Left ' : '';
   const base = code.replace(/(Left|Right)$/, '');
-  const names = { Control: 'Ctrl', Alt: IS_MAC ? 'Option' : 'Alt', Shift: 'Shift', Meta: IS_MAC ? 'Cmd' : 'Win', Space: 'Space', Backquote: '`' };
+  const names = { Control: IS_MAC ? 'Control' : 'Ctrl', Alt: IS_MAC ? 'Option' : 'Alt', Shift: 'Shift', Meta: IS_MAC ? 'Cmd' : 'Win', Space: 'Space', Backquote: '`' };
+  if (IS_MAC && MAC_SYMBOLS[base]) return `${side}${MAC_SYMBOLS[base]} ${names[base]}`; // "Right ⌥ Option"
   if (names[base]) return side + names[base];
   return code.replace(/^Key|^Digit|^Numpad/, '');
 }
@@ -976,6 +981,10 @@ const needs = (sc) => {
 
 function shortcutLabel(sc = settings.sttShortcut) {
   const n = isChord(sc) ? needs(sc) : sc;
+  if (IS_MAC && !isLone(sc)) {
+    const syms = [n.ctrl && '⌃', n.alt && '⌥', n.shift && '⇧', n.meta && '⌘'].filter(Boolean).join('');
+    return isChord(sc) ? syms : syms + keyName(sc.code);
+  }
   const mods = [n.ctrl && 'Ctrl', n.alt && (IS_MAC ? 'Option' : 'Alt'), n.shift && 'Shift', n.meta && (IS_MAC ? 'Cmd' : 'Win')];
   return [...mods, !isChord(sc) && keyName(sc.code)].filter(Boolean).join(' + ');
 }
@@ -1990,9 +1999,10 @@ function closePerms() {
   panes[source].el.focus();
 }
 
-// The entry in settings → window & updates, macOS only.
+// The permissions section at the top of settings (with its own jump link), macOS only.
 function renderPermEntry() {
   $('#perm-entry').hidden = !perms;
+  $('#nav-perms').hidden = !perms;
   if (!perms) return;
   const missing = permsMissing(perms).length;
   $('#perm-summary').textContent = missing ? `${missing} still needed` : 'all allowed';

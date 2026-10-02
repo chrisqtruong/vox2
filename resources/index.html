@@ -91,6 +91,7 @@
 
     <div class="sheet-body">
       <nav class="settings-nav" id="settings-nav" aria-label="Jump to">
+        <button data-jump="sec-perms" id="nav-perms" hidden>permissions</button>
         <button data-jump="sec-engine">translation</button>
         <button data-jump="sec-voice">dictation</button>
         <button data-jump="sec-read">read aloud</button>
@@ -98,6 +99,11 @@
         <button data-jump="sec-window">window &amp; updates</button>
         <button data-jump="sec-appearance">appearance</button>
       </nav>
+
+      <div id="perm-entry" hidden>
+        <h2 id="sec-perms">permissions</h2>
+        <div class="row-line perm-entry"><span class="hint" id="perm-summary"></span><button class="chip" id="perm-open">review</button></div>
+      </div>
 
       <h2 id="sec-engine">translation</h2>
       <h3>engine</h3>
@@ -256,10 +262,6 @@
           <button data-u="off">off</button>
         </div>
         <div class="row-line"><span class="hint" id="update-status"></span><button class="chip" id="update-check">check now</button></div>
-      </div>
-      <div id="perm-entry" hidden>
-        <h3>permissions</h3>
-        <div class="row-line perm-entry"><span class="hint" id="perm-summary"></span><button class="chip" id="perm-open">review</button></div>
       </div>
 
       <h2 id="sec-appearance">appearance</h2>
