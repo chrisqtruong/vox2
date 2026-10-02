@@ -22,6 +22,32 @@ pub fn cursor() -> (i32, i32) {
     Enigo::new(&Settings::default()).ok().and_then(|e| e.location().ok()).unwrap_or((200, 200))
 }
 
+/// The cursor in physical screen pixels, like monitor and window positions. On macOS the cursor
+/// comes in points (half the pixels on a Retina screen), so scale it by the screen it's on.
+fn cursor_px(app: &AppHandle) -> (i32, i32) {
+    let (cx, cy) = cursor();
+    #[cfg(target_os = "macos")]
+    {
+        let (px, py) = (cx as f64, cy as f64);
+        for m in app.available_monitors().unwrap_or_default() {
+            let s = m.scale_factor();
+            let (pos, size) = (m.position(), m.size());
+            let (left, top) = (pos.x as f64 / s, pos.y as f64 / s);
+            let (w, h) = (size.width as f64 / s, size.height as f64 / s);
+            if px >= left && px < left + w && py >= top && py < top + h {
+                return (pos.x + ((px - left) * s) as i32, pos.y + ((py - top) * s) as i32);
+            }
+        }
+        let s = app.primary_monitor().ok().flatten().map_or(1.0, |m| m.scale_factor());
+        ((px * s) as i32, (py * s) as i32)
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        let _ = app;
+        (cx, cy)
+    }
+}
+
 fn monitor_at(app: &AppHandle, x: i32, y: i32) -> Option<tauri::Monitor> {
     app.monitor_from_point(x as f64, y as f64).ok().flatten().or_else(|| app.primary_monitor().ok().flatten())
 }
@@ -51,7 +77,7 @@ fn bubble(app: &AppHandle) -> tauri::Result<WebviewWindow> {
 pub async fn open_bubble(app: AppHandle, x: Option<i32>, y: Option<i32>) -> Result<(), String> {
     *ANCHOR.lock().unwrap() = match (x, y) {
         (Some(x), Some(y)) => (x, y),
-        _ => cursor(),
+        _ => cursor_px(&app),
     };
     bubble(&app).map(|_| ()).map_err(|e| e.to_string())
 }
@@ -94,7 +120,7 @@ pub fn hide_bubble(app: AppHandle) {
 
 /// Cover the screen under the cursor with the snip overlay.
 pub fn start_snip(app: &AppHandle) {
-    let (cx, cy) = cursor();
+    let (cx, cy) = cursor_px(app);
     let Some(monitor) = monitor_at(app, cx, cy) else { return };
     let (pos, size) = (*monitor.position(), *monitor.size());
     let win = match app.get_webview_window("snip") {

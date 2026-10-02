@@ -54,6 +54,7 @@
     let session = 0;
     let lastHeight = 0;
     let shown = false;
+    const MAC = /Mac/.test(navigator.platform);
 
     function place() {
       const h = Math.ceil(card.getBoundingClientRect().height) + 12;
@@ -87,7 +88,9 @@
       if (p.error) { $('out').textContent = p.error; $('out').className = 'out error'; }
       if ('words' in p) startReading(p.words);
       if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt, rate: p.sayRate || 1 };
-      requestAnimationFrame(place);
+      // macOS (WebKit) doesn't run animation frames in a hidden window, and the bubble is hidden
+      // until it has placed itself, so measure right away there.
+      if (MAC) place(); else requestAnimationFrame(place);
     });
 
     // Read aloud: the main window sends when each word is spoken ([[ms, from, to], …]) and the
