@@ -162,7 +162,21 @@ fn set_window_alpha(window: tauri::WebviewWindow, alpha: u8) {
             SetLayeredWindowAttributes(h, 0, alpha, LWA_ALPHA);
         }
     }
-    #[cfg(not(windows))]
+    // NSWindow's alphaValue; AppKit wants it set from the main thread.
+    #[cfg(target_os = "macos")]
+    {
+        let win = window.clone();
+        let _ = window.run_on_main_thread(move || {
+            if let Ok(ns_window) = win.ns_window() {
+                let ns_window = ns_window as *mut objc2::runtime::AnyObject;
+                let value = alpha as f64 / 255.0;
+                unsafe {
+                    let _: () = objc2::msg_send![ns_window, setAlphaValue: value];
+                }
+            }
+        });
+    }
+    #[cfg(not(any(windows, target_os = "macos")))]
     let _ = (window, alpha);
 }
 

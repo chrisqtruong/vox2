@@ -1516,8 +1516,12 @@ async function checkForUpdates(manual = false) {
       $('#update-pill').title = `Vox2 v${update.version} is ready · click to install and restart`;
     }
   } catch (err) {
-    // Offline, GitHub hiccup, etc. Only worth mentioning if you asked.
-    setUpdateStatus(manual ? `couldn't check right now (${err?.message || err})` : '');
+    // Offline, GitHub hiccup, etc. Only worth mentioning if you asked. A release with no build
+    // for this computer yet (the Mac one is added a few minutes after the Windows one) isn't
+    // an error, there's just nothing to install.
+    const msg = err?.message || String(err);
+    if (/fallback platforms|platforms` object/.test(msg)) setUpdateStatus(manual ? `you have the latest version for this computer (v${appVersion})` : '');
+    else setUpdateStatus(manual ? `couldn't check right now (${msg})` : '');
   }
 }
 
