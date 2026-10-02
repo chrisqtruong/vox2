@@ -257,6 +257,10 @@
         </div>
         <div class="row-line"><span class="hint" id="update-status"></span><button class="chip" id="update-check">check now</button></div>
       </div>
+      <div id="perm-entry" hidden>
+        <h3>permissions</h3>
+        <div class="row-line perm-entry"><span class="hint" id="perm-summary"></span><button class="chip" id="perm-open">review</button></div>
+      </div>
 
       <h2 id="sec-appearance">appearance</h2>
       <h3>font</h3>
@@ -280,6 +284,23 @@
         <a href="#" id="about-github">github.com/chrisqtruong/vox2</a>
         <span class="hint">open source · GPL-3.0</span>
       </div>
+    </div>
+  </aside>
+
+  <aside class="sheet" id="perms" aria-hidden="true">
+    <header class="sheet-head">
+      <h1>permissions</h1>
+      <button class="done" id="perms-done">done</button>
+    </header>
+    <div class="sheet-body">
+      <p class="hint perm-intro">macOS asks for each of these on its own. allow them all here, once, and Vox2's shortcuts, dictation and snip work from any app.</p>
+      <ul class="perm-list" id="perm-list"></ul>
+      <div class="perm-restart" id="perm-restart" hidden>
+        <span class="hint">restart Vox2 so the new permissions take effect</span>
+        <button class="chip" id="perm-restart-btn">restart now</button>
+      </div>
+      <p class="hint perm-note">in System Settings, switch Vox2 on. if it's already on but this still says needed, select Vox2, remove it with −, and add it again with + (each new build of Vox2 counts as a new app).</p>
+      <label class="toggle"><span>check at startup</span><input type="checkbox" id="perm-startup"></label>
     </div>
   </aside>
 
