@@ -38,6 +38,12 @@ pub fn open_privacy(name: String) {
     let _ = name;
 }
 
+/// Whether macOS lets Vox2 watch the keyboard and type (Accessibility).
+#[cfg(target_os = "macos")]
+pub fn accessibility_allowed() -> bool {
+    mac::check().accessibility
+}
+
 #[cfg(target_os = "macos")]
 mod mac {
     use core_foundation::base::TCFType;

@@ -38,16 +38,14 @@ codegen-units = 1
 strip = true
 panic = "abort"
 
-# System-wide keyboard watcher (shortcuts from any app). On macOS, rdev 0.5 reads the keyboard
-# layout off the main thread on every keypress, which macOS 14+ kills the app for; RustDesk's
-# fork can hand that lookup to the main thread (see hotkey::start). Pinned to a known commit, and
-# named rdev_mac because Cargo needs one source per dependency name.
+# System-wide keyboard watcher (shortcuts from any app). macOS has its own in hotkey.rs: rdev's
+# looks up the keyboard layout on every key, which crashes off the main thread and, when slow,
+# gets the watcher switched off by macOS.
 [target.'cfg(not(target_os = "macos"))'.dependencies]
 rdev = "0.5"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-rdev_mac = { package = "rdev", git = "https://github.com/rustdesk-org/rdev", rev = "a361d86a8b0245f3618a9efb375c149530a6b599" }
-# permission checks for the setup sheet (permissions.rs)
+# permission checks (permissions.rs), the keyboard watcher (hotkey.rs), window fade (main.rs)
 core-foundation = "0.9"
 objc2 = "0.6"
 objc2-foundation = { version = "0.3", features = ["NSString"] }
