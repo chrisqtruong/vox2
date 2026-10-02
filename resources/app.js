@@ -5,7 +5,7 @@ import { readText, tesseractLang } from './ocr.js';
 import { matchScore, tier } from './meaning.js';
 import { THEME_GROUPS, applyTheme } from './themes.js';
 import {
-  Dictation, STT_MODELS, listMics, onWhisperEvent, preloadWhisper, setKeepLoaded, scheduleUnload, isModelSaved,
+  Dictation, STT_MODELS, listMics, onWhisperEvent, preloadWhisper, whisperAwake, setKeepLoaded, scheduleUnload, isModelSaved,
 } from './dictation.js';
 import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
 import {
@@ -926,6 +926,13 @@ for (const pane of Object.values(panes)) {
     pressStart(pane);
     addEventListener('pointerup', pressEnd, { once: true });
   });
+  // Pointing at the mic usually means a click is coming: start waking the voice model now
+  // (~1.5 s from cold). If no dictation follows, it's let go again after a minute.
+  mic.addEventListener('pointerenter', () => {
+    if (dictation || whisperAwake() || !settings.sttEnabled || settings.sttEngine !== 'whisper') return;
+    preloadWhisper(settings.sttModel);
+    scheduleUnload(60e3);
+  });
   pane.el.addEventListener('beforeinput', () => { if (dictation?.pane === pane) abandonDictation(); });
   pane.root.querySelector('[data-act="clear"]').addEventListener('click', abandonDictation);
   pane.lang.addEventListener('change', () => { if (dictation?.pane === pane) stopDictation(); });
@@ -1231,8 +1238,8 @@ async function refreshMics(ask = false) {
 }
 
 const KEEP_HINTS = {
-  always: 'dictation starts instantly · the model stays in memory while Vox2 is open (about 2 GB with small, less with base or tiny)',
-  save: 'frees that memory after 5 minutes without dictation · takes about 2 seconds to wake up again (no re-download)',
+  always: 'dictation starts instantly · the model stays in memory while Vox2 is open (about 2–2.5 GB)',
+  save: 'instant for 30 minutes after you dictate, then frees that memory · waking it again takes about 2 seconds (no re-download)',
 };
 
 function renderVoice() {

@@ -33,9 +33,9 @@ const pending = new Map();
 let workerListener = null; // app-level progress / ready events
 let nextId = 1;
 
-// A loaded model holds ~2 GB of memory (RAM + graphics card). Let it go after a while
-// without dictation; it reloads from the disk cache in a few seconds when next needed.
-const UNLOAD_AFTER_MS = 5 * 60e3;
+// A loaded model holds ~2–2.5 GB of memory (RAM + graphics card; measured with base and small).
+// Keep it through a working session, then let it go; waking it again from the disk cache takes ~2 s.
+const UNLOAD_AFTER_MS = 30 * 60e3;
 let unloadTimer = null;
 
 let keepLoaded = false; // the "always ready" setting
@@ -84,6 +84,7 @@ function getWorker() {
 
 export function onWhisperEvent(fn) { workerListener = fn; }
 export function preloadWhisper(model) { getWorker().postMessage({ type: 'load', model }); }
+export const whisperAwake = () => !!worker;
 
 function whisper(audio, { model, language, final }) {
   const id = nextId++;

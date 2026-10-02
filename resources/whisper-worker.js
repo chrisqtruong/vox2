@@ -36,14 +36,21 @@ async function load(model, announce = false) {
     asr = await pipeline('automatic-speech-recognition', id, { device: 'wasm', dtype: 'q8', progress_callback });
     device = 'cpu';
   }
+  // The first run after loading is several times slower (the graphics card prepares its
+  // programs). When loading ahead of time, spend it on a second of silence so it never delays
+  // your first words. If your speech is already waiting, skip it: that run warms it up anyway.
+  if (!waiting) try { await asr(new Float32Array(16000), { language: 'en', task: 'transcribe' }); } catch {}
   loaded = model;
   postMessage({ type: 'ready', model, device });
   return asr;
 }
 
 // One job at a time; the model can't run two transcriptions at once.
+let waiting = 0; // transcriptions queued but not started
 onmessage = ({ data }) => {
+  if (data.type === 'transcribe') waiting++;
   queue = queue.then(async () => {
+    if (data.type === 'transcribe') waiting--;
     try {
       if (data.type === 'load') return void await load(data.model, true);
       const run = await load(data.model);
