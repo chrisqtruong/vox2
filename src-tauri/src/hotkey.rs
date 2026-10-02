@@ -4,6 +4,8 @@
 //   summon  – show/hide the window (handled here)
 //   select  – copy whatever is selected in the current app and translate it (handled here)
 
+#[cfg(target_os = "macos")]
+use rdev_mac as rdev;
 use rdev::{listen, EventType, Key};
 use serde::Deserialize;
 use serde_json::json;
@@ -189,6 +191,10 @@ fn grab_selection(app: AppHandle, held: Arc<Mutex<HashSet<&'static str>>>) {
 
 pub fn start(app: AppHandle) {
     std::thread::spawn(move || {
+        // This thread isn't the main one, so have rdev look up the keyboard layout on the main
+        // thread; doing it here crashes on macOS 14+.
+        #[cfg(target_os = "macos")]
+        rdev::set_is_main_thread(false);
         let held: Arc<Mutex<HashSet<&'static str>>> = Arc::default();
         let mut down: HashSet<String> = HashSet::new(); // shortcuts currently pressed
         let result = listen(move |event| {

@@ -17,7 +17,6 @@ tauri-plugin-updater = "2"  # updates from GitHub releases (signed)
 tauri-plugin-process = "2"  # restart after an update
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-rdev = "0.5"   # system-wide keyboard watcher (shortcuts from any app)
 enigo = "0.6"  # types dictated text into the app you're in; sends Ctrl+C to grab a selection
 arboard = "3"  # clipboard, to read the grabbed selection and put back what was there
 xcap = "0.9"   # screen capture for snip & translate
@@ -38,6 +37,16 @@ lto = true
 codegen-units = 1
 strip = true
 panic = "abort"
+
+# System-wide keyboard watcher (shortcuts from any app). On macOS, rdev 0.5 reads the keyboard
+# layout off the main thread on every keypress, which macOS 14+ kills the app for; RustDesk's
+# fork can hand that lookup to the main thread (see hotkey::start). Pinned to a known commit, and
+# named rdev_mac because Cargo needs one source per dependency name.
+[target.'cfg(not(target_os = "macos"))'.dependencies]
+rdev = "0.5"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+rdev_mac = { package = "rdev", git = "https://github.com/rustdesk-org/rdev", rev = "a361d86a8b0245f3618a9efb375c149530a6b599" }
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_Shell", "Win32_UI_WindowsAndMessaging"] }
