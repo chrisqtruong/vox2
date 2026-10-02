@@ -194,4 +194,4 @@ Layout: `resources/` is the UI (`app.js` wires everything; `engines.js`, `dictat
 
 ## License
 
-[GPL-3.0](LICENSE). Color themes are from [Monkeytype](https://github.com/monkeytypegame/monkeytype) (GPL-3.0). Fonts: Roboto Mono and Lexend Deca (SIL Open Font License).
+[GPL-3.0](LICENSE). Color themes are from [Monkeytype](https://github.com/monkeytypegame/monkeytype) (GPL-3.0). Turtle and rabbit icons are from [Lucide](https://lucide.dev) (ISC). Fonts: Roboto Mono and Lexend Deca (SIL Open Font License).

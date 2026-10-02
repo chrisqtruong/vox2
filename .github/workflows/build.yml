@@ -1,0 +1,44 @@
+# Every push: make sure the Windows app still compiles.
+# On demand (Actions → build → Run workflow): also build an unsigned macOS app on GitHub's Macs
+# and attach it to the run as a download. Unsigned means macOS will ask you to allow it once
+# (System Settings → Privacy & Security → Open Anyway).
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    name: Windows check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: cargo check
+        working-directory: src-tauri
+        run: cargo check --release --locked
+
+  macos:
+    name: macOS app (unsigned)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: Build
+        # Release signing keys stay on Chris's PC, so skip the updater files here.
+        run: npx --yes @tauri-apps/cli@2 build --bundles app,dmg --config '{"bundle":{"createUpdaterArtifacts":false}}'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Vox2-macOS-unsigned
+          path: src-tauri/target/release/bundle/dmg/*.dmg
+          if-no-files-found: error

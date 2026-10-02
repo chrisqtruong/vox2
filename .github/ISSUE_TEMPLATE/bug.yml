@@ -1,0 +1,28 @@
+name: Something's broken
+description: Report a bug in Vox2
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead? A screenshot helps.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Vox2 version
+      description: Settings → about (e.g. v0.4.7)
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options: [Translation, Dictation, Read aloud, Snip & translate, Shortcuts, Settings / window, Updates, Something else]
+  - type: input
+    id: setup
+    attributes:
+      label: Your setup (optional)
+      description: Windows version, translation engine, languages, microphone

@@ -1,0 +1,11 @@
+name: Idea or request
+description: Suggest a feature or improvement
+labels: [idea]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like Vox2 to do?
+      description: Describe the situation you're in and what would help. The "why" matters more than the exact design.
+    validations:
+      required: true

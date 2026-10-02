@@ -419,7 +419,7 @@ body.conversation .pane-head .mic { color: var(--accent); background: var(--hove
 }
 .volume input:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .vol-value { width: 3.4em; text-align: right; font-variant-numeric: tabular-nums; }
-.speeds svg { width: 19px; height: 19px; } /* the turtle and hare are detailed: a bit bigger than other icons */
+.speeds svg { width: 18px; height: 18px; } /* turtle and rabbit have more detail than the other icons */
 
 /* Settings: a menu of sections at the top, and a back-to-top button once you've scrolled past it */
 .settings-nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 0 4px; }
