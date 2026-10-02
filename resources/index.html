@@ -16,6 +16,9 @@
     <symbol id="i-swap" viewBox="0 0 24 24"><path d="M8 4v15M4.5 15.5L8 19l3.5-3.5M16 20V5M12.5 8.5L16 5l3.5 3.5"/></symbol>
     <symbol id="i-speak" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
     <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></symbol>
+    <symbol id="i-turtle" viewBox="0 0 24 24"><path d="M3.5 15.5a7 6.2 0 0 1 14 0z"/><path d="M7 15.5l3.5-5 3.5 5"/><circle cx="19.2" cy="13.6" r="1.9"/><path d="M6.2 15.5v2.8M14.8 15.5v2.8M3.5 15.5L2 16.8"/></symbol>
+    <symbol id="i-hare" viewBox="0 0 24 24"><circle cx="17.2" cy="11" r="2.4"/><path d="M16.3 8.8l-1.5-5.2M18.1 8.7l.7-5.3"/><path d="M15.3 12.6A7 7 0 0 0 11.5 12c-3.9 0-7 2.6-7 5.6 0 .5.4.9.9.9h9.8"/><path d="M12 18.5c.6-1.4 1.9-2.3 3.6-2.3M4.6 16l-1.6-.6"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/></symbol>
     <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
     <symbol id="i-snip" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M8 10h8M8 14h5"/></symbol>
@@ -32,6 +35,7 @@
         <button class="icon mic" data-act="mic" title="Tap to dictate · hold to talk" aria-pressed="false"><svg><use href="#i-mic"/></svg></button>
         <div class="pane-actions">
           <button class="icon" data-act="speak" title="Read aloud" aria-pressed="false"><svg><use href="#i-speak"/></svg></button>
+          <button class="icon speed" data-act="playback" title="Reading speed" aria-expanded="false"></button>
           <button class="icon" data-act="copy" title="Copy"><svg><use href="#i-copy"/></svg></button>
           <button class="icon" data-act="clear" title="Clear"><svg><use href="#i-x"/></svg></button>
         </div>
@@ -51,6 +55,7 @@
         <button class="icon mic" data-act="mic" title="Tap to dictate · hold to talk" aria-pressed="false"><svg><use href="#i-mic"/></svg></button>
         <div class="pane-actions">
           <button class="icon" data-act="speak" title="Read aloud" aria-pressed="false"><svg><use href="#i-speak"/></svg></button>
+          <button class="icon speed" data-act="playback" title="Reading speed" aria-expanded="false"></button>
           <button class="icon" data-act="copy" title="Copy"><svg><use href="#i-copy"/></svg></button>
           <button class="icon" data-act="clear" title="Clear"><svg><use href="#i-x"/></svg></button>
         </div>
@@ -118,6 +123,10 @@
       <p class="hint toggle-hint">shows how to say the translation when it's written in another alphabet: Chinese (pinyin), Japanese, Korean, Russian, Thai, Arabic, Hindi and so on. Vietnamese, Spanish and other languages already in Latin letters don't need it, so nothing shows for them.</p>
       <label class="toggle"><span>back-translation, to check the meaning</span><input type="checkbox" id="show-back"></label>
       <p class="hint toggle-hint">translates the result back into your language, shown as a faint ↩ line under it. if that line doesn't say what you meant, the translation probably doesn't either. handy before sending a message in a language you can't fully read.</p>
+      <div id="match-row">
+        <label class="toggle"><span>score how much meaning survived</span><input type="checkbox" id="show-match"></label>
+        <p class="hint toggle-hint">adds a "92% match" tag to the ↩ line. it compares meaning, not exact words, so a reworded but faithful translation still scores high. runs on this computer with a small model: a one-time ~120 MB download, unloaded after 5 minutes unused.</p>
+      </div>
 
       <h2 id="sec-voice">voice</h2>
       <label class="toggle"><span>dictation</span><input type="checkbox" id="stt-enabled"></label>
@@ -197,11 +206,13 @@
         <label>voice<select id="tts-openai-voice"></select></label>
       </div>
       <h3>speed</h3>
-      <div class="segmented" id="tts-rate">
-        <button data-r="-20">slower</button>
-        <button data-r="0">normal</button>
-        <button data-r="15">faster</button>
+      <div class="segmented speeds-wide">
+        <button data-speed="0.75"><svg><use href="#i-turtle"/></svg>slow · 0.75×</button>
+        <button data-speed="1">normal · 1×</button>
+        <button data-speed="1.25"><svg><use href="#i-hare"/></svg>fast · 1.25×</button>
       </div>
+      <h3>volume</h3>
+      <label class="volume"><svg><use href="#i-volume"/></svg><input type="range" min="0" max="100" step="5" aria-label="Volume"><span class="vol-value"></span></label>
       <p class="hint" id="tts-hint"></p>
 
       <h2>shortcuts</h2>
@@ -273,6 +284,14 @@
       <p class="hint empty" id="history-empty">nothing yet. finished translations show up here.</p>
     </div>
   </aside>
+
+  <div class="playback" id="playback" role="dialog" aria-label="Reading speed" hidden>
+    <div class="speeds">
+      <button data-speed="0.75" title="Slow · 0.75×"><svg><use href="#i-turtle"/></svg></button>
+      <button data-speed="1" title="Normal · 1×">1×</button>
+      <button data-speed="1.25" title="Fast · 1.25×"><svg><use href="#i-hare"/></svg></button>
+    </div>
+  </div>
 
   <div class="zoom-hud" id="zoom-hud" aria-hidden="true"></div>
 

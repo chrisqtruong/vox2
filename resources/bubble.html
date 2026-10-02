@@ -86,7 +86,7 @@
       if (p.roman != null) $('roman').textContent = p.roman;
       if (p.error) { $('out').textContent = p.error; $('out').className = 'out error'; }
       if ('words' in p) startReading(p.words);
-      if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt };
+      if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt, rate: p.sayRate || 1 };
       requestAnimationFrame(place);
     });
 
@@ -95,18 +95,18 @@
     const wordMark = new Highlight();
     CSS.highlights.set('vox-word', wordMark);
     let reading = null; // { words, i, node }
-    let clock = { ms: 0, at: 0 }; // last known playback position, and when it was sent
+    let clock = { ms: 0, at: 0, rate: 1 }; // last known playback position, when it was sent, and the speed
     let looping = false;
     function startReading(words) {
       wordMark.clear();
-      if (!words) { reading = null; clock = { ms: -1e9, at: Date.now() }; return; } // wait for the next position
+      if (!words) { reading = null; clock = { ms: -1e9, at: Date.now(), rate: 1 }; return; } // wait for the next position
       reading = { words, i: -1, node: null };
       if (!looping) { looping = true; requestAnimationFrame(follow); }
     }
     function follow() {
       const r = reading;
       if (!r) { looping = false; return; }
-      const ms = clock.ms + (Date.now() - clock.at);
+      const ms = clock.ms + (Date.now() - clock.at) * clock.rate;
       let i = -1;
       while (i + 1 < r.words.length && r.words[i + 1][0] <= ms) i++;
       const node = $('out').firstChild;

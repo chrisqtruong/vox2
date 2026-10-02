@@ -2,11 +2,12 @@ import { langName } from './languages.js';
 import { ENGINES, translate, detectLanguage, checkBack } from './engines.js';
 import { attachLangPicker } from './langpicker.js';
 import { readText, tesseractLang } from './ocr.js';
+import { matchScore, tier } from './meaning.js';
 import { THEME_GROUPS, applyTheme } from './themes.js';
 import {
   Dictation, STT_MODELS, listMics, onWhisperEvent, preloadWhisper, setKeepLoaded, scheduleUnload, isModelSaved,
 } from './dictation.js';
-import { speak, stop as stopSpeech, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
+import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
 import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
@@ -25,7 +26,8 @@ const DEFAULTS = {
   mic: '', sttEngine: 'whisper', sttModel: 'small', sttOpenaiModel: 'gpt-4o-mini-transcribe',
   sttSilence: 3, // seconds of quiet that end a tapped dictation; 0 = never
   sttEnabled: true, sttKeep: 'save', // keep the voice model loaded: 'always' or 'save' (release when idle)
-  ttsEngine: 'neural', ttsGender: 'F', ttsVoices: {}, ttsRate: 0, ttsOpenaiVoice: 'coral',
+  ttsEngine: 'neural', ttsGender: 'F', ttsVoices: {}, ttsOpenaiVoice: 'coral',
+  ttsSpeed: 1, ttsVolume: 100, // read-aloud speed (0.75 / 1 / 1.25) and volume (0–100)
   sttOutput: 'spoken', // dictating into another app types 'spoken' (what you said) or 'translation'
   // Lone right-hand modifier, like Wispr Flow / SuperWhisper: easy to hit, rarely used otherwise.
   sttShortcut: { code: MAC ? 'AltRight' : 'ControlRight' },
@@ -36,7 +38,7 @@ const DEFAULTS = {
   quickResult: 'bubble', // quick translations (selected text, snips) show in: 'bubble' or 'window'
   conversation: false, // conversation mode: speak each dictated phrase's translation aloud
   tone: 'auto', toneNote: '',
-  showRoman: true, showBack: false,
+  showRoman: true, showBack: false, showMatch: true, // showMatch: meaning score on the back-translation
   fade: true, closeToTray: true, autostart: false,
   updates: 'auto', // 'auto' (install when you're not using Vox2), 'ask', or 'off'
 };
@@ -54,7 +56,11 @@ async function load(key, fallback) {
 const save = (key, value) => saveData(key, JSON.stringify(value));
 
 async function loadSettings() {
-  settings = { ...DEFAULTS, ...(await load('settings', {})) };
+  const saved = await load('settings', {});
+  // Speed used to be a percent change baked into the voice (-20 / 0 / +15).
+  if (saved.ttsRate != null && saved.ttsSpeed == null) saved.ttsSpeed = saved.ttsRate < 0 ? 0.75 : saved.ttsRate > 0 ? 1.25 : 1;
+  delete saved.ttsRate;
+  settings = { ...DEFAULTS, ...saved };
 }
 
 const saveSettings = () => save('settings', settings);
@@ -208,7 +214,7 @@ async function run() {
     toBubble(dst, out, true, from, to);
     if (id === jobId && from !== to) {
       noteFinished({ src: text.trim(), dst: out.trim(), from, to });
-      updateExtras(dst, out, to, from);
+      updateExtras(dst, out, to, from, text.trim());
     }
     // Conversation mode: a dictated phrase was just translated; say it out loud.
     if (id === jobId && speakWhenTranslated === dst) {
@@ -1236,10 +1242,11 @@ const hasNonLatin = (s) => /[^\p{Script=Latin}\p{P}\p{N}\p{S}\s]/u.test(s);
 
 function hideExtras() {
   extrasJob++;
+  matchTip.hidden = true;
   for (const p of Object.values(panes)) $('.extras', p.root).hidden = true;
 }
 
-async function updateExtras(dst, translation, lang, backTo) {
+async function updateExtras(dst, translation, lang, backTo, original) {
   hideExtras();
   const id = extrasJob;
   const wantRoman = settings.showRoman && hasNonLatin(translation);
@@ -1250,13 +1257,60 @@ async function updateExtras(dst, translation, lang, backTo) {
     const box = $('.extras', dst.root);
     if (quick.active && quick.dst === dst) sendBubble({ session: quick.session, roman: wantRoman ? roman : '' });
     box.querySelector('.roman').textContent = wantRoman ? roman : '';
-    box.querySelector('.back').textContent = settings.showBack ? back : '';
+    const backLine = box.querySelector('.back');
+    backLine.textContent = settings.showBack ? back : '';
     box.hidden = !box.textContent.trim();
+    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, back, id);
   } catch {}
 }
 
+// A small themed card on hover: what the score means, the tiers, and a note if a number changed.
+// The full method is in the README (Back-Translation Fidelity Scoring).
+const TIERS = [['high', '85+', 'meaning kept'], ['mid', '65–84', 'check the details'], ['low', '<65', 'likely off']];
+const matchTip = document.createElement('div');
+matchTip.className = 'match-tip';
+matchTip.hidden = true;
+document.body.append(matchTip);
+
+function showMatchTip(badge) {
+  const { score, numbers } = badge.dataset;
+  const t = tier(Number(score));
+  matchTip.innerHTML = `<b class="${t}">${score}% match</b>`
+    + '<p>how much of your meaning survived the round trip, compared by meaning, not exact words</p>'
+    + TIERS.map(([k, range, label]) => `<div class="tier ${k}${k === t ? ' on' : ''}"><i></i><span>${range}</span>${label}</div>`).join('')
+    + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '');
+  matchTip.hidden = false;
+  const z = parseFloat(document.documentElement.style.zoom) || 1;
+  const r = badge.getBoundingClientRect();
+  const [w, h] = [matchTip.offsetWidth, matchTip.offsetHeight];
+  matchTip.style.left = `${Math.max(8, Math.min(r.left / z, innerWidth / z - w - 8))}px`;
+  matchTip.style.top = `${r.top / z - h - 6 > 8 ? r.top / z - h - 6 : r.bottom / z + 6}px`; // above, else below
+}
+
+async function showMatch(backLine, original, back, id) {
+  const badge = document.createElement('span');
+  badge.className = 'match checking';
+  badge.textContent = 'checking…';
+  badge.title = 'checking meaning (first time downloads a ~120 MB model)';
+  backLine.append(' ', badge);
+  try {
+    const { score, numbersDiffer } = await matchScore(original, back);
+    if (id !== extrasJob) return;
+    badge.className = `match ${tier(score)}`;
+    badge.textContent = `${score}% match`;
+    badge.removeAttribute('title');
+    badge.dataset.score = score;
+    if (numbersDiffer) badge.dataset.numbers = '1';
+    badge.addEventListener('mouseenter', () => showMatchTip(badge));
+    badge.addEventListener('mouseleave', () => { matchTip.hidden = true; });
+  } catch {
+    badge.remove(); // no model (e.g. offline the first time): just leave the score out
+  }
+}
+
 $('#show-roman').addEventListener('change', (e) => { settings.showRoman = e.target.checked; saveSettings(); });
-$('#show-back').addEventListener('change', (e) => { settings.showBack = e.target.checked; saveSettings(); });
+$('#show-back').addEventListener('change', (e) => { settings.showBack = e.target.checked; saveSettings(); renderTone(); });
+$('#show-match').addEventListener('change', (e) => { settings.showMatch = e.target.checked; saveSettings(); });
 
 /* ---------- tone (AI engines) ---------- */
 
@@ -1266,6 +1320,8 @@ function renderTone() {
   $('#tone-note').value = settings.toneNote;
   $('#show-roman').checked = settings.showRoman;
   $('#show-back').checked = settings.showBack;
+  $('#show-match').checked = settings.showMatch;
+  $('#match-row').hidden = !settings.showBack;
 }
 for (const b of $('#tones').children) {
   b.addEventListener('click', () => { settings.tone = b.dataset.tone; saveSettings(); renderTone(); cache.clear(); });
@@ -1461,10 +1517,10 @@ function textRange(el, from, to) {
   return null;
 }
 
-function followReading(ms, fromMedia) {
+function followReading(ms, fromMedia, rate = 1) {
   const r = reading;
   if (!r) return;
-  if (fromMedia && quick.active && quick.dst === r.pane) sendBubble({ session: quick.session, sayMs: ms, sayAt: Date.now() });
+  if (fromMedia && quick.active && quick.dst === r.pane) sendBubble({ session: quick.session, sayMs: ms, sayAt: Date.now(), sayRate: rate });
   if (!wordMark) return;
   if (getText(r.pane) !== r.full) { wordMark.clear(); r.i = -1; return; } // edited mid-read: let go
   let i = r.i;
@@ -1506,7 +1562,6 @@ async function readAloud(pane) {
       text, lang, engine,
       voice: voiceFor(lang),
       openaiVoice: settings.ttsOpenaiVoice,
-      rate: settings.ttsRate,
       key: settings.keys.openai,
       onStart: () => { reading = { pane, full, lead, words: [], i: -1, range: null }; },
       onWords: (words) => {
@@ -1534,10 +1589,70 @@ for (const pane of Object.values(panes)) {
   pane.root.querySelector('[data-act="speak"]').addEventListener('click', () => readAloud(pane));
 }
 
+/* speed and volume: the speed popover from each box and the settings rows share one state; volume lives in settings */
+
+const SPEEDS = { 0.75: 'slow', 1: 'normal', 1.25: 'fast' };
+const playback = $('#playback');
+
+function applyPlayback() {
+  setSpeed(settings.ttsSpeed);
+  setVolume(settings.ttsVolume / 100);
+  for (const b of document.querySelectorAll('[data-speed]')) {
+    b.setAttribute('aria-pressed', String(Number(b.dataset.speed) === settings.ttsSpeed));
+  }
+  for (const input of document.querySelectorAll('.volume input')) {
+    input.value = settings.ttsVolume;
+    input.style.setProperty('--fill', `${settings.ttsVolume}%`);
+  }
+  for (const el of document.querySelectorAll('.vol-value')) el.textContent = `${settings.ttsVolume}%`;
+  // The button shows the speed: a turtle, "1×" or a hare.
+  const icon = { 0.75: '#i-turtle', 1.25: '#i-hare' }[settings.ttsSpeed];
+  for (const btn of document.querySelectorAll('[data-act="playback"]')) {
+    btn.innerHTML = icon ? `<svg><use href="${icon}"/></svg>` : '1×';
+    btn.title = `Reading speed: ${SPEEDS[settings.ttsSpeed]} (${settings.ttsSpeed}×)`;
+  }
+}
+
+for (const b of document.querySelectorAll('[data-speed]')) {
+  b.addEventListener('click', () => { settings.ttsSpeed = Number(b.dataset.speed); saveSettings(); applyPlayback(); });
+}
+for (const input of document.querySelectorAll('.volume input')) {
+  input.addEventListener('input', () => { settings.ttsVolume = Number(input.value); applyPlayback(); });
+  input.addEventListener('change', saveSettings);
+}
+
+function closePlayback() {
+  if (playback.hidden) return;
+  playback.hidden = true;
+  for (const btn of document.querySelectorAll('[data-act="playback"]')) btn.setAttribute('aria-expanded', 'false');
+}
+
+for (const pane of Object.values(panes)) {
+  const btn = pane.root.querySelector('[data-act="playback"]');
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    closePlayback();
+    if (open) return;
+    playback.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    // Hang it under the button, right edges lined up, kept inside the window. Root zoom
+    // scales fixed positions, so convert screen coordinates back to CSS pixels (as langpicker does).
+    const z = parseFloat(document.documentElement.style.zoom) || 1;
+    const r = btn.getBoundingClientRect();
+    const [w, h] = [playback.offsetWidth, playback.offsetHeight];
+    playback.style.left = `${Math.max(8, Math.min(r.right / z - w, innerWidth / z - w - 8))}px`;
+    playback.style.top = `${Math.max(8, Math.min(r.bottom / z + 4, innerHeight / z - h - 8))}px`;
+  });
+}
+document.addEventListener('pointerdown', (e) => {
+  if (!playback.hidden && !playback.contains(e.target) && !e.target.closest('[data-act="playback"]')) closePlayback();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePlayback(); });
+addEventListener('blur', closePlayback);
+
 function renderTTS() {
   for (const b of $('#tts-engines').children) b.setAttribute('aria-pressed', String(b.dataset.tts === settings.ttsEngine));
   for (const b of $('#tts-gender').children) b.setAttribute('aria-pressed', String(b.dataset.g === settings.ttsGender));
-  for (const b of $('#tts-rate').children) b.setAttribute('aria-pressed', String(Number(b.dataset.r) === settings.ttsRate));
   $('#tts-neural').hidden = settings.ttsEngine !== 'neural';
   $('#tts-openai').hidden = settings.ttsEngine !== 'openai';
 
@@ -1581,9 +1696,6 @@ for (const b of $('#tts-gender').children) {
     saveSettings();
     renderTTS();
   });
-}
-for (const b of $('#tts-rate').children) {
-  b.addEventListener('click', () => { settings.ttsRate = Number(b.dataset.r); saveSettings(); renderTTS(); });
 }
 $('#tts-openai-voice').addEventListener('change', (e) => { settings.ttsOpenaiVoice = e.target.value; saveSettings(); });
 
@@ -1714,6 +1826,7 @@ setHotkey('summon', settings.summonShortcut);
 setHotkey('select', settings.selectShortcut);
 setHotkey('snip', settings.snipShortcut);
 applyConversation();
+applyPlayback();
 $('#snip-btn').hidden = !native; // snipping needs the desktop app
 setCloseToTray(settings.closeToTray);
 renderShortcuts();

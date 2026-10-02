@@ -167,6 +167,31 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .extras .back { color: var(--pending); }
 .extras .back::before { content: "↩ "; }
 .extras div:empty { display: none; }
+.match {
+  display: inline-block; margin-left: 4px; padding: 0 7px; border: 1px solid currentColor; border-radius: 999px;
+  font-size: 10.5px; font-weight: 600; line-height: 16px; vertical-align: 1px; white-space: nowrap; cursor: help;
+}
+.match.high { color: var(--accent); }
+.match.mid { color: var(--muted); }
+.match.low { color: var(--danger); }
+.match.checking { color: var(--pending); border-style: dashed; font-weight: 400; }
+.match-tip {
+  position: fixed; z-index: 60; width: 220px; padding: 9px 11px; display: grid; gap: 4px; pointer-events: none;
+  border-radius: 9px; background: var(--bg); border: 1px solid var(--line); box-shadow: 0 8px 22px rgba(0, 0, 0, .2);
+  font-size: 11.5px; line-height: 1.4; color: var(--muted);
+}
+.match-tip[hidden] { display: none; }
+.match-tip b { font-size: 12.5px; font-weight: 600; }
+.match-tip p { margin: 0 0 3px; }
+.match-tip .tier { display: flex; align-items: center; gap: 7px; }
+.match-tip .tier i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; }
+.match-tip .tier span { width: 3.6em; font-variant-numeric: tabular-nums; }
+.match-tip .tier.on { color: var(--ink); font-weight: 600; }
+.match-tip .tier.high i, .match-tip b.high { color: var(--accent); }
+.match-tip .tier.mid i { color: var(--muted); }
+.match-tip b.mid { color: var(--ink); }
+.match-tip .tier.low i, .match-tip b.low, .match-tip .warn { color: var(--danger); }
+.match-tip .warn { margin: 3px 0 0; }
 
 /* Divider with swap */
 .divider { position: relative; height: 1px; background: var(--line); margin: 0 14px; flex: none; }
@@ -361,3 +386,37 @@ body.conversation .pane-head .mic { color: var(--accent); background: var(--hove
 .theme .swatch { display: flex; gap: 3px; flex: none; }
 .theme .swatch i { width: 9px; height: 9px; border-radius: 50%; }
 .theme span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Read-aloud speed: a small popover from each box's speed button, mirrored in settings (volume is settings only) */
+.icon.speed { font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.icon.speed[aria-expanded="true"] { color: var(--ink); background: var(--hover); }
+.playback {
+  position: fixed; z-index: 50; width: 132px;
+  padding: 6px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+}
+.playback[hidden] { display: none; }
+.speeds { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; padding: 2px; border-radius: 8px; background: var(--hover); }
+.speeds button {
+  height: 26px; border-radius: 6px; display: inline-grid; place-items: center;
+  font-size: 12px; font-weight: 600; color: var(--muted); transition: color .125s, background-color .125s;
+}
+.speeds button:hover { color: var(--ink); }
+.speeds button[aria-pressed="true"] { background: var(--bg); color: var(--accent); box-shadow: 0 0 0 1px var(--line); }
+
+.speeds svg, .speeds-wide svg, .volume svg {
+  width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+.speeds-wide button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.volume { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+.volume input {
+  flex: 1; min-width: 0; height: 4px; margin: 0; border-radius: 2px; appearance: none; -webkit-appearance: none; cursor: pointer;
+  background: linear-gradient(var(--accent), var(--accent)) 0 / var(--fill, 100%) 100% no-repeat, var(--line);
+}
+.volume input::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--accent);
+}
+.volume input:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.vol-value { width: 3.4em; text-align: right; font-variant-numeric: tabular-nums; }
+.speeds svg { width: 19px; height: 19px; } /* the turtle and hare are detailed: a bit bigger than other icons */

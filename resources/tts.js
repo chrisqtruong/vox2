@@ -53,7 +53,14 @@ export function defaultVoice(code, gender) {
 /* playback */
 
 const audio = new Audio();
-const cache = new Map(); // `${engine}|${voice}|${rate}|${text}` → { url, words }
+audio.preservesPitch = true; // faster or slower without the chipmunk effect
+let speed = 1;  // 0.75 / 1 / 1.25, applied while playing, so a change takes effect right away
+let volume = 1; // 0 – 1
+
+export function setSpeed(x) { speed = x; audio.defaultPlaybackRate = x; audio.playbackRate = x; }
+export function setVolume(v) { volume = v; audio.volume = v; }
+
+const cache = new Map(); // `${engine}|${voice}|${text}` → { url, words }
 let onEnd = null;
 let speaking = 0;        // id of the current request, so a stop cancels a pending one
 let onTime = null;       // playback position, for the word highlight
@@ -61,21 +68,22 @@ let onTime = null;       // playback position, for the word highlight
 audio.addEventListener('ended', () => onEnd?.());
 // Media events keep firing in a background window, so they're the reliable clock for other
 // windows (the bubble); animation frames give smooth steps while this window is on screen.
-audio.addEventListener('timeupdate', () => onTime?.(audio.currentTime * 1000, true));
+audio.addEventListener('timeupdate', () => onTime?.(audio.currentTime * 1000, true, audio.playbackRate));
 let ticking = false;
 function tick() {
   if (audio.paused || !onTime) { ticking = false; return; }
-  onTime(audio.currentTime * 1000, false);
+  onTime(audio.currentTime * 1000, false, audio.playbackRate);
   requestAnimationFrame(tick);
 }
 audio.addEventListener('playing', () => {
-  onTime?.(audio.currentTime * 1000, true);
+  onTime?.(audio.currentTime * 1000, true, audio.playbackRate);
   if (!ticking) { ticking = true; tick(); }
 });
 
 export function stop() {
   speaking++;
   audio.pause();
+  audio.currentTime = 0;
   if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel();
   onTime = null;
   onEnd?.();
@@ -121,11 +129,11 @@ function estimateWords(text, lang, durationMs) {
   });
 }
 
-async function fetchOpenAI(text, voice, rate, key) {
+async function fetchOpenAI(text, voice, key) {
   const res = await fetch('https://api.openai.com/v1/audio/speech', {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
-    body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: text, response_format: 'mp3', speed: 1 + rate / 100 }),
+    body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: text, response_format: 'mp3' }),
   });
   if (!res.ok) {
     let msg = `HTTP ${res.status}`;
@@ -136,12 +144,13 @@ async function fetchOpenAI(text, voice, rate, key) {
 }
 
 // System voices report each word as they reach it (most do; some report nothing).
-function speakSystem(text, code, rate, done, onWords, onTime) {
+function speakSystem(text, code, done, onWords, onTime) {
   const u = new SpeechSynthesisUtterance(text);
   u.lang = code;
   const voice = speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith(code.split('-')[0].toLowerCase()));
   if (voice) u.voice = voice;
-  u.rate = 1 + rate / 100;
+  u.rate = speed; // fixed once it starts: a change applies from the next read
+  u.volume = volume;
   const start = performance.now();
   const words = [];
   u.onboundary = (e) => {
@@ -157,9 +166,9 @@ function speakSystem(text, code, rate, done, onWords, onTime) {
   speechSynthesis.speak(u);
 }
 
-// opts: { text, lang, engine, voice, openaiVoice, rate, key, onStart, onEnd, onWords, onTime }
+// opts: { text, lang, engine, voice, openaiVoice, key, onStart, onEnd, onWords, onTime }
 //   onWords([[start ms, from, to], …]) – when each word of `text` is spoken, once known
-//   onTime(ms, fromMediaEvent)        – playback position, many times a second
+//   onTime(ms, fromMediaEvent, rate)  – playback position, many times a second, and the speed
 export async function speak(opts) {
   stop();
   const id = ++speaking;
@@ -168,17 +177,17 @@ export async function speak(opts) {
   if (engine === 'system') {
     opts.onStart?.();
     onTime = opts.onTime;
-    return speakSystem(opts.text, opts.lang, opts.rate, () => { if (id === speaking) stop(); }, opts.onWords, opts.onTime);
+    return speakSystem(opts.text, opts.lang, () => { if (id === speaking) stop(); }, opts.onWords, opts.onTime);
   }
   const voice = engine === 'openai' ? opts.openaiVoice : opts.voice;
-  const cacheKey = [engine, voice, opts.rate, opts.text].join('|');
+  const cacheKey = [engine, voice, opts.text].join('|');
   let hit = cache.get(cacheKey);
   if (!hit) {
     let blob;
     let words = null;
-    if (engine === 'openai') blob = await fetchOpenAI(opts.text, voice, opts.rate, opts.key);
+    if (engine === 'openai') blob = await fetchOpenAI(opts.text, voice, opts.key);
     else {
-      const res = await speakNeural(opts.text, voice, opts.rate);
+      const res = await speakNeural(opts.text, voice, 0);
       blob = new Blob([res.audio], { type: 'audio/mpeg' });
       words = placeWords(opts.text, res.words);
     }
@@ -192,6 +201,8 @@ export async function speak(opts) {
   }
   if (id !== speaking) return; // stopped while loading
   audio.src = hit.url;
+  audio.playbackRate = speed;
+  audio.volume = volume;
   onTime = opts.onTime;
   opts.onStart?.();
   if (hit.words) opts.onWords?.(hit.words);
