@@ -616,6 +616,16 @@ function closeSettings() {
 $('#gear').addEventListener('click', () => openSettings());
 $('#settings-done').addEventListener('click', closeSettings);
 
+// The menu at the top jumps to a section; once it scrolls out of view, an arrow brings you back up.
+const sheetBody = $('.sheet-body', sheet);
+const toTop = $('#settings-top');
+for (const b of $('#settings-nav').children) {
+  b.addEventListener('click', () => $(`#${b.dataset.jump}`).scrollIntoView({ behavior: 'smooth', block: 'start' }));
+}
+new IntersectionObserver(([entry]) => toTop.classList.toggle('show', !entry.isIntersecting), { root: sheetBody })
+  .observe($('#settings-nav'));
+toTop.addEventListener('click', () => sheetBody.scrollTo({ top: 0, behavior: 'smooth' }));
+
 /* ---------- dictation ---------- */
 
 const NO_SPACE_LANGS = new Set(['zh-CN', 'zh-TW', 'ja', 'th', 'lo', 'km', 'my']);

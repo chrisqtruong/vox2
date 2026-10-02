@@ -18,6 +18,7 @@
     <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></symbol>
     <symbol id="i-turtle" viewBox="0 0 24 24"><path d="M3.5 15.5a7 6.2 0 0 1 14 0z"/><path d="M7 15.5l3.5-5 3.5 5"/><circle cx="19.2" cy="13.6" r="1.9"/><path d="M6.2 15.5v2.8M14.8 15.5v2.8M3.5 15.5L2 16.8"/></symbol>
     <symbol id="i-hare" viewBox="0 0 24 24"><circle cx="17.2" cy="11" r="2.4"/><path d="M16.3 8.8l-1.5-5.2M18.1 8.7l.7-5.3"/><path d="M15.3 12.6A7 7 0 0 0 11.5 12c-3.9 0-7 2.6-7 5.6 0 .5.4.9.9.9h9.8"/><path d="M12 18.5c.6-1.4 1.9-2.3 3.6-2.3M4.6 16l-1.6-.6"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
     <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/></symbol>
     <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
@@ -85,8 +86,18 @@
       <h1>settings</h1>
       <button class="done" id="settings-done">done</button>
     </header>
+    <button class="to-top" id="settings-top" title="Back to the top" aria-label="Back to the top" tabindex="-1"><svg><use href="#i-up"/></svg></button>
 
     <div class="sheet-body">
+      <nav class="settings-nav" id="settings-nav" aria-label="Jump to">
+        <button data-jump="sec-engine">translation</button>
+        <button data-jump="sec-voice">dictation</button>
+        <button data-jump="sec-read">read aloud</button>
+        <button data-jump="sec-shortcuts">shortcuts</button>
+        <button data-jump="sec-window">window &amp; updates</button>
+        <button data-jump="sec-appearance">appearance</button>
+      </nav>
+
       <h2 id="sec-engine">translation</h2>
       <h3>engine</h3>
       <div class="engines" id="engines" role="radiogroup"></div>
@@ -128,8 +139,8 @@
         <p class="hint toggle-hint">adds a "92% match" tag to the ↩ line. it compares meaning, not exact words, so a reworded but faithful translation still scores high. runs on this computer with a small model: a one-time ~120 MB download, unloaded after 5 minutes unused.</p>
       </div>
 
-      <h2 id="sec-voice">voice</h2>
-      <label class="toggle"><span>dictation</span><input type="checkbox" id="stt-enabled"></label>
+      <h2 id="sec-voice">dictation</h2>
+      <label class="toggle"><span>use dictation</span><input type="checkbox" id="stt-enabled"></label>
       <p class="hint toggle-hint">talk instead of typing. off hides the mic buttons and the dictate shortcut, and never loads the voice model.</p>
       <div id="stt-body">
         <p class="hint how">
@@ -215,7 +226,7 @@
       <label class="volume"><svg><use href="#i-volume"/></svg><input type="range" min="0" max="100" step="5" aria-label="Volume"><span class="vol-value"></span></label>
       <p class="hint" id="tts-hint"></p>
 
-      <h2>shortcuts</h2>
+      <h2 id="sec-shortcuts">shortcuts</h2>
       <div class="shortcut-row" id="dictate-shortcut-row"><span>dictate</span><button class="key-chip" data-shortcut="sttShortcut" data-name="dictate"></button></div>
       <div class="shortcut-row"><span>show / hide Vox2</span><button class="key-chip" data-shortcut="summonShortcut" data-name="summon"></button></div>
       <div class="shortcut-row"><span>translate selected text</span><button class="key-chip" data-shortcut="selectShortcut" data-name="select"></button></div>
@@ -228,7 +239,7 @@
         <button data-q="window">the Vox2 window</button>
       </div>
 
-      <h2>window</h2>
+      <h2 id="sec-window">window &amp; updates</h2>
       <label class="toggle">
         <span>always on top</span>
         <input type="checkbox" id="ontop-toggle">
@@ -246,7 +257,7 @@
         <div class="row-line"><span class="hint" id="update-status"></span><button class="chip" id="update-check">check now</button></div>
       </div>
 
-      <h2>appearance</h2>
+      <h2 id="sec-appearance">appearance</h2>
       <h3>font</h3>
       <div class="segmented" id="fonts">
         <button data-font="mono" style="font-family:'Roboto Mono'">roboto mono</button>
