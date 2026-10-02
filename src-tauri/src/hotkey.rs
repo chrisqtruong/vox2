@@ -193,7 +193,8 @@ pub fn start(app: AppHandle) {
     std::thread::spawn(move || {
         let held: Arc<Mutex<HashSet<&'static str>>> = Arc::default();
         let mut down: HashSet<String> = HashSet::new(); // shortcuts currently pressed
-        let on_key = move |pressed: bool, code: &'static str| {
+        #[cfg_attr(target_os = "macos", allow(unused_mut))] // only Windows calls it in place
+        let mut on_key = move |pressed: bool, code: &'static str| {
             // Key-ups get lost while Vox2 itself is in front; start clean whenever focus changes.
             if RESET.swap(false, Ordering::Relaxed) {
                 held.lock().unwrap().clear();
