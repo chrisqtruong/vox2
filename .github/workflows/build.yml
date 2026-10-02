@@ -37,24 +37,31 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: src-tauri
-      - name: Trust the signing certificate on this runner
-        # It's self-made, so codesign only accepts it once this machine trusts it for signing.
+      - name: Put the signing certificate in a keychain
+        # Tauri's own certificate import only accepts Apple-issued certificates, so load ours
+        # here and let Tauri sign by name. It's self-made, so this machine also has to trust it.
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         run: |
+          kc="$RUNNER_TEMP/vox2-signing.keychain-db"
+          kcpw=$(openssl rand -hex 16)
           echo "$APPLE_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/vox2.p12"
-          openssl pkcs12 -in "$RUNNER_TEMP/vox2.p12" -passin env:APPLE_CERTIFICATE_PASSWORD -nokeys -legacy -out "$RUNNER_TEMP/vox2.pem" \
-            || openssl pkcs12 -in "$RUNNER_TEMP/vox2.p12" -passin env:APPLE_CERTIFICATE_PASSWORD -nokeys -out "$RUNNER_TEMP/vox2.pem"
+          security create-keychain -p "$kcpw" "$kc"
+          security set-keychain-settings -lut 21600 "$kc"
+          security unlock-keychain -p "$kcpw" "$kc"
+          security import "$RUNNER_TEMP/vox2.p12" -k "$kc" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$kcpw" "$kc" > /dev/null
+          security list-keychains -d user -s "$kc" $(security list-keychains -d user | tr -d '"')
+          security find-certificate -p -c "Vox2 Self-Signed" "$kc" > "$RUNNER_TEMP/vox2.pem"
           sudo security add-trusted-cert -d -r trustRoot -p codeSign -k /Library/Keychains/System.keychain "$RUNNER_TEMP/vox2.pem"
           rm "$RUNNER_TEMP/vox2.p12"
+          security find-identity -p codesigning "$kc"
       - name: Build
         # Release signing keys stay on Chris's PC, so skip the updater files here. Hardened
         # runtime is only needed for Apple notarization, and would block the mic without extra
         # entitlements, so it stays off.
         env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
         run: npx --yes @tauri-apps/cli@2 build --bundles app,dmg --config '{"bundle":{"createUpdaterArtifacts":false,"macOS":{"hardenedRuntime":false}}}'
       - name: Check the signature
