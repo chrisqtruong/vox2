@@ -1,0 +1,8 @@
+# build output
+src-tauri/target/
+src-tauri/gen/
+# local and secret files (the updater signing key lives outside the repo, in ~/.tauri)
+*.key
+.storage/
+.tmp/
+*.log

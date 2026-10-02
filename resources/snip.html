@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Vox2 snip</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; cursor: crosshair; user-select: none; }
+    /* The dim covers the screen until you start dragging; then the box's shadow does the dimming,
+       leaving the inside of the box clear. */
+    body { background: rgba(10, 12, 14, .32); font: 600 13px/1 system-ui, sans-serif; }
+    body.dragging { background: transparent; }
+    #box {
+      position: fixed; display: none; border: 2px solid #7aa5ff; border-radius: 4px;
+      box-shadow: 0 0 0 100vmax rgba(10, 12, 14, .32);
+    }
+    #hint {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      padding: 9px 16px; border-radius: 999px; background: rgba(20, 22, 24, .85); color: #ececea;
+      pointer-events: none; letter-spacing: .01em;
+    }
+    body.dragging #hint { opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="hint">drag a box around the text to translate · esc to cancel</div>
+  <div id="box"></div>
+  <script>
+    const T = window.__TAURI__;
+    const box = document.getElementById('box');
+    let start = null;
+
+    const reset = () => { start = null; box.style.display = 'none'; document.body.classList.remove('dragging'); };
+    const rect = (e) => ({
+      x: Math.min(start.x, e.clientX), y: Math.min(start.y, e.clientY),
+      w: Math.abs(e.clientX - start.x), h: Math.abs(e.clientY - start.y),
+    });
+    const cancel = () => { reset(); T.core.invoke('cancel_snip'); };
+
+    addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return cancel(); // right-click cancels
+      start = { x: e.clientX, y: e.clientY };
+      document.body.classList.add('dragging');
+    });
+    addEventListener('pointermove', (e) => {
+      if (!start) return;
+      const r = rect(e);
+      Object.assign(box.style, { display: 'block', left: `${r.x}px`, top: `${r.y}px`, width: `${r.w}px`, height: `${r.h}px` });
+    });
+    addEventListener('pointerup', (e) => {
+      if (!start) return;
+      const r = rect(e);
+      reset();
+      if (r.w < 6 || r.h < 6) return cancel(); // a click, not a box
+      T.core.invoke('finish_snip', { x: r.x, y: r.y, w: r.w, h: r.h });
+    });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') cancel(); });
+    addEventListener('contextmenu', (e) => e.preventDefault());
+    T.event.listen('snip-reset', reset);
+  </script>
+</body>
+</html>

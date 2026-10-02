@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vox2</title>
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M8 4v15M4.5 15.5L8 19l3.5-3.5M16 20V5M12.5 8.5L16 5l3.5 3.5"/></symbol>
+    <symbol id="i-speak" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
+    <symbol id="i-snip" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M8 10h8M8 14h5"/></symbol>
+    <symbol id="i-conv" viewBox="0 0 24 24"><path d="M3.5 6.5A2.5 2.5 0 0 1 6 4h7a2.5 2.5 0 0 1 2.5 2.5v4A2.5 2.5 0 0 1 13 13H8.5L5 16v-3a2.5 2.5 0 0 1-1.5-2.3z"/><path d="M18.5 9a2 2 0 0 1 2 2v3.5a2 2 0 0 1-2 2v2.5L15.5 16.5H13"/></symbol>
+    <symbol id="i-history" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6M3.5 4v4h4M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-pin"viewBox="0 0 24 24"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  </svg>
+
+  <main class="app">
+    <section class="pane" data-pane="top">
+      <header class="pane-head">
+        <button class="lang" aria-label="Top language"></button>
+        <button class="icon mic" data-act="mic" title="Tap to dictate · hold to talk" aria-pressed="false"><svg><use href="#i-mic"/></svg></button>
+        <div class="pane-actions">
+          <button class="icon" data-act="speak" title="Read aloud" aria-pressed="false"><svg><use href="#i-speak"/></svg></button>
+          <button class="icon" data-act="copy" title="Copy"><svg><use href="#i-copy"/></svg></button>
+          <button class="icon" data-act="clear" title="Clear"><svg><use href="#i-x"/></svg></button>
+        </div>
+      </header>
+      <div class="text is-empty" contenteditable="plaintext-only" spellcheck="false" dir="auto"
+           data-placeholder="type or paste text"></div>
+      <div class="extras" hidden><div class="roman"></div><div class="back"></div></div>
+    </section>
+
+    <div class="divider">
+      <button class="icon swap" id="swap" title="Swap languages"><svg><use href="#i-swap"/></svg></button>
+    </div>
+
+    <section class="pane" data-pane="bottom">
+      <header class="pane-head">
+        <button class="lang" aria-label="Bottom language"></button>
+        <button class="icon mic" data-act="mic" title="Tap to dictate · hold to talk" aria-pressed="false"><svg><use href="#i-mic"/></svg></button>
+        <div class="pane-actions">
+          <button class="icon" data-act="speak" title="Read aloud" aria-pressed="false"><svg><use href="#i-speak"/></svg></button>
+          <button class="icon" data-act="copy" title="Copy"><svg><use href="#i-copy"/></svg></button>
+          <button class="icon" data-act="clear" title="Clear"><svg><use href="#i-x"/></svg></button>
+        </div>
+      </header>
+      <div class="text is-empty" contenteditable="plaintext-only" spellcheck="false" dir="auto"
+           data-placeholder="translation"></div>
+      <div class="extras" hidden><div class="roman"></div><div class="back"></div></div>
+    </section>
+
+    <footer class="bar">
+      <button class="status" id="status" title="Translation engine">
+        <span class="dot"></span><span id="status-text"></span><span id="status-fix" hidden>click to fix</span>
+      </button>
+      <div class="bar-actions">
+        <button class="update-pill" id="update-pill" hidden title="Install the update and restart">update</button>
+        <button class="icon" id="snip-btn" title="Snip &amp; translate text on screen"><svg><use href="#i-snip"/></svg></button>
+        <button class="icon" id="conv-btn" title="Conversation mode" aria-pressed="false"><svg><use href="#i-conv"/></svg></button>
+        <button class="icon" id="history-btn" title="History"><svg><use href="#i-history"/></svg></button>
+        <button class="icon" id="pin" title="Keep on top" aria-pressed="false"><svg><use href="#i-pin"/></svg></button>
+        <button class="icon" id="gear" title="Settings"><svg><use href="#i-gear"/></svg></button>
+      </div>
+    </footer>
+  </main>
+
+  <aside class="sheet" id="settings" aria-hidden="true">
+    <header class="sheet-head">
+      <h1>settings</h1>
+      <button class="done" id="settings-done">done</button>
+    </header>
+
+    <div class="sheet-body">
+      <h2 id="sec-engine">translation</h2>
+      <h3>engine</h3>
+      <div class="engines" id="engines" role="radiogroup"></div>
+
+      <div class="fields" id="engine-fields">
+        <label>api key
+          <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="paste key">
+        </label>
+        <label>model
+          <input id="model" list="model-list" spellcheck="false">
+          <datalist id="model-list"></datalist>
+        </label>
+        <p class="hint">stored only on this computer · <a href="#" id="key-link">get a key</a></p>
+      </div>
+
+      <div id="tone-row">
+        <h3>tone</h3>
+        <div class="segmented" id="tones">
+          <button data-tone="auto">natural</button>
+          <button data-tone="casual">casual</button>
+          <button data-tone="polite">polite</button>
+          <button data-tone="formal">formal</button>
+        </div>
+        <div class="fields flush">
+          <label>who it's for (optional)
+            <input id="tone-note" spellcheck="false" placeholder="e.g. my aunt, I'm her nephew">
+          </label>
+        </div>
+        <p class="hint">helps pick the right pronouns and politeness · AI engines only</p>
+      </div>
+
+      <h3>extras under the translation</h3>
+      <label class="toggle"><span>pronunciation in Latin letters</span><input type="checkbox" id="show-roman"></label>
+      <p class="hint toggle-hint">shows how to say the translation when it's written in another alphabet: Chinese (pinyin), Japanese, Korean, Russian, Thai, Arabic, Hindi and so on. Vietnamese, Spanish and other languages already in Latin letters don't need it, so nothing shows for them.</p>
+      <label class="toggle"><span>back-translation, to check the meaning</span><input type="checkbox" id="show-back"></label>
+      <p class="hint toggle-hint">translates the result back into your language, shown as a faint ↩ line under it. if that line doesn't say what you meant, the translation probably doesn't either. handy before sending a message in a language you can't fully read.</p>
+
+      <h2 id="sec-voice">voice</h2>
+      <label class="toggle"><span>dictation</span><input type="checkbox" id="stt-enabled"></label>
+      <p class="hint toggle-hint">talk instead of typing. off hides the mic buttons and the dictate shortcut, and never loads the voice model.</p>
+      <div id="stt-body">
+        <p class="hint how">
+          <b>tap</b> the mic or shortcut to start · it stops when you go quiet, or tap again<br>
+          <b>hold</b> it to talk · let go to stop
+        </p>
+        <h3>dictation engine</h3>
+        <div class="segmented" id="stt-engines">
+          <button data-stt="whisper">whisper · local, free</button>
+          <button data-stt="openai">openai · uses ChatGPT key</button>
+        </div>
+        <div id="stt-whisper">
+          <h3>whisper model</h3>
+          <div class="segmented" id="stt-models"></div>
+          <p class="hint" id="stt-hint"></p>
+          <h3>keep the voice model ready</h3>
+          <div class="segmented" id="stt-keep">
+            <button data-keep="always">always · instant</button>
+            <button data-keep="save">save memory</button>
+          </div>
+          <p class="hint" id="stt-keep-hint"></p>
+        </div>
+        <div class="fields flush" id="stt-openai">
+          <label>model
+            <input id="stt-openai-model" list="stt-openai-models" spellcheck="false">
+            <datalist id="stt-openai-models">
+              <option value="gpt-4o-mini-transcribe"></option>
+              <option value="gpt-4o-transcribe"></option>
+              <option value="whisper-1"></option>
+            </datalist>
+          </label>
+          <p class="hint">sends audio to OpenAI after each pause · billed to your key</p>
+        </div>
+        <h3>microphone</h3>
+        <div class="fields flush">
+          <label>
+            <div class="row">
+              <select id="mic-device"><option value="">system default</option></select>
+              <button class="chip" id="mic-refresh" title="Ask for mic access and list devices">refresh</button>
+            </div>
+          </label>
+        </div>
+        <h3>after a tap, stop when quiet for</h3>
+        <div class="segmented" id="stt-silence">
+          <button data-s="2">2 s</button>
+          <button data-s="3">3 s</button>
+          <button data-s="5">5 s</button>
+          <button data-s="0">never</button>
+        </div>
+        <div id="stt-output-row" hidden>
+          <h3>dictating into other apps types</h3>
+          <div class="segmented" id="stt-output">
+            <button data-out="spoken">what I said</button>
+            <button data-out="translation">the translation</button>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="sec-read">read aloud</h2>
+      <div class="segmented" id="tts-engines">
+        <button data-tts="neural">natural · free</button>
+        <button data-tts="openai">openai · ChatGPT key</button>
+        <button data-tts="system">system · offline</button>
+      </div>
+      <div id="tts-neural">
+        <h3>quick pick</h3>
+        <div class="segmented" id="tts-gender">
+          <button data-g="F">female voices</button>
+          <button data-g="M">male voices</button>
+        </div>
+        <div class="fields flush" id="tts-voice-pickers"></div>
+      </div>
+      <div class="fields flush" id="tts-openai">
+        <label>voice<select id="tts-openai-voice"></select></label>
+      </div>
+      <h3>speed</h3>
+      <div class="segmented" id="tts-rate">
+        <button data-r="-20">slower</button>
+        <button data-r="0">normal</button>
+        <button data-r="15">faster</button>
+      </div>
+      <p class="hint" id="tts-hint"></p>
+
+      <h2>shortcuts</h2>
+      <div class="shortcut-row" id="dictate-shortcut-row"><span>dictate</span><button class="key-chip" data-shortcut="sttShortcut" data-name="dictate"></button></div>
+      <div class="shortcut-row"><span>show / hide Vox2</span><button class="key-chip" data-shortcut="summonShortcut" data-name="summon"></button></div>
+      <div class="shortcut-row"><span>translate selected text</span><button class="key-chip" data-shortcut="selectShortcut" data-name="select"></button></div>
+      <div class="shortcut-row"><span>snip &amp; translate screen text</span><button class="key-chip" data-shortcut="snipShortcut" data-name="snip"></button></div>
+      <div class="shortcut-row"><span>keep on top (pin)</span><button class="key-chip" data-shortcut="pinShortcut" data-local></button></div>
+      <p class="hint" id="shortcut-hint">click a key, then press the new one · backspace turns it off</p>
+      <h3>quick translations (selected text, snips) show in</h3>
+      <div class="segmented" id="quick-result">
+        <button data-q="bubble">a bubble by the cursor</button>
+        <button data-q="window">the Vox2 window</button>
+      </div>
+
+      <h2>window</h2>
+      <label class="toggle">
+        <span>always on top</span>
+        <input type="checkbox" id="ontop-toggle">
+      </label>
+      <label class="toggle"><span>fade while on top and not in use</span><input type="checkbox" id="fade-toggle"></label>
+      <div id="native-window-opts" hidden>
+        <label class="toggle"><span>closing hides to the tray</span><input type="checkbox" id="tray-toggle"></label>
+        <label class="toggle"><span>start with Windows</span><input type="checkbox" id="autostart-toggle"></label>
+        <h3>updates</h3>
+        <div class="segmented" id="update-modes">
+          <button data-u="auto">install automatically</button>
+          <button data-u="ask">ask me</button>
+          <button data-u="off">off</button>
+        </div>
+        <div class="row-line"><span class="hint" id="update-status"></span><button class="chip" id="update-check">check now</button></div>
+      </div>
+
+      <h2>appearance</h2>
+      <h3>font</h3>
+      <div class="segmented" id="fonts">
+        <button data-font="mono" style="font-family:'Roboto Mono'">roboto mono</button>
+        <button data-font="lexend" style="font-family:'Lexend Deca'">lexend deca</button>
+        <button data-font="system" style="font-family:system-ui">system</button>
+      </div>
+      <h3>zoom</h3>
+      <div class="segmented" id="zoom-controls">
+        <button data-zoom="-1" title="Zoom out (Ctrl -)">−</button>
+        <button data-zoom="0" id="zoom-value" title="Reset (Ctrl 0)">100%</button>
+        <button data-zoom="1" title="Zoom in (Ctrl +)">+</button>
+      </div>
+      <h3>theme</h3>
+      <div id="themes"></div>
+
+      <h2>about</h2>
+      <div class="about">
+        <span>Vox2 <b id="about-version">v–</b></span>
+        <a href="#" id="about-github">github.com/chrisqtruong/vox2</a>
+        <span class="hint">open source · GPL-3.0</span>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="sheet" id="history" aria-hidden="true">
+    <header class="sheet-head">
+      <h1>history</h1>
+      <div>
+        <button class="done subtle" id="history-clear">clear</button>
+        <button class="done" id="history-done">done</button>
+      </div>
+    </header>
+    <div class="sheet-body">
+      <ol class="history-list" id="history-list"></ol>
+      <p class="hint empty" id="history-empty">nothing yet. finished translations show up here.</p>
+    </div>
+  </aside>
+
+  <div class="zoom-hud" id="zoom-hud" aria-hidden="true"></div>
+
+  <button class="voice-pill" id="voice-pill" title="Stop dictation" aria-hidden="true">
+    <span class="rec"></span>
+    <span class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="lang-tag" id="voice-lang"></span>
+  </button>
+</body>
+</html>

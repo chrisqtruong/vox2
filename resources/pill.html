@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dictation</title>
+  <style>
+    /* A transparent, click-through window that sits at the bottom-center of the screen.
+       It stays open all the time and only draws the pill while you're dictating,
+       so it never has to be shown or focused (which would steal focus from your app). */
+    html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+    body { display: flex; align-items: center; justify-content: center; font: 600 10px/1 system-ui, sans-serif; }
+    .pill {
+      --bg: #e6e6e3; --ink: #1c1c1b; --rec: #e5484d; --accent: #2f6feb;
+      display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 15px;
+      background: var(--ink); color: var(--bg);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .25);
+      opacity: 0; transform: translateY(8px); transition: opacity .15s, transform .15s;
+    }
+    .pill.show { opacity: .95; transform: none; }
+    .rec { width: 7px; height: 7px; border-radius: 50%; background: var(--rec); }
+    .bars { display: flex; align-items: center; gap: 2px; height: 16px; }
+    .bars i { width: 3px; height: calc(3px + 13px * var(--l, 0)); border-radius: 2px; background: var(--bg); transition: height .09s ease-out; }
+    .tag { letter-spacing: .04em; opacity: .7; text-transform: uppercase; }
+    .pill.working .rec { background: var(--accent); animation: pulse .8s ease-in-out infinite; }
+    .pill.working .bars i { height: 3px; }
+    @keyframes pulse { 50% { opacity: .3; } }
+  </style>
+</head>
+<body>
+  <div class="pill" id="pill">
+    <span class="rec"></span>
+    <span class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="tag" id="tag"></span>
+  </div>
+  <script>
+    const pill = document.getElementById('pill');
+    const bars = [...pill.querySelectorAll('.bars i')];
+    const SHAPE = [0.45, 0.75, 1, 0.85, 1, 0.7, 0.4];
+    // Messages from the main window: { state: 'show' | 'working' | 'hide', level?, lang?, colors? }
+    // Tell the main window we're listening, so it can send what it queued while we loaded.
+    const ready = () => window.__TAURI__.event.emitTo('main', 'pill-ready');
+    window.__TAURI__.event.listen('pill', ({ payload: p }) => {
+      if (p.colors) for (const [k, v] of Object.entries(p.colors)) pill.style.setProperty(`--${k}`, v);
+      if (p.lang) document.getElementById('tag').textContent = p.lang;
+      if (p.level != null) bars.forEach((b, i) => b.style.setProperty('--l', (p.level * SHAPE[i] * (0.7 + Math.random() * 0.3)).toFixed(2)));
+      if (p.state) {
+        pill.classList.toggle('show', p.state !== 'hide');
+        pill.classList.toggle('working', p.state === 'working');
+        if (p.state === 'hide') bars.forEach((b) => b.style.setProperty('--l', 0));
+      }
+    }).then(ready);
+  </script>
+</body>
+</html>
