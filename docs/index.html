@@ -29,15 +29,23 @@
   header img { width: 56px; height: 56px; border-radius: 13px; }
   .lede { font-size: 1.15rem; margin: 20px 0 24px; max-width: 60ch; }
   .cta { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
-  .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 600; padding: 10px 18px; border-radius: 8px; }
+  .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 600; padding: 10px 18px; border-radius: 8px; border: 2px solid var(--accent); }
+  .btn.alt { background: transparent; color: var(--accent); }
+  .btn small { font-weight: 500; opacity: .75; }
   .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 36px 0 0; }
   .shots img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); display: block; }
   ul { padding-left: 1.2rem; }
   li { margin-bottom: 6px; }
   table { border-collapse: collapse; width: 100%; font-size: .95rem; }
   td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  td:first-child { white-space: nowrap; width: 1%; }
+  td:first-child, td:nth-child(2) { white-space: nowrap; width: 1%; }
   .table { overflow-x: auto; }
+  /* phones: Windows and Mac keys side by side, what they do underneath */
+  @media (max-width: 600px) {
+    .table tr { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .table td { border: 0; padding: 0; width: auto; }
+    .table td:last-child { grid-column: 1 / -1; }
+  }
   pre { background: var(--code); padding: 14px 16px; border-radius: 8px; overflow-x: auto; font: .88rem/1.5 var(--mono); }
   footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); }
 </style>
@@ -56,6 +64,7 @@
 
   <div class="cta">
     <a class="btn" href="https://github.com/chrisqtruong/vox2/releases/latest/download/Vox2-setup.exe">Download for Windows</a>
+    <a class="btn alt" href="https://github.com/chrisqtruong/vox2/releases/latest/download/Vox2-mac.dmg">Download for macOS <small>beta</small></a>
     <span class="muted">free · open source · <a href="https://github.com/chrisqtruong/vox2">source on GitHub</a></span>
   </div>
 
@@ -75,33 +84,44 @@
     <li><strong>Engines.</strong> Google Translate (free), or Claude, ChatGPT or Gemini with your own API key, with tone and "who it's for" so pronouns come out right.</li>
     <li><strong>Back-translation with a match score.</strong> See your translation turned back into your language, scored by how much of your meaning survived. It compares meaning, not exact words, on your computer. <a href="https://github.com/chrisqtruong/vox2#back-translation-fidelity-scoring">How it works</a>.</li>
     <li><strong>Small things.</strong> Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top, 37 themes.</li>
+    <li><strong>Windows and Mac.</strong> The same app on both. On Mac the shortcuts use ⌘ and ⌥, and a permissions screen walks you through what macOS asks for.</li>
   </ul>
 
   <h2>Shortcuts</h2>
   <div class="table">
     <table>
-      <tr><td><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>Space</kbd></td><td>show or hide Vox2, ready to type</td></tr>
-      <tr><td><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>T</kbd></td><td>translate the selected text in any app</td></tr>
-      <tr><td><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>S</kbd></td><td>snip an area of the screen and translate it</td></tr>
-      <tr><td><kbd>Right Ctrl</kbd></td><td>dictate: tap to start, or hold to talk</td></tr>
-      <tr><td><kbd>Ctrl</kbd> <kbd>P</kbd></td><td>pin on top (while Vox2 is in front)</td></tr>
+      <tr><td class="muted">Windows</td><td class="muted">Mac</td><td></td></tr>
+      <tr><td><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>Space</kbd></td><td><kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>Space</kbd></td><td>show or hide Vox2, ready to type</td></tr>
+      <tr><td><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>T</kbd></td><td><kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>T</kbd></td><td>translate the selected text in any app</td></tr>
+      <tr><td><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>S</kbd></td><td><kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>S</kbd></td><td>snip an area of the screen and translate it</td></tr>
+      <tr><td><kbd>Right Ctrl</kbd></td><td><kbd>Right ⌥ Option</kbd></td><td>dictate: tap to start (stops when you go quiet), or hold to talk</td></tr>
+      <tr><td><kbd>Ctrl</kbd> <kbd>P</kbd></td><td><kbd>⌘</kbd> <kbd>P</kbd></td><td>pin on top (while Vox2 is in front)</td></tr>
     </table>
   </div>
   <p class="muted">All of them can be changed in settings.</p>
 
-  <h2>Install</h2>
+  <h2>Install on Windows</h2>
   <ol>
     <li>Download <code>Vox2-setup.exe</code> and run it. It installs for your user only; no admin needed.</li>
     <li>Windows will say "unknown publisher" because the installer isn't code-signed. Choose <em>More info → Run anyway</em>.</li>
     <li>Vox2 updates itself from GitHub releases. You can switch that to "ask me" or off in settings.</li>
   </ol>
-  <p class="muted">Windows 10/11, 64-bit. A macOS build is possible from the same code but not published yet.</p>
+  <p class="muted">Windows 10/11, 64-bit.</p>
+
+  <h2>Install on Mac <span class="muted">(beta)</span></h2>
+  <ol>
+    <li>Download <code>Vox2-mac.dmg</code>, open it and drag Vox2 into Applications.</li>
+    <li>The first time you open it, macOS says it can't verify the developer (Vox2 isn't notarized by Apple yet). Go to <em>System Settings → Privacy &amp; Security</em> and click <em>Open Anyway</em>. Once is enough.</li>
+    <li>A permissions screen lists what macOS needs you to allow: Input Monitoring (shortcuts from other apps), Accessibility (typing dictation, copying a selection), Screen Recording (snip) and Microphone (dictation). Click <em>allow</em> on each; they tick off as you go.</li>
+    <li>Vox2 updates itself from GitHub releases and keeps its permissions across updates.</li>
+  </ol>
+  <p class="muted">Apple Silicon Macs (M1 and newer). <a href="https://github.com/chrisqtruong/vox2#macos-notes">More about Vox2 on Mac</a>.</p>
 
   <h2>How it works</h2>
   <ul>
-    <li><strong>Shell:</strong> <a href="https://tauri.app">Tauri 2</a>. A small Rust binary hosts the UI in the system web view (WebView2 on Windows), so there's no bundled browser.</li>
+    <li><strong>Shell:</strong> <a href="https://tauri.app">Tauri 2</a>. A small Rust binary hosts the UI in the system web view (WebView2 on Windows, WebKit on Mac), so there's no bundled browser.</li>
     <li><strong>UI:</strong> plain HTML, CSS and JavaScript. No framework, no build step.</li>
-    <li><strong>Native side (Rust):</strong> a global keyboard hook (<code>rdev</code>) for the shortcuts, simulated input (<code>enigo</code>) to copy selections and type dictation into other apps, screen capture (<code>xcap</code>), the tray, and signed self-updates.</li>
+    <li><strong>Native side (Rust):</strong> a global keyboard hook for the shortcuts (<code>rdev</code> on Windows, a Core Graphics event tap on Mac), simulated input (<code>enigo</code>) to copy selections and type dictation into other apps, screen capture (<code>xcap</code>), the tray, and signed self-updates.</li>
     <li><strong>Speech to text:</strong> OpenAI's Whisper model running locally through <a href="https://huggingface.co/docs/transformers.js">transformers.js</a> and ONNX Runtime, on the GPU via WebGPU when available. The model downloads once (41–250 MB) and is released from memory when idle.</li>
     <li><strong>Screen text:</strong> <a href="https://tesseract.projectnaptha.com">Tesseract.js</a>, also local; language data is fetched on first use.</li>
     <li><strong>Voices:</strong> Microsoft's neural voices (the ones Edge's Read Aloud uses), or OpenAI's, or the system's.</li>
