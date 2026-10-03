@@ -13,7 +13,7 @@ import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret, memoryInfo, resizeWindowHeight,
-  getPermissions, requestPermission, openPrivacy, relaunch,
+  getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
 } from './platform.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -48,6 +48,7 @@ const DEFAULTS = {
   fade: true, closeToTray: true, autostart: false,
   updates: 'auto', // 'auto' (install when you're not using Vox2), 'ask', or 'off'
   permCheck: true, // macOS: open the permissions sheet at startup while something's missing
+  colorblind: false, // match scores in colorblind-friendly colors (with symbols) instead of theme colors
 };
 let settings = { ...DEFAULTS };
 
@@ -504,6 +505,12 @@ function markTheme() {
     b.setAttribute('aria-pressed', String(b.dataset.theme === settings.theme));
   }
 }
+
+function applyColorblind() {
+  document.documentElement.toggleAttribute('data-colorblind', !!settings.colorblind);
+  $('#colorblind-toggle').checked = !!settings.colorblind;
+}
+$('#colorblind-toggle').addEventListener('change', (e) => { settings.colorblind = e.target.checked; saveSettings(); applyColorblind(); });
 
 function applyFont() {
   document.documentElement.dataset.font = settings.font;
@@ -1260,6 +1267,14 @@ onNative('snip', async ({ x, y }) => {
     if (session) sendBubble({ session, error: `snip: ${err.message || err}` });
     else { showWindow(); setStatus('error', `snip: ${err.message || err}`); }
   }
+});
+
+// Coming back to the Vox2 window ends a quick translation: put the bubble away (macOS doesn't
+// always tell the bubble it lost focus when you switch to another Vox2 window) and keep results here.
+addEventListener('focus', () => {
+  if (!quick.active) return;
+  quick.active = false;
+  hideBubble();
 });
 
 onNative('bubble-action', ({ action }) => {
@@ -2166,6 +2181,7 @@ for (const pane of Object.values(panes)) {
   pane.lang.value = settings[pane.key];
 }
 applyTheme(settings.theme);
+applyColorblind();
 applyFont();
 applyZoom();
 applyOnTop();
