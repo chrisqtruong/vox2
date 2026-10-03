@@ -435,8 +435,7 @@ const onTopToggle = $('#ontop-toggle');
 
 function applyOnTop() {
   pinBtn.setAttribute('aria-pressed', String(settings.onTop));
-  const pinKey = settings.pinShortcut?.code ? ` (${shortcutLabel(settings.pinShortcut)})` : '';
-  pinBtn.title = `Keep on top: ${settings.onTop ? 'on' : 'off'}${pinKey}`;
+  pinBtn.title = `Keep on top: ${settings.onTop ? 'on' : 'off'}`; // the shortcut shows in the bar's tooltip
   onTopToggle.checked = settings.onTop;
   setAlwaysOnTop(settings.onTop);
   applyFade();
@@ -1457,6 +1456,54 @@ function renderWindowOpts() {
 $('#fade-toggle').addEventListener('change', (e) => { settings.fade = e.target.checked; saveSettings(); applyFade(); });
 $('#tray-toggle').addEventListener('change', (e) => { settings.closeToTray = e.target.checked; saveSettings(); setCloseToTray(settings.closeToTray); });
 $('#autostart-toggle').addEventListener('change', (e) => { settings.autostart = e.target.checked; saveSettings(); setAutostart(settings.autostart); });
+
+/* ---------- bottom bar tooltips ---------- */
+
+// The bar's buttons get a small themed tooltip instead of the system one: their name, plus the
+// keyboard shortcut (as you've set it) for the ones that have one, as a reminder.
+const BAR_SHORTCUTS = { 'snip-btn': 'snipShortcut', pin: 'pinShortcut' };
+const barTip = document.createElement('div');
+barTip.className = 'bar-tip';
+barTip.hidden = true;
+document.body.append(barTip);
+let barTipTimer = null;
+let barTipWarmUntil = 0; // sliding from one button to the next shows the next tip at once
+
+function showBarTip(btn) {
+  // Take over the button's title (other code keeps it current) so the system tooltip stays away.
+  if (btn.hasAttribute('title')) {
+    btn.dataset.tip = btn.title;
+    btn.setAttribute('aria-label', btn.title);
+    btn.removeAttribute('title');
+  }
+  const sc = settings[BAR_SHORTCUTS[btn.id]];
+  barTip.replaceChildren(btn.dataset.tip || '');
+  if (sc?.code) barTip.append(Object.assign(document.createElement('kbd'), { textContent: shortcutLabel(sc) }));
+  barTip.hidden = false;
+  // Above the button, centered on it, kept inside the window (root zoom: convert to CSS px).
+  const z = parseFloat(document.documentElement.style.zoom) || 1;
+  const r = btn.getBoundingClientRect();
+  const w = barTip.offsetWidth;
+  const left = Math.max(8, Math.min((r.left + r.width / 2) / z - w / 2, innerWidth / z - w - 8));
+  barTip.style.left = `${left}px`;
+  barTip.style.top = `${r.top / z - barTip.offsetHeight - 8}px`;
+}
+
+function hideBarTip() {
+  clearTimeout(barTipTimer);
+  if (!barTip.hidden) barTipWarmUntil = Date.now() + 400;
+  barTip.hidden = true;
+}
+
+for (const btn of document.querySelectorAll('.bar-actions button')) {
+  btn.addEventListener('pointerenter', () => {
+    clearTimeout(barTipTimer);
+    barTipTimer = setTimeout(() => showBarTip(btn), Date.now() < barTipWarmUntil ? 0 : 350);
+  });
+  btn.addEventListener('pointerleave', hideBarTip);
+  btn.addEventListener('pointerdown', hideBarTip);
+}
+addEventListener('blur', hideBarTip);
 
 /* ---------- fit window to text ---------- */
 
