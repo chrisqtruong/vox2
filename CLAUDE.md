@@ -53,6 +53,7 @@ JS: `MAC` / `IS_MAC` (from `navigator.platform`), and `getPermissions()` returns
 
 ## Shared-code gotchas
 
+- **Meaning check changes (`meaning.js`, `checkBack`) must be measured**: re-run `tools/meaning-bench/` and add a dated report + history row in `docs/meaning-check-tests/` (keep `items.json` fixed so runs compare).
 - **OCR (`ocr.js`) must prepare snips before Tesseract**: enlarge, grayscale, invert light-on-dark, stretch contrast, PSM 6, then fix lone `|` → `I`. Raw screen captures (small, dark themes) garble words. Test changes against several themes and both 1× and 2× captures.
 - `quick.active` (a ⌥⌘T / Ctrl+Alt+T or snip session) routes translations to the bubble. Anything that moves work back into the main window must end it: typing, dictating, and focusing the window do.
 - Esc reaches the page two ways: the page's own keydown while Vox2 is in front, and the `escape` event from the native keyboard watcher otherwise (`stopAudio()` handles both).

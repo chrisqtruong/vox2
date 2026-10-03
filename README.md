@@ -19,7 +19,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 - [Conversation mode (beta)](#conversation-mode-beta)
 - [Install](#install): [Windows](#windows) · [macOS](#macos-beta)
 - [macOS notes](#macos-notes)
-- [Back-translation fidelity scoring](#back-translation-fidelity-scoring)
+- [Back-translation and the meaning check](#back-translation-and-the-meaning-check)
 - [How it works](#how-it-works)
 - [Privacy](#privacy)
 - [Roadmap](#roadmap)
@@ -120,51 +120,11 @@ tccutil reset All com.chris.translator
 
 **Not yet on Mac.** Intel Macs, and Apple notarization (which would remove the "Open Anyway" step).
 
-## Back-Translation Fidelity Scoring
+## Back-translation and the meaning check
 
 With **back-translation** on (settings → translation), Vox2 translates the result back into your language and shows it under the translation as a faint ↩ line, tagged with a score such as `92% match`. Hover the tag for a short key.
 
 **What it measures.** How much of your meaning survived the round trip: your text → the translation → back into your language. Good translations often come back reworded ("Good morning" → "Good day"). Counting shared words would mark those as failures, so the score compares **meaning, not exact words**, using a sentence-embedding model.
-
-### The method, exactly
-
-Code: [`resources/meaning.js`](resources/meaning.js) (scoring) and [`resources/meaning-worker.js`](resources/meaning-worker.js) (model).
-
-**Inputs.**
-
-- **A**: the text you typed, trimmed.
-- **B**: the back-translation. It always comes from Google Translate (`translate.googleapis.com`, `client=gtx`), whichever engine made the forward translation.
-
-**1. Number formatting.** Thousands separators are removed from A and B so formatting doesn't count as a difference:
-`(\d)[,.   ](?=\d{3}(?!\d))` → `$1`. For example, "1,000", "1.000" and "1 000" all become "1000".
-
-**2. Exact-match shortcut.** Each text is normalized:
-
-1. Unicode NFKC
-2. `toLocaleLowerCase()`
-3. every run of punctuation or symbols (`[\p{P}\p{S}]+`) replaced with a space
-4. whitespace collapsed and trimmed
-
-If the two results are equal, the score is **100** and the model isn't used.
-
-**3. Meaning similarity.** A and B (after step 1, but *not* lowercased or stripped) are embedded with [`paraphrase-multilingual-MiniLM-L12-v2`](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2):
-
-- **Model:** 12 layers, 384 dimensions, 50+ languages, trained on paraphrase pairs.
-- **Weights:** the 8-bit quantized ONNX export [`Xenova/paraphrase-multilingual-MiniLM-L12-v2`](https://huggingface.co/Xenova/paraphrase-multilingual-MiniLM-L12-v2), file `onnx/model_quantized.onnx` (118 MB).
-- **Runtime:** [transformers.js](https://huggingface.co/docs/transformers.js) 4.3.0 on the CPU (WebAssembly), entirely on your computer.
-- **Embedding:** mean pooling over tokens, then L2 normalization.
-
-The similarity *c* is the cosine of the two vectors (their dot product, since both have length 1).
-
-**4. Scale to a percentage.**
-
-```
-score = round( clamp( (c − 0.55) / (0.85 − 0.55), 0, 1 ) × 100 )
-```
-
-So *c* ≤ 0.55 scores 0, *c* ≥ 0.85 scores 100, and the range between is linear. The two thresholds were chosen from the test pairs below.
-
-**5. Number check.** All numbers are extracted from A and B (`\d+(?:[.,]\d+)?`), sorted, and compared as lists. Sentence embeddings barely react to a changed digit, but a changed number is a real error. If the lists differ, the score is capped: `score = min(score, 60)`.
 
 ### Tiers
 
@@ -176,57 +136,10 @@ So *c* ≤ 0.55 scores 0, *c* ≥ 0.85 scores 100, and the range between is line
 
 With **colorblind-friendly colors** on (settings → appearance), the tiers use the [Okabe–Ito](https://jfly.uni-koeln.de/color/) colorblind-safe palette instead, plus a symbol, so the tier never depends on color alone: blue ✓ (high), amber ! (moderate), vermillion ✕ (low), in a darker shade on light themes.
 
-### Test pairs
 
-These are the measurements the thresholds came from. *c* was measured in Vox2 with the quantized model.
+**How well it works.** Tested on 1,320 translations in 11 languages ([2026-10-03 report](docs/meaning-check-tests/2026-10-03.md)): it confirms good translations reliably (93% shown as "meaning kept", 4% false alarms) and catches every changed number, but it still misses most other meaning errors, such as a flipped "not", an opposite word or a swapped he/she (29% caught overall). Improving that is at the top of the [roadmap](#roadmap).
 
-| A | B | *c* | Score |
-|---|---|---|---|
-| Where is the bathroom? | Where is the toilet? | 0.845 | 98 |
-| I am sorry I was late to your wedding. | Sorry for being late to the wedding. | 0.849 | 100 |
-| Good morning, how are you? | Good day, how are you? | 0.814 | 88 |
-| Good morning. | Good day. | 0.775 | 75 |
-| I would like a table for two by the window. | I want a table for two people. | 0.833 | 94 |
-| Please send me the report by Friday. | Please send the report to me on Monday. | 0.746 | 65 |
-| My grandmother makes the best pho in Houston. | My grandmother makes the best pho. | 0.707 | 52 |
-| It is raining cats and dogs. | Cats and dogs are falling. | 0.635 | 28 |
-| I can come to the party. | I cannot come to the party. | 0.612 | 21 |
-| The meeting was moved to next week. | The meeting was cancelled. | 0.438 | 0 |
-| Mẹ ơi, con nhớ mẹ nhiều lắm. | Mẹ ơi, con nhớ mẹ rất nhiều. | 0.995 | 100 |
-| Mẹ ơi, con nhớ mẹ nhiều lắm. | Mẹ ơi, con đói lắm. | 0.430 | 0 |
-| Turn left at the second traffic light. | Turn right at the second traffic light. | 0.937 | 100 ✗ |
-| He told me she was coming. | She told me he was coming. | 0.992 | 100 ✗ |
-
-✗ = the score misses a real error (see limits below).
-
-### Check it yourself
-
-The same model in Python gives the same similarities to within about ±0.01. The small gap comes from quantization: Vox2 uses 8-bit weights.
-
-```python
-# pip install sentence-transformers
-from sentence_transformers import SentenceTransformer
-
-model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-a, b = model.encode(["Good morning, how are you?", "Good day, how are you?"], normalize_embeddings=True)
-c = float(a @ b)
-score = round(min(1, max(0, (c - 0.55) / 0.30)) * 100)
-print(round(c, 3), score)  # ≈ 0.81, ≈ 88
-```
-
-Remember steps 1, 2 and 5 (number formatting, exact match, number cap) when comparing your results with the app's.
-
-### Limits
-
-- **A low score doesn't always mean a bad translation.** The mistake may have happened on the way *back* (always Google). Literal or free engines also drift more on the round trip than the AI engines (Claude, ChatGPT, Gemini).
-- **Single swapped words can slip through.** Embeddings score left/right and he/she swaps as near-identical, as the ✗ rows show.
-- **Idioms confuse it.** "Raining cats and dogs" vs "raining heavily" scores 54 even though the meaning matches.
-- **The number is a hint, not proof.** Read the ↩ line, and use the number to spot what to look at.
-
-### Next steps for the score
-
-- When an AI engine is selected, optionally ask it to judge meaning preservation directly. That would catch swaps and idioms, but costs an API call.
-- Compare your text against the translation itself with cross-lingual embeddings, which removes the Google back-translation step as a source of error.
+**More:** [how the score is computed, exactly](docs/meaning-check-tests/README.md#how-the-score-works), [all test reports](docs/meaning-check-tests/README.md#test-history), and [how to re-run the test](tools/meaning-bench/README.md).
 
 ## How it works
 
@@ -252,24 +165,23 @@ Remember steps 1, 2 and 5 (number formatting, exact match, number cap) when comp
 
 ## Roadmap
 
-Planned or being considered, roughly in order. Each item has an issue for discussion; all of them are under the [roadmap label](https://github.com/chrisqtruong/vox2/issues?q=label%3Aroadmap). Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues).
+Ordered by value for the effort, highest first: what makes Vox2 more trustworthy and useful day to day comes before bigger projects and paid certificates. Each item has an issue for discussion, all under the [roadmap label](https://github.com/chrisqtruong/vox2/issues?q=label%3Aroadmap). Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues). Tags: value · effort · platforms.
 
-- [x] **macOS version** (beta). See [macOS notes](#macos-notes).
-- [ ] **Mac: Intel support and Apple notarization.** Notarization removes the "Open Anyway" step on first launch. ([#5](https://github.com/chrisqtruong/vox2/issues/5))
-- [ ] **Hands-free conversation.** Today each person taps their mic before speaking. Next: after a translation is read aloud, Vox2 starts listening on the other side by itself, so a face-to-face conversation flows without touching the computer. See [conversation mode](#conversation-mode-beta). ([#11](https://github.com/chrisqtruong/vox2/issues/11))
-- [ ] **Mini mode.** A one-line bar version of the window to keep open while you work. ([#6](https://github.com/chrisqtruong/vox2/issues/6))
-- [ ] **Smarter match score.** An optional check by the AI engine that catches swapped words (left/right, he/she) and idioms, and a direct comparison with the translation that skips the trip back. See [next steps for the score](#next-steps-for-the-score). ([#7](https://github.com/chrisqtruong/vox2/issues/7))
-- [ ] **Better snip on "detect".** More accurate screen-text reading when the source language isn't set. ([#8](https://github.com/chrisqtruong/vox2/issues/8))
-- [ ] **Code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install). ([#9](https://github.com/chrisqtruong/vox2/issues/9))
+1. **Meaning check: catch negations, pronouns, opposites, names and dates.** Today a flipped "not" or a swapped he/she still scores 100; the [tests](docs/meaning-check-tests/2026-10-03.md) show the mistake is usually visible in the ↩ line, so simple local checks can catch it. *High · small · both.* ([#28](https://github.com/chrisqtruong/vox2/issues/28))
+2. **Meaning check: show what changed.** Highlight the words that differ between your text and the ↩ line, so you can see why a score is high or low. *High · small · both.* ([#27](https://github.com/chrisqtruong/vox2/issues/27))
+3. **Explain this** (AI-assisted). Select a phrase and ask what it *really* means: slang, idioms, how formal or rude it is, cultural context, how a native speaker would say it. *High · small · both.* ([#21](https://github.com/chrisqtruong/vox2/issues/21))
+4. **Personal glossary** (AI-assisted). Names and terms that always come out your way: family names and nicknames, work terms, preferred words. *Medium-high · small · both.* ([#23](https://github.com/chrisqtruong/vox2/issues/23))
+5. **Reply helper** (AI-assisted). After translating a message, write your answer in your language and get it back in theirs, in your tone and "who it's for", checked by the meaning check before you send. *High · medium · both.* ([#22](https://github.com/chrisqtruong/vox2/issues/22))
+6. **Meaning check: AI double-check** (AI-assisted). Optionally ask the AI engine to compare meanings and list differences; the most accurate check, but it costs a request. *High · medium · both.* ([#7](https://github.com/chrisqtruong/vox2/issues/7))
+7. **Meaning check: translate back with a different engine**, so one engine can't agree with its own mistake. *Medium · small · both.* ([#29](https://github.com/chrisqtruong/vox2/issues/29))
+8. **Hands-free conversation.** After a translation is read aloud, Vox2 starts listening on the other side by itself, so a face-to-face conversation flows without touching the computer. See [conversation mode](#conversation-mode-beta). *Medium-high · medium · both.* ([#11](https://github.com/chrisqtruong/vox2/issues/11))
+9. **Better snip on "detect".** More accurate screen-text reading when the source language isn't set. *Medium · medium · both.* ([#8](https://github.com/chrisqtruong/vox2/issues/8))
+10. **Live call translation** (AI-assisted, bigger). On a video call, Vox2 listens to the computer's audio, transcribes it on your computer and shows live translated captions; if both people use Vox2, each reads the other in their own language. In phases: captions in the window, then a floating caption bar, then both directions. Optional and off by default. *Very high · large · both.* ([#24](https://github.com/chrisqtruong/vox2/issues/24))
+11. **Mini mode.** A one-line bar version of the window to keep open while you work. *Medium · medium · both.* ([#6](https://github.com/chrisqtruong/vox2/issues/6))
+12. **Mac: Intel support and Apple notarization.** Notarization removes the "Open Anyway" step on first launch ($99/year Apple Developer account). *Medium · small + cost · Mac.* ([#5](https://github.com/chrisqtruong/vox2/issues/5))
+13. **Windows code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install). *Medium · small + cost · Windows.* ([#9](https://github.com/chrisqtruong/vox2/issues/9))
 
-### AI-assisted
-
-Small additions that use the AI engines you already have (Claude, ChatGPT, Gemini with your own key), on demand only, so Vox2 stays light. Both Windows and Mac.
-
-- [ ] **Explain this.** Select a phrase and ask what it *really* means: slang, idioms, how formal or rude it is, cultural context, and how a native speaker would say it. ([#21](https://github.com/chrisqtruong/vox2/issues/21))
-- [ ] **Reply helper.** After translating a message, write your answer in your own language and get it back in theirs, in your tone and "who it's for" settings, checked by the back-translation and match score before you send it. ([#22](https://github.com/chrisqtruong/vox2/issues/22))
-- [ ] **Personal glossary.** Names and terms that always come out your way: family names and nicknames, work terms, preferred words. ([#23](https://github.com/chrisqtruong/vox2/issues/23))
-- [ ] **Live call translation** (bigger). On a video call, Vox2 listens to the computer's audio, transcribes it on your computer and shows live translated captions; if both people use Vox2, each reads the other in their own language. Planned in phases: captions in the window, then a floating caption bar, then both directions in conversation mode. Optional and off by default. ([#24](https://github.com/chrisqtruong/vox2/issues/24))
+Done: **macOS version** (beta), see [macOS notes](#macos-notes).
 
 ## Build
 

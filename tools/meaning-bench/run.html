@@ -1,0 +1,45 @@
+<!doctype html><meta charset="utf-8"><title>meaning check benchmark</title><pre id="log"></pre>
+<script type="module">
+import { matchScore } from './meaning.js';
+const log = (m) => { document.getElementById('log').textContent += m + '\n'; window.__log = (window.__log || '') + m + '\n'; };
+const { langs, items } = await (await fetch('items.json')).json();
+const GOOGLE = { vie_Latn: 'vi', jpn_Jpan: 'ja', kor_Hang: 'ko', zho_Hans: 'zh-CN', spa_Latn: 'es', arb_Arab: 'ar', hin_Deva: 'hi', fra_Latn: 'fr', tgl_Latn: 'tl', por_Latn: 'pt', urd_Arab: 'ur' };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// Same Google endpoint the app's main translation uses; several sentences per request.
+async function translate(texts, sl, tl) {
+  const out = [];
+  for (let i = 0; i < texts.length; i += 15) {
+    const body = new URLSearchParams(); for (const t of texts.slice(i, i + 15)) body.append('q', t);
+    for (let tries = 0; ; tries++) {
+      const r = await fetch(`https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=${sl}&tl=${tl}`, { method: 'POST', body });
+      if (r.ok) { const j = await r.json(); out.push(...j.map((x) => (Array.isArray(x) ? x[0] : x))); break; }
+      if (tries > 6) throw new Error(`Google HTTP ${r.status}`);
+      await sleep(4000 * (tries + 1));
+    }
+    await sleep(700);
+  }
+  return out;
+}
+const results = [];
+const t0 = performance.now();
+for (const lang of langs) {
+  const g = GOOGLE[lang];
+  const [goodFwd, badFwd] = [await translate(items.map((x) => x.en), 'en', g), await translate(items.map((x) => x.bad_en), 'en', g)];
+  const [refBack, goodBack, badBack] = [
+    await translate(items.map((x) => x.refs[lang]), g, 'en'),
+    await translate(goodFwd, g, 'en'),
+    await translate(badFwd, g, 'en'),
+  ];
+  for (let i = 0; i < items.length; i++) {
+    const it = items[i];
+    for (const [kind, translation, back] of [['good: professional', it.refs[lang], refBack[i]], ['good: Google', goodFwd[i], goodBack[i]], ['bad', badFwd[i], badBack[i]]]) {
+      const { score, numbersDiffer } = await matchScore(it.en, back);
+      results.push({ lang, id: it.id, error: it.kind, kind, en: it.en, bad_en: it.bad_en, translation, back, score, numbersDiffer });
+    }
+  }
+  log(`${lang} done (${Math.round((performance.now() - t0) / 1000)} s)`);
+}
+await fetch('/save', { method: 'POST', body: JSON.stringify(results) });
+log('SAVED ' + results.length);
+window.__done = true;
+</script>
