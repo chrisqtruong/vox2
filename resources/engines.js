@@ -26,7 +26,7 @@ export const ENGINES = {
 
 // Register for the AI engines. Matters most in languages whose pronouns and endings
 // change with who you're talking to (Vietnamese anh/chị/em, Korean, Japanese…).
-export const TONES = {
+const TONES = {
   auto: '',
   casual: 'Use a casual, friendly register, as between friends.',
   polite: 'Use a polite, respectful register, as with elders or someone you just met.',
