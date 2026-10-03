@@ -160,6 +160,7 @@ pub async fn finish_snip(app: AppHandle, x: f64, y: f64, w: f64, h: f64) -> Resu
     let _ = win.hide();
     std::thread::sleep(Duration::from_millis(120)); // let the overlay disappear before capturing
     let (px, py) = (origin.x + (x * scale) as i32, origin.y + (y * scale) as i32);
+    #[cfg_attr(target_os = "macos", allow(unused_variables))] // macOS sizes the crop itself, below
     let (pw, ph) = ((w * scale).max(1.0) as u32, (h * scale).max(1.0) as u32);
 
     // On macOS, xcap finds and places screens in points, while the image it captures is in
