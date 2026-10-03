@@ -222,14 +222,14 @@ Remember steps 1, 2 and 5 (number formatting, exact match, number cap) when comp
 
 ## Roadmap
 
-Planned or being considered, roughly in order. Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues).
+Planned or being considered, roughly in order. Each item has an issue for discussion; all of them are under the [roadmap label](https://github.com/chrisqtruong/vox2/issues?q=label%3Aroadmap). Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues).
 
 - [x] **macOS version** (beta). See [macOS notes](#macos-notes).
-- [ ] **Mac: Intel support and Apple notarization.** Notarization removes the "Open Anyway" step on first launch.
-- [ ] **Mini mode.** A one-line bar version of the window to keep open while you work.
-- [ ] **Smarter match score.** An optional check by the AI engine that catches swapped words (left/right, he/she) and idioms, and a direct comparison with the translation that skips the trip back. See [next steps for the score](#next-steps-for-the-score).
-- [ ] **Better snip on "detect".** More accurate screen-text reading when the source language isn't set.
-- [ ] **Code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install).
+- [ ] **Mac: Intel support and Apple notarization.** Notarization removes the "Open Anyway" step on first launch. ([#5](https://github.com/chrisqtruong/vox2/issues/5))
+- [ ] **Mini mode.** A one-line bar version of the window to keep open while you work. ([#6](https://github.com/chrisqtruong/vox2/issues/6))
+- [ ] **Smarter match score.** An optional check by the AI engine that catches swapped words (left/right, he/she) and idioms, and a direct comparison with the translation that skips the trip back. See [next steps for the score](#next-steps-for-the-score). ([#7](https://github.com/chrisqtruong/vox2/issues/7))
+- [ ] **Better snip on "detect".** More accurate screen-text reading when the source language isn't set. ([#8](https://github.com/chrisqtruong/vox2/issues/8))
+- [ ] **Code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install). ([#9](https://github.com/chrisqtruong/vox2/issues/9))
 
 ## Build
 
