@@ -634,6 +634,7 @@ $('#key-link').addEventListener('click', (e) => {
 });
 
 function openSettings(target) {
+  clearSettingsSearch();
   if (historySheet.classList.contains('open')) closeHistory();
   if (permSheet.classList.contains('open')) closePerms();
   renderEngines();
@@ -666,6 +667,7 @@ function openSettings(target) {
 }
 
 function closeSettings() {
+  clearSettingsSearch();
   sheet.classList.remove('open');
   sheet.setAttribute('aria-hidden', 'true');
   setStatus('idle');
@@ -675,6 +677,77 @@ function closeSettings() {
 
 $('#gear').addEventListener('click', () => openSettings());
 $('#settings-done').addEventListener('click', closeSettings);
+
+/* Settings search: type and only the matching settings stay, each under its section heading,
+   like the iPhone's Settings search. Rows come from the page's own structure, worked out once: a
+   sub-heading, toggle or shortcut starts a row, and the controls and hints after it belong to it;
+   plain <div> wrappers are looked inside. So a new setting is searchable without extra work.
+   A row matches when every word you type appears in its text or its section's name. */
+const searchInput = $('#settings-search');
+const searchClear = $('#settings-search-clear');
+const searchEmpty = $('#settings-search-empty');
+let searchSections = null; // [{ head: <h2>, rows: [[elements…], …] }]
+
+function indexSettings() {
+  searchSections = [];
+  let section = null;
+  let row = null;
+  const walk = (parent) => {
+    for (const el of parent.children) {
+      if (el.matches('#settings-search-box, #settings-search-empty, #settings-nav')) continue;
+      if (el.tagName === 'H2') { section = { head: el, rows: [] }; searchSections.push(section); row = null; continue; }
+      if (!section) continue;
+      if (el.tagName === 'DIV' && !el.className) { walk(el); row = null; continue; } // a wrapper: look inside
+      if (!row || el.matches('h3, label.toggle, .shortcut-row')) { row = [el]; section.rows.push(row); } else row.push(el);
+    }
+  };
+  walk(sheetBody);
+}
+
+function searchSettings() {
+  const q = searchInput.value.trim().toLowerCase();
+  const words = q.split(/\s+/).filter(Boolean);
+  if (!searchSections) indexSettings();
+  sheet.classList.toggle('searching', !!q);
+  searchClear.hidden = !q;
+  let found = 0;
+  for (const s of searchSections) {
+    const head = s.head.textContent.toLowerCase();
+    let shown = 0;
+    for (const row of s.rows) {
+      const text = `${head} ${row.map((el) => el.textContent).join(' ')}`.toLowerCase();
+      const hit = words.every((w) => text.includes(w));
+      for (const el of row) el.classList.toggle('search-miss', !hit);
+      if (hit && !row[0].closest('[hidden]')) shown++; // rows that don't apply here stay hidden
+    }
+    s.head.classList.toggle('search-miss', !!q && !shown);
+    found += shown;
+  }
+  searchEmpty.hidden = !q || found > 0;
+  searchEmpty.textContent = `no settings match “${searchInput.value.trim()}”`;
+  if (q) sheetBody.scrollTop = 0;
+}
+
+function clearSettingsSearch() {
+  if (!searchInput.value) return;
+  searchInput.value = '';
+  searchSettings();
+}
+
+searchInput.addEventListener('input', searchSettings);
+searchClear.addEventListener('click', () => { clearSettingsSearch(); searchInput.focus(); });
+searchInput.addEventListener('keydown', (e) => {
+  // Esc clears the search first; with nothing typed it closes settings as usual.
+  if (e.key === 'Escape' && searchInput.value) { e.preventDefault(); e.stopPropagation(); clearSettingsSearch(); }
+});
+// Ctrl+F / ⌘F while settings are open jumps to the search box.
+document.addEventListener('keydown', (e) => {
+  if (sheet.classList.contains('open') && e.key.toLowerCase() === 'f' && (MAC ? e.metaKey : e.ctrlKey) && !e.shiftKey && !e.altKey) {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+});
 
 // The menu at the top jumps to a section; once it scrolls out of view, an arrow brings you back up.
 const sheetBody = $('.sheet-body', sheet);
@@ -1460,7 +1533,13 @@ $('#show-match').addEventListener('change', (e) => { settings.showMatch = e.targ
 /* ---------- tone (AI engines) ---------- */
 
 function renderTone() {
-  $('#tone-row').hidden = !ENGINES[settings.engine].keyUrl; // Google can't do tone
+  // Google can't do tone, but the setting stays visible (dimmed) so you know it exists.
+  const ai = !!ENGINES[settings.engine].keyUrl;
+  $('#tone-row').classList.toggle('unavailable', !ai);
+  for (const el of $('#tone-row').querySelectorAll('button, input')) el.disabled = !ai;
+  $('#tone-hint').textContent = ai
+    ? 'helps pick the right pronouns and politeness'
+    : `pick Claude, ChatGPT or Gemini above to use tone and "who it's for" · Google Translate can't adjust them`;
   for (const b of $('#tones').children) b.setAttribute('aria-pressed', String(b.dataset.tone === settings.tone));
   $('#tone-note').value = settings.toneNote;
   $('#show-roman').checked = settings.showRoman;

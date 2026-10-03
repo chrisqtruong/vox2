@@ -19,6 +19,7 @@
     <!-- turtle and rabbit: Lucide (lucide.dev), ISC license -->
     <symbol id="i-turtle" viewBox="0 0 24 24"><path d="m12 10 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a8 8 0 1 0-16 0v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3l2-4h4Z"/><path d="M4.82 7.9 8 10"/><path d="M15.18 7.9 12 10"/><path d="M16.93 10H20a2 2 0 0 1 0 4H2"/></symbol>
     <symbol id="i-hare" viewBox="0 0 24 24"><path d="M13 16a3 3 0 0 1 2.24 5"/><path d="M18 12h.01"/><path d="M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3"/><path d="M20 8.54V4a2 2 0 1 0-4 0v3"/><path d="M7.612 12.524a3 3 0 1 0-1.6 4.3"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
     <symbol id="i-fit" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 7.5v9M9.5 10 12 7.5l2.5 2.5M9.5 14 12 16.5l2.5-2.5"/></symbol>
     <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/></symbol>
@@ -92,6 +93,12 @@
     <button class="to-top" id="settings-top" title="Back to the top" aria-label="Back to the top" tabindex="-1"><svg><use href="#i-up"/></svg></button>
 
     <div class="sheet-body">
+      <div class="settings-search" id="settings-search-box" role="search">
+        <svg aria-hidden="true"><use href="#i-search"/></svg>
+        <input id="settings-search" type="text" placeholder="search settings" aria-label="Search settings" spellcheck="false" autocomplete="off">
+        <button class="icon" id="settings-search-clear" title="Clear search (Esc)" aria-label="Clear search" hidden><svg><use href="#i-x"/></svg></button>
+      </div>
+      <p class="hint search-empty" id="settings-search-empty" hidden></p>
       <nav class="settings-nav" id="settings-nav" aria-label="Jump to">
         <button data-jump="sec-perms" id="nav-perms" hidden>permissions</button>
         <button data-jump="sec-engine">translation</button>
@@ -135,7 +142,7 @@
             <input id="tone-note" spellcheck="false" placeholder="e.g. my aunt, I'm her nephew">
           </label>
         </div>
-        <p class="hint">helps pick the right pronouns and politeness · AI engines only</p>
+        <p class="hint" id="tone-hint">helps pick the right pronouns and politeness · AI engines only</p>
       </div>
 
       <h3>extras under the translation</h3>

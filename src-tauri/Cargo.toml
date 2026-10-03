@@ -23,7 +23,6 @@ xcap = "0.9"   # screen capture for snip & translate
 image = { version = "0.25", default-features = false, features = ["png"] }
 # read-aloud: WebSocket client for Microsoft's neural voices
 tungstenite = { version = "0.30", features = ["native-tls"] }
-native-tls = "0.2" # also for the back-translation request on macOS (google.rs)
 sha2 = "0.10"
 uuid = { version = "1", features = ["v4"] }
 # API keys in Windows Credential Manager / macOS Keychain instead of settings.json
@@ -49,7 +48,7 @@ rdev = "0.5"
 # permission checks (permissions.rs), the keyboard watcher (hotkey.rs), window fade (main.rs)
 core-foundation = "0.9"
 objc2 = "0.6"
-objc2-foundation = { version = "0.3", features = ["NSString"] }
+objc2-foundation = { version = "0.3", features = ["NSString", "NSURL", "NSData"] }
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_Shell", "Win32_UI_WindowsAndMessaging"] }
