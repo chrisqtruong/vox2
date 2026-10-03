@@ -1,6 +1,7 @@
 // No console window in release builds on Windows.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod google;
 mod hotkey;
 mod overlay;
 mod permissions;
@@ -236,6 +237,7 @@ fn main() {
             overlay::take_snip,
             overlay::start_snip_cmd,
             tts::tts_speak,
+            google::google_single,
             permissions::permissions,
             permissions::request_permission,
             permissions::open_privacy

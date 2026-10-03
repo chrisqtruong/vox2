@@ -23,6 +23,7 @@ xcap = "0.9"   # screen capture for snip & translate
 image = { version = "0.25", default-features = false, features = ["png"] }
 # read-aloud: WebSocket client for Microsoft's neural voices
 tungstenite = { version = "0.30", features = ["native-tls"] }
+native-tls = "0.2" # also for the back-translation request on macOS (google.rs)
 sha2 = "0.10"
 uuid = { version = "1", features = ["v4"] }
 # API keys in Windows Credential Manager / macOS Keychain instead of settings.json

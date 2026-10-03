@@ -5600,6 +5600,7 @@ dependencies = [
  "enigo",
  "image",
  "keyring",
+ "native-tls",
  "objc2",
  "objc2-foundation",
  "rdev",

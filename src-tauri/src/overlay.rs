@@ -160,13 +160,30 @@ pub async fn finish_snip(app: AppHandle, x: f64, y: f64, w: f64, h: f64) -> Resu
     let _ = win.hide();
     std::thread::sleep(Duration::from_millis(120)); // let the overlay disappear before capturing
     let (px, py) = (origin.x + (x * scale) as i32, origin.y + (y * scale) as i32);
+    #[cfg_attr(target_os = "macos", allow(unused_variables))] // macOS sizes the crop itself, below
     let (pw, ph) = ((w * scale).max(1.0) as u32, (h * scale).max(1.0) as u32);
 
+    // On macOS, xcap finds and places screens in points, while the image it captures is in
+    // pixels (2× on Retina): find the screen by the box's position in points, then crop in pixels.
+    #[cfg(target_os = "macos")]
+    let (gx, gy) = (origin.x as f64 / scale + x, origin.y as f64 / scale + y);
+
     let png = tauri::async_runtime::spawn_blocking(move || -> Result<Vec<u8>, String> {
-        let monitor = xcap::Monitor::from_point(px, py).map_err(|e| e.to_string())?;
+        #[cfg(target_os = "macos")]
+        let (monitor, cx, cy, pw, ph) = {
+            let monitor = xcap::Monitor::from_point(gx as i32, gy as i32).map_err(|e| e.to_string())?;
+            let s = monitor.scale_factor().map_err(|e| e.to_string())? as f64;
+            let (mx, my) = (monitor.x().map_err(|e| e.to_string())?, monitor.y().map_err(|e| e.to_string())?);
+            let (cx, cy) = (((gx - mx as f64) * s).max(0.0) as u32, ((gy - my as f64) * s).max(0.0) as u32);
+            (monitor, cx, cy, (w * s).max(1.0) as u32, (h * s).max(1.0) as u32)
+        };
+        #[cfg(not(target_os = "macos"))]
+        let (monitor, cx, cy) = {
+            let monitor = xcap::Monitor::from_point(px, py).map_err(|e| e.to_string())?;
+            let (mx, my) = (monitor.x().map_err(|e| e.to_string())?, monitor.y().map_err(|e| e.to_string())?);
+            (monitor, (px - mx).max(0) as u32, (py - my).max(0) as u32)
+        };
         let shot = monitor.capture_image().map_err(|e| e.to_string())?;
-        let (mx, my) = (monitor.x().map_err(|e| e.to_string())?, monitor.y().map_err(|e| e.to_string())?);
-        let (cx, cy) = ((px - mx).max(0) as u32, (py - my).max(0) as u32);
         let cw = pw.min(shot.width().saturating_sub(cx));
         let ch = ph.min(shot.height().saturating_sub(cy));
         let crop = image::imageops::crop_imm(&shot, cx, cy, cw, ch).to_image();
