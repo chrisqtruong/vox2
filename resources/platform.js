@@ -118,3 +118,30 @@ export async function memoryInfo() {
   }
   return { totalMb: (navigator.deviceMemory || 8) * 1024, availableMb: null };
 }
+
+// Resize the window's height by `factor` (keeping its width), within the screen's usable
+// area, and nudge it up if it would run off the bottom. Returns { capped } (true when the
+// screen was too short for the full height), or null outside the desktop app.
+export async function resizeWindowHeight(factor) {
+  if (!native) return null;
+  const win = tauri.window.getCurrentWindow();
+  if (await win.isMaximized()) await win.unmaximize();
+  const [inner, outer, pos, mon, scale] = await Promise.all([
+    win.innerSize(), win.outerSize(), win.outerPosition(), tauri.window.currentMonitor(), win.scaleFactor(),
+  ]);
+  const frame = outer.height - inner.height; // title bar and borders
+  const area = mon?.workArea ?? (mon && { position: mon.position, size: mon.size });
+  const margin = Math.round(8 * scale);
+  const want = Math.round(inner.height * factor);
+  const max = area ? area.size.height - frame - 2 * margin : want;
+  const height = Math.max(Math.round(340 * scale), Math.min(want, max)); // 340 = the window's minimum
+  await win.setSize(new tauri.dpi.PhysicalSize(inner.width, height));
+  if (area) {
+    const bottom = area.position.y + area.size.height - margin;
+    if (pos.y + frame + height > bottom) {
+      const y = Math.max(area.position.y + margin, bottom - frame - height);
+      await win.setPosition(new tauri.dpi.PhysicalPosition(pos.x, y));
+    }
+  }
+  return { capped: want > max };
+}
