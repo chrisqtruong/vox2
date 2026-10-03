@@ -17,12 +17,19 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: platform
+    attributes:
+      label: Windows or Mac?
+      options: [Windows, Mac]
+    validations:
+      required: true
+  - type: dropdown
     id: area
     attributes:
       label: Which part?
-      options: [Translation, Dictation, Read aloud, Snip & translate, Shortcuts, Settings / window, Updates, Something else]
+      options: [Translation, Dictation, Read aloud, Snip & translate, Shortcuts, Settings / window, Permissions (Mac), Updates, Something else]
   - type: input
     id: setup
     attributes:
       label: Your setup (optional)
-      description: Windows version, translation engine, languages, microphone
+      description: Windows or macOS version, translation engine, languages, microphone
