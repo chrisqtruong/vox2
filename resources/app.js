@@ -13,7 +13,7 @@ import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret, memoryInfo, resizeWindowHeight,
-  getPermissions, requestPermission, openPrivacy, relaunch,
+  getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
 } from './platform.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -48,6 +48,7 @@ const DEFAULTS = {
   fade: true, closeToTray: true, autostart: false,
   updates: 'auto', // 'auto' (install when you're not using Vox2), 'ask', or 'off'
   permCheck: true, // macOS: open the permissions sheet at startup while something's missing
+  colorblind: false, // match scores in colorblind-friendly colors (with symbols) instead of theme colors
 };
 let settings = { ...DEFAULTS };
 
@@ -426,6 +427,7 @@ $('#swap').addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !e.repeat && stopAudio()) return; // reading aloud or dictating: stop that first
   if (e.key === 'Escape' && sheet.classList.contains('open')) closeSettings();
   else if (e.key === 'Escape' && historySheet.classList.contains('open')) closeHistory();
   else if (e.key === 'Escape' && permSheet.classList.contains('open')) closePerms();
@@ -503,6 +505,12 @@ function markTheme() {
     b.setAttribute('aria-pressed', String(b.dataset.theme === settings.theme));
   }
 }
+
+function applyColorblind() {
+  document.documentElement.toggleAttribute('data-colorblind', !!settings.colorblind);
+  $('#colorblind-toggle').checked = !!settings.colorblind;
+}
+$('#colorblind-toggle').addEventListener('change', (e) => { settings.colorblind = e.target.checked; saveSettings(); applyColorblind(); });
 
 function applyFont() {
   document.documentElement.dataset.font = settings.font;
@@ -804,6 +812,7 @@ async function startDictation(pane) {
     source = pane.key;
     panes[other(pane.key)].committed = getText(panes[other(pane.key)]);
   }
+  quick.active = false; // dictating, like typing, ends a quick translation: results stay out of the bubble
   const st = { pane, text: getText(pane).replace(/\s+$/, ''), partial: '', dead: false };
   // Started from another app (via the system-wide shortcut): also type each finished
   // phrase where your cursor is, as spoken or translated per settings.
@@ -1260,8 +1269,17 @@ onNative('snip', async ({ x, y }) => {
   }
 });
 
+// Coming back to the Vox2 window ends a quick translation: put the bubble away (macOS doesn't
+// always tell the bubble it lost focus when you switch to another Vox2 window) and keep results here.
+addEventListener('focus', () => {
+  if (!quick.active) return;
+  quick.active = false;
+  hideBubble();
+});
+
 onNative('bubble-action', ({ action }) => {
   if (action === 'speak' && quick.dst) readAloud(quick.dst);
+  if (action === 'stop') stopAudio();
   if (action === 'open') { quick.active = false; showWindow(); }
 });
 
@@ -1715,10 +1733,22 @@ function setSpeakUI(pane, on) {
     const btn = p.root.querySelector('[data-act="speak"]');
     const active = on && p === pane;
     btn.setAttribute('aria-pressed', String(active));
-    btn.title = active ? 'Stop' : 'Read aloud';
+    btn.title = active ? 'Stop (Esc)' : 'Read aloud';
     $('use', btn).setAttribute('href', active ? '#i-stop' : '#i-speak');
   }
+  if (quick.active) sendBubble({ session: quick.session, speaking: on && pane === quick.dst });
 }
+
+// Esc stops whatever Vox2 is doing out loud: reading aloud, or dictating (what was said so far
+// is kept). Returns whether there was anything to stop.
+function stopAudio() {
+  const busy = !!speakingPane || !!dictation;
+  if (speakingPane) stopSpeech();
+  if (dictation) stopDictation();
+  return busy;
+}
+// Esc pressed in another app, heard by the system-wide keyboard watcher.
+onNative('escape', () => { if (!document.hasFocus()) stopAudio(); });
 
 // While reading aloud, the word being spoken lights up. It's a CSS highlight (styles.css,
 // ::highlight(vox-word)), drawn over the text without touching it, so the box stays editable.
@@ -2151,6 +2181,7 @@ for (const pane of Object.values(panes)) {
   pane.lang.value = settings[pane.key];
 }
 applyTheme(settings.theme);
+applyColorblind();
 applyFont();
 applyZoom();
 applyOnTop();

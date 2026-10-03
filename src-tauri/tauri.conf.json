@@ -16,7 +16,8 @@
         "height": 580,
         "minWidth": 300,
         "minHeight": 340,
-        "center": true
+        "center": true,
+        "acceptFirstMouse": true
       }
     ],
     "security": {

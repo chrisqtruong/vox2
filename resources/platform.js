@@ -72,6 +72,7 @@ export function sendBubble(payload) {
 // Anchor at the cursor, or at a point (e.g. just under a snipped area).
 export const openBubble = (x, y) => invoke('open_bubble', { x: x ?? null, y: y ?? null });
 export const showWindow = () => invoke('show_window').catch(() => {});
+export const hideBubble = () => invoke('hide_bubble').catch(() => {});
 export const startSnip = () => invoke('start_snip_cmd').catch(() => {});
 export const takeSnip = () => invoke('take_snip');
 

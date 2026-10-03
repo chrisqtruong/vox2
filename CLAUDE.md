@@ -37,6 +37,11 @@ JS: `MAC` / `IS_MAC` (from `navigator.platform`), and `getPermissions()` returns
 - **Cursor positions come in points; windows are placed in physical pixels** (×2 on Retina).
 - **Permissions are tied to the app's signature.** Mac builds are signed with Vox2's own certificate so permissions survive updates. Never change the signing certificate/identity. Stale entries: `tccutil reset All com.chris.translator`.
 - Hardened runtime stays off (no notarization; it would block the mic without entitlements).
+- **WebKit says only "TypeError: Load failed"** for any rejected cross-origin response, including a plain HTTP error without CORS headers. When a request fails only on Mac, check the real status natively (it was Google's 429 on `translate_a/single`, which throttles Vox2 on Mac; that's why Mac back-translation uses `translate_a/t` and fetches pronunciation natively via `google.rs`).
+- **xcap works in points on macOS** (`Monitor::from_point`, `x()`/`y()`), while its captured image is in pixels. Convert before looking up a screen (see `finish_snip`).
+- **An inactive Mac window ignores the first click** unless it accepts it: `acceptFirstMouse` in `tauri.conf.json`, `.accept_first_mouse(true)` on built windows.
+- **A window losing focus to another window of the same app doesn't reliably fire `blur` in WebKit**; don't rely on the bubble's blur alone to dismiss it.
+- **Debugging the installed Mac app:** release builds have no web inspector. Write diagnostics with `saveData('debug', …)` (lands in `~/Library/Application Support/com.chris.translator/debug.json`) in a throwaway branch build, then remove them.
 
 ## Checks
 
@@ -46,9 +51,15 @@ JS: `MAC` / `IS_MAC` (from `navigator.platform`), and `getPermissions()` returns
 - Before merging into `main`: Windows check green, and a green Mac build if Mac or shared code changed.
 - Possible next step (not done yet, on hold): run the Mac build on every PR too and require both checks before merging (branch protection).
 
+## Shared-code gotchas
+
+- `quick.active` (a ⌥⌘T / Ctrl+Alt+T or snip session) routes translations to the bubble. Anything that moves work back into the main window must end it: typing, dictating, and focusing the window do.
+- Esc reaches the page two ways: the page's own keydown while Vox2 is in front, and the `escape` event from the native keyboard watcher otherwise (`stopAudio()` handles both).
+
 ## Workflow
 
 - Branch per change, PR into `main`, merge when checks pass. Commit/push/merge only when Chris asks.
+- Record user-visible changes in `CHANGELOG.md` under "Unreleased" (with *Windows and Mac* / *Mac* / *Windows*); Chris copies it into the release notes when he publishes, then it becomes that version's section.
 - Chris works on both a Mac and a Windows PC; GitHub is the meeting point. `git pull` before starting.
 - Testing a Mac build: download the artifact, swap it into `/Applications` (old copy to the Trash), open it. Testing Windows needs his PC.
 

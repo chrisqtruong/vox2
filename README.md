@@ -25,6 +25,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 - [Roadmap](#roadmap)
 - [Build](#build)
 - [License](#license)
+- [Changelog](CHANGELOG.md): what changed in each version
 
 ## What it does
 
@@ -32,10 +33,10 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 - **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>T</kbd>); the translation appears in a bubble by your cursor.
 - **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language.
 - **Dictation.** Tap or hold <kbd>Right Ctrl</kbd> (Mac: <kbd>Right ⌥ Option</kbd>) and talk. Transcribed on your machine; optionally typed into the app you're using, as said or translated.
-- **Read aloud.** Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow (0.75×), normal and fast (1.25×) speeds and a volume slider, which take effect mid-sentence.
+- **Read aloud.** Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow (0.75×), normal and fast (1.25×) speeds and a volume slider, which take effect mid-sentence. Press <kbd>Esc</kbd> in any app to stop it.
 - **Conversation mode (beta).** Two people who speak different languages take turns through one computer; each phrase is translated and read aloud to the other. See [how it works and its limits](#conversation-mode-beta).
 - **Engines.** Google Translate (free), or Claude, ChatGPT or Gemini with your own key, with a tone setting and a "who it's for" note so pronouns come out right.
-- **Back-translation with a match score.** See your translation turned back into your language, with a score for how much of your meaning survived (see below).
+- **Back-translation with a match score.** See your translation turned back into your language, with a score for how much of your meaning survived (see below). Theme colors by default, or colorblind-friendly colors with symbols (settings → appearance).
 - Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top (fades while you work elsewhere), 37 themes, self-updates.
 - **Windows and Mac.** The same app on both; on Mac the shortcuts use ⌘ and ⌥, and a permissions screen walks you through what macOS asks for.
 
@@ -47,6 +48,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> | <kbd>⌥</kbd><kbd>⌘</kbd><kbd>T</kbd> | translate the selected text in any app |
 | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> | <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd> | snip an area of the screen and translate it |
 | <kbd>Right Ctrl</kbd> | <kbd>Right ⌥ Option</kbd> | dictate: tap to start (stops when you go quiet, or tap again), or hold to talk |
+| <kbd>Esc</kbd> | <kbd>Esc</kbd> | stop reading aloud or dictating, from any app (does nothing otherwise) |
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | <kbd>⌘</kbd><kbd>P</kbd> | pin on top (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>F</kbd> | fit the window to its text (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>H</kbd> | <kbd>⌘</kbd><kbd>Y</kbd> | open / close history (while Vox2 is in front) |
@@ -114,6 +116,8 @@ Apple Silicon Macs (M1 and newer). Tested on macOS 26.
 tccutil reset All com.chris.translator
 ```
 
+**Back-translation on Mac.** Google's back-translation service often refuses requests from Vox2 on Mac ("too many requests"), so on Mac the ↩ line and its score come from the same Google service as the main translation. Pronunciation (pinyin, romaji…) still comes from the back-translation service; if Google refuses at that moment, only that line is left out.
+
 **Not yet on Mac.** Intel Macs, and Apple notarization (which would remove the "Open Anyway" step).
 
 ## Back-Translation Fidelity Scoring
@@ -167,8 +171,10 @@ So *c* ≤ 0.55 scores 0, *c* ≥ 0.85 scores 100, and the range between is line
 | Score | Tier | Meaning | Color |
 |---|---|---|---|
 | 85–100 | high | meaning kept | theme accent |
-| 65–84 | moderate | check the details | theme muted |
+| 65–84 | moderate | check the details | theme text |
 | below 65 | low | likely off: something dropped, added, reversed or mistranslated | theme warning |
+
+With **colorblind-friendly colors** on (settings → appearance), the tiers use the [Okabe–Ito](https://jfly.uni-koeln.de/color/) colorblind-safe palette instead, plus a symbol, so the tier never depends on color alone: blue ✓ (high), amber ! (moderate), vermillion ✕ (low), in a darker shade on light themes.
 
 ### Test pairs
 

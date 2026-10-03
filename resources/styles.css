@@ -173,7 +173,7 @@ body.fitted .extras { max-height: none; } /* window fitted to its text: show the
   font-size: 10.5px; font-weight: 600; line-height: 16px; vertical-align: 1px; white-space: nowrap; cursor: help;
 }
 .match.high { color: var(--accent); }
-.match.mid { color: var(--muted); }
+.match.mid { color: var(--ink); }
 .match.low { color: var(--danger); }
 .match.checking { color: var(--pending); border-style: dashed; font-weight: 400; }
 .match-tip {
@@ -189,10 +189,23 @@ body.fitted .extras { max-height: none; } /* window fitted to its text: show the
 .match-tip .tier span { width: 3.6em; font-variant-numeric: tabular-nums; }
 .match-tip .tier.on { color: var(--ink); font-weight: 600; }
 .match-tip .tier.high i, .match-tip b.high { color: var(--accent); }
-.match-tip .tier.mid i { color: var(--muted); }
+.match-tip .tier.mid i { color: var(--ink); }
 .match-tip b.mid { color: var(--ink); }
 .match-tip .tier.low i, .match-tip b.low, .match-tip .warn { color: var(--danger); }
 .match-tip .warn { margin: 3px 0 0; }
+/* Colorblind-friendly scores (settings → appearance): Okabe–Ito blue / amber / vermillion instead of
+   theme colors, darker on light themes, plus a symbol so the meaning never rests on color alone. */
+:root[data-colorblind] {
+  --score-high: light-dark(#0072b2, #56b4e9);
+  --score-mid: light-dark(#a86400, #e6a700);
+  --score-low: light-dark(#c4501a, #f07a3c);
+}
+:root[data-colorblind] .match.high, :root[data-colorblind] .match-tip .tier.high i, :root[data-colorblind] .match-tip b.high { color: var(--score-high); }
+:root[data-colorblind] .match.mid, :root[data-colorblind] .match-tip .tier.mid i, :root[data-colorblind] .match-tip b.mid { color: var(--score-mid); }
+:root[data-colorblind] .match.low, :root[data-colorblind] .match-tip .tier.low i, :root[data-colorblind] .match-tip b.low { color: var(--score-low); }
+:root[data-colorblind] .match.high::before { content: "✓ "; }
+:root[data-colorblind] .match.mid::before { content: "! "; }
+:root[data-colorblind] .match.low::before { content: "✕ "; }
 
 /* Divider with swap */
 .divider { position: relative; height: 1px; background: var(--line); margin: 0 14px; flex: none; }
