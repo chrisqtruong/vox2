@@ -16,6 +16,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 
 - [What it does](#what-it-does)
 - [Shortcuts](#shortcuts)
+- [Conversation mode (beta)](#conversation-mode-beta)
 - [Install](#install): [Windows](#windows) · [macOS](#macos-beta)
 - [macOS notes](#macos-notes)
 - [Back-translation fidelity scoring](#back-translation-fidelity-scoring)
@@ -32,7 +33,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 - **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language.
 - **Dictation.** Tap or hold <kbd>Right Ctrl</kbd> (Mac: <kbd>Right ⌥ Option</kbd>) and talk. Transcribed on your machine; optionally typed into the app you're using, as said or translated.
 - **Read aloud.** Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow (0.75×), normal and fast (1.25×) speeds and a volume slider, which take effect mid-sentence.
-- **Conversation mode.** Two people take turns; each phrase is translated and spoken to the other.
+- **Conversation mode (beta).** Two people who speak different languages take turns through one computer; each phrase is translated and read aloud to the other. See [how it works and its limits](#conversation-mode-beta).
 - **Engines.** Google Translate (free), or Claude, ChatGPT or Gemini with your own key, with a tone setting and a "who it's for" note so pronouns come out right.
 - **Back-translation with a match score.** See your translation turned back into your language, with a score for how much of your meaning survived (see below).
 - Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top (fades while you work elsewhere), 37 themes, self-updates.
@@ -49,6 +50,26 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | <kbd>⌘</kbd><kbd>P</kbd> | pin on top (while Vox2 is in front) |
 
 All configurable in settings → shortcuts.
+
+## Conversation mode (beta)
+
+For talking with someone who speaks another language, with one computer between you.
+
+**How it works today**
+
+1. Put your language in one box and theirs in the other (say English on top, Vietnamese below), and turn on conversation mode with the speech-bubble button in the bottom bar. Both mic buttons light up.
+2. **You** tap the mic on your side and speak. When you pause (or tap the mic again), Vox2 writes the translation in the other box and **reads it aloud** in their language.
+3. **They** tap the mic on their side and answer. The translation is read aloud to you.
+4. Repeat. Starting to talk stops any reading still in progress, and both sides stay on screen as a written record.
+
+Tips: use the speakers, not headphones, and put the computer between you. For a natural pace, set settings → dictation → "after a tap, stop when quiet for" to 2 s. Turning conversation mode on also turns on dictation, which it needs.
+
+**Limitations (why it's in beta)**
+
+- **Every turn starts with a tap.** Each person has to tap their mic before speaking. That's fine at a desk, but awkward face to face, when you'd rather look at each other than at the screen.
+- **One computer, one microphone.** It works best in a quiet room, with each person close enough to the mic.
+
+**Where it's heading: hands-free turns.** After Vox2 reads a translation aloud, it starts listening on the other side by itself, walkie-talkie style, so a conversation flows without touching the computer after the first tap. Tracked in [#11](https://github.com/chrisqtruong/vox2/issues/11).
 
 ## Install
 
@@ -222,14 +243,15 @@ Remember steps 1, 2 and 5 (number formatting, exact match, number cap) when comp
 
 ## Roadmap
 
-Planned or being considered, roughly in order. Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues).
+Planned or being considered, roughly in order. Each item has an issue for discussion; all of them are under the [roadmap label](https://github.com/chrisqtruong/vox2/issues?q=label%3Aroadmap). Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues).
 
 - [x] **macOS version** (beta). See [macOS notes](#macos-notes).
-- [ ] **Mac: Intel support and Apple notarization.** Notarization removes the "Open Anyway" step on first launch.
-- [ ] **Mini mode.** A one-line bar version of the window to keep open while you work.
-- [ ] **Smarter match score.** An optional check by the AI engine that catches swapped words (left/right, he/she) and idioms, and a direct comparison with the translation that skips the trip back. See [next steps for the score](#next-steps-for-the-score).
-- [ ] **Better snip on "detect".** More accurate screen-text reading when the source language isn't set.
-- [ ] **Code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install).
+- [ ] **Mac: Intel support and Apple notarization.** Notarization removes the "Open Anyway" step on first launch. ([#5](https://github.com/chrisqtruong/vox2/issues/5))
+- [ ] **Hands-free conversation.** Today each person taps their mic before speaking. Next: after a translation is read aloud, Vox2 starts listening on the other side by itself, so a face-to-face conversation flows without touching the computer. See [conversation mode](#conversation-mode-beta). ([#11](https://github.com/chrisqtruong/vox2/issues/11))
+- [ ] **Mini mode.** A one-line bar version of the window to keep open while you work. ([#6](https://github.com/chrisqtruong/vox2/issues/6))
+- [ ] **Smarter match score.** An optional check by the AI engine that catches swapped words (left/right, he/she) and idioms, and a direct comparison with the translation that skips the trip back. See [next steps for the score](#next-steps-for-the-score). ([#7](https://github.com/chrisqtruong/vox2/issues/7))
+- [ ] **Better snip on "detect".** More accurate screen-text reading when the source language isn't set. ([#8](https://github.com/chrisqtruong/vox2/issues/8))
+- [ ] **Code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install). ([#9](https://github.com/chrisqtruong/vox2/issues/9))
 
 ## Build
 
