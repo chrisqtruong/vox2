@@ -805,6 +805,7 @@ async function startDictation(pane) {
     source = pane.key;
     panes[other(pane.key)].committed = getText(panes[other(pane.key)]);
   }
+  quick.active = false; // dictating, like typing, ends a quick translation: results stay out of the bubble
   const st = { pane, text: getText(pane).replace(/\s+$/, ''), partial: '', dead: false };
   // Started from another app (via the system-wide shortcut): also type each finished
   // phrase where your cursor is, as spoken or translated per settings.
