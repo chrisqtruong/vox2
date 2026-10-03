@@ -45,23 +45,28 @@ const systemPrompt = (from, to, { tone = 'auto', note = '' } = {}) =>
 // Free extras from one Google call on the finished translation (whichever engine wrote it):
 // translating it back gives a meaning check, and the same response carries its
 // pronunciation in Latin letters (pinyin, romaji…), if it's in a non-Latin script.
-// On macOS, WebKit rejects Google's reply to this request from the page (its cross-origin
-// check fails), so the native side fetches it there (google.rs). Windows fetches it here.
-const NATIVE_BACK = /Mac/.test(navigator.platform) && !!window.__TAURI__;
+// On macOS that endpoint often refuses Vox2 (HTTP 429, which WebKit reports only as "Load
+// failed"), so there the back-translation uses the main translation's endpoint, and the
+// pronunciation is fetched natively (google.rs) as a bonus: if Google refuses, only that line is
+// skipped. Windows uses this endpoint from the page, unchanged.
+const MAC_BACK = /Mac/.test(navigator.platform) && !!window.__TAURI__;
 
 export async function checkBack(translation, lang, backTo) {
-  let json;
-  if (NATIVE_BACK) {
-    json = JSON.parse(await window.__TAURI__.core.invoke('google_single', { sl: lang, tl: backTo, q: translation }));
-  } else {
-    const res = await fetch(
-      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${lang}&tl=${backTo}&dt=t&dt=rm`,
-      { method: 'POST', body: new URLSearchParams({ q: translation }) },
-    );
-    if (!res.ok) return { back: '', roman: '' };
-    json = await res.json();
+  if (MAC_BACK) {
+    const [back, roman] = await Promise.all([
+      google({ text: translation, from: lang, to: backTo }),
+      window.__TAURI__.core.invoke('google_single', { sl: lang, tl: backTo, q: translation })
+        .then((body) => (JSON.parse(body)?.[0] || []).map((r) => r[3]).filter(Boolean).join(' ').trim())
+        .catch(() => ''),
+    ]);
+    return { back: back.trim(), roman };
   }
-  const rows = json?.[0] || [];
+  const res = await fetch(
+    `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${lang}&tl=${backTo}&dt=t&dt=rm`,
+    { method: 'POST', body: new URLSearchParams({ q: translation }) },
+  );
+  if (!res.ok) return { back: '', roman: '' };
+  const rows = (await res.json())?.[0] || [];
   return {
     back: rows.filter((r) => r[0]).map((r) => r[0]).join('').trim(),
     roman: rows.map((r) => r[3]).filter(Boolean).join(' ').trim(),

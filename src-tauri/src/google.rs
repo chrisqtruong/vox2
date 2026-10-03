@@ -1,7 +1,7 @@
-// Google's back-translation endpoint (translate_a/single: the translation back plus
-// pronunciation), fetched natively. On macOS, WebKit rejects Google's reply to this request
-// from the page (it fails its cross-origin check), so the page asks here instead. Windows
-// still fetches it from the page; this is only called on macOS.
+// Google's translate_a/single endpoint (the translation plus pronunciation), fetched
+// natively. On macOS the page uses it only for the pronunciation line (see checkBack in
+// engines.js): WebKit can't read Google's refusals (HTTP 429), and this keeps that line
+// best-effort. Windows fetches the endpoint from the page; this is only called on macOS.
 
 use std::io::{Read, Write};
 use std::net::TcpStream;
