@@ -31,13 +31,13 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 
 - **Live, both ways.** Type in either box and the other translates as you go. New words show grey until the engine settles.
 - **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>T</kbd>); the translation appears in a bubble by your cursor.
-- **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language.
+- **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language. The snip is cleaned up before it's read (enlarged, dark themes flipped, contrast boosted), so screen text comes through word for word.
 - **Dictation.** Tap or hold <kbd>Right Ctrl</kbd> (Mac: <kbd>Right ⌥ Option</kbd>) and talk. Transcribed on your machine; optionally typed into the app you're using, as said or translated.
 - **Read aloud.** Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow (0.75×), normal and fast (1.25×) speeds and a volume slider, which take effect mid-sentence. Press <kbd>Esc</kbd> in any app to stop it.
 - **Conversation mode (beta).** Two people who speak different languages take turns through one computer; each phrase is translated and read aloud to the other. See [how it works and its limits](#conversation-mode-beta).
 - **Engines.** Google Translate (free), or Claude, ChatGPT or Gemini with your own key. The AI engines add a tone setting (natural, casual, polite, formal) and a "who it's for" note so pronouns come out right (settings → translation; dimmed while Google Translate is selected).
 - **Back-translation with a match score.** See your translation turned back into your language, with a score for how much of your meaning survived (see below). Theme colors by default, or colorblind-friendly colors with symbols (settings → appearance).
-- Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top (fades while you work elsewhere), 37 themes, self-updates.
+- Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top (fades while you work elsewhere), 37 themes, search in settings, self-updates.
 - **Windows and Mac.** The same app on both; on Mac the shortcuts use ⌘ and ⌥, and a permissions screen walks you through what macOS asks for.
 
 ## Shortcuts
@@ -261,6 +261,15 @@ Planned or being considered, roughly in order. Each item has an issue for discus
 - [ ] **Smarter match score.** An optional check by the AI engine that catches swapped words (left/right, he/she) and idioms, and a direct comparison with the translation that skips the trip back. See [next steps for the score](#next-steps-for-the-score). ([#7](https://github.com/chrisqtruong/vox2/issues/7))
 - [ ] **Better snip on "detect".** More accurate screen-text reading when the source language isn't set. ([#8](https://github.com/chrisqtruong/vox2/issues/8))
 - [ ] **Code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install). ([#9](https://github.com/chrisqtruong/vox2/issues/9))
+
+### AI-assisted
+
+Small additions that use the AI engines you already have (Claude, ChatGPT, Gemini with your own key), on demand only, so Vox2 stays light. Both Windows and Mac.
+
+- [ ] **Explain this.** Select a phrase and ask what it *really* means: slang, idioms, how formal or rude it is, cultural context, and how a native speaker would say it. ([#21](https://github.com/chrisqtruong/vox2/issues/21))
+- [ ] **Reply helper.** After translating a message, write your answer in your own language and get it back in theirs, in your tone and "who it's for" settings, checked by the back-translation and match score before you send it. ([#22](https://github.com/chrisqtruong/vox2/issues/22))
+- [ ] **Personal glossary.** Names and terms that always come out your way: family names and nicknames, work terms, preferred words. ([#23](https://github.com/chrisqtruong/vox2/issues/23))
+- [ ] **Live call translation** (bigger). On a video call, Vox2 listens to the computer's audio, transcribes it on your computer and shows live translated captions; if both people use Vox2, each reads the other in their own language. Planned in phases: captions in the window, then a floating caption bar, then both directions in conversation mode. Optional and off by default. ([#24](https://github.com/chrisqtruong/vox2/issues/24))
 
 ## Build
 

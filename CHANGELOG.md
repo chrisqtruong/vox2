@@ -13,9 +13,9 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 - **Colorblind-friendly match score colors** (settings → appearance, off by default). Scores show in blue ✓ / amber ! / vermillion ✕ (the [Okabe–Ito](https://jfly.uni-koeln.de/color/) colorblind-safe palette) instead of the theme's colors, darker on light themes and brighter on dark ones. The symbols mean a score never depends on color alone. *Windows and Mac.*
 
 ### Fixed
+
 - **Snip garbled screen text and read "I" as "|".** Screen text is small and often light-on-dark, which the text reader handles badly. Snips are now enlarged, flipped to dark-on-light and contrast-stretched before reading, read as one block of text, and a lone "|" where a word starts becomes "I". In tests across dark, light and colored themes, word accuracy went from 86–100% to 100%. *Windows and Mac.*
 - **Mac: the pronunciation line (romaji, pinyin…) didn't appear.** Google refused Vox2's native request too; it's now made through Apple's own networking, which Google answers. *Mac.*
-
 - **Match score: the middle range (65–84) was nearly invisible.** It used the theme's faint "muted" color; it now uses the theme's text color. *Windows and Mac.*
 - **The quick-translate bubble popped up again while dictating in the Vox2 window.** After ⌥⌘T / Ctrl+Alt+T or a snip, the bubble kept receiving updates until you typed in the window, and dictating didn't count. Dictating, or bringing the Vox2 window to the front, now ends the quick translation. *Windows and Mac.*
 - **Mac: the bubble stayed on screen after switching to the Vox2 window.** It now hides when the Vox2 window comes to the front. *Mac.*
