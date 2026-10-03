@@ -1,0 +1,777 @@
+{
+ "langs": [
+  "vie_Latn",
+  "jpn_Jpan",
+  "kor_Hang",
+  "zho_Hans",
+  "spa_Latn",
+  "arb_Arab",
+  "hin_Deva",
+  "fra_Latn",
+  "tgl_Latn",
+  "por_Latn",
+  "urd_Arab"
+ ],
+ "items": [
+  {
+   "id": 163,
+   "kind": "negation",
+   "en": "An Avenger class mine countermeasures ship, the ship was on its way to Puerto Princesa in Palawan.",
+   "bad_en": "An Avenger class mine countermeasures ship, the ship was not on its way to Puerto Princesa in Palawan.",
+   "refs": {
+    "vie_Latn": "Tàu rà mìn loại Avenger đang di chuyển đến Puerto Princesa ở Palawan.",
+    "jpn_Jpan": "アベンジャー級掃海艇は、パラワン島のプエルト・プリンセサに向かっていました。",
+    "kor_Hang": "한 어벤저급 소해함, 그 함선은 팔라완의 푸에르토 프린세사로 이동 중이었다.",
+    "zho_Hans": "这是一艘复仇者级别的反水雷舰，正在前往巴拉望的普林塞萨港的途中。",
+    "spa_Latn": "El barco, una nave minera de clase Avenger de contramedidas, se dirigía rumbo a Puerto Princesa, en Palawan.",
+    "arb_Arab": "سفينة كشفٍ عن الألغام من طراز أفينجر، كانت السفينة في طريقها إلى بويرتو برنسيسا في بالاوان.",
+    "hin_Deva": "एवेंजर क्लास माइन काउंटरमेज़र शिप, यह जहाज़ पालवन के प्यर्टो प्रिंसेसा के रास्ते में था.",
+    "fra_Latn": "Un navire de contre-mesures anti-mines de classe Avenger, le navire était en route pour Puerto Princesa à Palawan.",
+    "tgl_Latn": "Ang Avenger na klase ng mga countermeasure ng barko, ang barko ay patungo sa Puerto Prinsesa sa Palawan.",
+    "por_Latn": "Um navio de contramedidas de minagem da categoria Avenger, a embarcação seguia para Puerto Princesa em Palawan.",
+    "urd_Arab": "ایک ایونجر کلاس مائن جہاز کو جوابی تدبیر دیتی ہے، یہ جہاز پالاوان میں پیورتو پرنسیسا میں اپنے سفر پر گامزن تھا۔"
+   }
+  },
+  {
+   "id": 578,
+   "kind": "negation",
+   "en": "Cells are so basic and critical to the study of life, in fact, that they are often referred to as \"the building blocks of life\".",
+   "bad_en": "Cells are not so basic and critical to the study of life, in fact, that they are often referred to as \"the building blocks of life\".",
+   "refs": {
+    "vie_Latn": "Tế bào là đối tượng căn bản và thiết yếu để nghiên cứu về sự sống, cho nên chúng thường được gọi là \"những viên gạch xây nên sự sống\".",
+    "jpn_Jpan": "実際、細胞は生命の研究にとって非常に基本的で重要なものであり、「生命の構成要素」と呼ばれることがよくあります。",
+    "kor_Hang": "\"사실 세포는 생명체 연구에 매우 기본적이고 결정적인 존재여서 흔히 \"\"생명체의 구성 요소\"\"라고 일컬어집니다.\"",
+    "zho_Hans": "实际上，细胞在生物研究中有着如此基础和关键的地位，以至于它们常被称为“生命的基本单位”。",
+    "spa_Latn": "Las células son básicas y cruciales para el estudio de la vida. En efecto, con frecuencia se les dice «los componentes básicos de la vida».",
+    "arb_Arab": "الخلايا أساسيّةٌ وحاسمةٌ جداً لدراسة الحياة، بل إنها غالباً ما يشار إليها باسم \"وحدات البناء الأساسية للحياة\".",
+    "hin_Deva": "कोशिकाएं जीवन के अध्ययन के लिए इतनी बुनियादी और महत्वपूर्ण हैं कि वास्तव में उन्हें अक्सर “जीवन का बिल्डिंग ब्लॉक” के रूप में संदर्भित किया जाता है।",
+    "fra_Latn": "Dans l'étude du vivant, les cellules sont tellement essentielles qu'on les considère bien souvent comme les fondamentaux de la vie.",
+    "tgl_Latn": "Ang mga selula ay napakaimportante at kritikal sa pag-aaral ng buhay, sa katotohanan, na ang mga ito ay kadalasang tinutukoy na \"ang mga blokeng pantayo ng buhay\".",
+    "por_Latn": "Células são tão básicas e críticas para o estudo da vida que chegam a ser, frequentemente, chamadas de \"pedras fundamentais da vida.\"",
+    "urd_Arab": "خلیات زندگی کے مطالعہ کے لئے بہت بنیادی اور اہم ہیں، حقیقت میں انہیں اکثر \"زندگی کی تعمیراتی بلاکس\" کہا جاتا ہے"
+   }
+  },
+  {
+   "id": 447,
+   "kind": "negation",
+   "en": "In 1981, Vanda Miss Joaquim, an orchid hybrid, was chosen as the nation's national flower.",
+   "bad_en": "In 1981, Vanda Miss Joaquim, an orchid hybrid, was not chosen as the nation's national flower.",
+   "refs": {
+    "vie_Latn": "Vào năm 1981, Vanda Miss Joaquim, một giống lan lai, đã được chọn làm quốc hoa.",
+    "jpn_Jpan": "1981年には、ランの交配種であるヴァンダ・ミス・ジョアキムが国花に選ばれました。",
+    "kor_Hang": "1981년, 하이브리드 난초인 반다 미스 자큄(Vanda Miss Joaquim)이 싱가포르의 국화로 선정되었습니다.",
+    "zho_Hans": "1981 年，卓锦万代兰被选为该国的国花。它是兰花的杂交品种。",
+    "spa_Latn": "En 1981, se eligió a la orquídea de Singapur, que es un cultivo híbrido, como la flor nacional.",
+    "arb_Arab": "في سمة 1981 اختير فاندا ميس جوكويم، وهو عبارة عن هجين أوركيد، كزهرة وطنية للبلاد.",
+    "hin_Deva": "1981 में, एडवांस किस्म के आर्किड हाइब्रिड वांडा मिस जोआकिम को देश के राष्ट्रीय फूल के रूप में चुना गया था.",
+    "fra_Latn": "En 1981, Vanda Miss Joaquim, un hybride d'orchidée, a été choisie comme fleur emblème de la nation.",
+    "tgl_Latn": "Noong 1981, ang Vanda Miss Joaquim, isang hybrid na orkidya, ay pinili bilang pambansang bulaklak ng bansa.                                                    ",
+    "por_Latn": "No ano de 1981, a Vanda Miss Joaquim, uma híbrida de orquídea, foi eleita como a flor nacional do país.",
+    "urd_Arab": "1981 میں، وانڈا مس جوکیم، ایک دو نسلی ثعلب مصری، کو ملک کا قومی پھول منتخب کیا گیا۔"
+   }
+  },
+  {
+   "id": 81,
+   "kind": "negation",
+   "en": "Hesperonychus elizabethae is a species of the family Dromaeosauridae and is a cousin of Velociraptor .",
+   "bad_en": "Hesperonychus elizabethae is not a species of the family Dromaeosauridae and is a cousin of Velociraptor .",
+   "refs": {
+    "vie_Latn": "Hesperonychus elizabethae là một loài thuộc họ Dromaeosauridae và là anh em họ của Velociraptor.",
+    "jpn_Jpan": "ヘスペロニクス・エリザベサエは、ドロマエサウルス科でヴェロキラプトルの一種です。",
+    "kor_Hang": "헤스페로니쿠스 엘리자베타(Hesperonychus Elizabetae)는 드로마에오사우루스과의 한 종이며 벨로시렙터와 가까운 종류입니다.",
+    "zho_Hans": "伊氏西爪龙属于驰龙科，是迅猛龙的表亲。",
+    "spa_Latn": "Prima del Velocirráptor, la Hesperonychus elizabethae pertenece a la familia Dromaeosauridae.",
+    "arb_Arab": "يعد هيسبيرونيكوس إليزابيث نوعاً من عائلة الديناصورات السريعة وقريب ديناصور فيلوسيرابتور.",
+    "hin_Deva": "हेस्पेरोनिकस एलिजाबेथ, ड्रोमाओसौरिडी परिवार की एक प्रजाति है और वेलोसिरैप्टर का चचेरा भाई है।",
+    "fra_Latn": "L’Hesperonychus elizabethae est une espèce de la famille des Dromaeosauridae et un cousin du Velociraptor.",
+    "tgl_Latn": "Ang Hesperonychus elizabethae ay isang espesye ng pamilyang Dromaeosauridae at pinsan ng Velociraptor. ",
+    "por_Latn": "Hesperonychus elizabethae é uma espécie da família Dromaeosauridae e é primo do Velociraptor.",
+    "urd_Arab": "ہیسپرونیکس الیزابتھ اس ڈرومایوسورائیڈ خاندان کی نُوع اور ویلوکراپٹور کا ممبر ہے-"
+   }
+  },
+  {
+   "id": 298,
+   "kind": "negation",
+   "en": "A change was made this legislative session when the second sentence was deleted first by the House of Representatives and then was passed in a similar form by the Senate Monday.",
+   "bad_en": "A change was not made this legislative session when the second sentence was deleted first by the House of Representatives and then was passed in a similar form by the Senate Monday.",
+   "refs": {
+    "vie_Latn": "Một thay đổi đã được thực hiện đối với phần lập pháp này khi câu thứ hai được xóa đầu tiên bởi Hạ Viện và sau đó được Thượng Viện thông qua dưới hình thức tương tự vào hôm thứ Hai.",
+    "jpn_Jpan": "変更内容は立法議会で決まり、まず下院で第二文が削除され、月曜日には上院で同様の形式で可決されました。",
+    "kor_Hang": "두 번째 문장이 하원 의원에 의해 먼저 삭제된 후 상원 의원에서 비슷한 양식으로 통과되면서 이 입법 회의는 변경되었습니다.",
+    "zho_Hans": "本次的立法会议进行了一处修改，先是众议院删除了其中的第二句话语，随后参议院在周一如法炮制，使其获准通过。",
+    "spa_Latn": "Durante esta cesión parlamentaria se introdujo una modificación cuando la cámara de representantes eliminó la segunda oración y, posteriormente, el lunes, el senado lo aprobó con una redacción similar.",
+    "arb_Arab": "وقد حدث تغيير في هذه الجلسة التشريعيّة، حيث أُلغيت الجملة الثّانية أوّلاً من قِبل مجلس النوّاب ثم أُقِرّت بشكل مشابه في مجلس الشّيوخ يوم الإثنين.",
+    "hin_Deva": "इस लेजिस्लेटिव सेशन में तब बदलाव हुए जब दूसरी सज़ा पहले हाउस ऑफ़ रिप्रेजेन्टेटिव्ज़ द्वारा ख़त्म कर दी गई और फिर सोमवार को सीनेट ने उसी रूप में पास किया.",
+    "fra_Latn": "Un changement a été apporté au cours de cette session législative lorsque la deuxième proposition a d'abord été supprimée par la Chambre des représentants, puis adoptée lundi par le Sénat sous une forme similaire.",
+    "tgl_Latn": "Isang pag-aamyenda ang isinagawa sa sesyon ng mga mambabatas na ito nang ang pangalawang pangungusap ay una nang inalis ng Kapulungan ng mga Kinatawan at pagkatapos ay pinagtibay ng Senado sa kahawig na anyo noong Lunes.",
+    "por_Latn": "Uma mudança foi feita nesta sessão legislativa quando o segundo trecho foi removido, primeiramente pela Câmara dos Deputados, e depois aprovada de forma similar pelo Senado, na segunda-feira.",
+    "urd_Arab": "اس قانون سازی کے سیشن میں اس وقت ایک تبدیلی رونما ہوئی جب دوسرے جملے کو پہلے ایوانِ نمائندگان کی جانب سے حذف کیا گیا اور پیر کو سینٹ کی جانب سے من و عن جاری کیا گیا۔"
+   }
+  },
+  {
+   "id": 897,
+   "kind": "negation",
+   "en": "Some boots have studs and there is studded add-on equipment for slippery conditions, suitable for most shoes and boots, for the heels or heels and sole.",
+   "bad_en": "Some boots have studs and there is not studded add-on equipment for slippery conditions, suitable for most shoes and boots, for the heels or heels and sole.",
+   "refs": {
+    "vie_Latn": "Một số giày ống có đinh tán và có những phụ kiện kèm theo được đóng lên để chống trơn trượt, thích hợp cho hầu hết giày và giày ống, cho phần gót hoặc gót và đế.",
+    "jpn_Jpan": "滑り止めが付いたブーツのほかに、取り外しできる滑り止めもあります。これはほとんどの靴やブーツに適しており、踵または踵と靴底に取り付けられます。",
+    "kor_Hang": "일부 부츠에는 스터드가 있고, 미끄러운 환경에 적합하도록 스터드에 추가 장치가 장착되어 있어서, 대부분의 신발과 부츠, 그리고 힐 또는 힐과 밑창에도 적합합니다.",
+    "zho_Hans": "有的靴子有鞋钉；也有为湿滑路面设计的、带有鞋钉的扩展装备，适用于大多数鞋子和靴子，能装在鞋跟上，或同时装在鞋跟和鞋底上。",
+    "spa_Latn": "Hay botas con tachuelas y existe un accesorio adicional con tachuelas para condiciones resbaladizas, que se adapta a casi cualquier calzado, tanto para los tacones como para la suela. ",
+    "arb_Arab": "وتحتوي بعض الأحذية على مسامير وهناك عناصر إضافية مرصعة للظروف المناخية الزلقة ومناسبة لأغلب الأحذية، للكعب أو الكعب والنعل.",
+    "hin_Deva": "कुछ जूतों में स्टड होते हैं और फिसलन की स्थिति के लिए स्टड जोड़ा हुआ उपकरण होता है, जो अधिकांश जूतों या बूटों के लिए, हील के लिए या हील और सोल के लिए उपयुक्त होता है.",
+    "fra_Latn": "Certaines bottes sont munies de crampons et il existe un équipement complémentaire à crampons pour les conditions glissantes, qui convient à la plupart des chaussures et des bottes, pour les talons ou les talons et la semelle.",
+    "tgl_Latn": "Ang ilang mga bota ay may mga kapit sa ilalim nito (stud) at may mga karagdagang gamit para kumapit sa yelo, angkop sa karamihang sapatos at bota, para sa sakong o mga sakong at talampakan.",
+    "por_Latn": "Algumas botas têm grampos e existe um acessório com grampos para condições escorregadias, adequado para a maioria dos sapatos e botas, tanto para o salto, como o salto e a sola.",
+    "urd_Arab": "کچھ بوٹوں میں گھنڈیاں یا کیلیں ہوتی ہیں اور پھسلن والے حالات کے لئے جوتے میں پیوست اضافی آلہ بھی ہے جو زیادہ تر جوتوں اور بوٹوں، ایڑی اور ایڑی کے ساتھ سول کے لئے مناسب ہے۔"
+   }
+  },
+  {
+   "id": 850,
+   "kind": "negation",
+   "en": "The pit is either heated with hot stones from a fire, or in some places geothermal heat makes areas of ground naturally hot.",
+   "bad_en": "The pit is not either heated with hot stones from a fire, or in some places geothermal heat makes areas of ground naturally hot.",
+   "refs": {
+    "vie_Latn": "Cái hố sẽ được làm nóng lên bằng đá nóng lấy ra từ đống lửa, hoặc ở một số nơi địa nhiệt làm cho đất trong khu vực đó nóng tự nhiên.",
+    "jpn_Jpan": "掘った穴に火から取り出した焼け石を入れて加熱するか、または地熱で地面が自然と熱くなっている場所に穴を掘ることもあります。",
+    "kor_Hang": "구덩이는 불로 달구어진 돌로 데워지거나 지열로 인해 자연적으로 뜨거워집니다.",
+    "zho_Hans": "坑洞通过用火烧过的石头加热，在某些地方则是利用地热使地面自然变热。",
+    "spa_Latn": "El pozo se calienta con piedras calientes extraídas del fuego o, en algunos lugares, el calor geotérmico hace que ciertas zonas del suelo se calienten de forma natural.",
+    "arb_Arab": "تسخّن الحفرة إما بالحجارة المسخنة من النار، أو في بعض الأماكن تجعل الطاقة الحرارية الأرضية مناطق من الأرض ساخنةً بشكل طبيعي.",
+    "hin_Deva": "गड्ढे को या तो आग द्वारा गर्म पत्थरों से गर्म किया जाता है या कुछ जगहों पर भूतापीय गर्मी स्वाभाविक रूप से ज़मीन के क्षेत्रों को गर्म बना देती है.",
+    "fra_Latn": "La fosse est soit chauffée avec des pierres chaudes provenant d'un feu, soit la chaleur géothermique réchauffe naturellement certaines zones du sol.",
+    "tgl_Latn": "Ang hukay sa lupa ay pinaiinit sa pamamagitan ng alinman sa mainit na mga batong galing sa apoy, o sa ibang mga lugar ang geothermal na init ay ginagawang natural na mainit ang mga lugar sa lupa.",
+    "por_Latn": "O buraco é aquecido com pedras quentes tiradas de uma fogueira ou, em alguns lugares, o calor geotérmico torna partes do terreno naturalmente quentes.",
+    "urd_Arab": "غار یا تو آگ سے گرم ہوئے پتھروں سے گرم ہوتا ہے، یا کچھ مقامات میں جیوتھرمل حرارت زمینی علاقے کو قدرتی طور پر گرم کر دیتی ہے-"
+   }
+  },
+  {
+   "id": 784,
+   "kind": "negation",
+   "en": "Many exotic animals are hard to find, and parks sometimes have rules about taking photographs for commercial purposes.",
+   "bad_en": "Many exotic animals are not hard to find, and parks sometimes have rules about taking photographs for commercial purposes.",
+   "refs": {
+    "vie_Latn": "Nhiều loài thú ngoại nhập rất khó tìm và đôi khi các công viên có cả quy tắc về việc chụp ảnh cho mục đích thương mại.",
+    "jpn_Jpan": "珍しい動物は見つけにいものが多く、公園が商業目的での写真撮影を制限する規則を設けていることもあります。",
+    "kor_Hang": "많은 이국적인 동물을 찾기가 어렵고, 상업적 목적으로 사진을 찍는 것에 대한 공원 규칙이 있을 때도 있습니다.",
+    "zho_Hans": "许多珍稀动物很难找到，公园有时也有针对商业摄影的规定。",
+    "spa_Latn": "Numerosas especies exóticas son difíciles de hallar y es habitual que los parques impongan restricciones a la toma de fotografías con objetivos comerciales.",
+    "arb_Arab": "من الصعب أن نجد العديد من الحيوانات الغريبة، وفي بعض الأحيان قد تكون للحدائق العامة قواعد خاصة بشأن التقاط الصور الفوتوغرافية لأغراض تجارية.",
+    "hin_Deva": "कई अनोखे जानवरों को खोजना मुश्किल है और कभी-कभी पार्कों में पैसे कमाने के मकसद से फ़ोटो लेने के मामले में नियम लागू हो सकते हैं.",
+    "fra_Latn": "De nombreux animaux exotiques sont difficiles à trouver, et les parcs ont parfois des règles relatives à la prise de photos à des fins commerciales.",
+    "tgl_Latn": "Maraming kakaibang hayop ang mahirap hanapin, at ang mga parke kung minsan ay may mga tuntunin tungkol sa pagkuha ng mga larawan para sa komersyal ng mga layunin. ",
+    "por_Latn": "Muitos animais exóticos são difíceis de encontrar, e os parques às vezes têm regras sobre tirar fotos para fins comerciais.",
+    "urd_Arab": "غیر ملکی جانوروں کا پانا بہت مشکل ہے، اور کبھی کھی پارکوں میں تجارتی مقاصد سے فوٹو لینے کے اصول ہوتے ہیں۔"
+   }
+  },
+  {
+   "id": 251,
+   "kind": "number",
+   "en": "The death toll is at least 15, a figure which is expected to rise.",
+   "bad_en": "The death toll is at least 52, a figure which is expected to rise.",
+   "refs": {
+    "vie_Latn": "Số người chết hiện tại ít nhất là 15 và dự kiến sẽ còn tăng.",
+    "jpn_Jpan": "死者数は15人以上で、今後も増加が予想されます。",
+    "kor_Hang": "사망자 숫자는 최소 15명이며 계속 증가할 것으로 예상됩니다.",
+    "zho_Hans": "死亡人数至少为 15 人，预计还会增加。",
+    "spa_Latn": "La cantidad de decesos asciende a, al menos, 15 personas, cifra que se estima irá en aumento.",
+    "arb_Arab": "بلغ عدد القتلى 15 على الأقل، وهو رقم من المتوقع أن يستمر بالارتفاع.",
+    "hin_Deva": "मरने वालों की संख्या कम से कम 15 है, और यह संख्या बढ़ने की आशंका है।",
+    "fra_Latn": "Le nombre de décès est d'au moins 15, un chiffre qui devrait augmenter.",
+    "tgl_Latn": "Ang dami ng mga namatay ay hindi bababa sa 15, ito ay inaasahan pang tumaas. ",
+    "por_Latn": "O número de mortos é de ao menos 15 e deve aumentar.",
+    "urd_Arab": "وفیات کی تعداد کم از کم 15 ہے، اور اس تعداد کے بڑھنے کی توقع ہے۔"
+   }
+  },
+  {
+   "id": 954,
+   "kind": "number",
+   "en": "Turkish Airlines flies to 39 destinations in 30 African countries as of 2014.",
+   "bad_en": "Turkish Airlines flies to 124 destinations in 30 African countries as of 2014.",
+   "refs": {
+    "vie_Latn": "Hãng hàng không Thổ Nhĩ Kỳ bay tới 39 địa điểm ở 30 quốc gia châu Phi kể từ năm 2014.",
+    "jpn_Jpan": "トルコ航空は2014年現在、アフリカ30カ国39都市に就航しています。",
+    "kor_Hang": "터키 항공은 2014년 기준으로 아프리카 30개국의 39개 목적지로 운항합니다.",
+    "zho_Hans": "从 2014 年开始，土耳其航空公司可到达 30 个非洲国家的 39 个目的地。",
+    "spa_Latn": "Desde el año 2014, Turkish Airlines tiene vuelos a 39 destinos en 30 países de África.",
+    "arb_Arab": "تقدم الخطوط الجوية التركية رحلات طيران إلى 39 وجهة في 30 دولة أفريقية، وذلك اعتباراً من 2014.",
+    "hin_Deva": "तुर्की एयरलाइंस 2014 से 30 अफ़्रीकी देशों में 39 गंतव्यों के लिए उड़ान भरती है.",
+    "fra_Latn": "En 2014 la compagnie Turkish Airlines dessert 39 destinations dans 30 pays d'Afrique.",
+    "tgl_Latn": "Lumilipad sa 39 na destinasyon ang Turkish Arilines sa 30 bansa ng Aprika simula noong 2014.",
+    "por_Latn": "A Turkish Airlines voa para 39 destinos em 30 países africanos desde 2014.",
+    "urd_Arab": "جیسا کہ 2014 کی بات ہے، ترکش ایر لائنس، 30 افریقی ممالک کے 39 مقامات تک پرواز کرتی ہے۔"
+   }
+  },
+  {
+   "id": 190,
+   "kind": "number",
+   "en": "Passengers were given water as they waited in 90(F)-degree heat.",
+   "bad_en": "Passengers were given water as they waited in 277(F)-degree heat.",
+   "refs": {
+    "vie_Latn": "Hành khách đã được phân phát nước uống khi họ chờ dưới cái nóng 90 độ F.",
+    "jpn_Jpan": "華氏90度の暑さの中で待つ間、乗客に水が配られました。",
+    "kor_Hang": "화씨 90도가 넘는 열기 속에서 기다린 승객들에게는 물이 제공됐습니다.",
+    "zho_Hans": "因为乘客在90度（F）度的高温下等待，他们得以领取了分发的水。",
+    "spa_Latn": "Los pasajeros pudieron beber agua mientras esperaban a una temperatura de 90 °F.",
+    "arb_Arab": "تم منح المسافرين الماء أثناء الانتظار في درجة حرارة تصل إلى 90 درجة فهرنهايت.",
+    "hin_Deva": "यात्रियों को पानी दिया गया क्योंकि वे 90 (F) - डिग्री गर्मी में इंतज़ार कर रहे थे.",
+    "fra_Latn": "Alors qu'ils patientaient sous une chaleur de 32 ° C, les passagers se sont vu offrir des bouteilles d'eau.",
+    "tgl_Latn": "Ang mga pasahero ay binigyan ng tubig habang sila ay naghihintay sa kabila ng init na 90(F)-degree.",
+    "por_Latn": "Os passageiros receberam água enquanto aguardavam no calor de 32 °C.",
+    "urd_Arab": "مسافروں کو پانی دیا گیا جب وہ 90 ڈگری فارن ہائیٹ کی گرمی میں انتظار کرتے تھے۔"
+   }
+  },
+  {
+   "id": 247,
+   "kind": "number",
+   "en": "These agents are responsible for providing government and judicial services under Article 247 of the Pakistani Constitution.",
+   "bad_en": "These agents are responsible for providing government and judicial services under Article 748 of the Pakistani Constitution.",
+   "refs": {
+    "vie_Latn": "Những cơ quan này chịu trách nhiệm cung ứng các dịch vụ hành pháp và tư pháp theo Điều 247 của Hiến Pháp Pakistan.",
+    "jpn_Jpan": "これらの駐在官は、パキスタン憲法第247条に基づき、行政と司法の業務を提供する責任を負っています。",
+    "kor_Hang": "이 정치 운동원들은 파키스탄 헌법 제247조에 따라 통치 체제와 사법 체제를 제공할 책임이 있습니다.",
+    "zho_Hans": "这些代理人负责根据《巴基斯坦宪法》第 247 条提供政府和司法服务。",
+    "spa_Latn": "Estos funcionarios tienen el deber de proveer servicios gubernamentales y judiciales a tenor de lo dispuesto por el artículo 247 de la Constitución paquistaní.",
+    "arb_Arab": "هؤلاء الوكلاء مسؤولون عن تقديم الخدمات الحكومية و القضائية بموجب المادة 247 من الدستور الباكستاني.",
+    "hin_Deva": "ये एजेंट पाकिस्तानी संविधान के अनुच्छेद 247 के तहत सरकार और न्यायिक सेवाएँ प्रदान करने के लिए ज़िम्मेदार हैं।",
+    "fra_Latn": "Ces agents ont la responsabilité de prévoir les services gouvernementaux et judiciaires prévus sous l'Article 247 de la Constitution pakistanaise.",
+    "tgl_Latn": "Ang mga ahente na ito ay responsable sa pagbibigay ng mga serbisyo ng pamahalaan at hukuman sa ilalim ng Artikulo 247 ng Konstitusyon ng Pakistan.",
+    "por_Latn": "Esses agentes são responsáveis pela prestação de serviços governamentais e judiciais, nos termos do artigo 247 da Constituição do Paquistão.",
+    "urd_Arab": "یہ ایجنٹ حضرات پاکستانی قانون کے آرٹیکل نمبر 247 کے تحت حکومتی اور عدالتی خدمات فراہم کرنے کے ذمّے دار ہیں۔"
+   }
+  },
+  {
+   "id": 89,
+   "kind": "number",
+   "en": "However, a source with knowledge of the investigation told the Minneapolis Star-Tribune that it was Louis Jourdain, 16-year old son of Red Lake Tribal Chairman Floyd Jourdain.",
+   "bad_en": "However, a source with knowledge of the investigation told the Minneapolis Star-Tribune that it was Louis Jourdain, 55-year old son of Red Lake Tribal Chairman Floyd Jourdain.",
+   "refs": {
+    "vie_Latn": "Tuy nhiên, một nguồn tin đã được kiểm tra đã tiết lộ với tờ Minneapolis Star-Tribune rằng đó là Louis Jourdain, con trai 16 tuổi của Người đứng đầu bộ lạc Red Lake, Floyd Jourdain.",
+    "jpn_Jpan": "しかし、捜査に詳しい情報筋がミネアポリス・スター・トリビューン紙に語ったところによると、犯人はレッドレイク部族会長フロイド・ジュルダンの16歳の息子、ルイ・ジュルダンだったということです。",
+    "kor_Hang": "그러나, 조사에 대해 알고 있는 한 소식통은 그건 레드 레이크 트라이벌 회장인 플로이드 조데인의 16살 아들인 루이 조데인이라고 미네아폴리스 스타-트리뷴지에 말했습니다.",
+    "zho_Hans": "不过，一位知情人士向《明尼阿波利斯星坛报》透露，凶手是红湖部落（Red Lake Tribal）主席弗洛伊德·乔丹（Floyd Jourdain）之子，16 岁的路易斯·乔丹（Louis Jourdain）。",
+    "spa_Latn": "No obstante, una fuente cercana a la investigación comentó al Minneapolis Star-Tribune que era Louis Jordain, de 16 años, hijo de Floyd Jourdain, presidente de la tribu Red Lake. ",
+    "arb_Arab": "غير أن مصدر مطلع على مجريات التحقيق قد أفاد صحيفة مينيابوليس ستار تريبيون إن الفاعل لويس جوردن، نجل الرئيس القبلي لريد ليك فلويد جوردن البالغ من العمر 16 عاماً.",
+    "hin_Deva": "हालाँकि, जाँच के बारे में जानकारी रखने वाले एक सूत्र ने मिनियापोलिस स्टार-ट्रिब्यून को बताया कि ये रेड लेक ट्राइबल के अध्यक्ष फ़्लॉयड जर्सडैन के 16 वर्षीय बेटे लुई जर्सडैन थे.",
+    "fra_Latn": "Cependant, une source ayant connaissance de l’enquête a déclaré au Minneapolis Star-Tribune qu’il s’agissait de Louis Jourdain, fils de 16 ans du chef de la tribu de Red Lake, Floyd Jourdain.",
+    "tgl_Latn": "Subali't, sinabi sa Minneapolis Star-Tribune ng isang pinagkukunan ng impormasyon na may kaalaman sa imbestigasyon na ito ay si Louis Jourdain, ang 16 na taong gulang na anak ng Tagapangulo ng Tribong Pulang Lawa na si Floyd Jourdain. ",
+    "por_Latn": "No entanto, uma fonte que está a par da investigação disse ao Minneapolis Star-Tribune que foi Louis Jourdain, o filho de 16 anos do chefe da tribo Red Lake, Floyd Jourdain.",
+    "urd_Arab": "تاہم، تفتیش کا علم رکھنے والے ایک ذرائع نے منیاپولس اسٹار ٹریبیون کو بتایا کہ یہ ریڈ لیک ٹرائبل کے چیئرمین فلائیڈ جورڈین کا 16 سالہ بیٹا لوئس جورڈین تھا۔"
+   }
+  },
+  {
+   "id": 131,
+   "kind": "number",
+   "en": "An additional 300 brings the total to 1,300 carriages to be acquired to relieve overcrowding.",
+   "bad_en": "An additional 907 brings the total to 1,300 carriages to be acquired to relieve overcrowding.",
+   "refs": {
+    "vie_Latn": "300 toa xe được bổ sung nâng tổng số lên 1300 toa xe được trang bị để giảm quá tải.",
+    "jpn_Jpan": "混雑を緩和するために、300両を追加して計1,300両が確保される予定です。",
+    "kor_Hang": "혼잡 완화를 위하여 300대의 객차를 추가 도입할 것이며, 이에 따라 총 객차 수는 1,300대가 됩니다.",
+    "zho_Hans": "新增 300 节车厢，使总车厢数达到 1300 节，以此缓解过度拥挤的情况。",
+    "spa_Latn": "Con la adquisición de unos 300 adicionales, suman un total de 1300 la cantidad de vagones incorporados con el fin de reducir la aglomeración de personas.",
+    "arb_Arab": "ترفع ٣٠٠ عربة إضافية العدد الإجمالي إلى ١٣٠٠ عربة سوف يتم الحصول عليها لمعالجة الاكتظاظ.",
+    "hin_Deva": "300 और गाड़ियों से संख्या बनती हैं , 1,300 गाडियाँ जो मंगवाई गई हैं ै ताकिें भीड़भाड़ से निजात मिल सके।",
+    "fra_Latn": "Avec 300 de plus on atteint un total de 1 300 wagons à acquérir pour soulager la congestion des transports.",
+    "tgl_Latn": "Karagdagang 300 upang maging 1,300 ang bilang ng mga karong makukuha upang mabawasan ang labis na bilang ng tao. ",
+    "por_Latn": "Um adicional de 300 eleva o total para 1.300 vagões a serem adquiridos a fim de reduzir a superlotação.",
+    "urd_Arab": "مزید 300 کوچ کی خرید سے بھیڑ بھاڑ کو رفع کرنے کے لئے خریدے گئے ڈبوں کی میزان 1300 ہو گئی۔"
+   }
+  },
+  {
+   "id": 44,
+   "kind": "number",
+   "en": "Fred is the strongest tropical cyclone ever recorded so far south and east in the Atlantic since the advent of satellite imagery, and only the third major hurricane on record east of 35°W.",
+   "bad_en": "Fred is the strongest tropical cyclone ever recorded so far south and east in the Atlantic since the advent of satellite imagery, and only the third major hurricane on record east of 112°W.",
+   "refs": {
+    "vie_Latn": "Fred là gió xoáy nhiệt đới mạnh nhất từng được ghi nhận cho tới nay ở phía nam và đông Atlantic kể từ hiện sự kiện ảnh vệ tinh và chỉ cơn bão lớn số ba được ghi nhận ở phía đông 35° Tây.",
+    "jpn_Jpan": "フレッドは、衛星画像が導入されて以来、大西洋のはるか南と東で記録された最大の熱帯低気圧であり、西経35度以東で記録された3番目の大型ハリケーンである。",
+    "kor_Hang": "프레드는 위성사진의 출현 이후 지금까지 대서양의 남쪽과 동쪽에 기록된 가장 강력한 열대성 사이클론이며, 35°W의 동쪽에서 기록된 세 번째 허리케인이다.",
+    "zho_Hans": "“弗雷德”是卫星图像问世以来，在大西洋南部和东部记录到的最强热带气旋，也是有记录以来西经 35° 以东地区的第三大飓风。",
+    "spa_Latn": "Fred es el ciclón tropical más agresivo que se ha registrado hasta el sur y el este del Atlántico desde la llegada de las imágenes satelitales y solo el tercer gran huracán detectado al este del meridiano 35° O.",
+    "arb_Arab": "\"فريد\" أقوى إعصار استوائي تم تسجيله حتى الآن جنوب وشرق المحيط الأطلسي منذ ظهور صور الأقمار الاصطناعية، وثالث أكبر إعصار تم تسجيله شرق درجة 35 غربًا.",
+    "hin_Deva": "सैटेलाइट इमेजरी के आगमन के बाद से फ़्रेड अटलांटिक में अब तक दक्षिण और पूर्व में दर्ज सबसे शक्तिशाली उष्णकटिबंधीय चक्रवात है और 35°W के पूर्व में केवल तीसरा प्रमुख तूफ़ान रिकॉर्ड है.",
+    "fra_Latn": "Fred est le cyclone tropical le plus violent jamais enregistré dans le sud et l'est de l'Atlantique depuis l'avènement de l'imagerie satellite, et seulement le troisième ouragan majeur enregistré à l'est de 35°W.",
+    "tgl_Latn": "Ang Fred ang pinakamalakas na bagyong naitala kailanman sa timog at silangan ng Atlantiko simula ng pagdating ng paglalarawan sa pamamagitan ng satellite, at tanging pangatlong malaking bagyo na naitala sa silangan ng 35Â°W.",
+    "por_Latn": "O Fred é o ciclone tropical mais forte já registrado ao extremo sul e leste no Atlântico desde a criação das imagens por satélite e é apenas o terceiro furacão significativo registrado a leste do meridiano 35° O.",
+    "urd_Arab": "فریڈ، جنوب مشرقی بحر اوقیانوس میں سیٹلائٹ کے ذریعہ تصویر کشی کے آغاز کے بعد اب تک کا سب سے مضبوط استوائی طوفان ہے، اور یہ 35 ° ڈبلیو کے مشرق میں اب تک کے ریکارڈ کا تیسرا بڑا سمندری طوفان ہے۔"
+   }
+  },
+  {
+   "id": 98,
+   "kind": "number",
+   "en": "800 miles of the Trans-Alaska Pipeline System were closed down following a spill of thousands of barrels of crude oil south of Fairbanks, Alaska.",
+   "bad_en": "2407 miles of the Trans-Alaska Pipeline System were closed down following a spill of thousands of barrels of crude oil south of Fairbanks, Alaska.",
+   "refs": {
+    "vie_Latn": "\"800 dặm của Hệ thống đường ống xuyên Alaska đã bị đóng sau sự cố tràn hàng ngàn thùng dầu thô ở phía nam Fairbanks Alaska.\"",
+    "jpn_Jpan": "アラスカ州フェアバンクス南部で発生した数千バレルの原油流出事故を受けて、アラスカ横断パイプラインシステムが800マイルにわたって閉鎖されました。",
+    "kor_Hang": "알래스카 주 페어뱅크스 남쪽에 수천 배럴의 원유가 유출된 후 800마일에 이르는 알래스카 파이프라인(Trans-Alaska Pipeline System)이 폐쇄되었습니다.",
+    "zho_Hans": "在阿拉斯加费尔班克斯（Fairbanks）南部发生数千桶原油泄漏后，横贯阿拉斯加、长达800英里的输油管道系统被关闭。",
+    "spa_Latn": "Tras un derrame de miles barriles de aceite crudo en el sur de Fairbanks, se cerraron 800 millas del sistema de oleoducto Trans-Alaska.",
+    "arb_Arab": "تم إغلاق 800 ميلاً من نظام خط أنابيب ترانس ألاسكا بعد أن تسرب آلاف البراميل من النفط الخام جنوب مدينة فيربانكس في ولاية ألاسكا.",
+    "hin_Deva": "फेयरबैंक्स, अलास्का के दक्षिण में हजारों बैरल कच्चे तेल के रिसाव के बाद ट्रांस-अलास्का पाइपलाइन सिस्टम के 800 मील के हिस्से को बंद कर दिया गया था।",
+    "fra_Latn": "800 miles du réseau de pipelines Trans-Alaska ont été fermés suite à un déversement de milliers de barils de pétrole brut au sud de Fairbanks, en Alaska.",
+    "tgl_Latn": "800 milya ng Sistema ng Trans-Alaska Pipeline ang isinara kasunod ng pagtagas ng libo-libong bariles ng krudong langis sa timog ng Fairbanks, Alaska.",
+    "por_Latn": "800 milhas do Sistema de Oleodutos Transalasca foram fechados após o derramamento de milhares de barris de petróleo bruto no sul de Fairbanks, Alasca.",
+    "urd_Arab": "فیر بینکس، الاسکا کے جنوب میں ہزاروں بیرل خام تیل کے بہہ جانے کے بعد 800 میل کے ٹرانس الاسکا پائپ لائن سسٹم کو بند کر دیا گیا۔"
+   }
+  },
+  {
+   "id": 312,
+   "kind": "pronoun",
+   "en": "The 30-year-old husband, who was born in Buffalo, was one of the four killed in the shooting, but his wife was not hurt.",
+   "bad_en": "The 30-year-old husband, who was born in Buffalo, was one of the four killed in the shooting, but her wife was not hurt.",
+   "refs": {
+    "vie_Latn": "Người chồng 30 tuổi, sinh tại Buffalo, là một trong bốn người bị thiệt mạng trong vụ nổ súng, nhưng người vợ không bị thương.",
+    "jpn_Jpan": "バッファロー出身の30歳の夫は、銃撃戦で死亡した4人のうちの1人でしたが、その妻に怪我はありませんでした。",
+    "kor_Hang": "버팔로에서 태어난 30살의 남편은 총격 사건에서 사망한 4명 중 한 명이었지만 아내는 부상당하지 않았다.",
+    "zho_Hans": "这名30岁的丈夫出生于布法罗，是枪击案中的四名死者之一，但他的妻子没有受伤。",
+    "spa_Latn": "El cónyuge, de 30 años y oriundo de Búfalo, fue uno de los cuatro fallecidos en la balacera, pero su esposa no sufrió lesiones.",
+    "arb_Arab": "الزوج البالغ من العمر 30 عاماً والمولود في بافلو، كان واحداً من أربع قُتلوا في إطلاق النار، لكن زوجته لم تُصب.",
+    "hin_Deva": "शूटिंग में मरने वाले चार लोगों में से एक 30 वर्षीय पति था, जिसका जन्म बफ़ेलो में हुआ था, लेकिन उसकी बीवी बच गयी।",
+    "fra_Latn": "Le mari, âgé de 30 ans et natif de Buffalo, faisait partie des quatre victimes de la tuerie, mais sa femme n'a pas été blessée.",
+    "tgl_Latn": "Ang 30 taong gulang na asawang lalaki, na isinilang sa Buffalo, ay isa sa apat na nasawi sa barilan, nguni't hindi nasaktan ang kaniyang kabiyak.",
+    "por_Latn": "O marido de 30 anos de idade, que nasceu em Buffalo, foi um dos quatro mortos no tiroteio, mas sua esposa não se feriu.",
+    "urd_Arab": "بوفالو میں پیدا ہونے والا 30 سالہ شوہر، فائرنگ کی واردات میں ہلاک ہونے والے چار لوگوں میں سے ایک تھا، لیکن اس کی اہلیہ زخمی نہيں ہوئي تھی۔"
+   }
+  },
+  {
+   "id": 338,
+   "kind": "pronoun",
+   "en": "While on his warm-up lap, Lenz fell off his bike, and was then struck by fellow racer Xavier Zayat.",
+   "bad_en": "While on her warm-up lap, Lenz fell off his bike, and was then struck by fellow racer Xavier Zayat.",
+   "refs": {
+    "vie_Latn": "Khi đang trên vòng đua khởi động, Lenz đã ngã khỏi xe, và sau đó bị tay đua Xavier Zayat đâm phải.",
+    "jpn_Jpan": "レンツはウォームアップ中にバイクから転落し、仲間のザビエル・ザヤットに追突された。",
+    "kor_Hang": "워밍업랩에서 렌즈는 자전거에서 떨어져 동료 레이서인 세비어 카야트와 충돌했습니다.",
+    "zho_Hans": "在赛道上热身时，伦茨 (Lenz) 从自行车上摔了下来，然后被跟在后面的赛车手泽维尔·扎亚特 (Xavier Zayat) 撞到。",
+    "spa_Latn": "Durante su vuelta de estrada en calor, Lenz cayó de su bicicleta y fue luego arrollado por su compañero, Xavier Zayat.",
+    "arb_Arab": "بينما كان لينز في جولة الإحماء، سقط من دراجته، ثم صدمه المتسابق زافيير زيات زميله.",
+    "hin_Deva": "जब वह तेज़ दौड़ेने जा रहा था, तब लेन्ज़ अपनी बाइक से गिर गया था और उसके बाद साथी रेसर ज़ेवियर ज़्याट द्वारा मारा गया था.",
+    "fra_Latn": "Pendant le tour d'échauffement, Lenz est tombé de sa moto, puis a été heurté par son compagnon de course Xavier Zayat.",
+    "tgl_Latn": "Habang isinasagawa ang kaniyang lap na pampainit, nahulog si Lenz mula sa kaniyang bisekleta, at pagkatapos ay nabunggo ng kaniyang kasamahan sa karera na si Xavier Zayat.",
+    "por_Latn": "Durante sua volta de aquecimento, Lenz caiu de sua bicicleta e foi atingido pelo companheiro de corrida, Xavier Zayat.",
+    "urd_Arab": "جب وہ اپنے وارم اپ کے دورہ پر تھا لینز اپنی بائک سے گر پڑا اور پھر وہ اپنے مقابلہ کرنے والے ساتھی زیویر زیات سے ٹکرا گیا۔"
+   }
+  },
+  {
+   "id": 328,
+   "kind": "pronoun",
+   "en": "He joined them in 1945 and stayed until 1958.",
+   "bad_en": "She joined them in 1945 and stayed until 1958.",
+   "refs": {
+    "vie_Latn": "Ông gia nhập vào năm 1945 và hoạt động đến năm 1958.",
+    "jpn_Jpan": "1945年に彼らと合流し、1958年まで滞在した。",
+    "kor_Hang": "그는 1945년에 합류해서 1958년까지 머물렀습니다.",
+    "zho_Hans": "他于 1945 年加入球队，一直效力到 1958 年。",
+    "spa_Latn": "En 1945 se les unió y permaneció allí hasta 1958.",
+    "arb_Arab": "انضم إليهم عام 1945 وبقي حتى عام 1958.",
+    "hin_Deva": "वह 1945 में उनके साथ जुड़े और 1958 तक उनके साथ काम किया.",
+    "fra_Latn": "Il le rejoint en 1945 et y reste jusqu'en 1958.",
+    "tgl_Latn": "Umanib siya sa kanila noong 1945 at nanatili hanggang 1958. ",
+    "por_Latn": "Ele se ligou com eles no ano de 1945 e continuou até o ano de 1958.",
+    "urd_Arab": "انہوں نے 1945 میں ان میں شمولیت اختیار کی اور 1958 تک ان کے ساتھ رہے۔"
+   }
+  },
+  {
+   "id": 384,
+   "kind": "pronoun",
+   "en": "After initial military setbacks, Ethelred was able to agree to terms with Olaf, who returned to Norway to try to gain his kingdom with mixed success.",
+   "bad_en": "After initial military setbacks, Ethelred was able to agree to terms with Olaf, who returned to Norway to try to gain her kingdom with mixed success.",
+   "refs": {
+    "vie_Latn": "Sau những thất bại quân sự đầu tiên, Vua Etherlred đã có thể đồng ý các điều khoản với Olaf, người quay trở về từ Na Uy để cố gắng đạt lại vương quốc của mình với thành công lẫn lộn.",
+    "jpn_Jpan": "初の軍事的な挫折の後、エセルレッドはオラフと条件の合意に至ったのの、オラフはノルウェーに戻って失敗と成功を繰り返しながら王国を手に入れようとしました。",
+    "kor_Hang": "초기의 군사적 실패 이후, 에텔레드는 성공과 실패를 거듭하며 자신의 왕국을 얻기 위해 노르웨이로 돌아온 올라프와의 계약에 동의할 수 있었습니다.",
+    "zho_Hans": "在初期军事失利之后，埃塞尔雷德终于与奥拉夫达成协议，奥拉夫重返挪威试图夺回王位，但算不上成功。",
+    "spa_Latn": "Luego de enfrentar contratiempos militares iniciales, Etelredo logró arribar a un acuerdo con Olaf, quien volvió a Noruega para intentar ganar su reino, con resultados dispares.",
+    "arb_Arab": "بعد الانتكاسات العسكرية الأولية، استطاع إثيلريد الاتفاق مع أولاف، الذي عاد إلى النرويج في محاولةٍ لكسب مملكته بدرجات متفاوتة من النجاح.",
+    "hin_Deva": "शुरुआती सैन्य असफलताओं के बाद, एथलरेड ने ओलाफ़ की शर्तें मान लीं. दरअसल, ओलाफ़ अपने साम्राज्य को दोबारा पाने के लिए नॉर्वे से लौटा था. वह अपनी इस कोशिश में काफ़ी हद तक सफल रहा.",
+    "fra_Latn": "Après les premiers échecs militaires, Ethereld est parventu à un accord avec Olaf, pour sa part retourné en Norvège afin d'essayer de reconquérir son royaume, pour des résultats mitigés.",
+    "tgl_Latn": "Matapos ang mga naunang kabiguang militar, nagawang makipagbati ni Ethelred kay Olaf, na nagbalik sa Norway upang subukang mapasakaniya ang kaniyang kaharian na may magkakahalong tagumpay.",
+    "por_Latn": "Depois de contratempos militares iniciais, foi possível que Ethelred chegasse a um acordo com Olaf, que retornou à Noruega para tentar ganhar seu reino, com certo sucesso.",
+    "urd_Arab": "ابتدائی فوجی دھچکے کے بعد ایتھلیڈ اولاف کے ساتھ معاہدے پر راضی ہو گیا جو مخلوط کامیابی کے ساتھ اپنی سلطنت کو حاصل کرنے کی کوشش کے لئے ناروے واپس آیا۔"
+   }
+  },
+  {
+   "id": 304,
+   "kind": "pronoun",
+   "en": "In the 1960s he headed back to newly-independent Algeria to teach film directing.",
+   "bad_en": "In the 1960s she headed back to newly-independent Algeria to teach film directing.",
+   "refs": {
+    "vie_Latn": "Vào những năm 1960 ông ta đã quay lại Algeria mới độc lập để dạy đạo diễn phim.",
+    "jpn_Jpan": "1960年代には、映画の撮り方について指導するために、独立直後のアルジェリアに戻りました。",
+    "kor_Hang": "1960년대에 그는 영화 연출을 교육하고자 새롭게 독립한 알제리아로 돌아갔다.",
+    "zho_Hans": "20 世纪 60 年代，他回到刚刚独立的阿尔及利亚，教授电影导演知识。",
+    "spa_Latn": "En la década de 1960, volvió a Argelia, que logró su independencia recientemente, para dar clases de dirección cinematográfica.",
+    "arb_Arab": "عاد في الستينيات إلى الجزائر المستقلة حديثًا لتدريس الإخراج السينمائي.",
+    "hin_Deva": "1960 के दशक में फिल्म निर्देशन सिखाने के लिए वह नए स्वतंत्र हुए अल्जीरिया वापस आ गए।",
+    "fra_Latn": "Dans les années 60, il est retourné en Algérie, récemment indépendante, pour enseigner la réalisation de films.",
+    "tgl_Latn": "Noong dekada ng 1960 ay nagbalik siya sa bagong-malayang Algeria upang magturo ng pagdidirek ng mga sine.",
+    "por_Latn": "Na década de 1960, ele voltou para a recém-independente Argélia para dar aulas de direção cinematográfica.",
+    "urd_Arab": "1960 کی دہائی میں وہ فلم ڈائرکشن کی تربیت دینے کی غرض سے نو آزاد الجزائر کو واپس آیا۔"
+   }
+  },
+  {
+   "id": 24,
+   "kind": "pronoun",
+   "en": "He had 2 goals and 2 assists in Washington's 5-3 win over the Atlanta Thrashers.",
+   "bad_en": "She had 2 goals and 2 assists in Washington's 5-3 win over the Atlanta Thrashers.",
+   "refs": {
+    "vie_Latn": "Anh ấy có 2 bàn thắng và 2 bàn kiến tạo trong chiến thắng 5-3 trước Atlanta Thrashers của Washington.",
+    "jpn_Jpan": "ワシントンがアトランタ・トラッシャーズに5-3で勝利した際には2ゴール2アシストを記録しています。",
+    "kor_Hang": "Atlanta Thrashers를 상대로 5-3으로 이긴 Washington의 경기에서 그는 골 2개와 어시스트 2개를 기록했습니다.",
+    "zho_Hans": "在华盛顿队以 5-3 的比分战胜亚特兰大鸫鸟队的比赛中，他贡献了 2 个进球和 2 次助攻。",
+    "spa_Latn": "Marcó 2 goles y 2 asistencias en el triunfo por 5 a 3 de Washington sobre los Thrashers de Atlanta.",
+    "arb_Arab": "سجّل هدفين ومرر تمريرتين حاسمتين في المباراة التي تغلّب فيها فريق واشنطن على فريق أتلانتا ثراشرز بنتيجة 5-3.",
+    "hin_Deva": "अटलांटा थ्रैशर्स पर वाशिंगटन की 5-3 की जीत में उन्होंने 2 गोल और 2 असिस्ट किए थे.",
+    "fra_Latn": "Il a marqué 2 buts et fait 2 passes décisives durant le match contre les Atlanta Trashers, remporté 5-3 par Washington.",
+    "tgl_Latn": "Nakagawa siya ng 2 goal at 2 assist sa panalong 5-3 ng Washington laban sa Atlanta Thrashers. ",
+    "por_Latn": "Ele fez 2 gols e 2 assistências na vitória do time de Washington de 5 a 3 em cima do Atlanta Thrashers.",
+    "urd_Arab": "اٹلانٹا تھریشرز پر واشنگٹن کی 5-3 سے جیت میں انہوں نے 2 گولز داغے اور 2 گول کرنے میں مدد کی۔"
+   }
+  },
+  {
+   "id": 222,
+   "kind": "pronoun",
+   "en": "The presenter, who was arrested at the scene, denied the attack and claimed he used the pole to protect himself from bottles being thrown at him by up to thirty people.",
+   "bad_en": "The presenter, who was arrested at the scene, denied the attack and claimed she used the pole to protect himself from bottles being thrown at him by up to thirty people.",
+   "refs": {
+    "vie_Latn": "Người dẫn chương trình, bị bắt tại hiện trường, đã phủ nhận việc tấn công và tuyên bố rằng anh ta sử dụng khúc gậy để bảo vệ bản thân khỏi những chai lọ ném vào mình bởi gần ba mươi người.",
+    "jpn_Jpan": "現場で逮捕された司会者は暴行を否認し、最大30人から瓶を投げつけられたため、身を守るために棒を使ったと主張しています。",
+    "kor_Hang": "현장에서 체포된 뉴스 캐스터는 공격한 것을 부인하며 자신에게 병을 던지며 공격하는 30명의 사람들에게서 자기방어를 하기 위해 막대기를 사용했다고 주장했다.",
+    "zho_Hans": "现场被捕的主持人否定了袭击，并声称有多达三十个人向他投掷瓶子，他用棍子是为了不让自己受到伤害。",
+    "spa_Latn": "El presentador, a quien se arrestó en el lugar, negó la agresión y sostuvo que empleó el palo como protección contra las botellas que hasta unas treinta personas le lanzaban.",
+    "arb_Arab": "ونفى مقدم البرنامج، الذي اعتُقل في مكان الحادث، الهجوم وادعى انه استخدم القطب لحماية نفسه من الزجاجات التي ألقيت في وجهه بواسطة ثلاثين شخصاً.",
+    "hin_Deva": "प्रेज़ेंटर, जिसे मौका-ए-वारदात से गिरफ़्तार किया गया था, ने हमले से इनकार किया और दावा किया कि उसने पोल का इस्तेमाल खुद को लगभग तीस लोगों द्वारा फेंके जाने वाली बोतलों से बचाने के लिए किया.",
+    "fra_Latn": "Le présentateur, qui a été arrêté sur les lieux, a nié l'attaque et affirmé qu'il avait utilisé le poteau pour se protéger des bouteilles que lui lançaient jusqu'à trente personnes.",
+    "tgl_Latn": "Ang nagtatanghal, na inaresto sa lugar ng pinangyarihan, ay itinanggi ang pag-atake at sinabing ginamit niya ang pingga upang protektahan ang kaniyang sarili mula sa mga botelyang itinatapon sa kaniya ng hanggang 30 tao.",
+    "por_Latn": "O apresentador, que foi preso no local, negou a agressão e afirmou ter usado o mastro para se proteger de garrafas que umas trinta pessoas estavam atirando contra ele.",
+    "urd_Arab": "پیش کرنے والا، جسے جائے وقوعہ سے گرفتار کیا گیا تھا، اس نے اس حملے کی تردید کی اور یہ دعوی کیا کہ اس نے پول کا استعمال تیس افراد کی طرف سے اس کی طرف پھینکی جا رہی بوتلوں سے خود کو بچانے کے لئے کیا تھا۔"
+   }
+  },
+  {
+   "id": 387,
+   "kind": "pronoun",
+   "en": "He originally named the Hangeul alphabet Hunmin Jeongeum, which means \"the correct sounds for the instruction of the people\".",
+   "bad_en": "She originally named the Hangeul alphabet Hunmin Jeongeum, which means \"the correct sounds for the instruction of the people\".",
+   "refs": {
+    "vie_Latn": "Ban đầu, ông đặt tên cho bảng chữ cái Hangeul là Huấn dân chính âm, có nghĩa là \"âm thanh chuẩn xác để hướng dẫn mọi người\".",
+    "jpn_Jpan": "当初、彼はハングル文字を「訓民正音」と名付けたましたが、これは「民衆の指導のための正しい音」という意味です。",
+    "kor_Hang": "\"그는 원래 한글 자모를 훈민정음이라고 이름 붙였는데, \"\"백성을 가르치는 바른 소리\"\"라는 뜻입니다.\"",
+    "zho_Hans": "他最初将韩语字母发音表命名为“训民正音”，意思是“用于教导人民的正确发音”。",
+    "spa_Latn": "El nombre original que se le dio al alfabeto Hangeul fue Hunmin Jeongeum, que significa «los sonidos adecuados para instruir al pueblo».",
+    "arb_Arab": "أطلق على الأبجدية الهنجولية في البداية اسم \"هانمن جيونجوم\"، أي \"الأصوات الصحيحة لتوجيه الناس\".",
+    "hin_Deva": "उन्होंने हैंगेउल अक्षर का मूल नाम हनमिन जीयोंगियम रखा, जिसका अर्थ है “लोगों के निर्देश के लिए सही आवाज़”।",
+    "fra_Latn": "À l’origine, il a donné à l’alphabet Hangeul le nom de Hunmin Jeongeum, qui signifie « les sons corrects pour instruire le peuple ».",
+    "tgl_Latn": "Orihinal niyang pinangalanan ang alpabetong Hanguel bilang Hunmin Jeongeum, na nangangahulugang \"ang wastong tunog para sa mga direksyon ng tao\".",
+    "por_Latn": "Ele chamou originalmente o alfabeto Hangeul de Hunmin Jeongeum, que significa \"os sons corretos para a instrução do povo\".",
+    "urd_Arab": "اس نے اصلاً ہانگیول حروف کا نام ہونمین جیون گیوم رکھا جس کے معنی ہیں ”معشر الناس کی تعلیم کے لئے درستگ آوازیں۔“"
+   }
+  },
+  {
+   "id": 758,
+   "kind": "opposite",
+   "en": "A traveller with piles of money might consider a round the world flight, broken up with stays in many of these hotels.",
+   "bad_en": "A traveller with piles of money might consider a round the world flight, broken up with stays in few of these hotels.",
+   "refs": {
+    "vie_Latn": "Ai rủng rỉnh tiền có thể xem xét làm một chuyến vòng quanh thế giới, nghỉ ngơi trong những khách sạn này.",
+    "jpn_Jpan": "資金的に余裕のある旅行者は、これらのホテルに宿泊しながら世界一周空の旅を利用するのもいいかもしれません。",
+    "kor_Hang": "돈이 충분한 여행자는 이런 호텔에서 묵으며 비행기로 전 세계 일주를 하는 것도 고려할 수 있겠다.",
+    "zho_Hans": "一名腰缠万贯的旅客可能会考虑乘飞机环游世界，并在旅途中陆续入住许多家这样的酒店。",
+    "spa_Latn": "Un viajero muy adinerado podría considerar hacer un viaje alrededor del mundo, fraccionado en estadías en muchos de estos hoteles.",
+    "arb_Arab": "قد يفكر المسافر الذي يملك الكثير من الأموال في القيام برحلة حول العالم مع إقامات متقطعة في عدد من هذه الفنادق.",
+    "hin_Deva": "एक अमीर यात्री यह सोच सकता है कि पूरी दुनिया में उड़ना उसे कंगाल कर सकता है जबकि वह इन होटलों में से कई में रुका हुआ है।",
+    "fra_Latn": "Le voyageur qui dispose de sommes considérables peut envisager un tour du monde en avion, entrecoupé de séjours dans nombre de ces hôtels.",
+    "tgl_Latn": "Ang isang manlalakbay na may napakararaming pera ay maaaring pag-isipan ang paglipad na palibot sa mundo, na puputul-putulin sa pamamagitan ng mga pagtahan sa marami sa mga hotel na ito. ",
+    "por_Latn": "Um viajante com muito dinheiro pode considerar uma volta pelo mundo, intercalando com estadias em muitos desses hotéis.",
+    "urd_Arab": "ایک مسافر جس کے پاس بہت زیادہ رقم ہو وہ دنیا کے گرد جہاز میں سفر کرنے پر غور کرنا چاہیئے اور ان ہی میں سے کئی ہوٹلز میں علیٰحدہ قیام کرنا۔"
+   }
+  },
+  {
+   "id": 330,
+   "kind": "opposite",
+   "en": "No one else has ever made more appearances or scored more goals for the club than Bobek.",
+   "bad_en": "No one else has ever made less appearances or scored more goals for the club than Bobek.",
+   "refs": {
+    "vie_Latn": "Không có ai có thể tham gia chơi và ghi bàn cho câu lạc bộ nhiều hơn Bobek.",
+    "jpn_Jpan": "ボベックほどこのクラブで多くの出場回数やゴールを挙げた選手は他にいません。",
+    "kor_Hang": "팀에서 보베크보다 더 많은 경기에 출전했거나, 더 많은 득점을 기록한 선수는 하나도 없었습니다.",
+    "zho_Hans": "没有人比博贝克 (Bobek) 的出场次数更多、为俱乐部进球得分更多的了。",
+    "spa_Latn": "Ningún otro jugador ha hecho más apariciones o anotado más goles en favor del club que Bobek.",
+    "arb_Arab": "لم يسبق لأي شخص آخر أن سجل حضوراً أو أحرز أهدافاً للنادي مقارنة ببوبيك.",
+    "hin_Deva": "बोबेक की तुलना में किसी और ने कभी भी क्लब के लिए ज़्यादा प्रदर्शन या ज़्यादा गोल नहीं किए हैं.",
+    "fra_Latn": "Aucun autre joueur n'a jamais fait plus d'apparitions ou marqué plus de buts pour le club que Bobek.",
+    "tgl_Latn": "Wala nang iba pa ang nakagawa ng pinakamaraming paglalaro o nagtala ng maraming puntos para sa koponan kaysa kay Bobek. ",
+    "por_Latn": "Nenhum outro jogador vestiu tantas vezes a camisa ou marcou mais gols pelo clube do que Bobek.",
+    "urd_Arab": "بابیک سے زیادہ کبھی کسی اور نے نہ تو حاضری دی اور نہ ہی کلب کے لئے گول بنائے۔"
+   }
+  },
+  {
+   "id": 829,
+   "kind": "opposite",
+   "en": "An immigration checkpoint is usually the first stop when disembarking from a plane, a ship, or another vehicle.",
+   "bad_en": "An immigration checkpoint is usually the last stop when disembarking from a plane, a ship, or another vehicle.",
+   "refs": {
+    "vie_Latn": "Điểm kiểm soát nhập cảnh thông thường là nơi dừng chân đầu tiên sau khi bạn rời khỏi máy bay, tàu thuyền, hoặc phương tiện di chuyển khác.",
+    "jpn_Jpan": "入国審査場は通常、飛行機や船、その他の乗り物から降りて最初に立ち寄る場所です。",
+    "kor_Hang": "입국 심사대는 비행기나 배, 혹은 기타 차량에서 내려서 마주하게 되는 첫 번째 장소입니다.",
+    "zho_Hans": "入境检查站通常是走下飞机、轮船或其他交通工具后经过的第一站。",
+    "spa_Latn": "Por lo general, un puesto de control de inmigración es la primera parada al descender de una aeronave, barco u otro medio de transporte.",
+    "arb_Arab": "عادة ما تكون نقطة تفتيش الهجرة هي المحطة الأولى عند النزول من طائرة أو سفينة أو مركبة أخرى.",
+    "hin_Deva": "एक इमीग्रेशन चेकपॉइंट आमतौर पर पहला पड़ाव होता है जब विमान, जहाज़ या किसी अन्य वाहन से उतरते हैं.",
+    "fra_Latn": "Un point de contrôle d'immigration est habituellement la première étape lorsque vous débarquez d'un avion, d'un bateau ou d'un autre véhicule.",
+    "tgl_Latn": "Ang checkpoint na para sa imigrasyon ay ang kadalasang unang hintuan kapag bumababa mula sa eroplano, barko, o iba pang sasakyan.",
+    "por_Latn": "Um ponto de controle de imigração costuma ser a primeira parada após desembarcar de um avião, navio ou outro veículo.",
+    "urd_Arab": "کسی ہوائی جہاز یا بحری جہاز یا کسی دوسری سواری سے اترنے کے بعد پہلا اسٹاپ عموماً امیگریشن چیک پوائنٹ ہوتا ہے۔"
+   }
+  },
+  {
+   "id": 962,
+   "kind": "opposite",
+   "en": "With Armenian backing, a new republic was created. However, no established nation - not even Armenia - officially recognizes it.",
+   "bad_en": "With Armenian backing, a old republic was created. However, no established nation - not even Armenia - officially recognizes it.",
+   "refs": {
+    "vie_Latn": "Với sự hậu thuẫn của Armenia, một nước cộng hòa mới được thành lập. Tuy vậy, không một quốc gia nào - kể cả Armenia - chính thức công nhận đất nước này.",
+    "jpn_Jpan": "アルメニア人の支援を得て、新しい共和国が誕生しました。しかし、アルメニアでさえその国を公式には認めていないのです。",
+    "kor_Hang": "아르메니아의 지지를 받으며 새 공화국이 생성되었다. 그러나 심지어 아르메니아뿐 아니라 그 어떤 국가도 이곳을 공식적인 국가로 인정하지 않는다.",
+    "zho_Hans": "在亚美尼亚的支持下，一个新共和国诞生了。然而，它没有得到任何国家（包括亚美尼亚）的正式承认。",
+    "spa_Latn": "Con el apoyo de Armenia, se formó una nueva república, aunque no es una nación establecida. Ni siquiera cuenta con el reconocimiento oficial del gobierno armenio.",
+    "arb_Arab": "أُنشئت جمهورية جديدة بدعم أرميني، وبالرغم من ذلك، لم تحظ باعتراف رسمي من أي دولة بما في ذلك أرمينيا نفسها.",
+    "hin_Deva": "अर्मेनियाई सहारे के साथ, एक नया गणराज्य बनाया गया था. हालाँकि, कोई भी स्थापित राष्ट्र - यहाँ तक ​​कि आर्मेनिया भी - इसे सरकारी तौर पर मान्यता नहीं देता है.",
+    "fra_Latn": "Avec le soutien de l'Arménie, une nouvelle république a été créée. Cependant, aucune nation établie, pas même l'Arménie, ne la reconnaît officiellement.",
+    "tgl_Latn": "Dahil sa suporta ng Armenia, isang bagong republika ang nabuo. Gayunman, walang matatag nang bansa - kahit na ang Armenia - ang opisyal na kumikilala dito.",
+    "por_Latn": "Com o apoio da Armênia, uma nova república foi criada. No entanto, nenhuma nação estabilizada - nem mesmo a Armênia - a reconheceu oficialmente.",
+    "urd_Arab": "آرمینیائی حمایت سے ایک نئی جمہوریہ تشکیل دی گئی۔ تاہم، کوئی بھی مسلمہ ملک - حتی کہ آرمینیا بھی باضابطہ طور پر اسے تسلیم نہیں کرتا ہے۔"
+   }
+  },
+  {
+   "id": 693,
+   "kind": "opposite",
+   "en": "Jerusalem is the capital and largest city of Israel, though most other countries and the United Nations do not recognize it as Israel's capital.",
+   "bad_en": "Jerusalem is the capital and smallest city of Israel, though most other countries and the United Nations do not recognize it as Israel's capital.",
+   "refs": {
+    "vie_Latn": "Jerusalem là thủ đô và thành phố lớn nhất của Israel, mặc dù hầu hết các quốc gia khác và Liên Hiệp Quốc chưa công nhận thành phố này là thủ đô của Israel.",
+    "jpn_Jpan": "エルサレムはイスラエルの首都でありかつ最大都市ですが、他国のほとんどや国連から正式に首都として認められていないのが現状です。",
+    "kor_Hang": "예루살렘은 이스라엘의 수도이자 가장 큰 도시입니다. 그런데도 대부분의 다른 국가들과 국제 연맹은 이를 이스라엘의 수도로 인정하지 않습니다.",
+    "zho_Hans": "耶路撒冷是以色列的首都和最大城市，尽管大多数的其他国家/地区和联合国都不承认耶路撒冷是以色列的首都。",
+    "spa_Latn": "Aun cuando Jerusalén es la ciudad capital y de mayor tamaño de Israel, la mayoría de los otros estados y las Naciones Unidas no la reconocen como tal.",
+    "arb_Arab": "القدس عاصمة إسرائيل وأكبر مدنها رغم أن معظم الدول الأخرى والأمم المتحدة لا تعترف بها عاصمة لها.",
+    "hin_Deva": "यरुशलेम इज़रायल की राजधानी है और वहां का सबसे बड़ा शहर है, हालाँकि अधिकांश अन्य देश और संयुक्त राष्ट्र इसे इज़रायल की राजधानी के रूप में मान्यता नहीं देते हैं।",
+    "fra_Latn": "Jérusalem est la capitale et la plus grande ville d’Israël, bien que la plupart des autres pays et les Nations Unies ne la reconnaissent pas comme telle.",
+    "tgl_Latn": "Ang Jerusalem ang kabisera at pinakamalaking lungsod ng Israel, bagaman ang karamihan sa ibang bansa at ang United Nations ay hindi ito kinikilala bilang kabisera ng Israel.",
+    "por_Latn": "Jerusalém é a capital e maior cidade de Israel, embora a maioria dos outros países e as Nações Unidas não a reconheçam como a capital de Israel.",
+    "urd_Arab": "یروشلم اسرائیل کی دارالحکومت اور سب سے بڑا شہر ہے، تاہم زیادہ تر دیگر ممالک اور اقوام متحدہ اسے اسرائیل کا دار الحکومت تسلیم نہیں کرتے ہیں-"
+   }
+  },
+  {
+   "id": 960,
+   "kind": "opposite",
+   "en": "This flight is not the only option if you want to skip the South Pacific and the west coast of South America. (see below)",
+   "bad_en": "This flight is not the only option if you want to skip the South Pacific and the east coast of South America. (see below)",
+   "refs": {
+    "vie_Latn": "Chuyến bay này không phải là chọn lựa duy nhất nếu bạn không muốn đi qua Nam Thái Bình Dương và bờ biển phía tây của Nam Mỹ. (xem bên dưới)",
+    "jpn_Jpan": "南太平洋や南米の西海岸を通り越したい場合、この便が唯一の選択肢というわけではありません（下記参照）。",
+    "kor_Hang": "남태평양과 남아메리카 서해안을 건너뛰고 싶다면 이 항공편만이 유일한 선택 사항은 아닙니다.(아래를 참조하세요)",
+    "zho_Hans": "如果你不想经过南太平洋和南美洲西海岸，除了这个航班外还有别的选择。（见下文）",
+    "spa_Latn": "Si se desea evitar el Pacífico Sur y el límite oeste de Sudamérica, tiene otras opciones además de este vuelo (ver abajo).",
+    "arb_Arab": "هذه الرحلة الجوية ليست الخيار الوحيد إذا كنت ترغب في تخطي جنوب المحيط الهادئ والساحل الغربي لأمريكا الجنوبية، (انظر أدناه).",
+    "hin_Deva": "यदि आप दक्षिणी अमरीका के दक्षिणी प्रशांत और पश्चिमी तट को छोड़ना चाहें तो यह उड़ान एकमात्र विकल्प नहीं है. (नीचे देखें)",
+    "fra_Latn": "Ce vol n’est pas la seule option si vous voulez éviter le Pacifique Sud et la côte ouest de l’Amérique du Sud. (voir ci-dessous)",
+    "tgl_Latn": "Ang biyahe ng eroplano na ito ay hindi lang ang nag-iisang opsyon kung gusto mong lagpasan ang Timog Pasipiko at ang kanlurang baybay-dagat ng Timog Amerika. (masdan sa ibaba)",
+    "por_Latn": "Esse voo não é a única opção se você deseja pular o Pacífico Sul e a costa oeste da América do Sul (ver abaixo).",
+    "urd_Arab": "اگر آپ جنوبی بحر الکاہل اور جنوبی امریکہ کے مغربی ساحل پر نہیں جانا چاہتے تو یہ فلائٹ واحد اختیار نہیں ہے۔ (ذیل میں دیکھیں)"
+   }
+  },
+  {
+   "id": 567,
+   "kind": "opposite",
+   "en": "There are many different constructions of eyes, ranging in complexity depending on the requirements of the organism.",
+   "bad_en": "There are few different constructions of eyes, ranging in complexity depending on the requirements of the organism.",
+   "refs": {
+    "vie_Latn": "Có nhiều loại cấu trúc khác nhau của mắt, với mức độ phức tạp tùy thuộc vào nhu cầu của sinh vật.",
+    "jpn_Jpan": "眼の構造は、生体の要件に応じて、ごく単純なものから非常に複雑なものまでさまざまです。",
+    "kor_Hang": "유기체의 요구 사항에 따라 복잡성의 정도가 매우 다양한 눈의 구조가 있습니다.",
+    "zho_Hans": "眼睛的构造有许多种，其复杂程度取决于生物体的需要。",
+    "spa_Latn": "Existen numerosas estructuras oculares distintas; su complejidad varía en función de las necesidades del organismo.",
+    "arb_Arab": "تتراوح درجة تعقيد تركيب العين حسب احتياجات الكائن الحي، مما ينتج عدداً كبيراً من تركيبات العيون المختلفة.",
+    "hin_Deva": "आँखों की कई विभिन्न रचनाएँ हैं, जो जीव की ज़रूरतों के आधार पर जटिलता में हैं.",
+    "fra_Latn": "Les anatomies oculaires varient. Elles sont classées par ordre de complexité en fonction des exigences de l'organisme.",
+    "tgl_Latn": "Maraming iba't-ibang mga pagkakayari ng mga mata, na iba't-iba ang kompleksidad ayon sa mga kinakailangan ng organismo.",
+    "por_Latn": "Existem muitas construções diferentes de olhos, variando em complexidade dependendo das exigências do organismo.",
+    "urd_Arab": "آنکھوں کی بہت سی مختلف ساختیں ہیں جو جاندار کی ضروریات پر انحصار کرتے ہوئے پیچیدگی میں مختلف حدیں رکھتی ہیں۔"
+   }
+  },
+  {
+   "id": 433,
+   "kind": "opposite",
+   "en": "Present-day parts of Belgium were part of Luxembourg in the past but became Belgian after the 1830s Belgian Revolution.",
+   "bad_en": "Present-day parts of Belgium were part of Luxembourg in the past but became Belgian before the 1830s Belgian Revolution.",
+   "refs": {
+    "vie_Latn": "Rất nhiều khu vực hiện nay của Bỉ trước đây từng là đất của Luxembourg nhưng sau đó đã thuộc về người Bỉ kể từ Cách mạng Bỉ những năm 1830.",
+    "jpn_Jpan": "現在のベルギー領の一部は過去にルクセンブルク領でしたが、1830年代のベルギー革命後にベルギー領になりました。",
+    "kor_Hang": "현재 벨기에의 일부 지역은 과거에 룩셈부르크에 속했으나 1830년대 벨기에 혁명 이후 벨기에가 되었다.",
+    "zho_Hans": "今天的比利时有部分地区过去属于卢森堡，但在 19 世纪 30 年代的比利时革命后被划入比利时。",
+    "spa_Latn": "En el pasado, las partes actuales de Bélgica pertenecían a Luxemburgo, pero, tras la Revolución belga de la década de 1830, se volvieron belgas.",
+    "arb_Arab": "كانت الأجزاء الحالية من بلجيكا جزءاً من لوكسمبورغ في الماضي ولكنها أصبحت بلجيكية بعد الثورة البلجيكية في ثلاثينيات القرن التاسع عشر.",
+    "hin_Deva": "वर्तमान में बेल्जियम का हिस्सा अतीत में लक्ज़मबर्ग का हिस्सा था लेकिन 1830 के दशक की बेल्जियम क्रांति के बाद बेल्जियम बन गया.",
+    "fra_Latn": "Certaines régions actuelles de la Belgique faisaient autrefois partie du Luxembourg, mais sont devenues belges après la Révolution belge des années 1830.",
+    "tgl_Latn": "Ang kasalukuyang mga bahagi ng Belgium ay bahagi noon ng Luxembourg nguni't naging sa Belgium matapos ang Rebolusyong Belgian noong dekada 1830. ",
+    "por_Latn": "As partes atuais da Bélgica faziam parte do Luxemburgo no passado, mas tornaram-se belgas após a Revolução Belga de 1830.",
+    "urd_Arab": "بیلجیئم کے آج کے دور کے حصے ماضی میں لگزمبرگ کا حصہ تھے لیکن 1830 کے انقلابِ بیلجیئم کے بعد بیلجیئم میں شامل ہو گئے۔"
+   }
+  },
+  {
+   "id": 857,
+   "kind": "dropped clause",
+   "en": "You could find yourself being used as a drug carrier without your knowledge, which will land you in a great deal of trouble.",
+   "bad_en": "You could find yourself being used as a drug carrier without your knowledge.",
+   "refs": {
+    "vie_Latn": "Bạn có thể bị lợi dụng làm người vận chuyển ma túy mà không hề hay biết và việc đó sẽ khiến bạn gặp rất nhiều rắc rối.",
+    "jpn_Jpan": "気付かないうちに自分が麻薬の運び屋として利用されている可能性があり、そうなったら大きなトラブルに巻き込まれることになるでしょう。",
+    "kor_Hang": "자신도 모르게 마약 운반책으로 이용될 수 있으며, 입국 시 큰 문제에 직면할 것입니다.",
+    "zho_Hans": "你可能会发现自己被人利用，在不知情的情况下成了一个运毒者，这会让你陷入很大的麻烦。",
+    "spa_Latn": "Podría encontrarse con que lo están utilizando como un trasportador de psicofármacos sin que usted siquiera lo sepa, lo que le traerá muchísimos problemas.",
+    "arb_Arab": "قد تكتشف أنه يتم استغلالك لنقل المخدرات دون أن تعلم، وهو ما يضعك في متاعبٍ جمة.",
+    "hin_Deva": "आप अनजाने में खुद को एक ड्रग वाहक के रूप में इस्तेमाल करते हुए पा सकते हैं, जिससे आपको बहुत परेशानी हो सकती है.",
+    "fra_Latn": "Quelqu'un pourrait se servir de vous pour transporter de la drogue à votre insu, ce qui vous attirerait de gros ennuis.",
+    "tgl_Latn": "Maaaring masumpungan mo ang iyong sarili na ginagamit bilang tagapagdala ng droga nang hindi mo nalalaman, na maglalagay sa iyo sa napakalaking kaguluhan.",
+    "por_Latn": "Podem usar você como traficante de drogas sem seu conhecimento, o que lhe deixará em uma situação bastante problemática. ",
+    "urd_Arab": "تم پاؤ گے کہ تمہارے علم کے بغیر تم کو ڈرگ کیریر قرار دے دیا گیا ہے۔ اس بنا پر تم خاصی مشکل سے دوچار ہو سکتے ہو۔"
+   }
+  },
+  {
+   "id": 650,
+   "kind": "dropped clause",
+   "en": "Your hotel or hosts (if staying in a guesthouse or private home) will likely have wifi or an internet connected PC, and all settlements have an internet cafe or some location with public wifi.",
+   "bad_en": "Your hotel or hosts (if staying in a guesthouse or private home) will likely have wifi or an internet connected PC.",
+   "refs": {
+    "vie_Latn": "Khách sạn và nhà trọ (nếu ở nhà khách hoặc nhà riêng) đều có wifi hoặc PC kết nối Internet, và tất cả khu dân cư đều có quán cà phê Internet hoặc một số nơi có wifi công cộng.",
+    "jpn_Jpan": "ホテルや宿泊先（ゲストハウスや個人宅に滞在している場合）には無線LANやインターネットに接続されたPCが設置されている可能性が高く、どの集落にもインターネットカフェや公共の無線LANが設置されている場所があります。",
+    "kor_Hang": "호텔 또는 집주인(게스트하우스나 개인 집에 묵는 경우)은 대부분 와이파이나 인터넷이 연결된 PC를 가지고 있으며 모든 거주지에는 인터넷 카페나 공용 와이파이가 있는 장소가 근처에 있다.",
+    "zho_Hans": "你的酒店或房东（如果住在民宿或私人民宅）可能配有 wifi 或可联网的电脑。所有安置点都有一家网吧或有公共 wifi 的地方。",
+    "spa_Latn": "Su hotel o sus anfitriones (si se aloja en una casa de huéspedes o en una vivienda privada) probablemente tengan wifi o un ordenador conectado a Internet y todos los pueblos tienen un café con Internet o algún lugar con wifi público.",
+    "arb_Arab": "غالباً ما سيكون عند فندقك أو مضيفيك (إذا كنت ستنزل بدار ضيافة أو منزل خاص) شبكة wifi أو كمبيوتر متصل بالإنترنت، وجميع التجمعات فيها مقهى إنترنت أو موقع مخصص به شبكة wifi عامة.",
+    "hin_Deva": "आपके होटल या मेज़बान (अगर आप किसी गेस्ट हाउस या किसी के घर में ठहरे हैं) के पास वाईफ़ाई या इंटरनेट कनेक्शन वाला कंप्यूटर हो सकता है और आपको सभी जगहों पर इंटरनेट कैफ़े या सार्वजानिक वाईफ़ाई की सुविधा मिलेगी.",
+    "fra_Latn": "Votre hôtel, maison d’hôtes ou résidence privée proposent sûrement une connexion Wi-Fi ou un ordinateur connecté à Internet, tandis que tous les lieux disposent d'un cybercafé ou d'un endroit équipé d'une connexion Wi-Fi publique.",
+    "tgl_Latn": "Ang iyong hotel o mga tinutuluyan (kung tutuloy sa isang bahay para sa mga bisita o pribadong tahanan) ay maaaring may wifi o internet na konektado sa PC, at lahat ng mga tinutuluyan ay may internet cafe o ang ilang lokasyon ay may pampublikong wifi.",
+    "por_Latn": "Seu hotel ou seus anfitriões (no caso de estadia em pousada ou casa particular) provavelmente terão internet sem fio ou um computador conectado à internet, e todos os assentamentos possuem uma lan house ou um local com internet sem fio disponível.",
+    "urd_Arab": "آپکے ہوٹل یا میزبان (اگر کسی گیسٹ ہاوٴس میں قیام کر رہے ہیں) کے پاس شاید ہی وائی فائی یا انٹرنیٹ سے مربوط پی سی ہوگا، اور تمام نو آبادکاروں میں انٹرنیٹ کیفے یا عوامی وائی فائی والے مقامات ہوں گے۔"
+   }
+  },
+  {
+   "id": 695,
+   "kind": "dropped clause",
+   "en": "The city is holy to the three monotheistic religions - Judaism, Christianity and Islam, and serves as a spiritual, religious, and cultural center.",
+   "bad_en": "The city is holy to the three monotheistic religions - Judaism, Christianity and Islam.",
+   "refs": {
+    "vie_Latn": "Thành phố này là vùng đất thánh của ba tôn giáo đơn thần - Do Thái giáo, Kito Giáo và Hồi giáo và đóng vai trò như một trung tâm tâm linh, tín ngưỡng và văn hóa.",
+    "jpn_Jpan": "ユダヤ教、キリスト教、イスラム教という三大一神教の聖地が集まったこの都市は、国の精神的、宗教的、文化的な中心地としての役割を果たしています。",
+    "kor_Hang": "이 도시는 유대교, 기독교, 이슬람교의 세 가지 일신교의 성지이며 영적, 종교적, 문화적 중심지 역할을 하고 있습니다.",
+    "zho_Hans": "这座城市是三大一神宗教——犹太教、基督教和伊斯兰教的圣地，是一个真正的精神、宗教和文化中心。",
+    "spa_Latn": "Los tres cultos monoteístas; esto es, judíos, cristianos e islámicos, la consideran tierra santa y funciona como sede espiritual, religiosa y cultural.",
+    "arb_Arab": "المدينة مقدسة للأديان السماوية الثلاث - اليهودية، والمسيحية، والإسلام، وهي بمنزلة مركز روحي، وديني، وثقافي.",
+    "hin_Deva": "इस शहर के ज़्यादातर लोग तीन धर्मों में आस्था रखते हैं - यहूदी, ईसाई और इस्लाम. साथ ही, यह शहर आध्यात्मिक, धार्मिक और सांस्कृतिक केंद्र के रूप में भी मशहूर है.",
+    "fra_Latn": "La ville est sainte pour les trois religions monothéistes - le judaïsme, le christianisme et l'islam - et sert de centre spirituel, religieux et culturel.",
+    "tgl_Latn": "Ang lungsod ay banal para sa tatlong relihiyong monoteistiko - Judaismo, Kristiyanismo at Islam, at nagsisilbing sentrong pang-ispiritwal, pangrelihiyon at pangkultura.",
+    "por_Latn": "A cidade é sagrada para as três religiões monoteístas — judaísmo, cristianismo e islamismo — e serve como um centro espiritual, religioso e cultural.",
+    "urd_Arab": "یہ شہرتین توحیدی مذاہب یعنی یہودیت، مسیحیت، اور اسلام کے لئےمقدس ہے، اور اس کا مقام ایک روحانی، دینی، اور ثقافتی مرکز کا ہے۔"
+   }
+  },
+  {
+   "id": 533,
+   "kind": "dropped clause",
+   "en": "The game is played on grass, and the grass around the hole is mown shorter and called the green.",
+   "bad_en": "The game is played on grass.",
+   "refs": {
+    "vie_Latn": "Trò chơi này được chơi trên cỏ, cỏ xung quanh lỗ được cắt ngắn hơn và được gọi là vùng xanh (green).",
+    "jpn_Jpan": "このゲームは芝生の上で行われ、ホールの周りの芝生は短く刈られてグリーンと呼ばれています。",
+    "kor_Hang": "골프는 잔디밭에서 하며, 홀 근처에 풀을 짧게 깎아둔 구역을 그린이라고 한다.",
+    "zho_Hans": "比赛是在草地上进行的，洞周围的草被修剪得更短，被称为果岭。",
+    "spa_Latn": "El partido se juega sobre césped, y la hierba que rodea el hoyo se corta más y se denomina green.",
+    "arb_Arab": "تُمارَس اللعبة على العشب، ويُقصّ العشب المحيط بالحفرة وتُسمّى \"الخضراء\".",
+    "hin_Deva": "खेल घास पर खेला जाता है, और छेद के चारों ओर घांस को छोटा रखा जाता है और उसे ग्रीन  कहा जाता है।",
+    "fra_Latn": "Le jeu se joue sur l'herbe, et le gazon qui entoure le trou est coupé plus court et appelé le « green ».",
+    "tgl_Latn": "Ang laro ay nilalaro sa damuhan, at ang damo sa paligid ng butas ay tinatabas nang mas maigsi at tinatawag na ang berde.",
+    "por_Latn": "O jogo se desenrola no gramado, e a grama ao redor do buraco é cortada mais curta e chamada de verde.",
+    "urd_Arab": "یہ کھیل گھاس پر کھیلا جاتا ہے، اور سوراخ کے ارد گرد کی گھاس کو تھوڑی دیر پہلے ہی کاٹا گیا ہوتا ہے اور اسے سبز کہتے ہیں-"
+   }
+  },
+  {
+   "id": 886,
+   "kind": "dropped clause",
+   "en": "Antarctica is the coldest place on Earth, and surrounds the South Pole.",
+   "bad_en": "Antarctica is the coldest place on Earth.",
+   "refs": {
+    "vie_Latn": "Nam Cực là nơi lạnh nhất trên Trái Đất và bao quanh Địa Cực Nam.",
+    "jpn_Jpan": "南極は南極点を取り囲む地球上で最も寒い場所です。",
+    "kor_Hang": "남극 대륙은 지구상에서 가장 추운 곳으로 남극을 둘러싸고 있습니다.",
+    "zho_Hans": "南极洲环绕着南极，是地球上最冷的地方。",
+    "spa_Latn": "La Antártida es el sitio de menor temperatura del planeta y rodea al Polo Sur.",
+    "arb_Arab": "تعد القارة القطبية الجنوبية هي المكان الأبرد على وجه الأرض، وتحيط بالقطب الجنوبي.",
+    "hin_Deva": "अंटार्कटिका पृथ्वी की सबसे ठंडी जगह है और दक्षिणी ध्रुव के चारों ओर है.",
+    "fra_Latn": "L’Antarctique, qui entoure le pôle Sud, est l’endroit le plus froid sur Terre.",
+    "tgl_Latn": "Ang Antartika ang pinakamalamig na lugar sa Mundo, at pinalilibutan nito ang Timog Polo.",
+    "por_Latn": "A Antártica é o lugar mais frio do planeta e cerca o Polo Sul.",
+    "urd_Arab": "انٹارکٹیکا، زمین پر سب سے سرد ترین جگہ ہے اور اس نے جنوبی قطب کو گھیرا ہوا ہے۔"
+   }
+  },
+  {
+   "id": 801,
+   "kind": "dropped clause",
+   "en": "Drink alcoholic drinks with moderation. Alcohol affects everyone differently, and knowing your limit is very important.",
+   "bad_en": "Drink alcoholic drinks with moderation. Alcohol affects everyone differently.",
+   "refs": {
+    "vie_Latn": "Uống thức uống có cồn với lượng vừa phải. Mức độ ảnh hưởng của rượu đến từng người đều khác nhau và biết giới hạn của bạn rất quan trọng.",
+    "jpn_Jpan": "お酒はほどほどに飲むようにしましょう。アルコールの影響は人それぞれであり、自分の限界を知ることは非常に重要です。",
+    "kor_Hang": "알코올음료는 적당히 마시기 바랍니다. 알코올이 미치는 영향은 사람마다 다르므로 자신의 주량을 잘 아는 것이 매우 중요합니다.",
+    "zho_Hans": "适量饮用含酒精的饮料。酒精对每个人的影响都不一样，了解自己的饮酒极限非常重要。",
+    "spa_Latn": "Beba alcohol con moderación. Este afecta a cada persona de manera diferente y conocer sus propios límites es sumamente importante.",
+    "arb_Arab": "قم بشرب المشروبات الروحية باعتدال. يؤثر الكحول على الجميع بأشكال مختلفة، ومن المهم جدأ معرفة حدودك.",
+    "hin_Deva": "शराबी बोहत संयम से शराब पीते हैं. शराब हर किसी को अलग अलग तरह से प्रभावित करती है,और आपको अपनी सीमा का पता होना बहुत जरुरी है।",
+    "fra_Latn": "Buvez des boissons alcoolisées avec modération. L'alcool a des effets différents sur chacun, et il est très important de connaître ses limites.",
+    "tgl_Latn": "Uminom ng alak nang katamtaman. Ang alkohol ay nakaaapekto sa mga tao sa magkakaibang paraan, at ang pag-alam sa iyong hangganan ay napakahalaga.",
+    "por_Latn": "Beba bebidas alcoólicas de forma moderada. O álcool afeta a todos de maneira diferente, e saber seu limite é muito importante.",
+    "urd_Arab": "الکحل کی مشروبات معتدل طور پر پیجیے۔ الکحل ہر ایک کو مختلف طرح سے متاثر کرتا ہے، اور اس میں اپنی حد کو جاننا بہت اہم ہے۔"
+   }
+  },
+  {
+   "id": 69,
+   "kind": "dropped clause",
+   "en": "The band canceled the show at Maui's War Memorial Stadium, which was set to be attended by 9,000 people, and apologized to fans.",
+   "bad_en": "The band canceled the show at Maui's War Memorial Stadium.",
+   "refs": {
+    "vie_Latn": "Nhóm nhạc đã hủy buổi diễn tại Sân vận động Tưởng niệm Chiến Tranh của Maui vốn đã được dựng với sức chứa 9.000 người và xin lỗi người hâm mộ.",
+    "jpn_Jpan": "バンドはマウイ島の戦争記念スタジアムで90,000人を集客する予定でしたが、その公演をキャンセルし、ファンに謝罪しました。",
+    "kor_Hang": "밴드는 마우이 전쟁 기념 스타디움(Maui's War Memorial Stadium)에 9천 명이 참석할 예정이었던 쇼를 취소했으며, 팬분들에게 죄송하다는 말을 전했다.",
+    "zho_Hans": "乐队取消了演出活动，并向粉丝们表示了歉意。该场演出原本应在毛伊岛战争纪念体育场举行，预计将有 9000 人参与其中。",
+    "spa_Latn": "El grupo canceló la función en el War Memorial Stadium de Maui, al que asistirían 9000 personas, y ofreció una disculpa a sus seguidores.",
+    "arb_Arab": "ألغت الفرقة العرض بإستاد الحرب التذكاري في ماوي والتي كان سوف يحضرها 9000 شخص، واعتذرت للمعجبين.",
+    "hin_Deva": "बैंड ने माउ के वॉर मेमोरियल स्टेडियम में होने वाले शो को रद्द कर दिया, जिसको कि 9,000 लोग देखने के लिए आने वाले थे और प्रशंसको से माफ़ी मांगी। ।",
+    "fra_Latn": "Le groupe a annulé le spectacle au stade du mémorial de guerre de Maui, qui devait accueillir 9 000 personnes, et s’est excusé auprès des fans.",
+    "tgl_Latn": "Kinansela ng banda ang palabas sa Maui's War Memorial Stadium, na dadaluhan sana ng 9,000 katao, at humingi ng paumanhin sa mga tagahanga. ",
+    "por_Latn": "O grupo cancelou o show no War Memorial Stadium de Maui (ele tinha previsão de que receberia 9.000 pessoas) e se desculpou com os fãs.",
+    "urd_Arab": "بینڈ نے ماؤی کے وار میموریل اسٹیڈیم کے شو کو منسوخ کردیا، جس میں 9،000 لوگ شرکت کرنے والے تھے، اور مداحوں سے معافی مانگ لی۔"
+   }
+  },
+  {
+   "id": 738,
+   "kind": "dropped clause",
+   "en": "CafeNet El Sol offers a reservation service for a fee of US$30, or $10 for one-day passes; details on their Corcovado page.",
+   "bad_en": "CafeNet El Sol offers a reservation service for a fee of US$30, or $10 for one-day passes.",
+   "refs": {
+    "vie_Latn": "CafeNet EI Sol cung cấp dịch vụ đặt chỗ trước với mức phí $30, hoặc $10 cho vé vào cửa một ngày; chi tiết có trên trang Corcovado của họ.",
+    "jpn_Jpan": "カフェネット・エル・ソルでは、30ドルで予約を受け付けており、1日券なら10ドルです。詳細についてはコルコバドのページをご覧ください。",
+    "kor_Hang": "카페넷 엘 솔은 US$30의 비용으로 예약 서비스를 제공하거나 $10로 하루 이용권을 제공합니다. 자세한 사항은 코르코바도 페이지에서 확인하세요.",
+    "zho_Hans": "CafeNet El Sol 提供预约服务，收费 30 美元，而一日通票价格为 10 美元；详情请见其 Corcovado 页面。",
+    "spa_Latn": "CafeNet El Sol suministra un servicio de reservas por una tarifa de US$ 30 o $10 por pases diarios; más detalles, en la página del Corcovado.",
+    "arb_Arab": "يقدم مقهى CafeNet El Sol خدمة حجز مقابل رسوم بقيمة 30 دولاراً أمريكياً أو 10 دولارات أمريكية مقابل تذاكر ليوم واحد فقط؛ التفاصيل على صفحة Corcovado.",
+    "hin_Deva": "कैफ़ेनेट एल सोल 30 अमेरिकन डॉलर एक दिन के लिए या आरक्षण सेवा प्रदान करने के लिए 10 अमेरिकन डॉलर लेता है; उनके Corcovado पृष्ठ पर पूरा विवरण दिया हुआ है।",
+    "fra_Latn": "CafeNet El Sol propose un service de réservation pour un montant de 30 dollars, ou 10 dollars pour un forfait d'une journée ; en savoir plus sur leur page Corcovado.",
+    "tgl_Latn": "Nag-aalok ang CafeNet El Sol ng reservation service para sa kabayarang US$30, o $10 para sa isang araw na passes; nasa kanilang Corcovado page ang mga detalye.",
+    "por_Latn": "O CafeNet El Sol oferece um serviço de reserva por uma taxa de 30 ou 10 dólares para passeios de um dia; mais detalhes na página do Corcovado.",
+    "urd_Arab": "کیفے نیٹ ایل سولبکنگ US$30 میں یا ایک دن گزرنے کے لئے $10 میں سروس پیش کرتا ہے ان کے کورکووادو صفحے پر تفصیلات موجود ہیں۔"
+   }
+  }
+ ]
+}

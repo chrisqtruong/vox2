@@ -12,6 +12,10 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 - **Tone and "who it's for" are always visible** in settings → translation, dimmed with a note while Google Translate is selected (they need Claude, ChatGPT or Gemini). They used to be hidden, so you couldn't tell they existed. *Windows and Mac.*
 - **Colorblind-friendly match score colors** (settings → appearance, off by default). Scores show in blue ✓ / amber ! / vermillion ✕ (the [Okabe–Ito](https://jfly.uni-koeln.de/color/) colorblind-safe palette) instead of the theme's colors, darker on light themes and brighter on dark ones. The symbols mean a score never depends on color alone. *Windows and Mac.*
 
+### Tested
+
+- **First measured test of the meaning check** ([report, 2026-10-03](docs/meaning-check-tests/2026-10-03.md)): 1,320 translations in 11 languages with planted meaning errors. Good translations are confirmed reliably (93% "meaning kept", 4% false alarms) and changed numbers are always caught, but most other meaning errors are missed (29% caught). The fixes lead the roadmap. Test kit: `tools/meaning-bench/`.
+
 ### Fixed
 
 - **Snip garbled screen text and read "I" as "|".** Screen text is small and often light-on-dark, which the text reader handles badly. Snips are now enlarged, flipped to dark-on-light and contrast-stretched before reading, read as one block of text, and a lone "|" where a word starts becomes "I". In tests across dark, light and colored themes, word accuracy went from 86–100% to 100%. *Windows and Mac.*
