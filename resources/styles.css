@@ -281,6 +281,7 @@ body.conversation .pane-head .mic { color: var(--accent); background: var(--hove
 .settings-search .icon { position: absolute; right: 3px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; }
 .settings-search .icon svg { width: 13px; height: 13px; }
 .search-empty { padding: 14px 10px; }
+#tone-row.unavailable .segmented, #tone-row.unavailable .fields label { opacity: .45; pointer-events: none; }
 .search-miss, .sheet.searching .settings-nav { display: none !important; }
 .sheet h2 { font-size: 13px; color: var(--muted); font-weight: 500; margin: 20px 0 8px; }
 .sheet h3 { font-size: 11px; color: var(--muted); font-weight: 500; margin: 12px 0 6px; opacity: .8; }

@@ -1533,7 +1533,13 @@ $('#show-match').addEventListener('change', (e) => { settings.showMatch = e.targ
 /* ---------- tone (AI engines) ---------- */
 
 function renderTone() {
-  $('#tone-row').hidden = !ENGINES[settings.engine].keyUrl; // Google can't do tone
+  // Google can't do tone, but the setting stays visible (dimmed) so you know it exists.
+  const ai = !!ENGINES[settings.engine].keyUrl;
+  $('#tone-row').classList.toggle('unavailable', !ai);
+  for (const el of $('#tone-row').querySelectorAll('button, input')) el.disabled = !ai;
+  $('#tone-hint').textContent = ai
+    ? 'helps pick the right pronouns and politeness'
+    : `pick Claude, ChatGPT or Gemini above to use tone and "who it's for" · Google Translate can't adjust them`;
   for (const b of $('#tones').children) b.setAttribute('aria-pressed', String(b.dataset.tone === settings.tone));
   $('#tone-note').value = settings.toneNote;
   $('#show-roman').checked = settings.showRoman;
