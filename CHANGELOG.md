@@ -4,6 +4,10 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ## Unreleased
 
+Nothing yet.
+
+## 0.4.13 (2026-10-03)
+
 ### Added
 
 - **Esc stops reading aloud and dictation**, from any app, not just Vox2: press it while Vox2 reads a translation (from the window or the bubble) or while you're dictating, and it stops right away. Dictation keeps what it already transcribed. Esc does nothing extra when Vox2 isn't reading or listening. *Windows and Mac.*
