@@ -48,8 +48,11 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> | <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd> | snip an area of the screen and translate it |
 | <kbd>Right Ctrl</kbd> | <kbd>Right ⌥ Option</kbd> | dictate: tap to start (stops when you go quiet, or tap again), or hold to talk |
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | <kbd>⌘</kbd><kbd>P</kbd> | pin on top (while Vox2 is in front) |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>F</kbd> | fit the window to its text (while Vox2 is in front) |
+| <kbd>Ctrl</kbd>+<kbd>H</kbd> | <kbd>⌘</kbd><kbd>Y</kbd> | open / close history (while Vox2 is in front) |
+| <kbd>Ctrl</kbd>+<kbd>,</kbd> | <kbd>⌘</kbd><kbd>,</kbd> | open / close settings (while Vox2 is in front) |
 
-All configurable in settings → shortcuts.
+All configurable in settings → shortcuts. Hover a button in the bottom bar to see its shortcut.
 
 ## Conversation mode (beta)
 

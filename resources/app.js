@@ -36,6 +36,10 @@ const DEFAULTS = {
   summonShortcut: MAC ? { code: 'Space', meta: true, shift: true } : { code: 'Space', ctrl: true, shift: true },
   selectShortcut: MAC ? { code: 'KeyT', meta: true, alt: true } : { code: 'KeyT', ctrl: true, alt: true },
   pinShortcut: MAC ? { code: 'KeyP', meta: true } : { code: 'KeyP', ctrl: true }, // while Vox2 is in front
+  // Also only while Vox2 is in front. Mac: ⌘H would hide the app, so history is ⌘Y (as in Safari).
+  fitShortcut: MAC ? { code: 'KeyF', meta: true, shift: true } : { code: 'KeyF', ctrl: true, shift: true },
+  historyShortcut: MAC ? { code: 'KeyY', meta: true } : { code: 'KeyH', ctrl: true },
+  settingsShortcut: MAC ? { code: 'Comma', meta: true } : { code: 'Comma', ctrl: true },
   snipShortcut: MAC ? { code: 'KeyS', meta: true, alt: true } : { code: 'KeyS', ctrl: true, alt: true },
   quickResult: 'bubble', // quick translations (selected text, snips) show in: 'bubble' or 'window'
   conversation: false, // conversation mode: speak each dictated phrase's translation aloud
@@ -964,7 +968,10 @@ const MAC_SYMBOLS = { Control: '⌃', Alt: '⌥', Shift: '⇧', Meta: '⌘' };
 function keyName(code) {
   const side = code.endsWith('Right') ? 'Right ' : code.endsWith('Left') ? 'Left ' : '';
   const base = code.replace(/(Left|Right)$/, '');
-  const names = { Control: IS_MAC ? 'Control' : 'Ctrl', Alt: IS_MAC ? 'Option' : 'Alt', Shift: 'Shift', Meta: IS_MAC ? 'Cmd' : 'Win', Space: 'Space', Backquote: '`' };
+  const names = {
+    Control: IS_MAC ? 'Control' : 'Ctrl', Alt: IS_MAC ? 'Option' : 'Alt', Shift: 'Shift', Meta: IS_MAC ? 'Cmd' : 'Win', Space: 'Space',
+    Backquote: '`', Comma: ',', Period: '.', Slash: '/', Semicolon: ';', Quote: "'", BracketLeft: '[', BracketRight: ']', Minus: '-', Equal: '=',
+  };
   if (IS_MAC && MAC_SYMBOLS[base]) return `${side}${MAC_SYMBOLS[base]} ${names[base]}`; // "Right ⌥ Option"
   if (names[base]) return side + names[base];
   return code.replace(/^Key|^Digit|^Numpad/, '');
@@ -1042,7 +1049,23 @@ onNative('hotkey', ({ name, type }) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (recordingShortcut || sheet.classList.contains('open')) return;
+  if (recordingShortcut) return;
+  // Settings, history and fit window (only while Vox2 is in front). Settings and history
+  // toggle: the same keys close them again.
+  const local = [
+    ['settingsShortcut', () => (sheet.classList.contains('open') ? closeSettings() : openSettings())],
+    ['historyShortcut', () => (historySheet.classList.contains('open') ? closeHistory() : openHistory())],
+    ['fitShortcut', () => native && fitWindow().catch(() => {})],
+  ];
+  for (const [key, run] of local) {
+    const sc = settings[key];
+    if (sc?.code && comboMatches(e, sc) && !e.repeat) {
+      e.preventDefault();
+      run();
+      return;
+    }
+  }
+  if (sheet.classList.contains('open')) return;
   // Snip pressed while Vox2 is in front (the native watcher can't hear it then).
   if (native && settings.snipShortcut?.code && comboMatches(e, settings.snipShortcut) && !e.repeat) {
     e.preventDefault();
@@ -1143,7 +1166,7 @@ function renderShortcuts() {
     if (!chip.classList.contains('recording')) chip.textContent = sc?.code ? shortcutLabel(sc) : 'off';
     chip.classList.toggle('off', !sc?.code);
   }
-  $('#shortcut-hint').textContent = (native ? 'these work from any app, except pin (only while Vox2 is in front)' : 'these work while this window is focused')
+  $('#shortcut-hint').textContent = (native ? 'the first four work from any app; pin, fit, history and settings while Vox2 is in front' : 'these work while this window is focused')
     + ' · click one, then press the new key · backspace turns it off';
   for (const p of Object.values(panes)) {
     p.root.querySelector('[data-act="mic"]').title = settings.sttShortcut.code
@@ -1461,7 +1484,9 @@ $('#autostart-toggle').addEventListener('change', (e) => { settings.autostart = 
 
 // The bar's buttons get a small themed tooltip instead of the system one: their name, plus the
 // keyboard shortcut (as you've set it) for the ones that have one, as a reminder.
-const BAR_SHORTCUTS = { 'snip-btn': 'snipShortcut', pin: 'pinShortcut' };
+const BAR_SHORTCUTS = {
+  'snip-btn': 'snipShortcut', pin: 'pinShortcut', 'fit-btn': 'fitShortcut', 'history-btn': 'historyShortcut', gear: 'settingsShortcut',
+};
 const barTip = document.createElement('div');
 barTip.className = 'bar-tip';
 barTip.hidden = true;
