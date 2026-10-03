@@ -426,6 +426,7 @@ $('#swap').addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !e.repeat && stopAudio()) return; // reading aloud or dictating: stop that first
   if (e.key === 'Escape' && sheet.classList.contains('open')) closeSettings();
   else if (e.key === 'Escape' && historySheet.classList.contains('open')) closeHistory();
   else if (e.key === 'Escape' && permSheet.classList.contains('open')) closePerms();
@@ -1262,6 +1263,7 @@ onNative('snip', async ({ x, y }) => {
 
 onNative('bubble-action', ({ action }) => {
   if (action === 'speak' && quick.dst) readAloud(quick.dst);
+  if (action === 'stop') stopAudio();
   if (action === 'open') { quick.active = false; showWindow(); }
 });
 
@@ -1715,10 +1717,22 @@ function setSpeakUI(pane, on) {
     const btn = p.root.querySelector('[data-act="speak"]');
     const active = on && p === pane;
     btn.setAttribute('aria-pressed', String(active));
-    btn.title = active ? 'Stop' : 'Read aloud';
+    btn.title = active ? 'Stop (Esc)' : 'Read aloud';
     $('use', btn).setAttribute('href', active ? '#i-stop' : '#i-speak');
   }
+  if (quick.active) sendBubble({ session: quick.session, speaking: on && pane === quick.dst });
 }
+
+// Esc stops whatever Vox2 is doing out loud: reading aloud, or dictating (what was said so far
+// is kept). Returns whether there was anything to stop.
+function stopAudio() {
+  const busy = !!speakingPane || !!dictation;
+  if (speakingPane) stopSpeech();
+  if (dictation) stopDictation();
+  return busy;
+}
+// Esc pressed in another app, heard by the system-wide keyboard watcher.
+onNative('escape', () => { if (!document.hasFocus()) stopAudio(); });
 
 // While reading aloud, the word being spoken lights up. It's a CSS highlight (styles.css,
 // ::highlight(vox-word)), drawn over the text without touching it, so the box stays editable.

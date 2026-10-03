@@ -234,6 +234,10 @@ pub fn start(app: AppHandle) {
             }
 
             let repeat = !held.lock().unwrap().insert(code);
+            // Esc anywhere: the page stops reading aloud or dictating, if it's doing either.
+            if code == "Escape" && !repeat {
+                let _ = app.emit_to("main", "escape", ());
+            }
             let mods = held.lock().unwrap().clone();
             let has = |class: &str| mods.iter().any(|c| modifier_class(c) == Some(class));
             for (name, hk) in &hotkeys {

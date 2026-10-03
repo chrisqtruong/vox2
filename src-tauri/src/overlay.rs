@@ -61,6 +61,7 @@ fn bubble(app: &AppHandle) -> tauri::Result<WebviewWindow> {
     WebviewWindowBuilder::new(app, "bubble", WebviewUrl::App("bubble.html".into()))
         .title("Vox2 quick translate")
         .inner_size(BUBBLE_W, 160.0)
+        .accept_first_mouse(true) // macOS: a click while another app is in front still presses the button
         .decorations(false)
         .transparent(true)
         .shadow(false)

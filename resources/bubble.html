@@ -77,6 +77,7 @@
         shown = false;
         $('src').textContent = ''; $('roman').textContent = '';
         $('out').textContent = '…'; $('out').className = 'out pending';
+        $('speak').lastChild.textContent = 'listen'; $('speak').title = 'Read aloud';
         startReading(null);
       }
       if (p.colors) for (const [k, v] of Object.entries(p.colors)) document.documentElement.style.setProperty(`--${k}`, v);
@@ -88,6 +89,10 @@
       if (p.error) { $('out').textContent = p.error; $('out').className = 'out error'; }
       if ('words' in p) startReading(p.words);
       if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt, rate: p.sayRate || 1 };
+      if (p.speaking != null) { // the listen button doubles as stop while reading
+        $('speak').lastChild.textContent = p.speaking ? 'stop' : 'listen';
+        $('speak').title = p.speaking ? 'Stop (Esc)' : 'Read aloud';
+      }
       // macOS (WebKit) doesn't run animation frames in a hidden window, and the bubble is hidden
       // until it has placed itself, so measure right away there.
       if (MAC) place(); else requestAnimationFrame(place);
@@ -137,7 +142,8 @@
       $('copy').lastChild.textContent = 'copied';
       setTimeout(() => { $('copy').lastChild.textContent = 'copy'; }, 900);
     });
-    addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
+    // Esc: stop reading aloud, and put the bubble away.
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') { act('stop'); hide(); } });
     addEventListener('blur', () => { if (shown) hide(); }); // click anywhere else and it goes away
     T.event.emitTo('main', 'bubble-ready');
   </script>
