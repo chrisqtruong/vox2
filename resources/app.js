@@ -12,7 +12,7 @@ import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, 
 import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
-  sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret, memoryInfo,
+  sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret, memoryInfo, resizeWindowHeight,
   getPermissions, requestPermission, openPrivacy, relaunch,
 } from './platform.js';
 
@@ -146,6 +146,7 @@ function updateEmpty() {
     p.el.dataset.placeholder = anyText ? 'translation…'
       : `type or speak in ${p.lang.value === 'auto' ? 'any language' : langName(p.lang.value)}`;
   }
+  if (!anyText) unfit(); // both boxes cleared: back to two equal halves
 }
 
 // Replace a pane's content with [{ t, cls }] segments.
@@ -1456,6 +1457,50 @@ function renderWindowOpts() {
 $('#fade-toggle').addEventListener('change', (e) => { settings.fade = e.target.checked; saveSettings(); applyFade(); });
 $('#tray-toggle').addEventListener('change', (e) => { settings.closeToTray = e.target.checked; saveSettings(); setCloseToTray(settings.closeToTray); });
 $('#autostart-toggle').addEventListener('change', (e) => { settings.autostart = e.target.checked; saveSettings(); setAutostart(settings.autostart); });
+
+/* ---------- fit window to text ---------- */
+
+// One click resizes the window's height around what's in it: your text, the translation, the
+// back-translation and the score, with no empty space. Each box gets exactly the height its
+// content needs (they keep that split until you fit again or clear both). If it doesn't fit
+// on screen, the window takes the full usable height and the boxes scroll.
+
+// A box's height with its content laid out naturally (no stretching, no scrolling). Done in
+// one go before the browser paints, so nothing flickers.
+function naturalHeight(pane) {
+  const parts = [pane.root, pane.el, $('.extras', pane.root)];
+  const saved = parts.map((el) => el.style.cssText);
+  pane.root.style.flex = 'none';
+  pane.el.style.flex = 'none';
+  pane.el.style.overflow = 'visible';
+  parts[2].style.maxHeight = 'none';
+  const h = pane.root.getBoundingClientRect().height;
+  parts.forEach((el, i) => { el.style.cssText = saved[i]; });
+  return h;
+}
+
+function unfit() {
+  if (!document.body.classList.contains('fitted') && !panes.top.root.style.flex) return;
+  for (const p of Object.values(panes)) p.root.style.flex = '';
+  document.body.classList.remove('fitted');
+}
+
+async function fitWindow() {
+  const app = $('.app').getBoundingClientRect().height;
+  const [top, bottom] = [panes.top, panes.bottom].map((p) => p.root.getBoundingClientRect().height);
+  const [needTop, needBottom] = [panes.top, panes.bottom].map(naturalHeight);
+  const chrome = app - top - bottom; // divider and bottom bar
+  const need = Math.ceil(needTop + needBottom + chrome) + 2; // +2 so rounding never adds a scrollbar
+  const result = await resizeWindowHeight(need / app);
+  if (!result) return;
+  // Split the space in proportion to what each box needs: exact when it all fits.
+  panes.top.root.style.flex = `${needTop} 1 0px`;
+  panes.bottom.root.style.flex = `${needBottom} 1 0px`;
+  document.body.classList.toggle('fitted', !result.capped); // extras may grow past their usual cap
+}
+
+$('#fit-btn').hidden = !native;
+$('#fit-btn').addEventListener('click', () => fitWindow().catch((err) => setStatus('error', `fit window: ${err.message || err}`)));
 
 /* ---------- conversation mode ---------- */
 

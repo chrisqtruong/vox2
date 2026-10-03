@@ -12,6 +12,8 @@
     "updater:default",
     "process:allow-restart",
     "core:window:allow-set-size",
-    "core:window:allow-hide"
+    "core:window:allow-hide",
+    "core:window:allow-set-position",
+    "core:window:allow-unmaximize"
   ]
 }
