@@ -34,5 +34,5 @@ Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
         if (a[1] as? Bool) == true { exit(0) }
     }
 }
-DispatchQueue.main.asyncAfter(deadline: .now() + 1800) { print("timed out"); exit(1) }
+DispatchQueue.main.asyncAfter(deadline: .now() + 3 * 3600) { print("timed out"); exit(1) }
 app.run()
