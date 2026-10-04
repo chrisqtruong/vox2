@@ -1,5 +1,8 @@
 // Language menu: search, "detect language", pinned favorites on top, pin/unpin on hover.
 // Each pane's language button gets a `value` property and fires `change`, like a <select>.
+// Keyboard: with the button focused (Tab to it), start typing a language name to open the menu
+// already searching; ↓ / Enter / Space open it too. In the menu, ↑↓ move, Enter or Tab picks,
+// Esc cancels, and focus goes back to the button so Tab carries on from there.
 import { LANGUAGES, langName } from './languages.js';
 
 const PIN_SVG = '<svg viewBox="0 0 24 24"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"/></svg>';
@@ -54,9 +57,16 @@ function build() {
   const nodes = [];
   if (q) {
     if ('detect language'.includes(q)) nodes.push(row('auto'));
-    for (const [code, name] of LANGUAGES) {
-      if (name.toLowerCase().includes(q) || code.toLowerCase() === q) nodes.push(row(code, { pinned: pinned.includes(code) }));
-    }
+    // Names that start with what you typed come first ("s" → Samoan, Serbian, Spanish… before Afrikaans),
+    // then names with a word starting with it ("chin" → Chinese (Simplified)), then any other match.
+    const rank = (code, name) => {
+      const n = name.toLowerCase();
+      if (code.toLowerCase() === q || n.startsWith(q)) return 0;
+      if (n.split(/[\s(]+/).some((w) => w.startsWith(q))) return 1;
+      return n.includes(q) ? 2 : -1;
+    };
+    const found = LANGUAGES.map(([code, name]) => [code, rank(code, name)]).filter(([, r]) => r >= 0);
+    for (const [code] of found.sort((x, y) => x[1] - y[1])) nodes.push(row(code, { pinned: pinned.includes(code) }));
   } else {
     nodes.push(row('auto'));
     for (const code of pinned) nodes.push(row(code, { pinned: true }));
@@ -70,7 +80,7 @@ function build() {
 
 function pick(code) {
   const { button } = owner;
-  close();
+  close(true);
   if (code === button.value) return;
   button.value = code;
   button.dispatchEvent(new Event('change'));
@@ -85,10 +95,10 @@ function togglePin(code) {
   list.scrollTop = scroll;
 }
 
-function open(button, opts) {
-  if (owner?.button === button) return close();
+function open(button, opts, typed = '') {
+  if (owner?.button === button) return close(true);
   owner = { button, opts };
-  search.value = '';
+  search.value = typed;
   menu.hidden = false;
   // Root zoom scales fixed positions, so convert screen coordinates back to CSS pixels.
   const z = parseFloat(document.documentElement.style.zoom) || 1;
@@ -102,11 +112,15 @@ function open(button, opts) {
   search.focus();
 }
 
-function close() {
+// refocus: put focus back on the language button (after a pick or Esc), so the keyboard stays in
+// place instead of landing nowhere when the menu disappears.
+function close(refocus = false) {
   if (!owner) return;
-  owner.button.setAttribute('aria-expanded', 'false');
+  const { button } = owner;
+  button.setAttribute('aria-expanded', 'false');
   owner = null;
   menu.hidden = true;
+  if (refocus || menu.contains(document.activeElement)) button.focus();
 }
 
 list.addEventListener('pointerdown', (e) => e.preventDefault()); // keep focus in the search box
@@ -125,7 +139,8 @@ search.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowDown') setActive(active + 1);
   else if (e.key === 'ArrowUp') setActive(active - 1);
   else if (e.key === 'Enter') { const r = rows()[active]; if (r) pick(r.dataset.code); }
-  else if (e.key === 'Escape') close();
+  else if (e.key === 'Tab') { const r = rows()[active]; if (r && search.value.trim()) pick(r.dataset.code); else close(true); } // like autocomplete
+  else if (e.key === 'Escape') close(true);
   else return;
   e.preventDefault();
   e.stopPropagation();
@@ -156,4 +171,13 @@ export function attachLangPicker(button, opts) {
   });
   button.setAttribute('aria-haspopup', 'listbox');
   button.addEventListener('click', () => open(button, opts));
+  // Typing on the focused button opens the menu already searching ("s", "p", "a" → Spanish).
+  button.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key.length === 1 && /\p{L}/u.test(e.key)) open(button, opts, e.key);
+    else if (e.key === 'ArrowDown') open(button, opts);
+    else return;
+    e.preventDefault();
+    e.stopPropagation();
+  });
 }

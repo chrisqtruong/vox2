@@ -2,6 +2,12 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Changed
+
+- **Pick a language without the mouse.** Tab to a language button and just start typing ("spa"): the language menu opens already searching, and Enter or Tab picks the top match. ↓ opens the menu too. Names that start with what you typed come first ("s" → Samoan, Serbian, Spanish…), so a letter or two is often enough. After you pick (or press Esc), focus stays on the language button, so Tab carries on from there instead of getting lost. *Windows and Mac.*
+
 ## 0.4.21 (2026-10-04)
 
 ### Changed
