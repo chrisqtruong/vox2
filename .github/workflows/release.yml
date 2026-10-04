@@ -1,0 +1,253 @@
+# Make a full release (Windows + Mac) on GitHub's machines, so it can be done from anywhere,
+# including the Mac or a phone: Actions → release → Run workflow.
+#
+# Before running: the version in src-tauri/tauri.conf.json, src-tauri/Cargo.toml (and
+# Cargo.lock) is bumped on main, and CHANGELOG.md has a "## <version>" section. The release
+# text is that section.
+#
+# What it does: builds the Windows installer and the Mac app, puts both on a **draft** release
+# with the same files the PC release has (Vox2-setup.exe, Vox2_<ver>_x64-setup.exe,
+# Vox2-mac.dmg, Vox2_<ver>_aarch64.dmg, Vox2_<ver>_aarch64.app.tar.gz, and one latest.json
+# with the Windows and Mac entries), checks the files, and only then publishes it as "latest".
+# If anything fails, nothing is published, so apps never see a half-finished release.
+#
+# "Test run" makes the draft under a throwaway tag (v<ver>-test-<run>) and never publishes it:
+# look at it, then delete the draft.
+#
+# Releases published by this workflow don't start build.yml's "release published" Mac job
+# (GitHub doesn't start workflows from releases made with the workflow's own token). If you
+# ever publish one of these drafts by hand, that job runs and just rebuilds and replaces the
+# Mac files and entries, which is harmless. The PC way of releasing still works as before.
+name: release
+
+on:
+  push:
+    branches: [release-workflow] # TEMP: test run before merging
+  workflow_dispatch:
+    inputs:
+      test_run:
+        description: "Test run: make a draft under a test tag, don't publish"
+        type: boolean
+        default: true
+      notes:
+        description: "Update note shown in the app (optional; default: the changelog headings)"
+        type: string
+        default: ""
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Check version and changelog
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      tag: ${{ steps.v.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: v
+        name: Read the version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TEST_RUN: ${{ github.event_name != 'workflow_dispatch' || inputs.test_run }}
+        run: |
+          ver=$(python3 -c 'import json; print(json.load(open("src-tauri/tauri.conf.json"))["version"])')
+          cargo_ver=$(sed -n 's/^version = "\(.*\)"/\1/p' src-tauri/Cargo.toml | head -1)
+          [ "$ver" = "$cargo_ver" ] || { echo "::error::tauri.conf.json says $ver but Cargo.toml says $cargo_ver"; exit 1; }
+          grep -q "^## $ver " CHANGELOG.md || grep -q "^## $ver\$" CHANGELOG.md \
+            || { echo "::error::CHANGELOG.md has no '## $ver' section"; exit 1; }
+          if [ "$TEST_RUN" = "true" ]; then
+            tag="v$ver-test-$GITHUB_RUN_NUMBER"
+          else
+            tag="v$ver"
+            if gh release view "$tag" -R "$GITHUB_REPOSITORY" > /dev/null 2>&1 \
+               || git ls-remote --exit-code --tags origin "refs/tags/$tag" > /dev/null 2>&1; then
+              echo "::error::$tag already exists. Bump the version first."; exit 1
+            fi
+          fi
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "Releasing $ver as $tag (test run: $TEST_RUN)"
+
+  windows:
+    name: Windows installer
+    needs: prepare
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: Build
+        shell: bash
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: npx --yes @tauri-apps/cli@2 build --bundles nsis
+      - name: Collect
+        shell: bash
+        run: |
+          ver="${{ needs.prepare.outputs.version }}"
+          n=src-tauri/target/release/bundle/nsis
+          mkdir out
+          cp "$n/Vox2_${ver}_x64-setup.exe" "$n/Vox2_${ver}_x64-setup.exe.sig" out/
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-windows
+          path: out/*
+          if-no-files-found: error
+
+  macos:
+    name: macOS app
+    needs: prepare
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: Put the signing certificate in a keychain
+        # Same as build.yml: Tauri's own import only accepts Apple-issued certificates.
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          kc="$RUNNER_TEMP/vox2-signing.keychain-db"
+          kcpw=$(openssl rand -hex 16)
+          echo "$APPLE_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/vox2.p12"
+          security create-keychain -p "$kcpw" "$kc"
+          security set-keychain-settings -lut 21600 "$kc"
+          security unlock-keychain -p "$kcpw" "$kc"
+          security import "$RUNNER_TEMP/vox2.p12" -k "$kc" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$kcpw" "$kc" > /dev/null
+          security list-keychains -d user -s "$kc" $(security list-keychains -d user | tr -d '"')
+          security find-certificate -p -c "Vox2 Self-Signed" "$kc" > "$RUNNER_TEMP/vox2.pem"
+          sudo security add-trusted-cert -d -r trustRoot -p codeSign -k /Library/Keychains/System.keychain "$RUNNER_TEMP/vox2.pem"
+          rm "$RUNNER_TEMP/vox2.p12"
+          security find-identity -p codesigning "$kc"
+      - name: Build
+        env:
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          npx --yes @tauri-apps/cli@2 build --bundles app,dmg \
+            --config '{"bundle":{"createUpdaterArtifacts":true,"macOS":{"hardenedRuntime":false}}}'
+      - name: Check the signature
+        run: |
+          app=src-tauri/target/release/bundle/macos/Vox2.app
+          codesign --verify --deep --strict "$app"
+          codesign -dvv "$app" 2>&1 | grep -q "Authority=Vox2 Self-Signed"
+      - name: Collect
+        run: |
+          ver="${{ needs.prepare.outputs.version }}"
+          b=src-tauri/target/release/bundle
+          mkdir out
+          cp "$b/dmg/Vox2_${ver}_aarch64.dmg" out/
+          cp "$b/macos/Vox2.app.tar.gz" "out/Vox2_${ver}_aarch64.app.tar.gz"
+          cp "$b/macos/Vox2.app.tar.gz.sig" "out/Vox2_${ver}_aarch64.app.tar.gz.sig"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-macos
+          path: out/*
+          if-no-files-found: error
+
+  publish:
+    name: Draft, check, publish
+    needs: [prepare, windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      VER: ${{ needs.prepare.outputs.version }}
+      TAG: ${{ needs.prepare.outputs.tag }}
+      NOTES: ${{ inputs.notes }}
+      TEST_RUN: ${{ github.event_name != 'workflow_dispatch' || inputs.test_run }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v7
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Release text and latest.json
+        run: |
+          python3 - <<'PY'
+          import json, os, re, datetime
+          ver, tag, repo = os.environ["VER"], os.environ["TAG"], os.environ["GH_REPO"]
+          # Release text: the CHANGELOG section for this version, without its heading.
+          text = open("CHANGELOG.md", encoding="utf-8").read()
+          m = re.search(r"^## " + re.escape(ver) + r"\b.*?\n(.*?)(?=^## |\Z)", text, re.S | re.M)
+          body = m.group(1).strip()
+          open("body.md", "w", encoding="utf-8").write(body + "\n")
+          # In-app update note: given, or the bold headings of the changelog bullets.
+          notes = os.environ.get("NOTES", "").strip()
+          if not notes:
+              heads = [h.strip().rstrip(".") for h in re.findall(r"^- \*\*(.+?)\*\*", body, re.M)]
+              notes = ". ".join(heads) + "." if heads else f"Vox2 {ver}"
+          base = f"https://github.com/{repo}/releases/download/{tag}"
+          def entry(name):
+              sig = open(f"dist/{name}.sig", encoding="utf-8").read().strip()
+              return {"url": f"{base}/{name}", "signature": sig}
+          win, mac = entry(f"Vox2_{ver}_x64-setup.exe"), entry(f"Vox2_{ver}_aarch64.app.tar.gz")
+          latest = {
+              "version": ver,
+              "notes": notes,
+              "pub_date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "platforms": {
+                  "windows-x86_64-nsis": win,
+                  "windows-x86_64": win,
+                  "darwin-aarch64": mac,
+                  "darwin-aarch64-app": mac,
+              },
+          }
+          json.dump(latest, open("latest.json", "w"), indent=2)
+          print(json.dumps({**latest, "platforms": {k: v["url"] for k, v in latest["platforms"].items()}}, indent=2))
+          PY
+          cp "dist/Vox2_${VER}_x64-setup.exe" Vox2-setup.exe   # stable names for download links
+          cp "dist/Vox2_${VER}_aarch64.dmg" Vox2-mac.dmg
+      - name: Draft release
+        run: |
+          gh release create "$TAG" --draft --target "$GITHUB_SHA" \
+            --title "Vox2 $VER$([ "$TEST_RUN" = true ] && echo ' (test run)')" --notes-file body.md \
+            latest.json Vox2-setup.exe Vox2-mac.dmg \
+            "dist/Vox2_${VER}_x64-setup.exe" "dist/Vox2_${VER}_aarch64.dmg" "dist/Vox2_${VER}_aarch64.app.tar.gz"
+      - name: Check the draft
+        # Every file latest.json points to is on the release, with the same bytes we built.
+        run: |
+          mkdir check
+          gh release download "$TAG" -D check
+          for f in latest.json Vox2-setup.exe Vox2-mac.dmg "Vox2_${VER}_x64-setup.exe" "Vox2_${VER}_aarch64.dmg" "Vox2_${VER}_aarch64.app.tar.gz"; do
+            [ -f "check/$f" ] || { echo "::error::$f is missing from the release"; exit 1; }
+          done
+          cmp "check/Vox2_${VER}_x64-setup.exe" "dist/Vox2_${VER}_x64-setup.exe"
+          cmp "check/Vox2-setup.exe" "dist/Vox2_${VER}_x64-setup.exe"
+          cmp "check/Vox2_${VER}_aarch64.app.tar.gz" "dist/Vox2_${VER}_aarch64.app.tar.gz"
+          cmp "check/Vox2-mac.dmg" "dist/Vox2_${VER}_aarch64.dmg"
+          python3 - <<'PY'
+          import json, os
+          d = json.load(open("check/latest.json"))
+          assert d["version"] == os.environ["VER"], d["version"]
+          need = {"windows-x86_64-nsis", "windows-x86_64", "darwin-aarch64", "darwin-aarch64-app"}
+          assert need <= set(d["platforms"]), d["platforms"].keys()
+          for k, p in d["platforms"].items():
+              assert p["signature"] and p["url"].endswith((".exe", ".app.tar.gz")), k
+              assert os.path.exists("check/" + p["url"].rsplit("/", 1)[1]), p["url"]
+          print("latest.json OK")
+          PY
+      - name: Publish
+        if: github.event_name == 'workflow_dispatch' && !inputs.test_run
+        run: gh release edit "$TAG" --draft=false --latest
+      - name: Summary
+        run: |
+          url=$(gh release view "$TAG" --json url -q .url)
+          if [ "$TEST_RUN" = true ]; then
+            echo "Test draft ready (not published): $url — delete it when you've looked." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Published Vox2 $VER: $url" >> "$GITHUB_STEP_SUMMARY"
+          fi
