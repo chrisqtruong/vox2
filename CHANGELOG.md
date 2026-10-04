@@ -8,6 +8,17 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 - **Gender-inclusive AI translations.** Claude, ChatGPT and Gemini are now told to keep each person's gender exactly as your text gives it and never assume one it doesn't state: keep pronouns, including singular "they" and neopronouns, as closely as the language allows; keep neutral words like partner, parent or doctor neutral; and where a language needs a gender your text doesn't give, prefer gender-neutral wording. The "who it's for" note (e.g. someone's pronouns) takes priority. Google Translate can't take instructions, so it's unchanged; the meaning check flags when a gender appears. *Windows and Mac.*
 
+## 0.4.20 (2026-10-04)
+
+### Changed
+
+- **Meaning check: inclusive pronouns.** Singular *they* and neopronouns (xe, ze, ey, fae) now count: if you write "they" or "xe" and the ↩ line says "he" or "she", or you write "partner" and it says "wife", the match is capped and the hover card says a gender appeared that you didn't write. A neopronoun that comes back as "they" (most languages don't have one) keeps the score below 85. In Tagalog, Hindi, Urdu and Spanish, whose pronouns can't carry he/she/they through the round trip, the hover card says pronouns can't be checked. Wording says "pronouns" instead of "he/she". *Windows and Mac.*
+
+### Fixed
+
+- **Meaning check: fewer false alarms on new text.** Testing on fresh sentences showed words like "undisturbed" or "unfamiliar" were read as a "not" when a good translation said "intact" or "new". They now only count to balance a "not" on the other side ("not hurt" = "unharmed"). And "people" coming back as "men" isn't flagged when your text already said "his". False alarms on fresh sentences 8.3% → 6.9% ([report](docs/meaning-check-tests/2026-10-04-run-5.md)). *Windows and Mac.*
+- **Fewer meaning-check false alarms.** Numbers written differently now match (eighteenth = 18th, 90°F = 32°C, "between 340 and 500 million", "both" = two, a conversion in brackets), and more ways of saying "not" are understood (unharmed = not hurt, treeless = without trees, immoral, "not long ago" isn't a negation, "No. 9" is a number). False alarms on good translations 4.8% → 4.1% on held-out sentences, errors caught unchanged ([report](docs/meaning-check-tests/2026-10-04-phase-1-2.md)). *Windows and Mac.*
+
 ## 0.4.19 (2026-10-04)
 
 ### Changed

@@ -1,0 +1,35 @@
+<!doctype html><meta charset="utf-8"><title>meaning check: re-score saved translations</title><pre id="log"></pre>
+<script type="module">
+// Scores translations saved by an earlier run (no new Google requests) with Vox2's real matchScore,
+// without any "wasn't translated" check, plus what the app's check and the two-level variant say. Rows with an
+// empty translation or ↩ line are skipped (the app shows no score for them).
+// ./bench <saved results.json> <out.json> rescore.html
+import { matchScore } from './meaning.js';
+import { untranslated as shipped } from './meaning-checks.js';
+import { untranslated, UNTRANSLATED_SHARE, PARTIAL_SHARE } from './untranslated-two-level.js';
+const log = (m) => { document.getElementById('log').textContent += m + '\n'; window.__log = (window.__log || '') + m + '\n'; };
+const q = new URLSearchParams(location.search);
+log('loading');
+const rows = await (await fetch(q.get('items'))).json();
+const out = [];
+for (const r of rows) {
+  if (!r.translation?.trim() || !r.back?.trim()) { out.push({ ...r, scoreBefore: null, score: null, empty: true }); continue; }
+  const text = r.text ?? (r.kind === 'bad' ? r.bad_en : r.en); // what you typed (untranslated set: the garbled text)
+  try {
+    const before = await matchScore(text, r.back, 'en');
+    // score: the two-level check (untranslated-two-level.js); shippedCantCheck: whether the app's
+    // check (resources/meaning-checks.js) shows "can't check". The share is saved so other
+    // thresholds can be tried offline.
+    const u = untranslated(text, r.translation);
+    out.push({ ...r, scoreBefore: before.score, score: u.share >= UNTRANSLATED_SHARE ? null : u.share >= PARTIAL_SHARE ? Math.min(before.score, 84) : before.score, share: u.share, untranslated: u.words,
+      shippedCantCheck: shipped(text, r.translation) !== null });
+  } catch (e) {
+    log(`failed (${e.message}): ${text.slice(0, 60)}`);
+    out.push({ ...r, scoreBefore: null, score: null, error: String(e.message) });
+  }
+  if (out.length % 100 === 0) log(`${out.length} / ${rows.length}`);
+}
+await fetch('/save', { method: 'POST', body: JSON.stringify(out) });
+log('SAVED ' + out.length);
+window.__done = true;
+</script>
