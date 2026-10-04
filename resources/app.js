@@ -1370,6 +1370,7 @@ function themeColors() {
 async function startBubble(anchor, status) {
   quick.active = true;
   quick.session++;
+  quick.openedAt = Date.now();
   await openBubble(anchor?.x, anchor?.y);
   sendBubble({ session: quick.session, colors: themeColors(), status, source: '', translation: '' });
   return quick.session;
@@ -1447,6 +1448,9 @@ onNative('snip', async ({ x, y }) => {
 // always tell the bubble it lost focus when you switch to another Vox2 window) and keep results here.
 addEventListener('focus', () => {
   if (!quick.active) return;
+  // On macOS, showing the bubble can hand this window the keyboard for a moment (if it's open) before
+  // the bubble takes it: that isn't you coming back here.
+  if (MAC && Date.now() - (quick.openedAt || 0) < 1500) return;
   quick.active = false;
   hideBubble();
 });

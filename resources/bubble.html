@@ -79,6 +79,7 @@
     let session = 0;
     let lastHeight = 0;
     let shown = false;
+    let shownAt = 0; // macOS hands the keyboard to the main window for a moment as the bubble opens
     const MAC = /Mac/.test(navigator.platform);
     const MOD = MAC ? '⌘' : 'Ctrl+';
     const label = (id) => [...$(id).childNodes].find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim()); // "listen", "copy"…
@@ -87,6 +88,7 @@
       const h = Math.ceil(card.getBoundingClientRect().height) + 12;
       if (shown && Math.abs(h - lastHeight) < 4) return;
       lastHeight = h;
+      if (!shown) shownAt = Date.now();
       shown = true;
       T.core.invoke('place_bubble', { height: h });
     }
@@ -294,7 +296,8 @@
 
     // Esc: stop reading aloud, and put the bubble away.
     addEventListener('keydown', (e) => { if (e.key === 'Escape') { act('stop'); hide(); } });
-    addEventListener('blur', () => { if (shown) hide(); }); // click anywhere else and it goes away
+    // Click anywhere else and it goes away (but not for the moment macOS takes the keyboard as it opens).
+    addEventListener('blur', () => { if (shown && Date.now() - shownAt > 1000) hide(); });
     T.event.emitTo('main', 'bubble-ready');
   </script>
   <script type="module">
