@@ -2,6 +2,12 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Fixed
+
+- **Mac: snip & translate reads screen text much more accurately.** Snips are now read by Apple's own text recognizer (the Live Text engine) instead of Tesseract, which sometimes garbled lines or misread words ("on" as "or"). It also works offline with no download. Languages Apple's reader doesn't cover still use Tesseract. *Mac.*
+
 ## 0.4.15 (2026-10-03)
 
 ### Added
