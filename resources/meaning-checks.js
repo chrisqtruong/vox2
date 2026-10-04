@@ -35,13 +35,56 @@ const NEGATIONS = new Set(['not', 'no', 'never', 'none', 'nobody', 'nothing', 'n
 const NEGATIVE_WORDS = new Set(['without', 'unknown', 'unknowingly', 'unaware', 'unable', 'unclear', 'uncertain', 'unsure', 'unlikely',
   'unavailable', 'unnoticed', 'unidentified', 'unnamed', 'unseen', 'impossible', 'lack', 'lacks', 'lacked', 'lacking', 'fail', 'fails',
   'failed', 'failing', 'refuse', 'refuses', 'refused', 'deny', 'denies', 'denied', 'absent', 'hardly', 'barely', 'scarcely', 'rarely', 'seldom']);
-const negations = (ws) => ws.filter((w, i) => {
-  if (w === 'not' && ['only', 'just', 'merely'].includes(ws[i + 1])) return false; // "not only… but also": not a negation
-  return NEGATIONS.has(w) || NEGATIVE_WORDS.has(w) || w.endsWith("n't");
-}).length;
+// Grown for Phase 1.2 (from runs 2–3's false alarms): "doubt" = not sure, "absence" = lack.
+for (const w of ['doubt', 'doubts', 'doubted', 'doubtful', 'absence']) NEGATIVE_WORDS.add(w);
+// in-/im-/il-/ir- words are listed one by one: the prefix alone would also catch "important", "include", "image".
+const BUILT_NEGATIVE = new Set(['immoral', 'impractical', 'improper', 'impatient', 'imperfect', 'impolite',
+  'implausible', 'incorrect', 'inaccurate', 'inadequate', 'incapable', 'incomplete', 'inconsistent', 'indestructible', 'indomitable',
+  'insecure', 'insufficient', 'invalid', 'invisible', 'inaccessible', 'inactive', 'incompetent', 'illogical', 'irrelevant', 'irregular',
+  'irresponsible', 'irreversible', 'illegally']);
+// Words built to mean "not": un-… (unbreakable, unharmed, unwise, unrelated) and "without X" -less words (treeless,
+// homeless). Not: under-, uni-, until, unless, unfortunately, "reverse the action" verbs (unlock, unveil, unfold…),
+// -ly adverbs ("unusually fast", "implausibly fast" describe how, they don't negate), and -less words that
+// mean "very many" (countless, boundless, endless).
+const UN_WORD = /^un(?!der|i|til|less|animous|cle|to\b|veil|leash|lock|load|fold|pack|cover|ravel|wrap|do|earth|dergo|fortunat)[a-z]{4,}(?<!ly)$/;
+const LESS_WORD = /^(?:tree|home|job|use|help|power|harm|care|point|hope|motion|sleep|water|child|penni|life|speech|defence|defense|fear|blame|flaw|spot|weight|clue|sense|worth|aim)less$/;
+// Two kinds of negative words (Phase 1.2b, from run 5's fresh sentences):
+// - plain negations ("not", "never", "can't", "without", "lack"…): a change in how many there are flips the meaning;
+// - words built to be negative (unharmed, undisturbed, treeless, immoral): a translation swaps these freely with a
+//   plain word of the same meaning ("undisturbed" ↩ "intact", "new to you" ↩ "unfamiliar"), so on their own they
+//   say nothing. They only count to cancel a plain negation on the other side ("not hurt" ↩ "unharmed").
+const isNegative = (w) => NEGATIONS.has(w) || NEGATIVE_WORDS.has(w) || w.endsWith("n't");
+const isBuiltNegative = (w) => !isNegative(w) && (BUILT_NEGATIVE.has(w) || UN_WORD.test(w) || LESS_WORD.test(w));
+// Phrases that look negative but aren't: "not only" (… but also), "not long ago" (= recently), "not far from"
+// (= near), "no matter", "no doubt", "don't worry" (= rest assured), "No. 9" (= number 9). "not un-…"
+// needs nothing: two negations cancel out.
+const NOT_NEGATION = /\b(?:not|no)\s+(?:only|just|merely|long\s+ago|far|matter|doubt)\b|\b(?:don't|do\s+not)\s+worry\b|\bno\.\s*(?=\d)/gi;
+const negationText = (s) => words(s.replace(/[’`]/g, "'").replace(NOT_NEGATION, ' '));
+const negationWords = (s) => negationText(s).filter(isNegative);
+
+// Languages where a he/she swap mostly can't survive the round trip, because their pronouns don't state
+// a gender (Tagalog "siya", Hindi/Urdu "vah/voh": he, she or they) or drop it (Spanish "su" = his, her or
+// their). Measured: fewer than
+// half of swapped pronouns caught (runs 2–3: Tagalog 12%, Hindi 29%, Spanish 33%, Urdu 35%; next lowest
+// Japanese 60%). There the app says he/she can't be checked instead of implying it's fine.
+export const NO_HE_SHE = new Set(['tl', 'fil', 'hi', 'ur', 'es']);
+export const heSheUncheckable = (original, target, lang) => isEnglish(lang) && NO_HE_SHE.has(String(target || '').toLowerCase().split('-')[0])
+  && words(original).some((w) => MALE.has(w) || FEMALE.has(w) || THEY.has(w) || NEO.has(w));
 
 const MALE = new Set(['he', 'him', 'his', 'himself']);
 const FEMALE = new Set(['she', 'her', 'hers', 'herself']);
+// Pronouns that don't state a gender: singular or plural they, and neopronouns (xe, ze/hir, ze/zir,
+// ey/em, fae). A he/she appearing where you wrote one of these is misgendering, or at least a gender
+// your text didn't say.
+const THEY = new Set(['they', 'them', 'their', 'theirs', 'themselves', 'themself']);
+const NEO = new Set(['xe', 'xem', 'xyr', 'xyrs', 'xemself', 'ze', 'zir', 'zirs', 'zirself', 'hir', 'hirs', 'hirself', 'ey', 'eir', 'eirs', 'emself',
+  'fae', 'faer', 'faers', 'faerself']);
+// Words for people that don't state a gender, and gendered words a translation might turn them into.
+const NEUTRAL_PEOPLE = new Set(['partner', 'partners', 'spouse', 'spouses', 'parent', 'parents', 'sibling', 'siblings', 'child', 'children', 'kid', 'kids',
+  'person', 'people', 'grandparent', 'grandparents', 'grandchild', 'grandchildren', 'cousin', 'cousins', 'friend', 'friends', 'teen', 'teenager']);
+const GENDERED_PEOPLE = new Set(['husband', 'husbands', 'wife', 'wives', 'boyfriend', 'girlfriend', 'mother', 'mothers', 'father', 'fathers', 'mom', 'dad',
+  'brother', 'brothers', 'sister', 'sisters', 'son', 'sons', 'daughter', 'daughters', 'boy', 'boys', 'girl', 'girls', 'man', 'men', 'woman', 'women',
+  'grandmother', 'grandfather', 'grandson', 'granddaughter', 'niece', 'nephew', 'aunt', 'uncle', 'gentleman', 'lady', 'ladies']);
 
 // Word pairs that mean the opposite. Each side lists forms that count as that side.
 const OPPOSITES = [
@@ -81,7 +124,16 @@ const OPPOSITES = [
 // the same: number words ("two"), times ("11:00" = "11am" = "11 o'clock"). Digits that are part of
 // a name ("COVID-19", "G7", "MP3") are left out.
 export function numbersIn(s, lang) {
-  let t = numberWordsToDigits(s, lang);
+  let t = s;
+  if (isEnglish(lang)) {
+    t = t.replace(ORDINAL, (m, tens, unit) => String((tens ? SMALL[tens.toLowerCase()] : 0) + ORDINALS[unit.toLowerCase()])) // "eighteenth" = 18th
+      .replace(/\b(k?m|cm|mi|ft)\s([23])\b/g, '$1$2') // "km 2" = km²
+      // Vague amounts aren't numbers to compare: "several thousand", "a couple of thousand", "many hundreds".
+      .replace(/\b(?:several|a few|few|many|some|a couple of|a couple|tens of|hundreds of|thousands of)\s+(?:hundred|thousand|million|billion)s?\b/gi, ' ')
+      .replace(/(\d+(?:\.\d+)?)\s+(hundred|thousand|million|billion)\b/gi, (m, n, w) => String(Math.round(parseFloat(n) * SCALE[w.toLowerCase()]))); // "340 million", "1.5 million"
+  }
+  t = numberWordsToDigits(t, lang);
+  if (isEnglish(lang)) t = t.replace(/(\d+)\s+dozen\b/gi, (m, n) => String(n * 12)).replace(/\ba dozen\b/gi, '12'); // "four dozen" = 48
   t = t.replace(/\b(\d{1,2}):00\b/g, '$1') // 11:00 → 11
     .replace(/\b(\d{1,2})(?::(\d\d))?\s*(?:a\.?m\.?|p\.?m\.?|o'clock)(?!\p{L})/giu, (m, h, mm) => (mm ? `${h}:${mm}` : h)) // 11am → 11
     .replace(/(\d)(?:st|nd|rd|th)\b/g, '$1'); // 21st → 21
@@ -101,6 +153,73 @@ export function missingWords(original, back, lang) {
   return [...new Set(words(original).filter((w) => w.length > 2 && !STOP.has(w) && !kept.has(stem(w))))];
 }
 
+// Ordinal words from "fourth" on ("first" to "third" are mostly not counts: "for the first time").
+const ORDINALS = { fourth: 4, fifth: 5, sixth: 6, seventh: 7, eighth: 8, ninth: 9, tenth: 10, eleventh: 11, twelfth: 12, thirteenth: 13,
+  fourteenth: 14, fifteenth: 15, sixteenth: 16, seventeenth: 17, eighteenth: 18, nineteenth: 19, twentieth: 20, thirtieth: 30, fortieth: 40,
+  fiftieth: 50, sixtieth: 60, seventieth: 70, eightieth: 80, ninetieth: 90, hundredth: 100 };
+const ORDINAL = new RegExp(`\\b(?:(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)[\\s-])?(${Object.keys(ORDINALS).join('|')})\\b`, 'gi');
+
+// Do two texts state the same numbers? Like comparing numbersIn(), but forgiving the ways a correct
+// translation can say a number differently (all from runs 2–3's false alarms):
+// - a word that stands for a number: "both" / "a pair" / "a couple" / "twice" = 2 ("both languages" ↩ "the two languages")
+// - a scale said once for two numbers: "between 340 and 500 million" = "340 million to 500 million"
+// - a unit converted: 90°F = 32°C, 800 miles = 1,287 km, 300 mph = 480 km/h (within 6%), and a conversion
+//   added or left out in brackets: "3,000 miles" = "3,000 miles (4,800 km)"
+// - "a decade" = 10 (years)
+export function numbersMatch(original, back, lang) {
+  const a = numbersIn(original, lang).split(' ').filter(Boolean);
+  const b = numbersIn(back, lang).split(' ').filter(Boolean);
+  if (a.join(' ') === b.join(' ')) return true;
+  if (!isEnglish(lang)) return false;
+  const left = [...a];
+  const right = [...b];
+  for (const x of a) {
+    const i = right.indexOf(x);
+    if (i >= 0) { right.splice(i, 1); left.splice(left.indexOf(x), 1); }
+  }
+  const value = (x) => parseFloat(x.replace(',', '.'));
+  const ma = measures(original);
+  const mb = measures(back);
+  const sameAmount = (x, y) => {
+    const [p, q] = [value(x), value(y)].sort((m, n) => m - n);
+    if ([1e3, 1e6, 1e9].some((k) => Math.abs(q - p * k) < 1e-6 * q)) return true; // scale left off
+    return ma.some((u) => u.v === value(x) && mb.some((w) => w.v === value(y) && sameMeasure(u, w)))
+      || mb.some((u) => u.v === value(x) && ma.some((w) => w.v === value(y) && sameMeasure(u, w)));
+  };
+  for (let i = left.length - 1; i >= 0; i--) {
+    const j = right.findIndex((y) => sameAmount(left[i], y));
+    if (j >= 0) { left.splice(i, 1); right.splice(j, 1); }
+  }
+  // A number that's only a conversion of another amount in either text ("(4,800 km)") says nothing new.
+  const all = [...ma, ...mb];
+  const conversion = (x) => all.some((u) => u.v === value(x) && all.some((w) => sameMeasure(u, w)));
+  for (const list of [left, right]) for (let i = list.length - 1; i >= 0; i--) if (conversion(list[i])) list.splice(i, 1);
+  const stands = (s) => [...(TWO_WORDS.test(s) ? ['2'] : []), ...(/\ba decade\b/i.test(s) ? ['10'] : [])];
+  return left.every((x) => stands(back).includes(x)) && right.every((y) => stands(original).includes(y));
+}
+const TWO_WORDS = /\b(?:both|a pair|a couple|twice|twins?)\b/i;
+
+// Amounts with a unit, in one base unit per kind (°C, metres, kilograms, metres per second).
+const UNITS = [
+  [/°\s*F\b|\(F\)|degrees? (?:F\b|fahrenheit)|fahrenheit|\bF\b(?=[\s-]*degree)/i, 'temp', (v) => ((v - 32) * 5) / 9],
+  [/°\s*C\b|\(C\)|degrees? (?:C\b|celsius)|celsius/i, 'temp', (v) => v],
+  [/miles? per hour|mph/i, 'speed', (v) => v * 0.44704], [/km\/h|kph|kilomet(?:er|re)s? per hour/i, 'speed', (v) => v / 3.6],
+  [/miles?\b/i, 'length', (v) => v * 1609.34], [/km\b|kilomet(?:er|re)s?/i, 'length', (v) => v * 1000],
+  [/feet\b|foot\b|ft\b/i, 'length', (v) => v * 0.3048], [/met(?:er|re)s?\b|m\b/i, 'length', (v) => v],
+  [/inch(?:es)?\b/i, 'length', (v) => v * 0.0254], [/cm\b|centimet(?:er|re)s?/i, 'length', (v) => v / 100],
+  [/pounds?\b|lbs?\b/i, 'mass', (v) => v * 0.4536], [/kg\b|kilograms?/i, 'mass', (v) => v],
+];
+function measures(s) {
+  const found = [];
+  for (const m of s.matchAll(/(\d+(?:\.\d+)?)[\s-]*(\(?[°a-zA-Z][^\d,;]{0,20})/g)) {
+    const unit = UNITS.find(([re]) => new RegExp(`^(?:${re.source})`, 'i').test(m[2]));
+    if (unit) found.push({ v: parseFloat(m[1]), kind: unit[1], base: unit[2](parseFloat(m[1])), unit: unit[0] });
+  }
+  return found;
+}
+const sameMeasure = (u, w) => u.kind === w.kind && u.unit !== w.unit
+  && (u.kind === 'temp' ? Math.abs(u.base - w.base) <= 1.5 : Math.abs(u.base - w.base) <= 0.06 * Math.max(u.base, w.base));
+
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -112,17 +231,29 @@ export function meaningChecks(original, back, lang) {
   const b = words(back);
   const found = [];
 
-  const negWords = (ws) => ws.filter((w, i) => (NEGATIONS.has(w) || NEGATIVE_WORDS.has(w) || w.endsWith("n't")) && !(w === 'not' && ['only', 'just', 'merely'].includes(ws[i + 1])));
-  if (negations(a) % 2 !== negations(b) % 2) {
+  const [na, nb] = [negationWords(original), negationWords(back)];
+  const built = (s) => negationText(s).filter(isBuiltNegative).length;
+  if (na.length % 2 !== nb.length % 2 && (na.length + built(original)) % 2 !== (nb.length + built(back)) % 2) {
     // The words to point at: the extra negation in the ↩ line, or the one of yours that didn't come back.
-    const more = negations(b) > negations(a);
-    found.push({ kind: 'negation', detail: more ? 'a "not" (or "no", "never"…) appeared' : 'a "not" (or "no", "never"…) from your text didn\'t come back', words: more ? negWords(b) : [], missing: more ? [] : negWords(a) });
+    const more = nb.length > na.length;
+    found.push({ kind: 'negation', detail: more ? 'a "not" (or "no", "never"…) appeared' : 'a "not" (or "no", "never"…) from your text didn\'t come back', words: more ? nb : [], missing: more ? [] : na });
   }
 
   const has = (ws, set) => ws.some((w) => set.has(w));
+  const gendered = (ws) => has(ws, MALE) || has(ws, FEMALE);
   if ((has(a, MALE) && !has(a, FEMALE) && has(b, FEMALE)) || (has(a, FEMALE) && !has(a, MALE) && has(b, MALE) && !has(b, FEMALE))) {
     const swapped = has(a, MALE) ? FEMALE : MALE;
-    found.push({ kind: 'pronoun', detail: 'he/she (or his/her) changed', words: b.filter((w) => swapped.has(w)) });
+    found.push({ kind: 'pronoun', detail: 'a pronoun changed (he ↔ she)', words: b.filter((w) => swapped.has(w)) });
+  } else if ((has(a, THEY) || has(a, NEO)) && !gendered(a) && gendered(b)) {
+    found.push({ kind: 'pronoun', detail: `a gendered pronoun appeared where you wrote "${a.find((w) => NEO.has(w) || THEY.has(w))}"`, words: b.filter((w) => MALE.has(w) || FEMALE.has(w)) });
+  } else if (has(a, NEO) && !a.filter((w) => NEO.has(w)).every((w) => b.includes(w))) {
+    // Most languages have no neopronouns, so they usually come back as "they": worth saying, but not "likely off".
+    found.push({ kind: 'pronoun', soft: true, detail: `your pronoun "${a.find((w) => NEO.has(w))}" didn't come back (most languages don't have it)`, words: [] });
+  }
+  // Only when your text states no gender at all: "the richest people… his wealth" ↩ "the richest men" adds nothing new.
+  if (has(a, NEUTRAL_PEOPLE) && !has(a, GENDERED_PEOPLE) && !gendered(a) && has(b, GENDERED_PEOPLE)) {
+    const added = b.find((w) => GENDERED_PEOPLE.has(w));
+    found.push({ kind: 'pronoun', detail: `a gender appeared: "${added}" where you wrote "${a.find((w) => NEUTRAL_PEOPLE.has(w))}"`, words: b.filter((w) => GENDERED_PEOPLE.has(w)) });
   }
 
   const sa = new Set(a);

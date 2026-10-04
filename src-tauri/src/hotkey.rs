@@ -208,21 +208,28 @@ pub fn start(app: AppHandle) {
     std::thread::spawn(move || {
         let held: Arc<Mutex<HashSet<&'static str>>> = Arc::default();
         let mut down: HashSet<String> = HashSet::new(); // shortcuts currently pressed
+        // Keys whose press went to a shortcut: on macOS, their presses (and repeats) and release
+        // are kept from the app in front, so it doesn't act on the same keys too.
+        let mut taken: HashSet<&'static str> = HashSet::new();
         #[cfg_attr(target_os = "macos", allow(unused_mut))] // only Windows calls it in place
-        let mut on_key = move |pressed: bool, code: &'static str| {
+        // → whether the key went to a shortcut (macOS then holds it back from other apps).
+        let mut on_key = move |pressed: bool, code: &'static str| -> bool {
             #[cfg(target_os = "macos")]
             if MAIN_FOCUSED.load(Ordering::Relaxed) {
-                return;
+                taken.clear();
+                return false;
             }
             // Key-ups get lost while Vox2 itself is in front; start clean whenever focus changes.
             if RESET.swap(false, Ordering::Relaxed) {
                 held.lock().unwrap().clear();
                 down.clear();
+                taken.clear();
             }
             let hotkeys = HOTKEYS.lock().unwrap().clone();
 
             if !pressed {
                 held.lock().unwrap().remove(code);
+                let was_taken = taken.remove(code);
                 for (name, hk) in &hotkeys {
                     // A modifier-only chord ends as soon as any of its keys comes up.
                     let ends = hk.code == code || (is_chord(hk) && is_modifier(code));
@@ -230,10 +237,13 @@ pub fn start(app: AppHandle) {
                         let _ = app.emit_to("main", "hotkey", json!({ "name": name, "type": "up" }));
                     }
                 }
-                return;
+                return was_taken;
             }
 
             let repeat = !held.lock().unwrap().insert(code);
+            if taken.contains(code) {
+                return true; // the key of a shortcut, repeating while held
+            }
             // Esc anywhere: the page stops reading aloud or dictating, if it's doing either.
             if code == "Escape" && !repeat {
                 let _ = app.emit_to("main", "escape", ());
@@ -269,13 +279,25 @@ pub fn start(app: AppHandle) {
                         continue;
                     }
                     down.insert(name.clone());
+                    // Take a modifiers + key shortcut's key; never a modifier itself (a lone Right
+                    // Option, or a modifiers-only chord), so other apps still see those.
+                    if !is_modifier(code) {
+                        taken.insert(code);
+                    }
                     match name.as_str() {
                         "dictate" => {
                             let _ = app.emit_to("main", "hotkey", json!({ "name": name, "type": "down" }));
                         }
-                        "summon" => summon(&app),
+                        // Off this thread: on macOS every key waits for it now (it can hold keys back).
+                        "summon" => {
+                            let app = app.clone();
+                            std::thread::spawn(move || summon(&app));
+                        }
                         "select" => grab_selection(app.clone(), held.clone()),
-                        "snip" => crate::overlay::start_snip(&app),
+                        "snip" => {
+                            let app = app.clone();
+                            std::thread::spawn(move || crate::overlay::start_snip(&app));
+                        }
                         _ => {}
                     }
                 } else if lone && hk.code != code && name == "dictate" && down.contains(name) {
@@ -283,6 +305,7 @@ pub fn start(app: AppHandle) {
                     let _ = app.emit_to("main", "hotkey", json!({ "name": name, "type": "other" }));
                 }
             }
+            taken.contains(code)
         };
 
         #[cfg(not(target_os = "macos"))]
@@ -293,7 +316,7 @@ pub fn start(app: AppHandle) {
                 _ => return,
             };
             if let Some(code) = code_of(key) {
-                on_key(pressed, code);
+                let _ = on_key(pressed, code); // Windows: shortcuts don't hold keys back (as before)
             }
         });
         #[cfg(target_os = "macos")]
@@ -325,7 +348,7 @@ mod mac {
 
     type CGEventRef = *mut c_void;
     type TapCallback = extern "C" fn(*mut c_void, u32, CGEventRef, *mut c_void) -> CGEventRef;
-    type OnKey = Box<dyn FnMut(bool, &'static str)>;
+    type OnKey = Box<dyn FnMut(bool, &'static str) -> bool>;
 
     #[link(name = "CoreGraphics", kind = "framework")]
     extern "C" {
@@ -344,6 +367,7 @@ mod mac {
 
     const SESSION_TAP: u32 = 1; // kCGSessionEventTap
     const HEAD_INSERT: u32 = 0; // kCGHeadInsertEventTap
+    const DEFAULT: u32 = 0; // kCGEventTapOptionDefault: can hold events back
     const LISTEN_ONLY: u32 = 1; // kCGEventTapOptionListenOnly
     const KEY_DOWN: u32 = 10;
     const KEY_UP: u32 = 11;
@@ -354,10 +378,15 @@ mod mac {
 
     static TAP: AtomicPtr<c_void> = AtomicPtr::new(std::ptr::null_mut());
 
-    pub fn listen(on_key: impl FnMut(bool, &'static str) + 'static) -> Result<(), &'static str> {
+    pub fn listen(on_key: impl FnMut(bool, &'static str) -> bool + 'static) -> Result<(), &'static str> {
         let user_info = Box::into_raw(Box::new(Box::new(on_key) as OnKey)) as *mut c_void;
         let mask = (1 << KEY_DOWN) | (1 << KEY_UP) | (1 << FLAGS_CHANGED);
-        let tap = unsafe { CGEventTapCreate(SESSION_TAP, HEAD_INSERT, LISTEN_ONLY, mask, on_event, user_info) };
+        // A tap that can hold keys back (so a shortcut's keys don't also reach the app in front)
+        // needs Accessibility; without it, just watch, as before.
+        let mut tap = unsafe { CGEventTapCreate(SESSION_TAP, HEAD_INSERT, DEFAULT, mask, on_event, user_info) };
+        if tap.is_null() {
+            tap = unsafe { CGEventTapCreate(SESSION_TAP, HEAD_INSERT, LISTEN_ONLY, mask, on_event, user_info) };
+        }
         if tap.is_null() {
             return Err("couldn't watch the keyboard");
         }
@@ -391,7 +420,10 @@ mod mac {
             _ => return event,
         };
         let on_key = unsafe { &mut *(user_info as *mut OnKey) };
-        on_key(pressed, code);
+        // Only key presses and releases are held back, never modifier changes.
+        if on_key(pressed, code) && kind != FLAGS_CHANGED {
+            return std::ptr::null_mut(); // the shortcut's key: the app in front never sees it
+        }
         event
     }
 

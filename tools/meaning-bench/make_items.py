@@ -89,3 +89,41 @@ if len(sys.argv) > 1 and sys.argv[1] == 'v3':
                 if got == 16: break
     json.dump({'langs': L, 'items': dev + test3}, open('items-v3.json','w'), ensure_ascii=False, indent=1)
     print(len(dev), 'development +', len(test3), 'fresh held-out sentences')
+
+# --- v4 (2026-10-04, run 5): fresh held-out set + a "gender added" error type -----------------
+# Runs 2-3's held-out sentences were read while designing Phase 1.2, so run 5 uses 80 new ones
+# (seed 2028, none used in runs 1-3), 16 per error type, plus 16 for a new error type: a gender
+# the sentence doesn't state ("they" -> "he", "people" -> "men", "parent" -> "mother"), which the
+# inclusive pronoun check (Phase 1.2) is meant to catch. Same 40 development sentences.
+# Run with:  python3 make_items.py v4
+GENDER_ADD = [(r'\bthey\b', 'he'), (r'\bThey\b', 'He'), (r'\bthem\b', 'him'), (r'\btheir\b', 'his'), (r'\bTheir\b', 'His'),
+              (r'\bpeople\b', 'men'), (r'\bPeople\b', 'Men'), (r'\bperson\b', 'man'), (r'\bchildren\b', 'sons'), (r'\bchild\b', 'son'),
+              (r'\bparents\b', 'mothers'), (r'\bparent\b', 'mother'), (r'\bspouse\b', 'wife'), (r'\bpartner\b', 'husband'),
+              (r'\bsiblings\b', 'brothers'), (r'\bfriends\b', 'girlfriends')]
+AGREE = {'are': 'is', 'were': 'was', 'have': 'has', 'do': 'does', "don't": "doesn't", "aren't": "isn't", "weren't": "wasn't"}
+def gender_add(s):
+    if re.search(r'\b(he|she|him|her|his|hers|man|men|woman|women)\b', s, re.I): return None  # already gendered
+    for a, b in GENDER_ADD:
+        m = re.search(a + r'(\s+)(\S+)', s)
+        if not m: continue
+        nxt = m.group(2)
+        if b.lower() == 'he':  # keep the verb agreeing: "they are" -> "he is"; skip a bare present verb ("they talk")
+            if nxt in AGREE: return s[:m.start()] + b + m.group(1) + AGREE[nxt] + s[m.end():]
+            if not re.fullmatch(r"(?:would|could|will|can|should|might|must|may|had|\w+ed|\w+'d),?", nxt): continue
+        return re.sub(a, b, s, count=1)
+if len(sys.argv) > 1 and sys.argv[1] == 'v4':
+    seen = {it['id'] for f in ['items-v2.json', 'items-v3.json'] for it in json.load(open(f))['items']}
+    dev = [dict(it, split='dev') for it in items]
+    random.seed(2028)
+    idx4 = list(range(len(eng))); random.shuffle(idx4)
+    test4 = []
+    for kind, fn in RULES + [('gender added', gender_add)]:
+        got = 0
+        for i in idx4:
+            if i in seen or not (40 <= len(eng[i]) <= 220): continue
+            bad = fn(eng[i])
+            if bad and bad != eng[i]:
+                test4.append({'id': i, 'kind': kind, 'en': eng[i], 'bad_en': bad, 'split': 'test', 'refs': {c: refs[c][i] for c in L}}); seen.add(i); got += 1
+                if got == 16: break
+    json.dump({'langs': L, 'items': dev + test4}, open('items-v4.json','w'), ensure_ascii=False, indent=1)
+    print(len(dev), 'development +', len(test4), 'fresh held-out sentences')

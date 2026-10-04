@@ -1,4 +1,4 @@
-import { meaningChecks, numbersIn, missingWords } from './meaning-checks.js';
+import { meaningChecks, numbersIn, numbersMatch, missingWords, heSheUncheckable } from './meaning-checks.js';
 
 // Back-translation match: how much of your meaning survived the round trip
 // (your text → translation → back into your language). Compared by meaning, not exact words,
@@ -12,7 +12,8 @@ const IDLE_MS = 5 * 60 * 1000;
 const LOW = 0.55;
 const HIGH = 0.85;
 const NUMBER_CAP = 60; // a number that changed is a real error, whatever the model thinks
-const CHECK_CAP = 60; // same for the targeted checks in meaning-checks.js (negation, he/she, opposites…)
+const CHECK_CAP = 60; // same for the targeted checks in meaning-checks.js (negation, pronouns, opposites…)
+const SOFT_CAP = 84; // a "soft" check (a neopronoun that came back as "they"): never "meaning kept", but not "likely off"
 
 let worker = null;
 let idleTimer = null;
@@ -66,16 +67,17 @@ const plainNumbers = (s) => s.replace(/(\d)[,.   ](?=\d{3}(?!\d))/g, '$1');
 export const tier = (score) => (score >= 85 ? 'high' : score >= 65 ? 'mid' : 'low');
 
 // lang: your language (the one both texts are in), for the word-based checks.
-// → { score: 0–100, similarity: the score before any cap, numbersDiffer, checks: [{ kind, detail, words? }],
+// target: the translation's language, to know when he/she can't be checked (see NO_HE_SHE).
+// → { score: 0–100, similarity: the score before any cap, numbersDiffer, checks: [{ kind, detail, words? }], heSheUnchecked,
 //     changed: words to highlight in the ↩ line, missing: your words that didn't come back }
-export async function matchScore(original, back, lang) {
+export async function matchScore(original, back, lang, target) {
   original = plainNumbers(original);
   back = plainNumbers(back);
   const a = normalize(original);
   const b = normalize(back);
   if (!a || !b) throw new Error('nothing to compare');
-  // "2 goals" and "two goals" are the same number.
-  const numbersDiffer = numbersIn(original, lang) !== numbersIn(back, lang);
+  // "2 goals" and "two goals" are the same number; so are 90°F and 32°C.
+  const numbersDiffer = !numbersMatch(original, back, lang);
   const checks = a === b ? [] : meaningChecks(original, back, lang);
   let similarityScore = 100;
   if (a !== b) {
@@ -84,10 +86,11 @@ export async function matchScore(original, back, lang) {
   }
   let score = similarityScore;
   if (numbersDiffer) score = Math.min(score, NUMBER_CAP);
-  if (checks.length) score = Math.min(score, CHECK_CAP);
+  if (checks.some((c) => !c.soft)) score = Math.min(score, CHECK_CAP);
+  else if (checks.length) score = Math.min(score, SOFT_CAP);
   // What to point at: the words behind each flag, plus numbers that don't match.
   const theirs = numbersIn(back, lang).split(' ').filter(Boolean);
   const mine = numbersIn(original, lang).split(' ').filter(Boolean);
   const changed = [...checks.flatMap((c) => c.words || []), ...(numbersDiffer ? theirs.filter((n) => !mine.includes(n)) : [])];
-  return { score, similarity: similarityScore, numbersDiffer, checks, changed, missing: score < 85 ? missingWords(original, back, lang).slice(0, 6) : [] };
+  return { score, similarity: similarityScore, numbersDiffer, checks, changed, heSheUnchecked: heSheUncheckable(original, target, lang), missing: score < 85 ? missingWords(original, back, lang).slice(0, 6) : [] };
 }
