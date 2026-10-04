@@ -314,6 +314,20 @@
       $(id).click();
     });
 
+    // Tab goes round the bubble's own buttons (language, listen, copy, open, close) and wraps,
+    // Shift+Tab backwards, instead of leaving the bubble for the main window. While the language
+    // list is open, Tab picks from it (above).
+    addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+      const stops = [...card.querySelectorAll('button, input')].filter((el) => !el.disabled && el.getClientRects().length && !el.closest('[hidden]'))
+        .sort((a, b) => (a.id === 'close') - (b.id === 'close')); // close last
+      if (!stops.length) return;
+      const i = stops.indexOf(document.activeElement);
+      const next = i < 0 ? (e.shiftKey ? stops.length - 1 : 0) : (i + (e.shiftKey ? -1 : 1) + stops.length) % stops.length;
+      e.preventDefault();
+      stops[next].focus();
+    });
+
     // Typing a letter anywhere else in the bubble (or on the language button) starts the search.
     addEventListener('keydown', (e) => {
       if (e.target === q || e.ctrlKey || e.metaKey || e.altKey) return;

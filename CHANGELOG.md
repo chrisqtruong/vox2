@@ -27,6 +27,7 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 - **Every button with a shortcut shows it on hover**, in Vox2's own tooltip: listen and copy (on the translation's side), swap, the mic (your dictation key), and the bottom bar as before. Top-row tooltips open below the button so they aren't cut off. *Windows and Mac.*
 - **Shortcut hints you can read in every theme.** The key chips in tooltips use the theme's muted color only where it stands out enough from the background; otherwise its accent color (or text color). Most themes' muted color was too faint. *Windows and Mac.*
 - **History with the arrow keys.** ⌘Y / Ctrl+H opens history on your newest translation, so Enter reopens it; ↓ / ↑ move through the rest, → / ← go to a translation's star and back. *Windows and Mac.*
+- **Tab loops inside the bubble.** Tab goes round the bubble's buttons (language → listen → copy → open → close) and back to the start, Shift+Tab backwards, instead of jumping to the main window. *Windows and Mac.*
 - **Esc in the bubble stops reading first.** While the bubble is reading aloud, Esc just stops the reading; the next Esc closes the bubble. *Windows and Mac.*
 - **Type anywhere in settings to search them.** With settings open, just start typing ("appea") and it goes straight into the settings search, which jumps to the matching settings (appearance). Works wherever the keyboard focus is, except while you're typing in a field or recording a shortcut. *Windows and Mac.*
 
