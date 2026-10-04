@@ -2,6 +2,13 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Changed
+
+- **Mac: new, easier shortcuts that don't clash with other apps.** The shortcuts that work from any app are now ⌃⌥ + a letter, one left-hand press: **⌃⌥V** show / hide Vox2 (was ⇧⌘Space), **⌃⌥T** translate selected text (was ⌥⌘T), **⌃⌥S** snip & translate (was ⌥⌘S). The old ⌘ combos also did something in other apps (⌥⌘S is "Save All" in Xcode, ⌥⌘T hides toolbars, ⇧⌘Space opens 1Password). If you never changed a shortcut, you get the new ones automatically; shortcuts you set yourself stay. Dictate (right ⌥) and the in-window shortcuts are unchanged. *Mac.*
+- **Mac: Vox2's shortcuts no longer also trigger the app in front.** When you press a Vox2 shortcut, only Vox2 reacts; the app you're in doesn't get the keys too. Uses the Accessibility permission Vox2 already has. *Mac.*
+
 ## 0.4.18 (2026-10-04)
 
 ### Fixed

@@ -35,14 +35,17 @@ const DEFAULTS = {
   sttOutput: 'spoken', // dictating into another app types 'spoken' (what you said) or 'translation'
   // Lone right-hand modifier, like Wispr Flow / SuperWhisper: easy to hit, rarely used otherwise.
   sttShortcut: { code: MAC ? 'AltRight' : 'ControlRight' },
-  summonShortcut: MAC ? { code: 'Space', meta: true, shift: true } : { code: 'Space', ctrl: true, shift: true },
-  selectShortcut: MAC ? { code: 'KeyT', meta: true, alt: true } : { code: 'KeyT', ctrl: true, alt: true },
+  // Mac: the everywhere-shortcuts are ⌃⌥ + a letter (V = Vox, T = translate, S = snip): one
+  // left-hand press, unused by macOS, rare in apps, unlike ⌘ combos (apps' own) or ⌃⌥Space
+  // (switches keyboard language). Vox2 takes the keypress, so the app in front doesn't also act.
+  summonShortcut: MAC ? { code: 'KeyV', ctrl: true, alt: true } : { code: 'Space', ctrl: true, shift: true },
+  selectShortcut: MAC ? { code: 'KeyT', ctrl: true, alt: true } : { code: 'KeyT', ctrl: true, alt: true },
   pinShortcut: MAC ? { code: 'KeyP', meta: true } : { code: 'KeyP', ctrl: true }, // while Vox2 is in front
   // Also only while Vox2 is in front. Mac: ⌘H would hide the app, so history is ⌘Y (as in Safari).
   fitShortcut: MAC ? { code: 'KeyF', meta: true, shift: true } : { code: 'KeyF', ctrl: true, shift: true },
   historyShortcut: MAC ? { code: 'KeyY', meta: true } : { code: 'KeyH', ctrl: true },
   settingsShortcut: MAC ? { code: 'Comma', meta: true } : { code: 'Comma', ctrl: true },
-  snipShortcut: MAC ? { code: 'KeyS', meta: true, alt: true } : { code: 'KeyS', ctrl: true, alt: true },
+  snipShortcut: MAC ? { code: 'KeyS', ctrl: true, alt: true } : { code: 'KeyS', ctrl: true, alt: true },
   quickResult: 'bubble', // quick translations (selected text, snips) show in: 'bubble' or 'window'
   conversation: false, // conversation mode: speak each dictated phrase's translation aloud
   tone: 'auto', toneNote: '',
@@ -70,6 +73,17 @@ async function loadSettings() {
   // Speed used to be a percent change baked into the voice (-20 / 0 / +15).
   if (saved.ttsRate != null && saved.ttsSpeed == null) saved.ttsSpeed = saved.ttsRate < 0 ? 0.75 : saved.ttsRate > 0 ? 1.25 : 1;
   delete saved.ttsRate;
+  // Mac shortcuts moved from ⌘ combos to ⌃⌥ (0.4.19): anyone still on an old default gets the new
+  // one; shortcuts you set yourself stay.
+  if (MAC) {
+    const OLD = {
+      summonShortcut: { code: 'Space', meta: true, shift: true },
+      selectShortcut: { code: 'KeyT', meta: true, alt: true },
+      snipShortcut: { code: 'KeyS', meta: true, alt: true },
+    };
+    const same = (a, b) => !!a && ['code', 'ctrl', 'alt', 'shift', 'meta'].every((k) => (a[k] || false) === (b[k] || false));
+    for (const [name, old] of Object.entries(OLD)) if (same(saved[name], old)) delete saved[name];
+  }
   settings = { ...DEFAULTS, ...saved, keys: { ...saved.keys } };
   await loadKeys();
 }
