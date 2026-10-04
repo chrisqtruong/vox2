@@ -43,6 +43,16 @@ $J -m eval_untranslated.mjs -- test ../../docs/meaning-check-tests/2026-10-03-ru
 
 `rescore.html` scores saved translations without asking Google again (`bench` takes the page as its 3rd argument). Google sometimes answers whole batches with empty text (throttling); `fetch_untranslated.py` retries those one at a time at the end, which is slow. In run 4 it was stopped and the empty rows left out.
 
+## Unit tests and row-by-row changes
+
+- `unit-tests.mjs`: 32 cases, one or more per rule in `meaning-checks.js` (numbers written differently, inclusive pronouns, negations), including cases that must *not* match. Run it after any change to the checks: `$J -m unit-tests.mjs` (prints "all passed", or fails).
+- `flips.mjs`: which pairs changed between two versions of the checks, and why (false alarms added or removed, errors newly caught or missed), with `added` / `removed` / `caught` / `missed` to print the sentences. This is how each rule in Phase 1.2 and 1.2b was checked, row by row:
+
+```
+git show bb94dad:resources/meaning-checks.js > /tmp/checks-0.4.18.js
+$J -m flips.mjs -- ../../docs/meaning-check-tests/2026-10-04-run-5-results.json /tmp/checks-0.4.18.js test added
+```
+
 ## Re-scoring offline (Phase 1.2 on)
 
 Runs 2 and later save the model's similarity for every translation. The word checks (`meaning-checks.js`) don't need the model, so a change to them can be scored on all saved translations in about a second, without Google or WebKit:
