@@ -8,6 +8,12 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 - **Meaning check catches meaning flips.** Targeted checks compare your text with the ↩ line for a "not" that appeared or disappeared, he/she swapped, an opposite word (left/right, many/few…), a changed day or month, and part of the sentence missing; number words now count as numbers ("two" = 2). Any of them caps the score at 60, and the hover card says what changed. Measured on held-out sentences in 11 languages: meaning errors caught 34% → 78%, false alarms 3% → 7% ([report](docs/meaning-check-tests/2026-10-03-run-2.md)). English for now. *Windows and Mac.*
 
+## 0.4.14 (2026-10-03)
+
+### Fixed
+
+- **Windows: back-translation and the match score disappeared after heavy use.** Google's back-translation service starts answering "too many requests" after a lot of translating (for hours, per internet connection), and Vox2 then showed nothing. The back-translation now goes through the same Google service as the main translation, as on Mac. Only the pronunciation line (romaji, pinyin…) still uses the old service, only when it's shown, and it simply stays empty while Google is refusing. *Windows.*
+
 ## 0.4.13 (2026-10-03)
 
 ### Added

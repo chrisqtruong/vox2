@@ -1470,7 +1470,7 @@ async function updateExtras(dst, translation, lang, backTo, original) {
   const wantRoman = settings.showRoman && hasNonLatin(translation);
   if (!wantRoman && !settings.showBack) return;
   try {
-    const { back, roman } = await checkBack(translation, lang, backTo);
+    const { back, roman } = await checkBack(translation, lang, backTo, wantRoman);
     if (id !== extrasJob) return; // a newer translation replaced this one
     const box = $('.extras', dst.root);
     if (quick.active && quick.dst === dst) sendBubble({ session: quick.session, roman: wantRoman ? roman : '' });
