@@ -25,6 +25,16 @@ The "can't check" rule for untranslated text has its own test: `python3 untransl
 
 Then add a dated report in `docs/meaning-check-tests/` (copy the previous one's structure), save the results next to it as `<report name>-results.json`, and add a row to the history table in `docs/meaning-check-tests/README.md`.
 
+## Unit tests and row-by-row changes
+
+- `unit-tests.mjs`: 32 cases, one or more per rule in `meaning-checks.js` (numbers written differently, inclusive pronouns, negations), including cases that must *not* match. Run it after any change to the checks: `$J -m unit-tests.mjs` (prints "all passed", or fails).
+- `flips.mjs`: which pairs changed between two versions of the checks, and why (false alarms added or removed, errors newly caught or missed), with `added` / `removed` / `caught` / `missed` to print the sentences. This is how each rule in Phase 1.2 and 1.2b was checked, row by row:
+
+```
+git show bb94dad:resources/meaning-checks.js > /tmp/checks-0.4.18.js
+$J -m flips.mjs -- ../../docs/meaning-check-tests/2026-10-04-run-5-results.json /tmp/checks-0.4.18.js test added
+```
+
 ## Re-scoring offline (Phase 1.2 on)
 
 Runs 2 and later save the model's similarity for every translation. The word checks (`meaning-checks.js`) don't need the model, so a change to them can be scored on all saved translations in about a second, without Google or WebKit:
