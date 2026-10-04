@@ -13,7 +13,7 @@ import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, 
 import {
   native, loadData, saveData, setAlwaysOnTop, onWindowFocus, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
-  sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight,
+  sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight, setWindowWidth, screenWidth,
   getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
 } from './platform.js';
 
@@ -1214,7 +1214,7 @@ document.addEventListener('keydown', (e) => {
   const local = [
     ['settingsShortcut', () => (sheet.classList.contains('open') ? closeSettings() : openSettings())],
     ['historyShortcut', () => (historySheet.classList.contains('open') ? closeHistory() : openHistory())],
-    ['fitShortcut', () => native && fitWindow().catch(() => {})],
+    ['fitShortcut', () => native && cycleFit().catch(() => {})],
   ];
   for (const [key, run] of local) {
     const sc = settings[key];
@@ -1865,8 +1865,31 @@ async function fitWindow() {
   document.body.classList.toggle('fitted', !result.capped); // extras may grow past their usual cap
 }
 
+// Fit, again and again: the first press fits the height at your normal width. Pressing again
+// with nothing changed switches to a wider reading width (more text per line, still a small window)
+// and fits there; again, back to normal; and so on. New text since the last fit? The next press
+// just fits the height again at the width you're on, normal or wide.
+const fitCycle = { wide: false, normalWidth: 0, last: '' };
+const fitKey = () => `${panes.top.el.textContent}\u0000${panes.bottom.el.textContent}\u0000${innerWidth}`;
+async function cycleFit() {
+  if (fitCycle.last && fitCycle.last === fitKey()) {
+    // Nothing changed since the last fit: switch width.
+    if (!fitCycle.wide) {
+      fitCycle.normalWidth = innerWidth;
+      const wide = Math.min(Math.round(fitCycle.normalWidth * 1.8), Math.round((await screenWidth()) * 0.45));
+      await setWindowWidth(Math.max(wide, fitCycle.normalWidth));
+    } else {
+      await setWindowWidth(fitCycle.normalWidth || innerWidth);
+    }
+    fitCycle.wide = !fitCycle.wide;
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))); // let the text reflow at the new width
+  }
+  await fitWindow();
+  fitCycle.last = fitKey();
+}
+
 $('#fit-btn').hidden = !native;
-$('#fit-btn').addEventListener('click', () => fitWindow().catch((err) => setStatus('error', `fit window: ${err.message || err}`)));
+$('#fit-btn').addEventListener('click', () => cycleFit().catch((err) => setStatus('error', `fit window: ${err.message || err}`)));
 
 /* ---------- conversation mode ---------- */
 
