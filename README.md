@@ -122,6 +122,8 @@ tccutil reset All com.chris.translator
 
 ## Back-translation and the meaning check
 
+**The goal:** after every translation, you know whether your meaning came through, and when Vox2 can't tell, it says so. The [Meaning Check page](docs/meaning-check-tests/README.md) has the north star, a diagram of where we are and what's next, and every test.
+
 With **back-translation** on (settings → translation), Vox2 translates the result back into your language and shows it under the translation as a faint ↩ line, tagged with a score such as `92% match`. Hover the tag for a short key.
 
 **What it measures.** How much of your meaning survived the round trip: your text → the translation → back into your language. Good translations often come back reworded ("Good morning" → "Good day"). Counting shared words would mark those as failures, so the score compares **meaning, not exact words**, using a sentence-embedding model.
@@ -141,7 +143,7 @@ With **colorblind-friendly colors** on (settings → appearance), the tiers use 
 
 **Targeted checks.** On top of the score, Vox2 compares your text with the ↩ line for meaning flips: a "not" that appeared or disappeared, he/she swapped, an opposite word, a changed day or month, part missing, a changed number. Any of these caps the score at 60, the word behind it is underlined in the ↩ line, and the hover card says what changed and which of your words didn't come back. (English for now.)
 
-**How well it works.** Measured on translations into 11 languages with planted meaning errors ([test history](docs/meaning-check-tests/README.md#test-history)). On new, held-out sentences, it now catches **78% of meaning errors** (up from about 35% before the targeted checks) and still shows 93% of good translations as "meaning kept", with 5% false alarms ([run 3 report](docs/meaning-check-tests/2026-10-03-run-3.md)). Closing the remaining gap is at the top of the [roadmap](#roadmap).
+**How well it works.** Measured on translations into 11 languages with planted meaning errors. On brand-new sentences ([run 5](docs/meaning-check-tests/2026-10-04-run-5.md)) it catches **70% of meaning errors** (35% with the score alone) and shows 91% of good translations as "meaning kept", with about 7% false alarms. It's strongest on dropped parts, changed numbers and a "not" added or removed, weakest on swapped pronouns and opposite words. Gibberish and garbled snips now say "can't check" instead of a confident score.
 
 **More:** [how the score is computed, exactly](docs/meaning-check-tests/README.md#how-the-score-works), [all test reports](docs/meaning-check-tests/README.md#test-history), and [how to re-run the test](tools/meaning-bench/README.md).
 

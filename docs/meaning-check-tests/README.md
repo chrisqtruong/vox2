@@ -1,10 +1,136 @@
-# Meaning check: how it works and how well it works
+# The Meaning Check: know your translation came out right
 
-Vox2's meaning check translates your translation back into your language (the faint ↩ line) and scores how much of your meaning survived (`92% match`). This page explains exactly how the score is computed and keeps a dated record of every test of it, so improvements can be measured over time.
+When you translate something that matters (a message to family, a doctor's instructions, a work email) you usually can't read the result. Vox2's **Meaning Check** tells you whether your meaning made it through: it translates the result back into your language (the faint ↩ line), compares that with what you wrote, and shows a **match score** (`92% match`), underlines what changed, and says **can't check** when it honestly can't tell.
 
+This page is the home of that work: the goal, where we are, what's next, how the score works, and a dated record of every test.
+
+- [North star](#north-star)
+- [What we're doing, in plain words](#what-were-doing-in-plain-words)
+- [How a check runs](#how-a-check-runs)
+- [Where we are](#where-we-are)
+- [What's next](#whats-next)
 - [Test history](#test-history)
 - [How the score works](#how-the-score-works)
 - [Re-running the test](#re-running-the-test)
+
+## North star
+
+> **Vox2 should be the translator you can trust: on the cutting edge, dependable, and instant. After every translation, you know whether your meaning came through, and when Vox2 can't tell, it says so instead of guessing.**
+
+Four commitments, and how we hold ourselves to them:
+
+| Commitment | What it means | How we measure it | Now (fresh sentences, [run 5](2026-10-04-run-5.md)) | Goal |
+|---|---|---|---|---|
+| **Trustworthy** | Real meaning errors get flagged; a "meaning kept" can be believed | Planted meaning errors caught, on sentences the checks were never tuned on | **70%** (was 35% before the checks) | **90%+** |
+| **Dependable** | Good translations aren't cried wolf on; no fake confidence | False alarms on good translations; untranslated text shown as "meaning kept" | **6.9%** false alarms; gibberish shown as "meaning kept" **8%** (was 96%, [run 4](2026-10-04-run-4.md)) | **under 5%**; **never** confident about text that wasn't translated |
+| **Responsive and light** | Instant translation; the check never slows it down or needs a big download | Runs on your computer with a small model; the score arrives after the translation, never before it | 118 MB model, local, unloads when idle; no extra servers | Same footprint; heavier checks only as opt-in add-ons |
+| **Open and teachable** | Anyone can see how it works, check our numbers, and learn from it | Every change ships with a dated, reproducible report | Every phase reported below, raw results included | Keep it that way |
+
+"Cutting edge" means measuring ourselves against the research state of the art (translation *quality estimation*, e.g. COMET-Kiwi, xCOMET, the WMT shared tasks), not just against our own previous runs. That comparison is planned ([#50](https://github.com/chrisqtruong/vox2/issues/50)).
+
+## What we're doing, in plain words
+
+**It isn't model training.** Vox2 uses a small, ready-made language model ([MiniLM](#how-the-score-works)) exactly as published. What we do is **evaluation and calibration**, the field researchers call *translation quality estimation*:
+
+1. **Measure.** Take real sentences ([FLORES-200](https://github.com/facebookresearch/flores), 11 languages), plant meaning errors in copies of them (a "not" added, a number changed, he ↔ she, an opposite word, part dropped), translate everything, and see how often the Meaning Check catches the bad ones and leaves the good ones alone.
+2. **Find the failure.** Read the misses and the false alarms: *why* did it get this one wrong?
+3. **Fix it** with the smallest thing that explains it: a word check, a threshold, a rule for when to say "can't check".
+4. **Re-measure on fresh sentences** (a *held-out set*) nobody looked at while fixing. Otherwise we'd be grading the student on the practice questions.
+
+```mermaid
+flowchart LR
+    M[Measure<br/>planted errors,<br/>11 languages] --> F[Find the failure<br/>read misses and<br/>false alarms]
+    F --> X[Fix it<br/>smallest rule<br/>that explains it]
+    X --> R[Re-measure on<br/>fresh sentences]
+    R --> P[Publish a<br/>dated report]
+    P --> M
+```
+
+**Words used on this page**
+
+| Term | Meaning |
+|---|---|
+| ↩ line, back-translation | The translation translated back into your language |
+| Match score | 0–100: how much of your meaning survived the round trip (85+ meaning kept · 65–84 check the details · below 65 likely off) |
+| Targeted checks | Word-level checks for flips the score misses ("not", numbers, he/she, opposites, dates, missing parts) |
+| Error caught | A translation with a planted error that did **not** get "meaning kept" |
+| False alarm | A good translation flagged "likely off" |
+| Held-out / fresh set | Test sentences not used while designing the change |
+
+## How a check runs
+
+```mermaid
+flowchart TD
+    A[Your text] --> T[Translation]
+    T --> U{Did it come through<br/>untranslated?}
+    U -- yes --> C[can't check<br/>untranslated words underlined]
+    U -- no --> B[↩ back-translation]
+    B --> S[Meaning similarity<br/>small local model]
+    B --> W[Targeted checks<br/>not · numbers · he/she · opposites<br/>dates · missing parts]
+    S --> Score[Match score<br/>85+ kept · 65–84 check · under 65 off]
+    W -->|a flip found| Cap[Capped at 60<br/>word underlined, hover says why]
+    Cap --> Score
+```
+
+## Where we are
+
+The work runs in **phases** (what the Meaning Check can do) and a **testing track** (how sure we are about the numbers).
+
+```mermaid
+flowchart LR
+    subgraph Phases[What it can do]
+        direction LR
+        P0[Phase 0<br/>similarity score<br/>DONE] --> P1[Phase 1 · 1.1 · 1.2<br/>word checks, fewer<br/>false alarms<br/>DONE]
+        P1 --> U[can't check<br/>for untranslated text<br/>DONE]
+        U --> P2[Phase 2<br/>show what changed<br/>IN PROGRESS]
+        P2 --> P3[Phase 3<br/>second opinions:<br/>other engine, direct<br/>comparison, AI check<br/>NEXT]
+        P3 --> P4[Phase 4<br/>per-language tuning<br/>LATER, if needed]
+    end
+    subgraph Tests[How sure we are]
+        direction LR
+        R1[Runs 1–5<br/>own test set,<br/>Google only<br/>DONE] --> R6[Run 6<br/>confirm 1.2b<br/>NEXT]
+        R6 --> E[More engines +<br/>independent judge<br/>NEXT]
+        E --> W[WMT research<br/>benchmark<br/>LATER]
+    end
+```
+
+**What each step bought** (planted meaning errors caught on held-out sentences; Google both ways):
+
+| Step | Shipped in | Errors caught | False alarms | Report |
+|---|---|---|---|---|
+| Phase 0: similarity score only | up to 0.4.14 | 29% | 4% | [run 1](2026-10-03.md) |
+| Phase 1: word checks (not, numbers, he/she, opposites, dates, missing) | 0.4.15 | **78%** | 7% | [run 2](2026-10-03-run-2.md) |
+| Phase 1.1: fewer false alarms, more opposites, first highlights | 0.4.15 | 78% | **5%** | [run 3](2026-10-03-run-3.md) |
+| "can't check" for untranslated text | 0.4.18 | gibberish shown as "meaning kept": 96% → **8%** | 0 of 6,160 good ones affected | [report](2026-10-04-untranslated.md), [run 4](2026-10-04-run-4.md) |
+| Phase 1.2 / 1.2b: numbers, more "not" words, inclusive pronouns | 0.4.20 | **70%** on a fresh set | 6.9% | [phase 1.2](2026-10-04-phase-1-2.md), [run 5](2026-10-04-run-5.md) |
+
+**An honest note on the numbers.** Run 5 used brand-new sentences and a sixth error type (a gender added that you didn't write), and every version scored lower there than on its own earlier test: the 0.4.18 checks caught 65% instead of 78%. Earlier sets had been read while tuning, so they flattered us a little. Run 5 is the truest picture so far, and on the same fresh translations each step still helped:
+
+```mermaid
+xychart-beta
+    title "Run 5, fresh sentences: meaning errors caught (%)"
+    x-axis ["Score only", "0.4.18 checks", "Phase 1.2", "Phase 1.2b (0.4.20)"]
+    y-axis "caught (%)" 0 --> 100
+    bar [35, 65, 71, 70]
+```
+
+**Strongest today:** dropped parts of a sentence (98%), changed numbers (94%), a "not" added or removed (85%). **Weakest:** opposite words (58%), swapped pronouns (44%), a gender added (40%). Most of those misses happen because the error is lost on the way out or smoothed over on the way back, so the ↩ line never shows it. Fixing that needs a second opinion, which is Phase 3.
+
+## What's next
+
+In order:
+
+1. **Confirm Phase 1.2b on a second fresh set** (run 6), so today's numbers aren't tuned to run 5.
+2. **Finish Phase 2: show what changed** ([#27](https://github.com/chrisqtruong/vox2/issues/27)). Today the word behind a flag is underlined and missing words are listed; next is highlighting added content too.
+3. **Test against more engines and an independent judge** ([#52](https://github.com/chrisqtruong/vox2/issues/52)): DeepL, Microsoft Translator, Apple's on-device translator and an AI engine, forward and back, with a research judge (COMET-Kiwi or an AI judge) and native-speaker spot checks (Vietnamese first). Every test so far uses Google for everything, one engine grading itself.
+4. **Phase 3: second opinions**, chosen by what step 3 shows:
+   - translate back with a **different engine** than the one that translated ([#29](https://github.com/chrisqtruong/vox2/issues/29));
+   - compare your text with the translation **directly** (the same local model reads both languages), so errors that vanish on the way back still show;
+   - an optional **AI double-check** that lists what differs ([#7](https://github.com/chrisqtruong/vox2/issues/7)), and **suggested fixes, verified** before they're shown ([#55](https://github.com/chrisqtruong/vox2/issues/55)).
+5. **Benchmark against the research state of the art** on the WMT human-annotated test sets ([#50](https://github.com/chrisqtruong/vox2/issues/50)), with an honest write-up of where Vox2 falls short.
+6. **Phase 4: per-language tuning**, only if the numbers still differ a lot by language after Phase 3.
+
+Light core, optional extras: anything heavier than today's small local model (an AI check, a big research model) stays opt-in.
 
 ## Test history
 
@@ -123,12 +249,7 @@ On top of the similarity score, `resources/meaning-checks.js` compares your text
 
 ### Next steps for the score
 
-In order, based on the [run 3 report](2026-10-03-run-3.md):
-
-1. **Sharpen the targeted checks** ([#28](https://github.com/chrisqtruong/vox2/issues/28)): number words like "eighteen" / "a couple of thousand" / "dozens", unit conversions, *un-…-able* negations ("unbreakable"); for languages that don't mark he/she, say the pronoun can't be checked instead of implying it's fine.
-2. **Show what changed** between your text and the ↩ line, not just a number ([#27](https://github.com/chrisqtruong/vox2/issues/27)).
-3. **Translate back with a different engine** than the one that translated ([#29](https://github.com/chrisqtruong/vox2/issues/29)), and an **optional AI check** of the meaning ([#7](https://github.com/chrisqtruong/vox2/issues/7)).
-4. Per-language thresholds, only if still needed after 1–3.
+See [What's next](#whats-next) at the top of this page.
 
 ## Re-running the test
 
