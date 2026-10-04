@@ -89,7 +89,7 @@ THEMES = [
 ]
 
 VOX2_PATH = re.compile(r"[/\\]vox2(?:[/\\\"']|$)|chrisqtruong/vox2", re.I)
-OTHER_PATH = re.compile(r"chris-site|purrmodoro|[/\\]Developer[/\\]", re.I)
+OTHER_PATH = re.compile(r"chris-site|purrmodoro", re.I)  # Chris's other projects
 COMPILED = [(b["id"], re.compile(b["words"], re.I), re.compile(b["files"], re.I)) for b in BUCKETS]
 
 
@@ -226,17 +226,22 @@ def build_turns(events):
     return turns
 
 
+def scope(turn):
+    """'other' if the turn touched another project, 'vox2' if only Vox2, else None."""
+    strings = [s for r in turn["replies"] for s in r["tools"]]
+    if any(OTHER_PATH.search(s) for s in strings):
+        return "other"
+    if any(VOX2_PATH.search(s) for s in strings):
+        return "vox2"
+    return None
+
+
 def is_vox2(turns):
     """A Vox2 session works mostly in the Vox2 repo, or says so up front."""
-    vox, other = 0, 0
-    for t in turns:
-        strings = [s for r in t["replies"] for s in r["tools"]]
-        if any(VOX2_PATH.search(s) for s in strings):
-            vox += 1
-        elif any(OTHER_PATH.search(s) for s in strings):
-            other += 1
+    scopes = [scope(t) for t in turns]
+    vox, other = scopes.count("vox2"), scopes.count("other")
     said_so = any("vox2" in t["prompt"].lower() for t in turns[:2])
-    return vox >= 1 and (vox > other or said_so)
+    return vox >= 1 and (vox > other or (said_so and not other))
 
 
 # ---------------------------------------------------------------- roadmap
@@ -334,6 +339,8 @@ def build(roots, live):
         kept.append(sid)
         prev = "docs"
         for t in turns:
+            if scope(t) == "other":  # e.g. a website turn inside a mostly-Vox2 session
+                continue
             touched = [s for r in t["replies"] for s in r["tools"]]
             bucket = prev if t["cont"] else (classify(t["prompt"], touched) or prev)
             prev = bucket
