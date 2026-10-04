@@ -6,7 +6,12 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ### Added
 
-- **Meaning check catches meaning flips.** Targeted checks compare your text with the ↩ line for a "not" that appeared or disappeared, he/she swapped, an opposite word (left/right, many/few…), a changed day or month, and part of the sentence missing; number words now count as numbers ("two" = 2). Any of them caps the score at 60, and the hover card says what changed. Measured on held-out sentences in 11 languages: meaning errors caught 34% → 78%, false alarms 3% → 7% ([report](docs/meaning-check-tests/2026-10-03-run-2.md)). English for now. *Windows and Mac.*
+- **Meaning check catches meaning flips.** Targeted checks compare your text with the ↩ line for a "not" that appeared or disappeared, he/she swapped, an opposite word (left/right, many/few…), a changed day or month, and part of the sentence missing; number words now count as numbers ("two" = 2). Any of them caps the score at 60, and the hover card says what changed. Measured on held-out sentences in 11 languages: meaning errors caught ~35% → 78% ([run 2](docs/meaning-check-tests/2026-10-03-run-2.md), [run 3](docs/meaning-check-tests/2026-10-03-run-3.md)). English for now. *Windows and Mac.*
+- **The meaning check shows what changed.** The word behind a flag is underlined in the ↩ line (the "not" that appeared, "her" for "his", "52" for "15"), and when the score is below 85 the hover card lists your words that didn't come back. *Windows and Mac.*
+
+### Fixed
+
+- **Fewer meaning-check false alarms.** "unknown" and "do not know" (and similar words like unable, lack, fail) no longer count as a flipped meaning; "not only" isn't a negation; 11:00 and 11am are the same time; numbers in names like COVID-19 are ignored; "one of" isn't read as the number 1. The opposites list grew to about 90 pairs. On fresh test sentences, false alarms went from 8% back to 5% with no loss in errors caught ([report](docs/meaning-check-tests/2026-10-03-run-3.md)). *Windows and Mac.*
 
 ## 0.4.14 (2026-10-03)
 

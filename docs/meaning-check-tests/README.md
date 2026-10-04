@@ -14,6 +14,7 @@ Each run has a dated report (what was tested, how, results, what we noticed, gra
 |---|---|---|---|---|---|---|---|
 | 2026-10-03 | [Run 1, baseline](2026-10-03.md) | 40 FLORES-200 sentences × 11 languages, 5 planted error types, Google both ways; Vox2 0.4.12 | 93% | 4% | 29% (numbers 100%, others 5–18%) | 71% | **F** on errors. Confirms good translations well; misses most meaning errors except numbers |
 | 2026-10-03 | [Run 2, Phase 1 checks](2026-10-03-run-2.md) | Same method; **80 held-out sentences** (reported here) + run 1's 40 as development set; both methods scored on the same translations; Vox2 0.4.13 + targeted checks | 91% (run-1 method 95%) | 7% (3%) | **78%** (34%): negation 83%, number 98%, pronoun 70%, dropped clause 72%, opposite 66% | 22% (66%) | **C** on errors. Errors caught more than doubled in every language; a few more false alarms |
+| 2026-10-03 | [Run 3, Phase 1.1](2026-10-03-run-3.md) | Same method; **fresh 80 held-out sentences** (none from runs 1–2); run 1, Phase 1 and Phase 1.1 scored on the same translations; Vox2 0.4.14 + false-alarm fixes, ~90 opposite pairs, highlights | 93% (Phase 1 91%, run 1 93%) | 5% (8%, 4%) | **78%** (78%, 39%): number 100%, negation 84%, dropped clause 82%, opposite 78%, pronoun 49% | 22% (22%, 61%) | **C** on errors. Same catches as Phase 1, false alarms back near baseline; pronouns weakest |
 
 When you add a run, keep the same columns. If the method changed (more languages, new error types, different engines), say how in the Method column so rows stay comparable.
 
@@ -108,13 +109,13 @@ Remember steps 1, 2 and 5 (number formatting, exact match, number cap) when comp
 
 ### Targeted checks (Phase 1, from run 2)
 
-On top of the similarity score, `resources/meaning-checks.js` compares your text with the ↩ line for meaning flips the score barely notices: a negation appearing or disappearing, he/she swapped, an opposite word, a changed month or weekday, and a ↩ line under 60% as long as your text (part missing). Number words count as numbers ("two" = 2). Any of these caps the score at 60 ("check the details"), and the hover card says what changed. Word lists are English for now. Details and measurements: [run 2 report](2026-10-03-run-2.md).
+On top of the similarity score, `resources/meaning-checks.js` compares your text with the ↩ line for meaning flips the score barely notices: a negation appearing or disappearing, he/she swapped, an opposite word, a changed month or weekday, and a ↩ line under 60% as long as your text (part missing). Number words count as numbers ("two" = 2). Any of these caps the score at 60 ("check the details"), the word behind it is underlined in the ↩ line, and the hover card says what changed and lists your words that didn't come back. Word lists are English for now. Details and measurements: [run 2](2026-10-03-run-2.md), [run 3](2026-10-03-run-3.md).
 
 ### Next steps for the score
 
-In order, based on the [run 2 report](2026-10-03-run-2.md):
+In order, based on the [run 3 report](2026-10-03-run-3.md):
 
-1. **Fix the known false alarms and misses** of the targeted checks ([#28](https://github.com/chrisqtruong/vox2/issues/28)): "unknown" / "not only" rewordings, times like 11:00 vs 11am, numbers in names, a bigger opposites list, words like "lack" that negate.
+1. **Sharpen the targeted checks** ([#28](https://github.com/chrisqtruong/vox2/issues/28)): number words like "eighteen" / "a couple of thousand" / "dozens", unit conversions, *un-…-able* negations ("unbreakable"); for languages that don't mark he/she, say the pronoun can't be checked instead of implying it's fine.
 2. **Show what changed** between your text and the ↩ line, not just a number ([#27](https://github.com/chrisqtruong/vox2/issues/27)).
 3. **Translate back with a different engine** than the one that translated ([#29](https://github.com/chrisqtruong/vox2/issues/29)), and an **optional AI check** of the meaning ([#7](https://github.com/chrisqtruong/vox2/issues/7)).
 4. Per-language thresholds, only if still needed after 1–3.
