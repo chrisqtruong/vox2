@@ -208,6 +208,12 @@ pub fn cancel_snip(app: AppHandle) {
     }
 }
 
+/// A copy of the captured image, for reading it natively (ocr.rs); the page can still take it after.
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+pub fn snip_png() -> Vec<u8> {
+    SNIP.lock().unwrap().clone()
+}
+
 /// The page collects the captured image to read its text.
 #[tauri::command]
 pub fn take_snip() -> Response {

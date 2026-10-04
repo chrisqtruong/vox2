@@ -101,9 +101,14 @@ export async function readText(image, langs) {
   }
   const { data } = await worker.recognize(await prepare(image));
   idleTimer = setTimeout(release, IDLE_MS);
-  let text = (data.text || '').trim();
-  // Screen text is broken into lines; rejoin lines of the same paragraph so it translates well.
+  const text = joinLines(data.text || '');
+  return /[぀-ヿ㐀-鿿가-힯]/.test(text) ? text : fixPipes(text);
+}
+
+// Screen text is broken into lines; rejoin lines of the same paragraph so it translates well
+// (blank lines between paragraphs stay). Chinese and Japanese lines join without a space.
+export function joinLines(text) {
+  text = text.trim();
   const cjk = /[぀-ヿ㐀-鿿가-힯]/.test(text);
-  text = text.replace(/([^\n])\n(?!\n)/g, cjk ? '$1' : '$1 ').replace(/[ \t]+/g, ' ');
-  return cjk ? text : fixPipes(text);
+  return text.replace(/([^\n])\n(?!\n)/g, cjk ? '$1' : '$1 ').replace(/[ \t]+/g, ' ');
 }

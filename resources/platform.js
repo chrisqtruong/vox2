@@ -75,6 +75,8 @@ export const showWindow = () => invoke('show_window').catch(() => {});
 export const hideBubble = () => invoke('hide_bubble').catch(() => {});
 export const startSnip = () => invoke('start_snip_cmd').catch(() => {});
 export const takeSnip = () => invoke('take_snip');
+// macOS: the snip's text read by Apple's text recognizer (langs: Google codes, most likely first).
+export const readSnipText = (langs, detect) => invoke('read_snip_text', { langs, detect });
 
 // Natural neural voice → { audio: MP3 bytes, words: [[start ms, length ms, word], …] }.
 // rate is a percent change, e.g. -15.

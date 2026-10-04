@@ -3,6 +3,7 @@
 
 mod google;
 mod hotkey;
+mod ocr;
 mod overlay;
 mod permissions;
 mod secrets;
@@ -235,6 +236,7 @@ fn main() {
             overlay::finish_snip,
             overlay::cancel_snip,
             overlay::take_snip,
+            ocr::read_snip_text,
             overlay::start_snip_cmd,
             tts::tts_speak,
             google::google_single,
