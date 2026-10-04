@@ -36,23 +36,31 @@ const NEGATIVE_WORDS = new Set(['without', 'unknown', 'unknowingly', 'unaware', 
   'unavailable', 'unnoticed', 'unidentified', 'unnamed', 'unseen', 'impossible', 'lack', 'lacks', 'lacked', 'lacking', 'fail', 'fails',
   'failed', 'failing', 'refuse', 'refuses', 'refused', 'deny', 'denies', 'denied', 'absent', 'hardly', 'barely', 'scarcely', 'rarely', 'seldom']);
 // Grown for Phase 1.2 (from runs 2–3's false alarms): "doubt" = not sure, "absence" = lack.
+for (const w of ['doubt', 'doubts', 'doubted', 'doubtful', 'absence']) NEGATIVE_WORDS.add(w);
 // in-/im-/il-/ir- words are listed one by one: the prefix alone would also catch "important", "include", "image".
-for (const w of ['doubt', 'doubts', 'doubted', 'doubtful', 'absence', 'immoral', 'impractical', 'improper', 'impatient', 'imperfect', 'impolite',
+const BUILT_NEGATIVE = new Set(['immoral', 'impractical', 'improper', 'impatient', 'imperfect', 'impolite',
   'implausible', 'incorrect', 'inaccurate', 'inadequate', 'incapable', 'incomplete', 'inconsistent', 'indestructible', 'indomitable',
   'insecure', 'insufficient', 'invalid', 'invisible', 'inaccessible', 'inactive', 'incompetent', 'illogical', 'irrelevant', 'irregular',
-  'irresponsible', 'irreversible', 'illegally']) NEGATIVE_WORDS.add(w);
+  'irresponsible', 'irreversible', 'illegally']);
 // Words built to mean "not": un-… (unbreakable, unharmed, unwise, unrelated) and "without X" -less words (treeless,
 // homeless). Not: under-, uni-, until, unless, unfortunately, "reverse the action" verbs (unlock, unveil, unfold…),
 // -ly adverbs ("unusually fast", "implausibly fast" describe how, they don't negate), and -less words that
 // mean "very many" (countless, boundless, endless).
 const UN_WORD = /^un(?!der|i|til|less|animous|cle|to\b|veil|leash|lock|load|fold|pack|cover|ravel|wrap|do|earth|dergo|fortunat)[a-z]{4,}(?<!ly)$/;
 const LESS_WORD = /^(?:tree|home|job|use|help|power|harm|care|point|hope|motion|sleep|water|child|penni|life|speech|defence|defense|fear|blame|flaw|spot|weight|clue|sense|worth|aim)less$/;
-const isNegative = (w) => NEGATIONS.has(w) || NEGATIVE_WORDS.has(w) || w.endsWith("n't") || UN_WORD.test(w) || LESS_WORD.test(w);
+// Two kinds of negative words (Phase 1.2b, from run 5's fresh sentences):
+// - plain negations ("not", "never", "can't", "without", "lack"…): a change in how many there are flips the meaning;
+// - words built to be negative (unharmed, undisturbed, treeless, immoral): a translation swaps these freely with a
+//   plain word of the same meaning ("undisturbed" ↩ "intact", "new to you" ↩ "unfamiliar"), so on their own they
+//   say nothing. They only count to cancel a plain negation on the other side ("not hurt" ↩ "unharmed").
+const isNegative = (w) => NEGATIONS.has(w) || NEGATIVE_WORDS.has(w) || w.endsWith("n't");
+const isBuiltNegative = (w) => !isNegative(w) && (BUILT_NEGATIVE.has(w) || UN_WORD.test(w) || LESS_WORD.test(w));
 // Phrases that look negative but aren't: "not only" (… but also), "not long ago" (= recently), "not far from"
 // (= near), "no matter", "no doubt", "don't worry" (= rest assured), "No. 9" (= number 9). "not un-…"
 // needs nothing: two negations cancel out.
 const NOT_NEGATION = /\b(?:not|no)\s+(?:only|just|merely|long\s+ago|far|matter|doubt)\b|\b(?:don't|do\s+not)\s+worry\b|\bno\.\s*(?=\d)/gi;
-const negationWords = (s) => words(s.replace(/[’`]/g, "'").replace(NOT_NEGATION, ' ')).filter(isNegative);
+const negationText = (s) => words(s.replace(/[’`]/g, "'").replace(NOT_NEGATION, ' '));
+const negationWords = (s) => negationText(s).filter(isNegative);
 
 // Languages where a he/she swap mostly can't survive the round trip, because their pronouns don't state
 // a gender (Tagalog "siya", Hindi/Urdu "vah/voh": he, she or they) or drop it (Spanish "su" = his, her or
@@ -224,7 +232,8 @@ export function meaningChecks(original, back, lang) {
   const found = [];
 
   const [na, nb] = [negationWords(original), negationWords(back)];
-  if (na.length % 2 !== nb.length % 2) {
+  const built = (s) => negationText(s).filter(isBuiltNegative).length;
+  if (na.length % 2 !== nb.length % 2 && (na.length + built(original)) % 2 !== (nb.length + built(back)) % 2) {
     // The words to point at: the extra negation in the ↩ line, or the one of yours that didn't come back.
     const more = nb.length > na.length;
     found.push({ kind: 'negation', detail: more ? 'a "not" (or "no", "never"…) appeared' : 'a "not" (or "no", "never"…) from your text didn\'t come back', words: more ? nb : [], missing: more ? [] : na });
@@ -241,7 +250,8 @@ export function meaningChecks(original, back, lang) {
     // Most languages have no neopronouns, so they usually come back as "they": worth saying, but not "likely off".
     found.push({ kind: 'pronoun', soft: true, detail: `your pronoun "${a.find((w) => NEO.has(w))}" didn't come back (most languages don't have it)`, words: [] });
   }
-  if (has(a, NEUTRAL_PEOPLE) && !has(a, GENDERED_PEOPLE) && has(b, GENDERED_PEOPLE)) {
+  // Only when your text states no gender at all: "the richest people… his wealth" ↩ "the richest men" adds nothing new.
+  if (has(a, NEUTRAL_PEOPLE) && !has(a, GENDERED_PEOPLE) && !gendered(a) && has(b, GENDERED_PEOPLE)) {
     const added = b.find((w) => GENDERED_PEOPLE.has(w));
     found.push({ kind: 'pronoun', detail: `a gender appeared: "${added}" where you wrote "${a.find((w) => NEUTRAL_PEOPLE.has(w))}"`, words: b.filter((w) => GENDERED_PEOPLE.has(w)) });
   }
