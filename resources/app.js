@@ -39,7 +39,9 @@ const DEFAULTS = {
   // left-hand press, unused by macOS, rare in apps, unlike ⌘ combos (apps' own) or ⌃⌥Space
   // (switches keyboard language). Vox2 takes the keypress, so the app in front doesn't also act.
   summonShortcut: MAC ? { code: 'KeyV', ctrl: true, alt: true } : { code: 'Space', ctrl: true, shift: true },
-  selectShortcut: MAC ? { code: 'KeyT', ctrl: true, alt: true } : { code: 'KeyT', ctrl: true, alt: true },
+  // Mac: a tap of right ⌘ on its own (fires on a clean tap, so right ⌘ + C still copies). Windows keeps
+  // Ctrl+Alt+T: tapping Alt on its own there opens the menu bar of the app you're in.
+  selectShortcut: MAC ? { code: 'MetaRight' } : { code: 'KeyT', ctrl: true, alt: true },
   pinShortcut: MAC ? { code: 'KeyP', meta: true } : { code: 'KeyP', ctrl: true }, // while Vox2 is in front
   // Also only while Vox2 is in front. Mac: ⌘H would hide the app, so history is ⌘Y (as in Safari).
   fitShortcut: MAC ? { code: 'KeyF', meta: true, shift: true } : { code: 'KeyF', ctrl: true, shift: true },
@@ -73,16 +75,16 @@ async function loadSettings() {
   // Speed used to be a percent change baked into the voice (-20 / 0 / +15).
   if (saved.ttsRate != null && saved.ttsSpeed == null) saved.ttsSpeed = saved.ttsRate < 0 ? 0.75 : saved.ttsRate > 0 ? 1.25 : 1;
   delete saved.ttsRate;
-  // Mac shortcuts moved from ⌘ combos to ⌃⌥ (0.4.19): anyone still on an old default gets the new
-  // one; shortcuts you set yourself stay.
+  // Mac shortcuts moved from ⌘ combos to ⌃⌥ (0.4.19), and "translate selected text" to a tap of
+  // right ⌘ (0.4.22): anyone still on an old default gets the new one; shortcuts you set yourself stay.
   if (MAC) {
     const OLD = {
-      summonShortcut: { code: 'Space', meta: true, shift: true },
-      selectShortcut: { code: 'KeyT', meta: true, alt: true },
-      snipShortcut: { code: 'KeyS', meta: true, alt: true },
+      summonShortcut: [{ code: 'Space', meta: true, shift: true }],
+      selectShortcut: [{ code: 'KeyT', meta: true, alt: true }, { code: 'KeyT', ctrl: true, alt: true }],
+      snipShortcut: [{ code: 'KeyS', meta: true, alt: true }],
     };
     const same = (a, b) => !!a && ['code', 'ctrl', 'alt', 'shift', 'meta'].every((k) => (a[k] || false) === (b[k] || false));
-    for (const [name, old] of Object.entries(OLD)) if (same(saved[name], old)) delete saved[name];
+    for (const [name, olds] of Object.entries(OLD)) if (olds.some((old) => same(saved[name], old))) delete saved[name];
   }
   settings = { ...DEFAULTS, ...saved, keys: { ...saved.keys } };
   // A shortcut that's Shift or a left-side modifier on its own (easy to record by accident) fires
@@ -1331,7 +1333,8 @@ function renderShortcuts() {
     chip.classList.toggle('off', !sc?.code);
   }
   $('#shortcut-hint').textContent = (native ? 'the first four work from any app; pin, fit, history and settings while Vox2 is in front' : 'these work while this window is focused')
-    + ' · click one, then press the new key · backspace turns it off';
+    + ' · click one, then press the new key · backspace turns it off'
+    + (native ? ` · a key on its own (like right ${IS_MAC ? '⌘' : 'Alt'}) fires on a quick tap; dictation's can also be held` : '');
   for (const p of Object.values(panes)) {
     p.root.querySelector('[data-act="mic"]').title = settings.sttShortcut.code
       ? `Tap to dictate · hold to talk (${shortcutLabel()})` : 'Tap to dictate · hold to talk';
