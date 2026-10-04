@@ -7,7 +7,7 @@ final class Scheme: NSObject, WKURLSchemeHandler {
     func webView(_ w: WKWebView, start task: WKURLSchemeTask) {
         let path = task.request.url!.path
         if path == "/save" {
-            try? task.request.httpBody?.write(to: URL(fileURLWithPath: root + "/results.json"))
+            try? task.request.httpBody?.write(to: URL(fileURLWithPath: root + "/" + (CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "results.json")))
             task.didReceive(HTTPURLResponse(url: task.request.url!, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: [:])!)
             task.didReceive(Data("ok".utf8)); task.didFinish(); return
         }
@@ -25,7 +25,7 @@ cfg.setURLSchemeHandler(Scheme(), forURLScheme: "tauri")
 let win = NSWindow(contentRect: .init(x: 0, y: 0, width: 500, height: 400), styleMask: [.titled], backing: .buffered, defer: false)
 let web = WKWebView(frame: .init(x: 0, y: 0, width: 500, height: 400), configuration: cfg)
 win.contentView = web; win.orderFrontRegardless()
-web.load(URLRequest(url: URL(string: "tauri://localhost/run.html")!))
+web.load(URLRequest(url: URL(string: "tauri://localhost/run.html?items=" + (CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "items.json") + "&out=" + (CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "results.json"))!))
 var last = ""
 Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
     web.evaluateJavaScript("[window.__log || '', window.__done === true]") { r, _ in

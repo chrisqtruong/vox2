@@ -53,7 +53,8 @@ JS: `MAC` / `IS_MAC` (from `navigator.platform`), and `getPermissions()` returns
 
 ## Shared-code gotchas
 
-- **Meaning check changes (`meaning.js`, `checkBack`) must be measured**: re-run `tools/meaning-bench/` and add a dated report + history row in `docs/meaning-check-tests/` (keep `items.json` fixed so runs compare).
+- **Meaning check changes (`meaning.js`, `meaning-checks.js`, `checkBack`) must be measured**: re-run `tools/meaning-bench/` (`items-v2.json`) and add a dated report + history row in `docs/meaning-check-tests/`. Tune only on the development split (`dev`); report the held-out split (`test`). When the held-out set has been used to choose between versions, say so, and draw a fresh held-out set next time.
+- **Google sometimes answers in the wrong language** (whole batches of "back into English" in Japanese, 2026-10-03). The bench retries non-English back-translations; check the run log before trusting results.
 - **OCR (`ocr.js`) must prepare snips before Tesseract**: enlarge, grayscale, invert light-on-dark, stretch contrast, PSM 6, then fix lone `|` → `I`. Raw screen captures (small, dark themes) garble words. Test changes against several themes and both 1× and 2× captures.
 - `quick.active` (a ⌥⌘T / Ctrl+Alt+T or snip session) routes translations to the bubble. Anything that moves work back into the main window must end it: typing, dictating, and focusing the window do.
 - Esc reaches the page two ways: the page's own keydown while Vox2 is in front, and the `escape` event from the native keyboard watcher otherwise (`stopAudio()` handles both).

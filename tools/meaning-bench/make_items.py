@@ -45,3 +45,25 @@ for kind, fn in RULES:
 for it in items: it['refs'] = {c: refs[c][it['id']] for c in L}
 json.dump({'langs': L, 'items': items}, open('items.json','w'), ensure_ascii=False, indent=1)
 print(len(items), 'sentences ×', len(L), 'languages')
+
+# --- v2 (2026-10-03, run 2): adds a held-out set ---------------------------------------------
+# items-v2.json = the 40 sentences above (split "dev": used while designing the checks) plus 80
+# new ones, 16 per error type, picked with a different seed and never looked at while tuning
+# (split "test": the headline numbers come from these). Run with:  python3 make_items.py v2
+import sys
+if len(sys.argv) > 1 and sys.argv[1] == 'v2':
+    dev_ids = {it['id'] for it in items}
+    for it in items: it['split'] = 'dev'
+    random.seed(2026)
+    idx2 = list(range(len(eng))); random.shuffle(idx2)
+    used2 = set(dev_ids); test = []
+    for kind, fn in RULES:
+        got = 0
+        for i in idx2:
+            if i in used2 or not (40 <= len(eng[i]) <= 220): continue
+            bad = fn(eng[i])
+            if bad and bad != eng[i]:
+                test.append({'id': i, 'kind': kind, 'en': eng[i], 'bad_en': bad, 'split': 'test', 'refs': {c: refs[c][i] for c in L}}); used2.add(i); got += 1
+                if got == 16: break
+    json.dump({'langs': L, 'items': items + test}, open('items-v2.json','w'), ensure_ascii=False, indent=1)
+    print(len(items), 'development +', len(test), 'held-out sentences')
