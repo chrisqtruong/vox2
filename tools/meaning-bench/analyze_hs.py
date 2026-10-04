@@ -1,9 +1,12 @@
-"""Tables for the high-stakes test (items-hs1.json): python3 analyze_hs.py <results.json> [split]
+"""Tables for the high-stakes tests (items-hs1.json, items-hs2.json):
+  python3 analyze_hs.py <results.json> [split] [scores.json]   (scores.json: from dump-scores.mjs, to score with another version of the checks)
 Counts an error as caught when it isn't shown as "meaning kept" (score < 85), as in the other reports,
 and also reports "flagged likely off" (< 65). "Reached the translation" leaves out planted errors whose
 translation came out identical to the translation of the correct sentence (nothing to catch)."""
 import collections, json, sys
 rows = json.load(open(sys.argv[1])); split = sys.argv[2] if len(sys.argv) > 2 else "test"
+if len(sys.argv) > 3:
+    for r, s in zip(rows, json.load(open(sys.argv[3]))): r["score"] = s
 rows = [r for r in rows if r["split"] == split]
 good_tr = {(r["lang"], r["id"]): r["translation"] for r in rows if r["kind"] != "bad"}
 squash = lambda s: "".join(s.lower().split())

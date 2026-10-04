@@ -1,6 +1,5 @@
 // Today's score for every row of a saved results file, as JSON (for direct_eval.py).
-//   jsc -m dump-scores.mjs -- <results.json> > scores.json
-import { meaningChecks, numbersMatch } from '../../resources/meaning-checks.js';
+//   jsc -m dump-scores.mjs -- <results.json> [checks.js] > scores.json   (checks.js: another version of meaning-checks.js, e.g. from git show)
 import { normalize } from './normalize.mjs';
 const plain = (s) => s.replace(/(\d)[,.   ](?=\d{3}(?!\d))/g, '$1');
 function rescore(r) {
@@ -14,5 +13,7 @@ function rescore(r) {
   else if (checks.length) score = Math.min(score, 84);
   return { score, numbersDiffer, checks: [...(numbersDiffer ? ['number'] : []), ...checks.map((c) => c.kind)] };
 }
-const rows = JSON.parse(readFile(globalThis.arguments[0]));
+const [file, checksPath] = globalThis.arguments;
+const { meaningChecks, numbersMatch } = await import(checksPath || '../../resources/meaning-checks.js');
+const rows = JSON.parse(readFile(file));
 print(JSON.stringify(rows.map((r) => rescore(r).score)));

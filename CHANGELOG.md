@@ -6,7 +6,7 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ### Changed
 
-- **Meaning check: catches changed units and "unless".** The same number with a different unit is now flagged (1 to 2 days → 1 to 2 weeks, 4,000 mg → 4,000 g, 100.4 °F → °C, 8 a.m. → 8 p.m., each week → each day), and "unless" counts as "if not", so "If pregnant…" coming back as "Unless pregnant…" is caught. On a new test of real medical and legal instructions, critical errors caught went from 48% to 73%, with no new false alarms on everyday text ([report](docs/meaning-check-tests/2026-10-04-phase-1-3.md)). *Windows and Mac.*
+- **Meaning check: catches changed units and "unless".** The same number with a different unit is now flagged (1 to 2 days → 1 to 2 weeks, 4,000 mg → 4,000 g, 100.4 °F → °C, 8 a.m. → 8 p.m., each week → each day), and "unless" counts as "if not", so "If pregnant…" coming back as "Unless pregnant…" is caught. On new tests of real medical and legal instructions, critical errors caught went from about 48% to 71% (on 144 sentences it had never seen), with fewer false alarms and no change on everyday text ([report](docs/meaning-check-tests/2026-10-04-high-stakes-2.md)). *Windows and Mac.*
 
 ## 0.4.20 (2026-10-04)
 
