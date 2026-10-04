@@ -1551,7 +1551,7 @@ async function updateExtras(dst, translation, lang, backTo, original) {
     const backLine = box.querySelector('.back');
     backLine.textContent = settings.showBack ? back : '';
     box.hidden = !box.textContent.trim();
-    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, translation, back, id, backTo);
+    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, translation, back, id, backTo, lang);
   } catch {}
 }
 
@@ -1566,7 +1566,7 @@ document.body.append(matchTip);
 const escapeHtml = (t) => t.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
 function showMatchTip(badge) {
-  const { score, numbers, checks, missing, untranslated: copied } = badge.dataset;
+  const { score, numbers, checks, missing, heShe, untranslated: copied } = badge.dataset;
   if (copied) {
     matchTip.innerHTML = '<b>can\'t check</b>'
       + '<p>part of your text came through untranslated, so the ↩ line just repeats it and a match score would mean nothing</p>'
@@ -1579,8 +1579,9 @@ function showMatchTip(badge) {
     + '<p>how much of your meaning survived the round trip, compared by meaning, not exact words</p>'
     + TIERS.map(([k, range, label]) => `<div class="tier ${k}${k === t ? ' on' : ''}"><i></i><span>${range}</span>${label}</div>`).join('')
     + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '')
-    + (checks ? checks.split('\n').map((c) => `<p class="warn">${c}, so it's capped at 60%</p>`).join('') : '')
-    + (missing ? `<p class="missing">didn't come back: ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '');
+    + (checks ? checks.split('\n').map((c) => `<p class="warn">${escapeHtml(c)}, so ${Number(score) > 60 ? 'it\'s kept below 85%' : 'it\'s capped at 60%'}</p>`).join('') : '')
+    + (missing ? `<p class="missing">didn't come back: ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '')
+    + (heShe ? `<p class="missing">pronouns can't be checked: ${escapeHtml(heShe)} pronouns usually don't say he, she or they, so a change wouldn't come back</p>` : '');
   placeMatchTip(badge);
 }
 
@@ -1593,7 +1594,7 @@ function placeMatchTip(badge) {
   matchTip.style.top = `${r.top / z - h - 6 > 8 ? r.top / z - h - 6 : r.bottom / z + 6}px`; // above, else below
 }
 
-async function showMatch(backLine, original, translation, back, id, lang) {
+async function showMatch(backLine, original, translation, back, id, lang, target) {
   const badge = document.createElement('span');
   badge.addEventListener('mouseenter', () => showMatchTip(badge));
   badge.addEventListener('mouseleave', () => { matchTip.hidden = true; });
@@ -1612,7 +1613,7 @@ async function showMatch(backLine, original, translation, back, id, lang) {
   badge.title = 'checking meaning (first time downloads a ~120 MB model)';
   backLine.append(' ', badge);
   try {
-    const { score, numbersDiffer, checks, changed, missing } = await matchScore(original, back, lang);
+    const { score, numbersDiffer, checks, changed, missing, heSheUnchecked } = await matchScore(original, back, lang, target);
     if (id !== extrasJob) return;
     badge.className = `match ${tier(score)}`;
     badge.textContent = `${score}% match`;
@@ -1621,6 +1622,7 @@ async function showMatch(backLine, original, translation, back, id, lang) {
     if (numbersDiffer) badge.dataset.numbers = '1';
     if (checks.length) badge.dataset.checks = checks.map((c) => c.detail).join('\n');
     if (missing.length) badge.dataset.missing = missing.join('\n');
+    if (heSheUnchecked) badge.dataset.heShe = langName(target);
     markChanged(backLine, changed);
   } catch {
     badge.remove(); // no model (e.g. offline the first time): just leave the score out

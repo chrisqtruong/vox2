@@ -24,4 +24,16 @@ The "can't check" rule for untranslated text has its own test: `python3 untransl
 
 Then add a dated report in `docs/meaning-check-tests/` (copy the previous one's structure), save the results next to it as `<report name>-results.json`, and add a row to the history table in `docs/meaning-check-tests/README.md`.
 
+## Re-scoring offline (Phase 1.2 on)
+
+Runs 2 and later save the model's similarity for every translation. The word checks (`meaning-checks.js`) don't need the model, so a change to them can be scored on all saved translations in about a second, without Google or WebKit:
+
+```
+J=/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc   # macOS's JavaScript engine (the Mac app's)
+$J -m offline.mjs -- ../../docs/meaning-check-tests/2026-10-03-run-3-results.json summary verify
+$J -m offline.mjs -- ../../docs/meaning-check-tests/2026-10-03-run-3-results.json flags test good negation
+```
+
+`summary` prints the report's measures per split and false alarms by cause; `verify` counts rows whose score differs from the saved one (0 before any change). `flags <split> good <check>` lists false alarms of one kind; `flags <split> bad <error type>` lists planted errors shown as "meaning kept". Changes to the similarity part (`meaning.js`, the model) still need a full run.
+
 Keep the item files unchanged so results stay comparable. If the method changes (new error types, more languages, different thresholds), say so in the report and mark the history row.
