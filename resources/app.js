@@ -1458,7 +1458,27 @@ $('#stt-openai-model').addEventListener('input', (e) => {
 let extrasJob = 0;
 const hasNonLatin = (s) => /[^\p{Script=Latin}\p{P}\p{N}\p{S}\s]/u.test(s);
 
+// The words behind a low match score, highlighted in the ↩ line (meaning check: "show what changed").
+const diffMark = typeof Highlight === 'function' ? new Highlight() : null;
+if (diffMark) CSS.highlights.set('vox-diff', diffMark);
+function markChanged(backLine, words) {
+  if (!diffMark || !words.length) return;
+  const node = backLine.firstChild;
+  if (!node || node.nodeType !== Node.TEXT_NODE) return;
+  const text = node.textContent.toLowerCase();
+  for (const w of new Set(words.map((x) => x.toLowerCase()))) {
+    const re = new RegExp(`(?<![\\p{L}\\d])${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\d])`, 'gu');
+    for (const m of text.matchAll(re)) {
+      const r = document.createRange();
+      r.setStart(node, m.index);
+      r.setEnd(node, m.index + m[0].length);
+      diffMark.add(r);
+    }
+  }
+}
+
 function hideExtras() {
+  diffMark?.clear();
   extrasJob++;
   matchTip.hidden = true;
   for (const p of Object.values(panes)) $('.extras', p.root).hidden = true;
@@ -1491,13 +1511,14 @@ matchTip.hidden = true;
 document.body.append(matchTip);
 
 function showMatchTip(badge) {
-  const { score, numbers, checks } = badge.dataset;
+  const { score, numbers, checks, missing } = badge.dataset;
   const t = tier(Number(score));
   matchTip.innerHTML = `<b class="${t}">${score}% match</b>`
     + '<p>how much of your meaning survived the round trip, compared by meaning, not exact words</p>'
     + TIERS.map(([k, range, label]) => `<div class="tier ${k}${k === t ? ' on' : ''}"><i></i><span>${range}</span>${label}</div>`).join('')
     + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '')
-    + (checks ? checks.split('\n').map((c) => `<p class="warn">${c}, so it's capped at 60%</p>`).join('') : '');
+    + (checks ? checks.split('\n').map((c) => `<p class="warn">${c}, so it's capped at 60%</p>`).join('') : '')
+    + (missing ? `<p class="missing">didn't come back: ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '');
   matchTip.hidden = false;
   const z = parseFloat(document.documentElement.style.zoom) || 1;
   const r = badge.getBoundingClientRect();
@@ -1513,7 +1534,7 @@ async function showMatch(backLine, original, back, id, lang) {
   badge.title = 'checking meaning (first time downloads a ~120 MB model)';
   backLine.append(' ', badge);
   try {
-    const { score, numbersDiffer, checks } = await matchScore(original, back, lang);
+    const { score, numbersDiffer, checks, changed, missing } = await matchScore(original, back, lang);
     if (id !== extrasJob) return;
     badge.className = `match ${tier(score)}`;
     badge.textContent = `${score}% match`;
@@ -1521,6 +1542,8 @@ async function showMatch(backLine, original, back, id, lang) {
     badge.dataset.score = score;
     if (numbersDiffer) badge.dataset.numbers = '1';
     if (checks.length) badge.dataset.checks = checks.map((c) => c.detail).join('\n');
+    if (missing.length) badge.dataset.missing = missing.join('\n');
+    markChanged(backLine, changed);
     badge.addEventListener('mouseenter', () => showMatchTip(badge));
     badge.addEventListener('mouseleave', () => { matchTip.hidden = true; });
   } catch {

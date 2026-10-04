@@ -67,3 +67,25 @@ if len(sys.argv) > 1 and sys.argv[1] == 'v2':
                 if got == 16: break
     json.dump({'langs': L, 'items': items + test}, open('items-v2.json','w'), ensure_ascii=False, indent=1)
     print(len(items), 'development +', len(test), 'held-out sentences')
+
+# --- v3 (2026-10-04, run 3): a fresh held-out set ---------------------------------------------
+# Run 2's held-out examples were looked at while writing its report, so run 3 uses 80 new
+# sentences (seed 2027), none from run 1 or run 2, plus the same 40 development sentences.
+# Run with:  python3 make_items.py v3
+if len(sys.argv) > 1 and sys.argv[1] == 'v3':
+    v2 = json.load(open('items-v2.json'))
+    seen = {it['id'] for it in v2['items']}
+    dev = [dict(it, split='dev') for it in items]
+    random.seed(2027)
+    idx3 = list(range(len(eng))); random.shuffle(idx3)
+    test3 = []
+    for kind, fn in RULES:
+        got = 0
+        for i in idx3:
+            if i in seen or not (40 <= len(eng[i]) <= 220): continue
+            bad = fn(eng[i])
+            if bad and bad != eng[i]:
+                test3.append({'id': i, 'kind': kind, 'en': eng[i], 'bad_en': bad, 'split': 'test', 'refs': {c: refs[c][i] for c in L}}); seen.add(i); got += 1
+                if got == 16: break
+    json.dump({'langs': L, 'items': dev + test3}, open('items-v3.json','w'), ensure_ascii=False, indent=1)
+    print(len(dev), 'development +', len(test3), 'fresh held-out sentences')

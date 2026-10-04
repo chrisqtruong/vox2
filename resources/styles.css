@@ -155,6 +155,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @keyframes settle { from { color: var(--pending); } to { color: var(--ink); } }
 /* the word being read aloud: accent ink on a faint accent wash (the wash also shows when accent = ink) */
 ::highlight(vox-word) { color: var(--accent); background-color: color-mix(in srgb, var(--accent) 18%, transparent); }
+/* meaning check: the words behind a low score, in the ↩ line */
+::highlight(vox-diff) { color: var(--danger); text-decoration: underline wavy; text-decoration-color: var(--danger); }
+.match-tip .missing { margin: 3px 0 0; }
+.match-tip .missing span { color: var(--ink); }
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }

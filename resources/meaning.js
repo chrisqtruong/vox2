@@ -1,4 +1,4 @@
-import { meaningChecks, numberWordsToDigits } from './meaning-checks.js';
+import { meaningChecks, numbersIn, missingWords } from './meaning-checks.js';
 
 // Back-translation match: how much of your meaning survived the round trip
 // (your text → translation → back into your language). Compared by meaning, not exact words,
@@ -63,13 +63,11 @@ export function normalize(s) {
 // "1,000" / "1.000" / "1 000" → "1000": formatting alone shouldn't change the score.
 const plainNumbers = (s) => s.replace(/(\d)[,.   ](?=\d{3}(?!\d))/g, '$1');
 
-// Every number in the text.
-const numbers = (s) => (s.match(/\d+(?:[.,]\d+)?/g) || []).sort().join(' ');
-
 export const tier = (score) => (score >= 85 ? 'high' : score >= 65 ? 'mid' : 'low');
 
 // lang: your language (the one both texts are in), for the word-based checks.
-// → { score: 0–100, similarity: the score before any cap, numbersDiffer, checks: [{ kind, detail }] }
+// → { score: 0–100, similarity: the score before any cap, numbersDiffer, checks: [{ kind, detail, words? }],
+//     changed: words to highlight in the ↩ line, missing: your words that didn't come back }
 export async function matchScore(original, back, lang) {
   original = plainNumbers(original);
   back = plainNumbers(back);
@@ -77,7 +75,7 @@ export async function matchScore(original, back, lang) {
   const b = normalize(back);
   if (!a || !b) throw new Error('nothing to compare');
   // "2 goals" and "two goals" are the same number.
-  const numbersDiffer = numbers(numberWordsToDigits(original, lang)) !== numbers(numberWordsToDigits(back, lang));
+  const numbersDiffer = numbersIn(original, lang) !== numbersIn(back, lang);
   const checks = a === b ? [] : meaningChecks(original, back, lang);
   let similarityScore = 100;
   if (a !== b) {
@@ -87,5 +85,9 @@ export async function matchScore(original, back, lang) {
   let score = similarityScore;
   if (numbersDiffer) score = Math.min(score, NUMBER_CAP);
   if (checks.length) score = Math.min(score, CHECK_CAP);
-  return { score, similarity: similarityScore, numbersDiffer, checks };
+  // What to point at: the words behind each flag, plus numbers that don't match.
+  const theirs = numbersIn(back, lang).split(' ').filter(Boolean);
+  const mine = numbersIn(original, lang).split(' ').filter(Boolean);
+  const changed = [...checks.flatMap((c) => c.words || []), ...(numbersDiffer ? theirs.filter((n) => !mine.includes(n)) : [])];
+  return { score, similarity: similarityScore, numbersDiffer, checks, changed, missing: score < 85 ? missingWords(original, back, lang).slice(0, 6) : [] };
 }
