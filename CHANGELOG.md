@@ -2,6 +2,14 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Added
+
+- **Translate while highlighting** (settings → shortcuts, off by default). Hold left option (Mac) or left Alt (Windows) while you highlight text in any app; when you let go, the translation pops up in the bubble by your cursor. Right option stays your dictation key. *Windows and Mac.*
+- **The bubble shows a match score** ("96% match · meaning kept", or "can't check") whenever match scoring is on, even with the ↩ line hidden in the window. *Windows and Mac.*
+- **Change the bubble's language from the keyboard.** The bubble shows "English → Vietnamese ▾": press Tab (or just start typing), type a few letters ("spa"), and Enter or Tab re-translates into that language and keeps it for next time. Esc closes the list, a second Esc the bubble. *Windows and Mac.*
+
 ## 0.4.21 (2026-10-04)
 
 ### Changed

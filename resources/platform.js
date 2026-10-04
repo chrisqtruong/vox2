@@ -28,6 +28,12 @@ export function setHotkey(name, sc) {
   invoke('set_hotkey', { name, hotkey }).catch(() => {});
 }
 
+// Translate while highlighting: the key to hold while highlighting text in any app ("AltLeft" =
+// left Option / left Alt); empty turns it off.
+export function setHighlightKey(code) {
+  invoke('set_highlight_key', { code: code || '' }).catch(() => {});
+}
+
 // Types text into whatever app has focus.
 export const typeText = (text) => invoke('type_text', { text });
 

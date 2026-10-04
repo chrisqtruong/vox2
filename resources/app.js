@@ -11,7 +11,7 @@ import {
 } from './dictation.js';
 import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
 import {
-  native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
+  native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, setHighlightKey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight,
   getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
@@ -47,6 +47,7 @@ const DEFAULTS = {
   settingsShortcut: MAC ? { code: 'Comma', meta: true } : { code: 'Comma', ctrl: true },
   snipShortcut: MAC ? { code: 'KeyS', ctrl: true, alt: true } : { code: 'KeyS', ctrl: true, alt: true },
   quickResult: 'bubble', // quick translations (selected text, snips) show in: 'bubble' or 'window'
+  highlightTranslate: false, // hold left Option / left Alt while highlighting text in any app to translate it
   conversation: false, // conversation mode: speak each dictated phrase's translation aloud
   tone: 'auto', toneNote: '',
   showRoman: true, showBack: false, showMatch: true, // showMatch: meaning score on the back-translation
@@ -1314,6 +1315,9 @@ function renderShortcuts() {
     if (!chip.classList.contains('recording')) chip.textContent = sc?.code ? shortcutLabel(sc) : 'off';
     chip.classList.toggle('off', !sc?.code);
   }
+  $('#highlight-translate').checked = settings.highlightTranslate;
+  $('#highlight-hint').textContent = `hold ${MAC ? 'left option (⌥)' : 'left Alt'} while you highlight text in any app; it translates when you let go of ${MAC ? 'option' : 'Alt'}`
+    + ` (the result shows ${settings.quickResult === 'bubble' ? 'in a bubble by the cursor, with a match score' : 'in the Vox2 window'})`;
   $('#shortcut-hint').textContent = (native ? 'the first four work from any app; pin, fit, history and settings while Vox2 is in front' : 'these work while this window is focused')
     + ' · click one, then press the new key · backspace turns it off';
   for (const p of Object.values(panes)) {
@@ -1325,6 +1329,14 @@ for (const chip of shortcutChips) chip.addEventListener('click', () => recordSho
 for (const b of $('#quick-result').children) {
   b.addEventListener('click', () => { settings.quickResult = b.dataset.q; saveSettings(); renderShortcuts(); });
 }
+// Translate while highlighting: left Option on Mac, left Alt on Windows (right Option is dictation's).
+const applyHighlight = () => setHighlightKey(settings.highlightTranslate ? 'AltLeft' : '');
+$('#highlight-translate').addEventListener('change', (e) => {
+  settings.highlightTranslate = e.target.checked;
+  saveSettings();
+  applyHighlight();
+  renderShortcuts();
+});
 
 // Show/hide shortcut brought the window up: ready to type, replacing what's there.
 onNative('summoned', () => {
@@ -1358,7 +1370,8 @@ async function startBubble(anchor, status) {
 
 function toBubble(dst, text, done, from, to) {
   if (!quick.active || dst !== quick.dst) return;
-  sendBubble({ session: quick.session, langs: `${langName(from)} → ${langName(to)}`, translation: text, done });
+  // from / to / toCode: the bubble shows "English → [Vietnamese]" with the target as a button.
+  sendBubble({ session: quick.session, langs: `${langName(from)} → ${langName(to)}`, from: langName(from), to: langName(to), toCode: to, translation: text, done });
 }
 
 async function quickTranslate(text, anchor, session) {
@@ -1431,7 +1444,12 @@ addEventListener('focus', () => {
   hideBubble();
 });
 
-onNative('bubble-action', ({ action }) => {
+onNative('bubble-action', ({ action, code }) => {
+  // A language picked in the bubble: translate into it, and keep it as that box's language.
+  if (action === 'lang' && quick.dst && code && code !== quick.dst.lang.value) {
+    quick.dst.lang.value = code;
+    quick.dst.lang.dispatchEvent(new Event('change'));
+  }
   if (action === 'speak' && quick.dst) readAloud(quick.dst);
   if (action === 'stop') stopAudio();
   if (action === 'open') { quick.active = false; showWindow(); }
@@ -1569,7 +1587,9 @@ async function updateExtras(dst, translation, lang, backTo, original) {
   hideExtras();
   const id = extrasJob;
   const wantRoman = settings.showRoman && hasNonLatin(translation);
-  if (!wantRoman && !settings.showBack) return;
+  // The bubble shows a match score whenever scoring is on, even if the ↩ line is off in the window.
+  const bubbleScore = settings.showMatch && quick.active && quick.dst === dst && useBubble();
+  if (!wantRoman && !settings.showBack && !bubbleScore) return;
   try {
     const { back, roman } = await checkBack(translation, lang, backTo, wantRoman);
     if (id !== extrasJob) return; // a newer translation replaced this one
@@ -1580,7 +1600,23 @@ async function updateExtras(dst, translation, lang, backTo, original) {
     backLine.textContent = settings.showBack ? back : '';
     box.hidden = !box.textContent.trim();
     if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, translation, back, id, backTo, lang);
+    if (bubbleScore && back) scoreBubble(original, translation, back, id, backTo, lang);
   } catch {}
+}
+
+// The match score for the bubble: the same check as the window's badge, as a short line.
+async function scoreBubble(original, translation, back, id, lang, target) {
+  const session = quick.session;
+  const send = (match) => { if (id === extrasJob && session === quick.session && quick.active) sendBubble({ session, match }); };
+  if (untranslated(original, translation)) return send({ label: "can't check", tier: 'unchecked', note: 'part of it came through untranslated' });
+  send({ label: 'checking…', tier: 'checking', note: '' });
+  try {
+    const { score } = await matchScore(original, back, lang, target);
+    const t = tier(score);
+    send({ label: `${score}% match`, tier: t, note: TIERS.find(([k]) => k === t)[2] });
+  } catch {
+    send(null); // no model (e.g. offline the first time): leave the score out
+  }
 }
 
 // A small themed card on hover: what the score means, the tiers, and a note if a number changed.
@@ -2398,6 +2434,7 @@ applyOnTop();
 await applyMemoryPolicy(); // how long the voice model stays loaded, from this computer's memory
 applyDictationSettings(); // dictate shortcut, mic buttons, keep-ready preload
 setHotkey('summon', settings.summonShortcut);
+applyHighlight();
 setHotkey('select', settings.selectShortcut);
 setHotkey('snip', settings.snipShortcut);
 applyConversation();
