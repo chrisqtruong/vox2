@@ -20,6 +20,8 @@ swiftc -O bench.swift -o bench               # macOS: runs run.html in WebKit, l
 python3 analyze_v2.py results.json           # tables for the report
 ```
 
+The "can't check" rule for untranslated text has its own test: `python3 untranslated.py fetch garbage.json`, then `python3 untranslated.py score garbage.json` ([report](../../docs/meaning-check-tests/2026-10-04-untranslated.md)).
+
 Then add a dated report in `docs/meaning-check-tests/` (copy the previous one's structure), save the results next to it as `<report name>-results.json`, and add a row to the history table in `docs/meaning-check-tests/README.md`.
 
 Keep the item files unchanged so results stay comparable. If the method changes (new error types, more languages, different thresholds), say so in the report and mark the history row.

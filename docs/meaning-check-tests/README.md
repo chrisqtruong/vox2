@@ -15,6 +15,7 @@ Each run has a dated report (what was tested, how, results, what we noticed, gra
 | 2026-10-03 | [Run 1, baseline](2026-10-03.md) | 40 FLORES-200 sentences × 11 languages, 5 planted error types, Google both ways; Vox2 0.4.12 | 93% | 4% | 29% (numbers 100%, others 5–18%) | 71% | **F** on errors. Confirms good translations well; misses most meaning errors except numbers |
 | 2026-10-03 | [Run 2, Phase 1 checks](2026-10-03-run-2.md) | Same method; **80 held-out sentences** (reported here) + run 1's 40 as development set; both methods scored on the same translations; Vox2 0.4.13 + targeted checks | 91% (run-1 method 95%) | 7% (3%) | **78%** (34%): negation 83%, number 98%, pronoun 70%, dropped clause 72%, opposite 66% | 22% (66%) | **C** on errors. Errors caught more than doubled in every language; a few more false alarms |
 | 2026-10-03 | [Run 3, Phase 1.1](2026-10-03-run-3.md) | Same method; **fresh 80 held-out sentences** (none from runs 1–2); run 1, Phase 1 and Phase 1.1 scored on the same translations; Vox2 0.4.14 + false-alarm fixes, ~90 opposite pairs, highlights | 93% (Phase 1 91%, run 1 93%) | 5% (8%, 4%) | **78%** (78%, 39%): number 100%, negation 84%, dropped clause 82%, opposite 78%, pronoun 49% | 22% (22%, 61%) | **C** on errors. Same catches as Phase 1, false alarms back near baseline; pronouns weakest |
+| 2026-10-04 | [Untranslated text](2026-10-04-untranslated.md) | Targeted test: all 6,160 good translations from runs 1–3, plus 324 garbled sentences (6 languages) translated by Google; Vox2 0.4.17 + "can't check" rule | unchanged (rule fired on 0 good translations) | +0 | **untranslated text: 84%** (half garbled), **94%** (all garbage) shown as "can't check" instead of a score | — | Fixes the "100% match" on gibberish / garbled snips |
 
 When you add a run, keep the same columns. If the method changed (more languages, new error types, different engines), say how in the Method column so rows stay comparable.
 
@@ -28,6 +29,8 @@ Code: [`resources/meaning.js`](../../resources/meaning.js) (scoring) and [`resou
 
 - **A**: the text you typed, trimmed.
 - **B**: the back-translation. It always comes from Google Translate (`translate.googleapis.com`, `client=gtx`), whichever engine made the forward translation.
+
+**0. Untranslated text.** Before scoring, the *translation* is checked for text that came through untranslated (gibberish, a garbled snip, text already in the other language), which would otherwise come back unchanged and score ~100%. A stretch of the translation copied word for word from A (lowercase words count 1, capitalized ½, 6+ to fire), or 80%+ of A's words (4+ words) appearing in it, means **can't check**: no score, the copied words underlined. Code: `untranslated()` in [`resources/meaning-checks.js`](../../resources/meaning-checks.js); test: [2026-10-04](2026-10-04-untranslated.md).
 
 **1. Number formatting.** Thousands separators are removed from A and B so formatting doesn't count as a difference:
 `(\d)[,.   ](?=\d{3}(?!\d))` → `$1`. For example, "1,000", "1.000" and "1 000" all become "1000".

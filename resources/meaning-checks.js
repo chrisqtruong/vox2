@@ -151,3 +151,41 @@ export function meaningChecks(original, back, lang) {
 // The ↩ line shorter than this share of your text counts as "part may be missing".
 // Tuned on the development set (docs/meaning-check-tests/2026-10-03-run-2.md).
 export const SHORTER_THAN = 0.6;
+
+// Text the translator couldn't translate (gibberish, a garbled snip, text already in the other
+// language) comes back unchanged both ways, so the ↩ line matches perfectly though nothing was
+// checked. Spot it in the translation itself: a long stretch copied word for word from your text,
+// or most of your words. A lowercase word counts 1 in a stretch, a capitalized one ½ (often a name);
+// numbers from your text and , . ' - don't break a stretch. Set so that no good translation in the
+// meaning tests trips it: names, units and loanwords stay at 5 or under (docs/meaning-check-tests).
+const TOKEN = /[\p{L}\p{M}]+(?:['’][\p{L}\p{M}]+)*|\d+|[^\s\p{L}\p{M}\d]/gu;
+const COPIED_RUN = 6;
+const COPIED_SHARE = 0.8;
+const isWord = (t) => /^[\p{L}\p{M}]/u.test(t);
+const isLower = (w) => w === w.toLowerCase() && w !== w.toUpperCase();
+
+// → the copied words (to point at in the ↩ line), or null when the text was translated.
+export function untranslated(original, translation) {
+  const mine = original.match(TOKEN) || [];
+  const myWords = new Set(mine.filter(isWord).map((w) => w.toLowerCase()));
+  const myNumbers = new Set(mine.filter((t) => /^\d/.test(t)));
+  let run = 0;
+  let stretch = [];
+  let best = [];
+  let bestRun = 0;
+  for (const t of translation.match(TOKEN) || []) {
+    if (isWord(t) && myWords.has(t.toLowerCase())) {
+      run += isLower(t) ? 1 : 0.5;
+      stretch.push(t);
+      if (run > bestRun) { bestRun = run; best = [...stretch]; }
+    } else if (!myNumbers.has(t) && !',.\'’-'.includes(t)) {
+      run = 0;
+      stretch = [];
+    }
+  }
+  if (bestRun >= COPIED_RUN) return best;
+  const theirs = new Set((translation.match(TOKEN) || []).filter(isWord).map((w) => w.toLowerCase()));
+  const all = mine.filter(isWord).map((w) => w.toLowerCase());
+  const copied = all.filter((w) => theirs.has(w));
+  return all.length >= 4 && copied.length / all.length >= COPIED_SHARE ? [...new Set(copied)] : null;
+}

@@ -2,6 +2,12 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Fixed
+
+- **No more "100% match" on text that wasn't translated.** When part of your text comes through untranslated (gibberish, a garbled snip, text already in the other language), the ↩ line just repeats it, so it used to score 100%. Now the badge says **can't check**, the untranslated words are underlined in the ↩ line, and the hover card says why. It never fired on 6,160 good translations in the meaning tests, and catches 84–94% of garbled text ([report](docs/meaning-check-tests/2026-10-04-untranslated.md)). *Windows and Mac.*
+
 ## 0.4.17 (2026-10-04)
 
 ### Added
