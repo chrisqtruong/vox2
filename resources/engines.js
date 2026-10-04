@@ -51,7 +51,8 @@ const systemPrompt = (from, to, { tone = 'auto', note = '' } = {}) =>
 // skipped. Windows uses this endpoint from the page, unchanged.
 const MAC_BACK = /Mac/.test(navigator.platform) && !!window.__TAURI__;
 
-export async function checkBack(translation, lang, backTo) {
+// wantRoman: whether the pronunciation line will be shown (otherwise it isn't requested).
+export async function checkBack(translation, lang, backTo, wantRoman = true) {
   if (MAC_BACK) {
     const [back, roman] = await Promise.all([
       google({ text: translation, from: lang, to: backTo }),
@@ -61,16 +62,29 @@ export async function checkBack(translation, lang, backTo) {
     ]);
     return { back: back.trim(), roman };
   }
-  const res = await fetch(
-    `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${lang}&tl=${backTo}&dt=t&dt=rm`,
-    { method: 'POST', body: new URLSearchParams({ q: translation }) },
-  );
-  if (!res.ok) return { back: '', roman: '' };
-  const rows = (await res.json())?.[0] || [];
-  return {
-    back: rows.filter((r) => r[0]).map((r) => r[0]).join('').trim(),
-    roman: rows.map((r) => r[3]).filter(Boolean).join(' ').trim(),
-  };
+  // The back-translation goes through the main translation endpoint, which keeps answering when
+  // Google's gtx endpoint says "too many requests" (it does, after heavy use, for hours). gtx is
+  // only asked for the pronunciation line, and only when it'll be shown; if it refuses, that line
+  // just stays empty.
+  const [back, roman] = await Promise.all([
+    google({ text: translation, from: lang, to: backTo }).catch(() => ''),
+    wantRoman ? gtxRoman(translation, lang, backTo) : '',
+  ]);
+  return { back: back.trim(), roman };
+}
+
+async function gtxRoman(text, from, to) {
+  try {
+    const res = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&dt=rm`,
+      { method: 'POST', body: new URLSearchParams({ q: text }) },
+    );
+    if (!res.ok) return '';
+    const rows = (await res.json())?.[0] || [];
+    return rows.map((r) => r[3]).filter(Boolean).join(' ').trim();
+  } catch {
+    return '';
+  }
 }
 
 // Yields parsed JSON from each `data:` line of a server-sent-events response.
