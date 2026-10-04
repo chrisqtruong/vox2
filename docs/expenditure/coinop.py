@@ -231,10 +231,10 @@ def is_vox2(turns):
     vox, other = 0, 0
     for t in turns:
         strings = [s for r in t["replies"] for s in r["tools"]]
-        if any(OTHER_PATH.search(s) for s in strings):
-            other += 1
-        elif any(VOX2_PATH.search(s) for s in strings):
+        if any(VOX2_PATH.search(s) for s in strings):
             vox += 1
+        elif any(OTHER_PATH.search(s) for s in strings):
+            other += 1
     said_so = any("vox2" in t["prompt"].lower() for t in turns[:2])
     return vox >= 1 and (vox > other or said_so)
 
