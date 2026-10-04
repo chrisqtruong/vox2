@@ -796,6 +796,22 @@ searchInput.addEventListener('keydown', (e) => {
   // Esc clears the search first; with nothing typed it closes settings as usual.
   if (e.key === 'Escape' && searchInput.value) { e.preventDefault(); e.stopPropagation(); clearSettingsSearch(); }
 });
+
+// Type anywhere in settings to search them: a letter or number typed while settings is open goes
+// into the search box ("appea" → appearance), unless you're already typing in a field in settings,
+// a menu is open, or a shortcut is being recorded. (Focus may still be on the page behind, even
+// the text box: settings is in front, so the letters go to its search.)
+document.addEventListener('keydown', (e) => {
+  if (!sheet.classList.contains('open') || historySheet.classList.contains('open')) return;
+  if (e.defaultPrevented || recordingShortcut || e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+  if (e.key.length !== 1 || !/[\p{L}\p{N}]/u.test(e.key)) return;
+  if (sheet.contains(e.target) && e.target.closest('input, textarea, select, [contenteditable="true"], [contenteditable=""]')) return;
+  if (e.target.closest('.lang-menu')) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.value += e.key;
+  searchInput.dispatchEvent(new Event('input'));
+});
 // Ctrl+F / ⌘F while settings are open jumps to the search box.
 document.addEventListener('keydown', (e) => {
   if (sheet.classList.contains('open') && e.key.toLowerCase() === 'f' && (MAC ? e.metaKey : e.ctrlKey) && !e.shiftKey && !e.altKey) {

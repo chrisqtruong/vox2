@@ -11,6 +11,11 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 - **Bubble shortcuts:** ⌘L / Ctrl+L listen (or stop), ⌘C / Ctrl+C copy, ⌘O / Ctrl+O open in Vox2, Esc close; each button shows its key. *Windows and Mac.*
 - **Change the bubble's language from the keyboard.** The bubble shows "English → Vietnamese ▾": press Tab (or just start typing), type a few letters ("spa"), and Enter or Tab re-translates into that language and keeps it for next time. Esc closes the list, a second Esc the bubble. *Windows and Mac.*
 
+### Changed
+
+- **Pick a language without the mouse.** Tab to a language button and just start typing ("spa"): the language menu opens already searching, and Enter or Tab picks the top match. ↓ opens the menu too. Names that start with what you typed come first ("s" → Samoan, Serbian, Spanish…), so a letter or two is often enough. After you pick (or press Esc), focus stays on the language button, so Tab carries on from there instead of getting lost. *Windows and Mac.*
+- **Type anywhere in settings to search them.** With settings open, just start typing ("appea") and it goes straight into the settings search, which jumps to the matching settings (appearance). Works wherever the keyboard focus is, except while you're typing in a field or recording a shortcut. *Windows and Mac.*
+
 ## 0.4.21 (2026-10-04)
 
 ### Changed
