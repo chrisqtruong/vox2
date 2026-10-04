@@ -68,7 +68,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'v2':
     json.dump({'langs': L, 'items': items + test}, open('items-v2.json','w'), ensure_ascii=False, indent=1)
     print(len(items), 'development +', len(test), 'held-out sentences')
 
-# --- v3 (2026-10-04, run 3): a fresh held-out set ---------------------------------------------
+# --- v3 (2026-10-03, run 3): a fresh held-out set ---------------------------------------------
 # Run 2's held-out examples were looked at while writing its report, so run 3 uses 80 new
 # sentences (seed 2027), none from run 1 or run 2, plus the same 40 development sentences.
 # Run with:  python3 make_items.py v3
