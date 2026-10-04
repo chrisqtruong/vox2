@@ -2,6 +2,12 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Changed
+
+- **Gender-inclusive AI translations.** Claude, ChatGPT and Gemini are now told to keep each person's gender exactly as your text gives it and never assume one it doesn't state: keep pronouns, including singular "they" and neopronouns, as closely as the language allows; keep neutral words like partner, parent or doctor neutral; and where a language needs a gender your text doesn't give, prefer gender-neutral wording. The "who it's for" note (e.g. someone's pronouns) takes priority. Google Translate can't take instructions, so it's unchanged; the meaning check flags when a gender appears. *Windows and Mac.*
+
 ## 0.4.18 (2026-10-04)
 
 ### Fixed
