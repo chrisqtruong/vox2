@@ -6,6 +6,7 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ### Added
 
+- **Move the quick-translation bubble.** Press and hold its top bar to drag it anywhere, like the main window. Once you've moved it, it stays put like a sticky note (it resizes in place and doesn't close when you click elsewhere) until you close it with × or Esc; the next quick translation opens by your cursor again. Shortcuts and Esc work as before. *Windows and Mac.*
 - **The bubble shows a match score** ("96% match · meaning kept", or "can't check") whenever match scoring is on, even with the ↩ line hidden in the window. Below "meaning kept" it also shows the ↩ line, so you can see why. The bubble works the score out itself, so it's quick even while the Vox2 window is hidden. *Windows and Mac.*
 - **Bubble shortcuts:** ⌘L / Ctrl+L listen (or stop), ⌘C / Ctrl+C copy, ⌘O / Ctrl+O open in Vox2, Esc close; hover a button to see its key. *Windows and Mac.*
 - **Change the bubble's language from the keyboard.** The bubble shows "English → Vietnamese ▾": press Tab (or just start typing), type a few letters ("spa"), and Enter or Tab re-translates into that language and keeps it for next time. Esc closes the list, a second Esc the bubble. *Windows and Mac.*
