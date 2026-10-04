@@ -24,4 +24,22 @@ The "can't check" rule for untranslated text has its own test: `python3 untransl
 
 Then add a dated report in `docs/meaning-check-tests/` (copy the previous one's structure), save the results next to it as `<report name>-results.json`, and add a row to the history table in `docs/meaning-check-tests/README.md`.
 
+## Untranslated text (run 4)
+
+A bigger test of the "wasn't translated" check (#38): text Google can't translate and passes through unchanged, in all 11 languages. Compares the app's check (`resources/meaning-checks.js`) with a bench-only two-level alternative (`untranslated-two-level.js`).
+
+```
+python3 make_untranslated.py                                   # items-untranslated.json (fixed seed)
+python3 fetch_untranslated.py untranslated-raw.json            # Google both ways, ~1 hour; resumes per language
+cp ../../resources/meaning.js ../../resources/meaning-checks.js ../../resources/meaning-worker.js .
+swiftc -O bench.swift -o bench
+./bench untranslated-raw.json untranslated-scored.json rescore.html   # real scores in WebKit, ~15 minutes
+J=/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc
+$J -m reshare.mjs -- untranslated-scored.json > results.json   # re-apply both checks after changing either
+python3 analyze_untranslated.py results.json 0.4 0.2           # tables (two-level thresholds)
+$J -m eval_untranslated.mjs -- test ../../docs/meaning-check-tests/2026-10-03-run-3-results.json   # two-level on real translations
+```
+
+`rescore.html` scores saved translations without asking Google again (`bench` takes the page as its 3rd argument). Google sometimes answers whole batches with empty text (throttling); `fetch_untranslated.py` retries those one at a time at the end, which is slow. In run 4 it was stopped and the empty rows left out.
+
 Keep the item files unchanged so results stay comparable. If the method changes (new error types, more languages, different thresholds), say so in the report and mark the history row.
