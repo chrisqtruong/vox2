@@ -1,6 +1,6 @@
 [package]
 name = "vox2"
-version = "0.4.22"
+version = "0.4.23"
 description = "Vox2: a lightweight two-way translator with live dictation"
 edition = "2021"
 
