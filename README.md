@@ -30,7 +30,6 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 ## What it does
 
 - **Live, both ways.** Type in either box and the other translates as you go. New words show grey until the engine settles.
-- **Translate while highlighting** (optional). Hold left option (Mac) or left Alt (Windows) while you highlight text in any app, and the translation pops up when you let go, with a match score. Tab to the language in the bubble and type to switch ("spa" → Spanish).
 - **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: <kbd>⌃</kbd><kbd>⌥</kbd><kbd>T</kbd>); the translation appears in a bubble by your cursor.
 - **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌃</kbd><kbd>⌥</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language. On Mac, it's read by Apple's built-in text recognizer (the Live Text engine); on Windows, the snip is cleaned up first (enlarged, dark themes flipped, contrast boosted). Either way, screen text comes through word for word. The image stays in memory and is never saved.
 - **Dictation.** Tap or hold <kbd>Right Ctrl</kbd> (Mac: <kbd>Right ⌥ Option</kbd>) and talk. Transcribed on your machine; optionally typed into the app you're using, as said or translated.

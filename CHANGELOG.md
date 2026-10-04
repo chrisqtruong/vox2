@@ -6,7 +6,6 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ### Added
 
-- **Translate while highlighting** (settings → shortcuts, off by default). Hold left option (Mac) or left Alt (Windows) while you highlight text in any app; when you let go, the translation pops up in the bubble by your cursor. Right option stays your dictation key. *Windows and Mac.*
 - **The bubble shows a match score** ("96% match · meaning kept", or "can't check") whenever match scoring is on, even with the ↩ line hidden in the window. Below "meaning kept" it also shows the ↩ line, so you can see why. The bubble works the score out itself, so it's quick even while the Vox2 window is hidden. *Windows and Mac.*
 - **Bubble shortcuts:** ⌘L / Ctrl+L listen (or stop), ⌘C / Ctrl+C copy, ⌘O / Ctrl+O open in Vox2, Esc close; each button shows its key. *Windows and Mac.*
 - **Change the bubble's language from the keyboard.** The bubble shows "English → Vietnamese ▾": press Tab (or just start typing), type a few letters ("spa"), and Enter or Tab re-translates into that language and keeps it for next time. Esc closes the list, a second Esc the bubble. *Windows and Mac.*

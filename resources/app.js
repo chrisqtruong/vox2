@@ -11,7 +11,7 @@ import {
 } from './dictation.js';
 import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
 import {
-  native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, setHighlightKey, typeText, sendPill,
+  native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight,
   getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
@@ -47,7 +47,6 @@ const DEFAULTS = {
   settingsShortcut: MAC ? { code: 'Comma', meta: true } : { code: 'Comma', ctrl: true },
   snipShortcut: MAC ? { code: 'KeyS', ctrl: true, alt: true } : { code: 'KeyS', ctrl: true, alt: true },
   quickResult: 'bubble', // quick translations (selected text, snips) show in: 'bubble' or 'window'
-  highlightTranslate: false, // hold left Option / left Alt while highlighting text in any app to translate it
   conversation: false, // conversation mode: speak each dictated phrase's translation aloud
   tone: 'auto', toneNote: '',
   showRoman: true, showBack: false, showMatch: true, // showMatch: meaning score on the back-translation
@@ -1331,9 +1330,6 @@ function renderShortcuts() {
     if (!chip.classList.contains('recording')) chip.textContent = sc?.code ? shortcutLabel(sc) : 'off';
     chip.classList.toggle('off', !sc?.code);
   }
-  $('#highlight-translate').checked = settings.highlightTranslate;
-  $('#highlight-hint').textContent = `hold ${MAC ? 'left option (⌥)' : 'left Alt'} while you highlight text in any app; it translates when you let go of ${MAC ? 'option' : 'Alt'}`
-    + ` (the result shows ${settings.quickResult === 'bubble' ? 'in a bubble by the cursor, with a match score' : 'in the Vox2 window'})`;
   $('#shortcut-hint').textContent = (native ? 'the first four work from any app; pin, fit, history and settings while Vox2 is in front' : 'these work while this window is focused')
     + ' · click one, then press the new key · backspace turns it off';
   for (const p of Object.values(panes)) {
@@ -1345,14 +1341,6 @@ for (const chip of shortcutChips) chip.addEventListener('click', () => recordSho
 for (const b of $('#quick-result').children) {
   b.addEventListener('click', () => { settings.quickResult = b.dataset.q; saveSettings(); renderShortcuts(); });
 }
-// Translate while highlighting: left Option on Mac, left Alt on Windows (right Option is dictation's).
-const applyHighlight = () => setHighlightKey(settings.highlightTranslate ? 'AltLeft' : '');
-$('#highlight-translate').addEventListener('change', (e) => {
-  settings.highlightTranslate = e.target.checked;
-  saveSettings();
-  applyHighlight();
-  renderShortcuts();
-});
 
 // Show/hide shortcut brought the window up: ready to type, replacing what's there.
 onNative('summoned', () => {
@@ -2485,7 +2473,6 @@ applyOnTop();
 await applyMemoryPolicy(); // how long the voice model stays loaded, from this computer's memory
 applyDictationSettings(); // dictate shortcut, mic buttons, keep-ready preload
 setHotkey('summon', settings.summonShortcut);
-applyHighlight();
 setHotkey('select', settings.selectShortcut);
 setHotkey('snip', settings.snipShortcut);
 applyConversation();
