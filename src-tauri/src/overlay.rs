@@ -84,9 +84,23 @@ pub async fn open_bubble(app: AppHandle, x: Option<i32>, y: Option<i32>) -> Resu
 }
 
 /// The bubble measured its content: size it, place it beside the anchor (kept on screen), show it.
+/// `keep`: you've dragged it somewhere, so only resize it there (and keep its bottom on screen).
 #[tauri::command]
-pub fn place_bubble(app: AppHandle, height: f64) -> Result<(), String> {
+pub fn place_bubble(app: AppHandle, height: f64, keep: Option<bool>) -> Result<(), String> {
     let win = app.get_webview_window("bubble").ok_or("no bubble")?;
+    if keep.unwrap_or(false) {
+        let pos = win.outer_position().map_err(|e| e.to_string())?;
+        let monitor = monitor_at(&app, pos.x, pos.y).ok_or("no monitor")?;
+        let scale = monitor.scale_factor();
+        let (w, h) = ((BUBBLE_W * scale) as i32, (height * scale) as i32);
+        let area = monitor.work_area();
+        let bottom = area.position.y + area.size.height as i32;
+        win.set_size(PhysicalSize::new(w as u32, h as u32)).map_err(|e| e.to_string())?;
+        if pos.y + h > bottom {
+            win.set_position(PhysicalPosition::new(pos.x, (bottom - h).max(area.position.y))).map_err(|e| e.to_string())?;
+        }
+        return Ok(());
+    }
     let (ax, ay) = *ANCHOR.lock().unwrap();
     let monitor = monitor_at(&app, ax, ay).ok_or("no monitor")?;
     let scale = monitor.scale_factor();

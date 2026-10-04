@@ -1368,6 +1368,7 @@ function themeColors() {
 // Start a bubble (anchored at the cursor, or at x/y) and return its session number.
 async function startBubble(anchor, status) {
   quick.active = true;
+  quick.pinned = false;
   quick.session++;
   quick.openedAt = Date.now();
   await openBubble(anchor?.x, anchor?.y);
@@ -1451,7 +1452,7 @@ addEventListener('focus', () => {
   // the bubble takes it: that isn't you coming back here.
   if (MAC && Date.now() - (quick.openedAt || 0) < 1500) return;
   quick.active = false;
-  hideBubble();
+  if (!quick.pinned) hideBubble(); // a bubble you moved stays put, like a sticky note
 });
 
 onNative('bubble-action', ({ action, code }) => {
@@ -1462,6 +1463,7 @@ onNative('bubble-action', ({ action, code }) => {
   }
   if (action === 'speak' && quick.dst) readAloud(quick.dst);
   if (action === 'stop') stopAudio();
+  if (action === 'pinned') quick.pinned = true;
   if (action === 'open') { quick.active = false; showWindow(); }
 });
 
