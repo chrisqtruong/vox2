@@ -85,6 +85,9 @@ async function loadSettings() {
     for (const [name, old] of Object.entries(OLD)) if (same(saved[name], old)) delete saved[name];
   }
   settings = { ...DEFAULTS, ...saved, keys: { ...saved.keys } };
+  // A shortcut that's Shift or a left-side modifier on its own (easy to record by accident) fires
+  // all the time while typing: put that one back to its default.
+  for (const k of Object.keys(DEFAULTS)) if (k.endsWith('Shortcut') && badLone(settings[k])) settings[k] = DEFAULTS[k];
   await loadKeys();
 }
 
@@ -1095,6 +1098,10 @@ $('#swap').addEventListener('click', abandonDictation, { capture: true });
 const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform);
 const MODIFIER_CODES = new Set(['ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'ShiftLeft', 'ShiftRight', 'MetaLeft', 'MetaRight']);
 const isLone = (sc) => MODIFIER_CODES.has(sc.code) && !sc.ctrl && !sc.alt && !sc.shift && !sc.meta;
+// A key on its own is only a shortcut if it's a right-side Ctrl / Option / Cmd: Shift and the
+// left-side ones are pressed all the time while typing, so one of those alone would fire constantly.
+const LONE_OK = new Set(['ControlRight', 'AltRight', 'MetaRight']);
+const badLone = (sc) => !!sc?.code && isLone(sc) && !LONE_OK.has(sc.code);
 
 // Macs write shortcuts with symbols in this order, e.g. ⌥⌘T, like the menu bar does.
 const MAC_SYMBOLS = { Control: '⌃', Alt: '⌥', Shift: '⇧', Meta: '⌘' };
@@ -1282,7 +1289,14 @@ function recordShortcut(chip) {
     if (!held.includes(e.code)) return;
     // First modifier released: one modifier = that exact key (e.g. Right Ctrl);
     // several = a modifier-only chord (e.g. Ctrl+Alt+Shift).
-    if (held.length === 1) return done({ code: held[0] });
+    if (held.length === 1) {
+      if (!LONE_OK.has(held[0])) {
+        held.length = 0; // keep recording
+        chip.textContent = IS_MAC ? 'add a letter (alone: right ⌥ ⌃ ⌘ only)' : 'add a letter (alone: right Ctrl / Alt / Win only)';
+        return;
+      }
+      return done({ code: held[0] });
+    }
     const code = held[held.length - 1];
     const others = new Set(held.slice(0, -1).map(modClass));
     others.delete(modClass(code));
