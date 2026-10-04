@@ -80,6 +80,8 @@
     let lastHeight = 0;
     let shown = false;
     let shownAt = 0; // macOS hands the keyboard to the main window for a moment as the bubble opens
+    let speaking = false; // reading aloud: Esc stops that first, and only the next Esc closes the bubble
+    let stoppedAt = 0;
     const MAC = /Mac/.test(navigator.platform);
     const MOD = MAC ? '⌘' : 'Ctrl+';
     const label = (id) => [...$(id).childNodes].find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim()); // "listen", "copy"…
@@ -121,6 +123,8 @@
       if (p.error) { $('out').textContent = p.error; $('out').className = 'out error'; }
       if ('words' in p) startReading(p.words);
       if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt, rate: p.sayRate || 1 };
+      if (p.speaking != null) speaking = p.speaking;
+      if (p.speaking === false) stoppedAt = Date.now();
       if (p.speaking != null) { // the listen button doubles as stop while reading
         label('speak').textContent = p.speaking ? 'stop' : 'listen';
         $('speak').title = p.speaking ? `Stop (${MOD}L or Esc)` : `Read aloud (${MOD}L)`;
@@ -294,8 +298,14 @@
       else if (e.target === $('to') && e.key === 'ArrowDown') { e.preventDefault(); openPick(); }
     });
 
-    // Esc: stop reading aloud, and put the bubble away.
-    addEventListener('keydown', (e) => { if (e.key === 'Escape') { act('stop'); hide(); } });
+    // Esc: while reading aloud, just stop reading; otherwise put the bubble away. (Esc anywhere also
+    // reaches the main window, which may stop the reading a moment before this sees the key: treat
+    // a stop in the last half second as this Esc's.)
+    addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      act('stop');
+      if (!speaking && Date.now() - stoppedAt > 500) hide();
+    });
     // Click anywhere else and it goes away (but not for the moment macOS takes the keyboard as it opens).
     addEventListener('blur', () => { if (shown && Date.now() - shownAt > 1000) hide(); });
     T.event.emitTo('main', 'bubble-ready');

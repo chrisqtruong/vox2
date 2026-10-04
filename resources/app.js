@@ -2286,6 +2286,25 @@ function renderHistory() {
   $('#history-clear').title = 'Clear recents (starred stay)';
 }
 
+// Arrow keys in history: ↓ / ↑ move between translations (↓ from anywhere starts at the top),
+// → / ← between a translation and its star, Enter opens (it's a button). Tab still goes round it all.
+historySheet.addEventListener('keydown', (e) => {
+  if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key) || e.metaKey || e.ctrlKey || e.altKey) return;
+  const entries = [...historyList.querySelectorAll('.entry')];
+  if (!entries.length) return;
+  const row = e.target.closest('li');
+  const i = row ? entries.indexOf(row.querySelector('.entry')) : -1;
+  let next = null;
+  if (e.key === 'ArrowDown') next = entries[i < 0 ? 0 : Math.min(i + 1, entries.length - 1)];
+  else if (e.key === 'ArrowUp') next = entries[i < 0 ? entries.length - 1 : Math.max(i - 1, 0)];
+  else if (e.key === 'ArrowRight' && row) next = row.querySelector('.star');
+  else if (e.key === 'ArrowLeft' && row) next = row.querySelector('.entry');
+  if (!next) return;
+  e.preventDefault();
+  next.focus();
+  next.scrollIntoView({ block: 'nearest' });
+});
+
 function restoreHistory(h) {
   cancelAll();
   const { top, bottom } = panes;
@@ -2308,7 +2327,8 @@ function openHistory() {
   renderHistory();
   historySheet.classList.add('open');
   historySheet.setAttribute('aria-hidden', 'false');
-  $('#history-done').focus();
+  // Ready on the newest translation: ⌘Y then Enter reopens it, ↓ / ↑ move through the rest.
+  (historyList.querySelector('.entry') || $('#history-done')).focus();
 }
 
 function closeHistory() {
