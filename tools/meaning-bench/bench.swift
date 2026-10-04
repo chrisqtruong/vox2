@@ -1,7 +1,8 @@
 import AppKit
 import WebKit
 import UniformTypeIdentifiers
-// Runs run.html (served from this folder at tauri://localhost) in WebKit; POST /save writes results.json.
+// Runs run.html (or the page named by the 3rd argument, e.g. rescore.html), served from this folder at
+// tauri://localhost, in WebKit; POST /save writes results.json (or the 2nd argument).
 let root = FileManager.default.currentDirectoryPath
 final class Scheme: NSObject, WKURLSchemeHandler {
     func webView(_ w: WKWebView, start task: WKURLSchemeTask) {
@@ -25,7 +26,7 @@ cfg.setURLSchemeHandler(Scheme(), forURLScheme: "tauri")
 let win = NSWindow(contentRect: .init(x: 0, y: 0, width: 500, height: 400), styleMask: [.titled], backing: .buffered, defer: false)
 let web = WKWebView(frame: .init(x: 0, y: 0, width: 500, height: 400), configuration: cfg)
 win.contentView = web; win.orderFrontRegardless()
-web.load(URLRequest(url: URL(string: "tauri://localhost/run.html?items=" + (CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "items.json") + "&out=" + (CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "results.json"))!))
+web.load(URLRequest(url: URL(string: "tauri://localhost/" + (CommandLine.arguments.count > 3 ? CommandLine.arguments[3] : "run.html") + "?items=" + (CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "items.json") + "&out=" + (CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "results.json"))!))
 var last = ""
 Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
     web.evaluateJavaScript("[window.__log || '', window.__done === true]") { r, _ in
@@ -34,5 +35,5 @@ Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
         if (a[1] as? Bool) == true { exit(0) }
     }
 }
-DispatchQueue.main.asyncAfter(deadline: .now() + 1800) { print("timed out"); exit(1) }
+DispatchQueue.main.asyncAfter(deadline: .now() + 3 * 3600) { print("timed out"); exit(1) }
 app.run()

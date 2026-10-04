@@ -2,7 +2,7 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
-## Unreleased
+## 0.4.20 (2026-10-04)
 
 ### Changed
 
@@ -10,6 +10,7 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ### Fixed
 
+- **Meaning check: fewer false alarms on new text.** Testing on fresh sentences showed words like "undisturbed" or "unfamiliar" were read as a "not" when a good translation said "intact" or "new". They now only count to balance a "not" on the other side ("not hurt" = "unharmed"). And "people" coming back as "men" isn't flagged when your text already said "his". False alarms on fresh sentences 8.3% → 6.9% ([report](docs/meaning-check-tests/2026-10-04-run-5.md)). *Windows and Mac.*
 - **Fewer meaning-check false alarms.** Numbers written differently now match (eighteenth = 18th, 90°F = 32°C, "between 340 and 500 million", "both" = two, a conversion in brackets), and more ways of saying "not" are understood (unharmed = not hurt, treeless = without trees, immoral, "not long ago" isn't a negation, "No. 9" is a number). False alarms on good translations 4.8% → 4.1% on held-out sentences, errors caught unchanged ([report](docs/meaning-check-tests/2026-10-04-phase-1-2.md)). *Windows and Mac.*
 
 ## 0.4.19 (2026-10-04)
