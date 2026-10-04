@@ -58,5 +58,26 @@ for (const [a, b, want] of [
   check(got === want, `negation [${want}]  ${a} | ${b}${got === want ? '' : `  → got [${got}]`}`);
 }
 
+// Units and "unless" (Phase 1.3, high-stakes test): [your text, ↩ line, checks expected]
+for (const [a, b, want] of [
+  ['Antiviral drugs work best when started within 1 to 2 days after flu symptoms begin.', 'Antiviral medications work best when used within 1 to 2 weeks after flu symptoms begin.', 'unit'],
+  ['The maximum should not be more than 4,000 mg for adults.', 'The maximum should not exceed 4,000 g for adults.', 'unit'],
+  ['Call a doctor if an infant has a fever of 100.4 degrees Fahrenheit or higher.', 'Call a doctor if an infant has a fever of 100.4 degrees Celsius or higher.', 'unit'],
+  ['Our offices are open from 8:00 a.m. to 4:30 p.m.', 'Our offices are open from 8:00 p.m. to 4:30 a.m.', 'unit'],
+  ['Brisk walking for 150 minutes each week helps.', 'Walking briskly for 150 minutes a day helps.', 'unit'],
+  ['Premixed insulin starts to work in 15 to 60 minutes.', 'Premixed insulin begins to work after 15 to 60 hours.', 'unit'],
+  ['The cooling-off period lasts two weeks.', 'The cooling-off period lasts 14 days.', ''],
+  ['Take 2 caplets every 6 hours.', 'Take 2 tablets every 6 hours.', ''],
+  ['The 180-calendar-day filing deadline applies.', 'The 180 calendar day deadline applies.', ''],
+  ['Take it twice a day for five days.', 'Take it twice daily for 5 days.', ''],
+  ['If pregnant or breast-feeding, ask a health professional before use.', 'Unless pregnant or breastfeeding, ask a healthcare professional before use.', 'negation'],
+  ["Don't flush any medicine unless it is on the Flush List.", 'Do not flush any medication if it is on the Flush List.', 'negation'],
+  ['Do not use for more than 10 days unless directed by a doctor.', 'Do not use for more than 10 days if not directed by a doctor.', ''],
+  ['Do not use for more than 10 days unless directed by a doctor.', 'Do not use for more than 10 days unless a doctor tells you to.', ''],
+]) {
+  const got = meaningChecks(a, b, 'en').map((c) => c.kind).join();
+  check(got === want, `units/unless [${want}]  ${a} | ${b}${got === want ? '' : `  → got [${got}]`}`);
+}
+
 print(failed ? `\n${failed} FAILED` : '\nall passed');
 if (failed) throw new Error(`${failed} unit tests failed`);
