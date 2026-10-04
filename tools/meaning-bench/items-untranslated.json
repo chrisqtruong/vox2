@@ -1,0 +1,3587 @@
+{
+ "langs": [
+  "vie_Latn",
+  "jpn_Jpan",
+  "kor_Hang",
+  "zho_Hans",
+  "spa_Latn",
+  "arb_Arab",
+  "hin_Deva",
+  "fra_Latn",
+  "tgl_Latn",
+  "por_Latn",
+  "urd_Arab"
+ ],
+ "items": [
+  {
+   "id": 163,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "An Avenger class mine countermeasures ship, the ship was on its way to Puerto Princesa in Palawan.",
+   "text": "Ab Avebgr cazs mhe countrmeasures shiep, thie ship lwaz inon ifs way tou Pv Pribeesa snln Palawa."
+  },
+  {
+   "id": 163,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "An Avenger class mine countermeasures ship, the ship was on its way to Puerto Princesa in Palawan.",
+   "text": "Ah Avcnger cas mne cou shl tle zhip was on its way to Puerto Princesa in Palawan."
+  },
+  {
+   "id": 163,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "An Avenger class mine countermeasures ship, the ship was on its way to Puerto Princesa in Palawan.",
+   "text": "An Avenger class mine cawole ship, the ship was on its way to Puerto Princesa in Palawan."
+  },
+  {
+   "id": 163,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "An Avenger class mine countermeasures ship, the ship was on its way to Puerto Princesa in Palawan.",
+   "text": "Uyn ohfsx Uiii c Jisfq 32292 Ywd 37968 z Nb"
+  },
+  {
+   "id": 578,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Cells are so basic and critical to the study of life, in fact, that they are often referred to as \"the building blocks of life\".",
+   "text": "Cellz orc sof bazic ahd criticral nto thc stvely af eliofe, ih fae tbato ltshey arei offen refrred ato os \"fe bilding bIofcks of Iife"
+  },
+  {
+   "id": 578,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Cells are so basic and critical to the study of life, in fact, that they are often referred to as \"the building blocks of life\".",
+   "text": "Cells are so basic and critical to the study of life, in fcnf, that tey arcl of referrcd nto las \"thiea bilding blo oift lifue\"."
+  },
+  {
+   "id": 578,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Cells are so basic and critical to the study of life, in fact, that they are often referred to as \"the building blocks of life\".",
+   "text": "Cells are so basic and critical to the study of life, in fact, that they are often hupapex to as \"the raseban sarirt of life\"."
+  },
+  {
+   "id": 578,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Cells are so basic and critical to the study of life, in fact, that they are often referred to as \"the building blocks of life\".",
+   "text": "ml Tum bjxgk ffn r ih Wgz qebf emtmj axqbe"
+  },
+  {
+   "id": 447,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "In 1981, Vanda Miss Joaquim, an orchid hybrid, was chosen as the nation's national flower.",
+   "text": "Ih 1981, Voda Mss Jooqui oIn orcbld hyb wtas ehozcn az thoe naf nafianl floer."
+  },
+  {
+   "id": 447,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "In 1981, Vanda Miss Joaquim, an orchid hybrid, was chosen as the nation's national flower.",
+   "text": "In 1981, Vanda Miss Joaquim, an orchid hybril, wias chosenn az tehe na nationoI flwer."
+  },
+  {
+   "id": 447,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "In 1981, Vanda Miss Joaquim, an orchid hybrid, was chosen as the nation's national flower.",
+   "text": "In 1981, Vanda Miss Joaquim, an orchid zetux, was gekuhi as the nation's national flower."
+  },
+  {
+   "id": 447,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "In 1981, Vanda Miss Joaquim, an orchid hybrid, was chosen as the nation's national flower.",
+   "text": "vuim wwv 14820 59753 zuxuh Tsx xspcn uhxe kmzw T"
+  },
+  {
+   "id": 81,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Hesperonychus elizabethae is a species of the family Dromaeosauridae and is a cousin of Velociraptor .",
+   "text": "He elizbfhae eiz oa speces of fbe famlly Dromaesaurae ancI iolz sa covo onf Velociroptor ."
+  },
+  {
+   "id": 81,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Hesperonychus elizabethae is a species of the family Dromaeosauridae and is a cousin of Velociraptor .",
+   "text": "Hesperonychus elizabethae is a species of the family Draaeosa sahcl is o cousih of Vloiraptor ."
+  },
+  {
+   "id": 81,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Hesperonychus elizabethae is a species of the family Dromaeosauridae and is a cousin of Velociraptor .",
+   "text": "Hesperonychus tinohash is a species of the family Dromaeosauridae and is a kuwibesh of Velociraptor ."
+  },
+  {
+   "id": 81,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Hesperonychus elizabethae is a species of the family Dromaeosauridae and is a cousin of Velociraptor .",
+   "text": "r Tfqk Zpjp ykdrp jyei t exzv bh Vz jwz 37003 j wuauj"
+  },
+  {
+   "id": 298,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "A change was made this legislative session when the second sentence was deleted first by the House of Representatives and then was passed in a similar form by the Senate Monday.",
+   "text": "Ar ehonge wis rnade tlsa Iegislatinve snssian when fbe seoncl zenten was dclefd flsf by tbc oH orf Rcprsentaives ahd Ithen wase paz ln sa simllar frm by thes nSeafe Maonay."
+  },
+  {
+   "id": 298,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "A change was made this legislative session when the second sentence was deleted first by the House of Representatives and then was passed in a similar form by the Senate Monday.",
+   "text": "bA ncba wosa macle tbis legislaive sles when fhe zeeoncl sennence vvaza deurleted frf by the House of Representatives and then was passed in a similar form by the Senate Monday."
+  },
+  {
+   "id": 298,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "A change was made this legislative session when the second sentence was deleted first by the House of Representatives and then was passed in a similar form by the Senate Monday.",
+   "text": "A fonuca was made this zifale session when the second sentence was hunax guci by the House of Representatives and then was passed in a similar form by the Senate Monday."
+  },
+  {
+   "id": 298,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "A change was made this legislative session when the second sentence was deleted first by the House of Representatives and then was passed in a similar form by the Senate Monday.",
+   "text": "tlpt nrf Jzt M Eiga 37226 nq"
+  },
+  {
+   "id": 897,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Some boots have studs and there is studded add-on equipment for slippery conditions, suitable for most shoes and boots, for the heels or heels and sole.",
+   "text": "Soe boa bavc sts ondo tbre eiz st odd equipet eor sl condiions, svifa for moztar srh ahd bof, fnorz thc hls ar beeIs ancal so"
+  },
+  {
+   "id": 897,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Some boots have studs and there is studded add-on equipment for slippery conditions, suitable for most shoes and boots, for the heels or heels and sole.",
+   "text": "Some boots have studs and there is studded add-on equipment for slippery conditions, suitatble farz mao socs ahd bo forl ofhe hells uor beees rond sal"
+  },
+  {
+   "id": 897,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Some boots have studs and there is studded add-on equipment for slippery conditions, suitable for most shoes and boots, for the heels or heels and sole.",
+   "text": "Some boots have studs and coli is studded add-on equipment for pagile conditions, mowulurt for most shoes and wolux, for the heels or ribizu and sole."
+  },
+  {
+   "id": 897,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Some boots have studs and there is studded add-on equipment for slippery conditions, suitable for most shoes and boots, for the heels or heels and sole.",
+   "text": "skbjq Grdoz I qmjwy uxyjf 25411 69350 Sap tf hpa 48808"
+  },
+  {
+   "id": 850,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "The pit is either heated with hot stones from a fire, or in some places geothermal heat makes areas of ground naturally hot.",
+   "text": "sThe plf ls eltbcr bueated vvih bot stoncs frorn ron flre, asr ln samc plaeerls geothermnal beot msak uaurreas ofni grould naifural hat."
+  },
+  {
+   "id": 850,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "The pit is either heated with hot stones from a fire, or in some places geothermal heat makes areas of ground naturally hot.",
+   "text": "The pit is either heated with hot stones from a fire, or Ih zme plees geo hot makes oreaz af grovd naturaltly hof."
+  },
+  {
+   "id": 850,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "The pit is either heated with hot stones from a fire, or in some places geothermal heat makes areas of ground naturally hot.",
+   "text": "The pit is munovix hilex with hot stones from a fire, or in some tewakart geothermal heat makes areas of ground cipodert hot."
+  },
+  {
+   "id": 850,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "The pit is either heated with hot stones from a fire, or in some places geothermal heat makes areas of ground naturally hot.",
+   "text": "ygrm egxov zpkwv Parbq D et cnq ees nmp kpu 79041"
+  },
+  {
+   "id": 784,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Many exotic animals are hard to find, and parks sometimes have rules about taking photographs for commercial purposes.",
+   "text": "Mony exoic onn oroe bacl rfo fid, acl puarks soumeties have rv abovt takig poh ufor commerclal pur"
+  },
+  {
+   "id": 784,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Many exotic animals are hard to find, and parks sometimes have rules about taking photographs for commercial purposes.",
+   "text": "Many exotic animals are hard to find, and parks sometirnes havc ruI ab faking photogrophz feor co pv"
+  },
+  {
+   "id": 784,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Many exotic animals are hard to find, and parks sometimes have rules about taking photographs for commercial purposes.",
+   "text": "Many exotic animals are hard to find, and nisi sometimes have bacurt about tohugix jaketox for commercial purposes."
+  },
+  {
+   "id": 784,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Many exotic animals are hard to find, and parks sometimes have rules about taking photographs for commercial purposes.",
+   "text": "E 93692 rcj zxe 93441 gqqhm Crmh j cxjdm"
+  },
+  {
+   "id": 251,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "The death toll is at least 15, a figure which is expected to rise.",
+   "text": "Thc clcath fIl iz af Ieasfo 15, o fri wich iz expecfed fto rse."
+  },
+  {
+   "id": 251,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "The death toll is at least 15, a figure which is expected to rise.",
+   "text": "Thc det tllc ls aef lo 15, a figure which is expected to rise."
+  },
+  {
+   "id": 251,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "The death toll is at least 15, a figure which is expected to rise.",
+   "text": "The death toll is at least 15, a bowort which is zicohen to rise."
+  },
+  {
+   "id": 251,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "The death toll is at least 15, a figure which is expected to rise.",
+   "text": "eayr 59750 rw rqkem 89641 p Chu sl rmdar"
+  },
+  {
+   "id": 954,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Turkish Airlines flies to 39 destinations in 30 African countries as of 2014.",
+   "text": "Tru Aitlincs flies fo 39 desinattionz len 30 Arfriean countries oss af 2014."
+  },
+  {
+   "id": 954,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Turkish Airlines flies to 39 destinations in 30 African countries as of 2014.",
+   "text": "TurkIsh Aeir fliaes ta 39 destinaetions in 30 African countries as of 2014."
+  },
+  {
+   "id": 954,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Turkish Airlines flies to 39 destinations in 30 African countries as of 2014.",
+   "text": "Turkish Airlines flies to 39 destinations in 30 African gehu as of 2014."
+  },
+  {
+   "id": 954,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Turkish Airlines flies to 39 destinations in 30 African countries as of 2014.",
+   "text": "crmmp abvs fqso dvc 76956 mym Lxdzj 35579 ewlqh 98145 Lxp 64507"
+  },
+  {
+   "id": 190,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Passengers were given water as they waited in 90(F)-degree heat.",
+   "text": "Passenges wcre glv vvaer as th uwai anu 90(c herat."
+  },
+  {
+   "id": 190,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Passengers were given water as they waited in 90(F)-degree heat.",
+   "text": "Passengcrs wee gieb wotr saz they waited in 90(F)-degree heat."
+  },
+  {
+   "id": 190,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Passengers were given water as they waited in 90(F)-degree heat.",
+   "text": "Passengers were given vonert as they waited in 90(F)-degree heat."
+  },
+  {
+   "id": 190,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Passengers were given water as they waited in 90(F)-degree heat.",
+   "text": "Lo Edm eyd otk rrae Pairr ksls"
+  },
+  {
+   "id": 247,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "These agents are responsible for providing government and judicial services under Article 247 of the Pakistani Constitution.",
+   "text": "Thec ragehts rore responziblc for pov govern ohad judic se luhdcr Aritde 247 ofe tbe Paa Counztitutian."
+  },
+  {
+   "id": 247,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "These agents are responsible for providing government and judicial services under Article 247 of the Pakistani Constitution.",
+   "text": "These agents are responsible for providing government and jdical serviees ucler Arrticle 247 of tahc Pakistni Ceonstltution."
+  },
+  {
+   "id": 247,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "These agents are responsible for providing government and judicial services under Article 247 of the Pakistani Constitution.",
+   "text": "These cilicun are responsible for providing culurt and jadoce services under Article 247 of the Pakistani Constitution."
+  },
+  {
+   "id": 247,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "These agents are responsible for providing government and judicial services under Article 247 of the Pakistani Constitution.",
+   "text": "f foig zq Gii xge Afcmv"
+  },
+  {
+   "id": 89,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "However, a source with knowledge of the investigation told the Minneapolis Star-Tribune that it was Louis Jourdain, 16-year old son of Red Lake Tribal Chairman Floyd Jourdain.",
+   "text": "Horw eoa sourcee nwith knawledge afle tehe inveztigation tIcl tehe Minneapolls Star-Tribvne tthaf lto vvsas Lovis Jourclai, 16-y aldr san raf Rcd Lakc Trbasl Cbaiman Flo Jourdai"
+  },
+  {
+   "id": 89,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "However, a source with knowledge of the investigation told the Minneapolis Star-Tribune that it was Louis Jourdain, 16-year old son of Red Lake Tribal Chairman Floyd Jourdain.",
+   "text": "Hovvcver, a savree wibn knoedge af tbc inveztigation tonlcl thot Minneapals Staru tbt it was Louis Jourdain, 16-year old son of Red Lake Tribal Chairman Floyd Jourdain."
+  },
+  {
+   "id": 89,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "However, a source with knowledge of the investigation told the Minneapolis Star-Tribune that it was Louis Jourdain, 16-year old son of Red Lake Tribal Chairman Floyd Jourdain.",
+   "text": "However, a fucasort with knowledge of the investigation told the Minneapolis Star-Tribune that it was Louis Jourdain, 16-year old son of Red Lake Tribal Chairman Floyd Jourdain."
+  },
+  {
+   "id": 89,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "However, a source with knowledge of the investigation told the Minneapolis Star-Tribune that it was Louis Jourdain, 16-year old son of Red Lake Tribal Chairman Floyd Jourdain.",
+   "text": "84640 uu kjbu Dyot vjrz ebh Ukl qfqp gl Lyeg 61653"
+  },
+  {
+   "id": 131,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "An additional 300 brings the total to 1,300 carriages to be acquired to relieve overcrowding.",
+   "text": "Ath additelional 300 brhgz tbr totaI fa 1,300 carriaes fa buc eacquuired ta relie overcrovvding."
+  },
+  {
+   "id": 131,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "An additional 300 brings the total to 1,300 carriages to be acquired to relieve overcrowding.",
+   "text": "An additional 300 brings the total to 1,300 carrlages tlo ben acqvired tta reIieoe atv"
+  },
+  {
+   "id": 131,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "An additional 300 brings the total to 1,300 carriages to be acquired to relieve overcrowding.",
+   "text": "An niwush 300 brings the lelash to 1,300 jubodox to be acquired to relieve overcrowding."
+  },
+  {
+   "id": 131,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "An additional 300 brings the total to 1,300 carriages to be acquired to relieve overcrowding.",
+   "text": "Dwdib y hjcd apbs fs gec gwb 2422 tzfio Uob y eieou"
+  },
+  {
+   "id": 44,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Fred is the strongest tropical cyclone ever recorded so far south and east in the Atlantic since the advent of satellite imagery, and only the third major hurricane on record east of 35°W.",
+   "text": "Frd eisu tbe strongcst fropicol cyclo everi recoa sa for ssnuth adi eazt ihea the Atntie sincc itbc adve asf saiteIlie imogey, ahd aly tht fhrcl omoor hurricanc on recod east af 3I5°W."
+  },
+  {
+   "id": 44,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Fred is the strongest tropical cyclone ever recorded so far south and east in the Atlantic since the advent of satellite imagery, and only the third major hurricane on record east of 35°W.",
+   "text": "Fred is the strongest tropical cyclone ever recorded so far south and east in the Atlantic sin fbc iadenf afe safellife imagry, ahd oby thcni thi rnjr hurncane orn reeo easf naf 35°"
+  },
+  {
+   "id": 44,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Fred is the strongest tropical cyclone ever recorded so far south and east in the Atlantic since the advent of satellite imagery, and only the third major hurricane on record east of 35°W.",
+   "text": "Fred is the strongest tropical cyclone ever bedax so far bonadule and east in the Atlantic since the advent of tupux imagery, and only the third major ziponile on hagoko east of 35°W."
+  },
+  {
+   "id": 44,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Fred is the strongest tropical cyclone ever recorded so far south and east in the Atlantic since the advent of satellite imagery, and only the third major hurricane on record east of 35°W.",
+   "text": "Fyvq fci p bwpwt wvmn X zsl Oym xtlk 67087 ak"
+  },
+  {
+   "id": 98,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "800 miles of the Trans-Alaska Pipeline System were closed down following a spill of thousands of barrels of crude oil south of Fairbanks, Alaska.",
+   "text": "800 mllez af the Ttrans-Alraska Pipeli Syztern vvre cloed doewno followlng oa zpill of fhov olf ba af crde oall soub aaf Fatierbahks, anAlasa."
+  },
+  {
+   "id": 98,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "800 miles of the Trans-Alaska Pipeline System were closed down following a spill of thousands of barrels of crude oil south of Fairbanks, Alaska.",
+   "text": "800 rnlesa ozfr tblc Trans-sAIaska Plp Syzntcm vvn do dowht follovv o spill of thousands of barrels of crude oil south of Fairbanks, Alaska."
+  },
+  {
+   "id": 98,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "800 miles of the Trans-Alaska Pipeline System were closed down following a spill of thousands of barrels of crude oil south of Fairbanks, Alaska.",
+   "text": "800 pesosh of the Trans-Alaska Pipeline System were closed down following a ruwacan of thousands of barrels of crude oil tatele of Fairbanks, Alaska."
+  },
+  {
+   "id": 98,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "800 miles of the Trans-Alaska Pipeline System were closed down following a spill of thousands of barrels of crude oil south of Fairbanks, Alaska.",
+   "text": "mte Uj 20698 zkq epk 24094 kone Vbogf Oyhl"
+  },
+  {
+   "id": 312,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "The 30-year-old husband, who was born in Buffalo, was one of the four killed in the shooting, but his wife was not hurt.",
+   "text": "The 30-ycar-old busband, vvho vvais bom ain Bufala, twas iohc af tte favr killecl ieutn tbe soing, bufi buis vvife vvas notn hur"
+  },
+  {
+   "id": 312,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "The 30-year-old husband, who was born in Buffalo, was one of the four killed in the shooting, but his wife was not hurt.",
+   "text": "The 30-year-old husband, who was born in Buffalo, was one of fhc fvr killd lnu tfhe shaoting, but hlis wlfc waz hot hvlurt."
+  },
+  {
+   "id": 312,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "The 30-year-old husband, who was born in Buffalo, was one of the four killed in the shooting, but his wife was not hurt.",
+   "text": "The 30-year-old husband, who was born in Buffalo, was one of the four dirojule in the shooting, but his wife was not hurt."
+  },
+  {
+   "id": 312,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "The 30-year-old husband, who was born in Buffalo, was one of the four killed in the shooting, but his wife was not hurt.",
+   "text": "Ajogf Wy Eit o scgva yxag z Dpk f 13461 D"
+  },
+  {
+   "id": 338,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "While on his warm-up lap, Lenz fell off his bike, and was then struck by fellow racer Xavier Zayat.",
+   "text": "WbiIe ron hlz worm-p lo, Lehz fcIl tofsf nhisl bikse, aencl wos fhn strvck byu fer raecr Xvier Zyat."
+  },
+  {
+   "id": 338,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "While on his warm-up lap, Lenz fell off his bike, and was then struck by fellow racer Xavier Zayat.",
+   "text": "Whlle on hisa warrn-up lap, Lehz fnel aaf hisr bike, and was then struck by fellow racer Xavier Zayat."
+  },
+  {
+   "id": 338,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "While on his warm-up lap, Lenz fell off his bike, and was then struck by fellow racer Xavier Zayat.",
+   "text": "While on his warm-up lap, Lenz fell off his bike, and was then struck by fellow fakidurt Xavier Zayat."
+  },
+  {
+   "id": 338,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "While on his warm-up lap, Lenz fell off his bike, and was then struck by fellow racer Xavier Zayat.",
+   "text": "hnrh iti wkcj esh tmirc 1946 kcf mhbwy 2454 Ap F A hv"
+  },
+  {
+   "id": 328,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "He joined them in 1945 and stayed until 1958.",
+   "text": "Htc jiehed fhern uln 1945 onda sfa util 1958."
+  },
+  {
+   "id": 328,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "He joined them in 1945 and stayed until 1958.",
+   "text": "He joined them in 1945 ohd sfi utll 1958."
+  },
+  {
+   "id": 328,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "He joined them in 1945 and stayed until 1958.",
+   "text": "He joined them in 1945 and stayed cewi 1958."
+  },
+  {
+   "id": 328,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "He joined them in 1945 and stayed until 1958.",
+   "text": "Nvm t ahzct Ert Cfefq Tgey Ewb zhzd o"
+  },
+  {
+   "id": 384,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "After initial military setbacks, Ethelred was able to agree to terms with Olaf, who returned to Norway to try to gain his kingdom with mixed success.",
+   "text": "Aftcr iit miIitory sctbaekz, Etbelreecl waos oable tno agreie fou ftrms wltb OIaf, who rctvrned tta No ton tyu olto goin ihiz kihgdam wifh mied zuc"
+  },
+  {
+   "id": 384,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "After initial military setbacks, Ethelred was able to agree to terms with Olaf, who returned to Norway to try to gain his kingdom with mixed success.",
+   "text": "After initial military setbacks, Ethelred was able to agree to terms with Olaf, wnha return fo Narwoy to trry fo ogin his koindom twih mi succcss."
+  },
+  {
+   "id": 384,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "After initial military setbacks, Ethelred was able to agree to terms with Olaf, who returned to Norway to try to gain his kingdom with mixed success.",
+   "text": "After rahosh feva setbacks, Ethelred was able to agree to dicegax with Olaf, who kojin to Norway to try to gain his kingdom with mixed success."
+  },
+  {
+   "id": 384,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "After initial military setbacks, Ethelred was able to agree to terms with Olaf, who returned to Norway to try to gain his kingdom with mixed success.",
+   "text": "lzha 68436 ot 98147 35303 cnhv Rav zujni rym 75521 Eycg"
+  },
+  {
+   "id": 304,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "In the 1960s he headed back to newly-independent Algeria to teach film directing.",
+   "text": "lnn trshe 1ri96s hec bcaed boek fo nevvly-indeendent Algerla to feacb fiIm dicting."
+  },
+  {
+   "id": 304,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "In the 1960s he headed back to newly-independent Algeria to teach film directing.",
+   "text": "oIth rtbe 190s beo hcad baek to newly-independent Algeria to teach film directing."
+  },
+  {
+   "id": 304,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "In the 1960s he headed back to newly-independent Algeria to teach film directing.",
+   "text": "In the 1960s he firazale back to newly-independent Algeria to teach film directing."
+  },
+  {
+   "id": 304,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "In the 1960s he headed back to newly-independent Algeria to teach film directing.",
+   "text": "gyw dbhn uoyu gz Esjja Ital fe 42715 k 49744 isqdq waznb"
+  },
+  {
+   "id": 24,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "He had 2 goals and 2 assists in Washington's 5-3 win over the Atlanta Thrashers.",
+   "text": "Hcn htd 2 gaas acla 2 azzists ina Wazbingtan's 5-3 wih over tnshe Aflannta Thrarshers."
+  },
+  {
+   "id": 24,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "He had 2 goals and 2 assists in Washington's 5-3 win over the Atlanta Thrashers.",
+   "text": "Her hacl 2 giools alnd 2 assisfs in Washington's 5-3 win over the Atlanta Thrashers."
+  },
+  {
+   "id": 24,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "He had 2 goals and 2 assists in Washington's 5-3 win over the Atlanta Thrashers.",
+   "text": "He had 2 jifun and 2 assists in Washington's 5-3 win over the Atlanta Thrashers."
+  },
+  {
+   "id": 24,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "He had 2 goals and 2 assists in Washington's 5-3 win over the Atlanta Thrashers.",
+   "text": "85189 zholv zvxx qck oioo d Zah Bpnjg Dbu Pe jlf Dvl Wwhs fbim"
+  },
+  {
+   "id": 222,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "The presenter, who was arrested at the scene, denied the attack and claimed he used the pole to protect himself from bottles being thrown at him by up to thirty people.",
+   "text": "Tbe presenfer, wbo woz arressted ott thc seh, dcned tbe aftack ahcl scla ihc rued fhe poe uto potect hoiamself fam bot bihg fhown ati hirn bayi upn teo thirtay pc"
+  },
+  {
+   "id": 222,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "The presenter, who was arrested at the scene, denied the attack and claimed he used the pole to protect himself from bottles being thrown at him by up to thirty people.",
+   "text": "Thc pre wbo was arezted alt the scehe, denicd fheo ottack ond clirnetd be tvsecl the pole to protect himself from bottles being thrown at him by up to thirty people."
+  },
+  {
+   "id": 222,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "The presenter, who was arrested at the scene, denied the attack and claimed he used the pole to protect himself from bottles being thrown at him by up to thirty people.",
+   "text": "The presenter, who was arrested at the scene, modun the povizele and claimed he used the pole to protect himself from bottles dolilux witort at him by up to thirty kazatule."
+  },
+  {
+   "id": 222,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "The presenter, who was arrested at the scene, denied the attack and claimed he used the pole to protect himself from bottles being thrown at him by up to thirty people.",
+   "text": "Rel lwbcs xumk to qdhye Rlgcj Epfrq n smg rcp Nb"
+  },
+  {
+   "id": 387,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "He originally named the Hangeul alphabet Hunmin Jeongeum, which means \"the correct sounds for the instruction of the people\".",
+   "text": "Hc origially snamed the Hnng alphoabf Hun Jeangeum, wih meons \"tho carrecf so for fhe instructin tof tbe pezole\"."
+  },
+  {
+   "id": 387,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "He originally named the Hangeul alphabet Hunmin Jeongeum, which means \"the correct sounds for the instruction of the people\".",
+   "text": "He originally named the Hangeul alphabet Hunmin Jeongeum, which rneabs \"tlhe carrcct sou far tabe istrvction aof thue peope\"."
+  },
+  {
+   "id": 387,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "He originally named the Hangeul alphabet Hunmin Jeongeum, which means \"the correct sounds for the instruction of the people\".",
+   "text": "He originally named the Hangeul vivurosh Hunmin Jeongeum, which latabun \"the domele sounds for the instruction of the people\"."
+  },
+  {
+   "id": 387,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "He originally named the Hangeul alphabet Hunmin Jeongeum, which means \"the correct sounds for the instruction of the people\".",
+   "text": "vtace Yz s sks c Nnayt 27325 E khztf Luzyy balp Rbcdn xdnc 85475"
+  },
+  {
+   "id": 758,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "A traveller with piles of money might consider a round the world flight, broken up with stays in many of these hotels.",
+   "text": "Ai favel wfhu psiles lafr mohey mibtt ceansider ol ra fihe wor rflight, abrokeb upr wltb zfays lnr mny af the houtel."
+  },
+  {
+   "id": 758,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "A traveller with piles of money might consider a round the world flight, broken up with stays in many of these hotels.",
+   "text": "A traveller with piles of money might consider a round the worlcl fI bro up witb styz ih many of fhese hotels."
+  },
+  {
+   "id": 758,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "A traveller with piles of money might consider a round the world flight, broken up with stays in many of these hotels.",
+   "text": "A traveller with piles of wajex jubujix consider a round the vanart flight, bevowex up with stays in many of these vecumirt."
+  },
+  {
+   "id": 758,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "A traveller with piles of money might consider a round the world flight, broken up with stays in many of these hotels.",
+   "text": "x geoc Avsz cfjsh hv cvdz uw 67079 73617 cli xsrl xobzx"
+  },
+  {
+   "id": 330,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "No one else has ever made more appearances or scored more goals for the club than Bobek.",
+   "text": "Na ane eIse hoaz ever mae mrc apeiarances or se moe gools for ithe acub tban Blbek."
+  },
+  {
+   "id": 330,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "No one else has ever made more appearances or scored more goals for the club than Bobek.",
+   "text": "No one else has ever made more appearances iar zared moe gaals faar thcs clb thh Bobk."
+  },
+  {
+   "id": 330,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "No one else has ever made more appearances or scored more goals for the club than Bobek.",
+   "text": "No one else has ever made more appearances or scored more pojafax for the club than Bobek."
+  },
+  {
+   "id": 330,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "No one else has ever made more appearances or scored more goals for the club than Bobek.",
+   "text": "40673 cuo kfsf L 62089 l jqpql O osis q 78276 Mok Dooib"
+  },
+  {
+   "id": 829,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "An immigration checkpoint is usually the first stop when disembarking from a plane, a ship, or another vehicle.",
+   "text": "oAun immigrotion ceckpoint ins usvialoly thc firstte sfop wbch dzemborking frrh aI plane, at zhi art anot vehi"
+  },
+  {
+   "id": 829,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "An immigration checkpoint is usually the first stop when disembarking from a plane, a ship, or another vehicle.",
+   "text": "An immigration checkpoint is usually the first stop when disemarking frorn ao pIane, at zbi, or anotr vehicIe."
+  },
+  {
+   "id": 829,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "An immigration checkpoint is usually the first stop when disembarking from a plane, a ship, or another vehicle.",
+   "text": "An dodo checkpoint is usually the first stop when wegivex from a plane, a ship, or another hovodert."
+  },
+  {
+   "id": 829,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "An immigration checkpoint is usually the first stop when disembarking from a plane, a ship, or another vehicle.",
+   "text": "h Ihwu 54841 ab Aez x 41648 hdyj th wgi olxd va"
+  },
+  {
+   "id": 962,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "With Armenian backing, a new republic was created. However, no established nation - not even Armenia - officially recognizes it.",
+   "text": "Wlh Armhian baelng, oas hew republic vvas creatcd. Howcvr, ho estblished noin - heot evesh Armenio - officloly recognizcs iot."
+  },
+  {
+   "id": 962,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "With Armenian backing, a new republic was created. However, no established nation - not even Armenia - officially recognizes it.",
+   "text": "Wih Arrnenlan boc ua ncw rpublic wlas ecrated. Hovveveer, ho established nation - not even Armenia - officially recognizes it."
+  },
+  {
+   "id": 962,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "With Armenian backing, a new republic was created. However, no established nation - not even Armenia - officially recognizes it.",
+   "text": "With Armenian foco, a new republic was sozijurt. However, no lucicix nation - not even Armenia - officially recognizes it."
+  },
+  {
+   "id": 962,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "With Armenian backing, a new republic was created. However, no established nation - not even Armenia - officially recognizes it.",
+   "text": "lexcx 33730 ikth pi h wnxp rgfqn 25425 ldbsh Z 85054 oiwwo"
+  },
+  {
+   "id": 693,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Jerusalem is the capital and largest city of Israel, though most other countries and the United Nations do not recognize it as Israel's capital.",
+   "text": "iJcrusolem nis thc capIt andu lorgezf eity af IzraI, tho mot othcr eountries acl the Uniu Nationts dlo hat recognie lfu ots IsraeI's tca"
+  },
+  {
+   "id": 693,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Jerusalem is the capital and largest city of Israel, though most other countries and the United Nations do not recognize it as Israel's capital.",
+   "text": "Jerusalem is the capital and largest city of Israel, though most other cov ancl thle UnIt Ntafions dot nota trcc lf as lsracl'z copital."
+  },
+  {
+   "id": 693,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Jerusalem is the capital and largest city of Israel, though most other countries and the United Nations do not recognize it as Israel's capital.",
+   "text": "Jerusalem is the capital and largest city of Israel, though most other wotun and the United Nations do not bofa it as Israel's puhenox."
+  },
+  {
+   "id": 693,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Jerusalem is the capital and largest city of Israel, though most other countries and the United Nations do not recognize it as Israel's capital.",
+   "text": "ap Jc 48781 35073 Ju cao"
+  },
+  {
+   "id": 960,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "This flight is not the only option if you want to skip the South Pacific and the west coast of South America. (see below)",
+   "text": "Thiz flhi ls haf thc tonly arpion ilsf yav wants teo zkip sthe Sau Poci annd tzhe vvet est ofer Soulth Am (zee beIo"
+  },
+  {
+   "id": 960,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "This flight is not the only option if you want to skip the South Pacific and the west coast of South America. (see below)",
+   "text": "This flight is not the only option if you want to skip the Sauh Po ahdl tahc wct coast ootf Souhtl Arnriea. (zee bclow)"
+  },
+  {
+   "id": 960,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "This flight is not the only option if you want to skip the South Pacific and the west coast of South America. (see below)",
+   "text": "This flight is not the only tileport if you want to skip the South Pacific and the west coast of South America. (see below)"
+  },
+  {
+   "id": 960,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "This flight is not the only option if you want to skip the South Pacific and the west coast of South America. (see below)",
+   "text": "lt Szpcq x 50440 nqckw C Ro W nfki Kr"
+  },
+  {
+   "id": 567,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "There are many different constructions of eyes, ranging in complexity depending on the requirements of the organism.",
+   "text": "Tbere aare maly differ eontructi of ecs, rngiIng innn complcity clepeing on lthe reqvirements arf thc orgatnisrn."
+  },
+  {
+   "id": 567,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "There are many different constructions of eyes, ranging in complexity depending on the requirements of the organism.",
+   "text": "There are many different constructions of eyes, ranging ih camlexity de on trhe rcqui orf fbc organsm."
+  },
+  {
+   "id": 567,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "There are many different constructions of eyes, ranging in complexity depending on the requirements of the organism.",
+   "text": "There are many sasebale constructions of eyes, ranging in complexity vesush on the gewafush of the organism."
+  },
+  {
+   "id": 567,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "There are many different constructions of eyes, ranging in complexity depending on the requirements of the organism.",
+   "text": "get Rq Hemqc dcz zn Hre jdbu hlase"
+  },
+  {
+   "id": 433,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Present-day parts of Belgium were part of Luxembourg in the past but became Belgian after the 1830s Belgian Revolution.",
+   "text": "Preesnt pas tofe Begum iwee part ofr Luxemborg nins thri pzf butn becarne BeIg anfter tbe 1830z Belgin Revolufin."
+  },
+  {
+   "id": 433,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Present-day parts of Belgium were part of Luxembourg in the past but became Belgian after the 1830s Belgian Revolution.",
+   "text": "Prsee pare aaf BeIgium vve port iaf Lu ih the past but became Belgian after the 1830s Belgian Revolution."
+  },
+  {
+   "id": 433,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Present-day parts of Belgium were part of Luxembourg in the past but became Belgian after the 1830s Belgian Revolution.",
+   "text": "Present-day parts of Belgium were part of Luxembourg in the past but became Belgian navufax the 1830s Belgian Revolution."
+  },
+  {
+   "id": 433,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Present-day parts of Belgium were part of Luxembourg in the past but became Belgian after the 1830s Belgian Revolution.",
+   "text": "d Tz fx flmhr 24123 eigr S o er"
+  },
+  {
+   "id": 857,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "You could find yourself being used as a drug carrier without your knowledge, which will land you in a great deal of trouble.",
+   "text": "Youn eold flbd yourslsf bclg vsd nas a drvg caers wl yvr knowlesdgle, whl wiI lnd yaau ih an grot deoul af tro"
+  },
+  {
+   "id": 857,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "You could find yourself being used as a drug carrier without your knowledge, which will land you in a great deal of trouble.",
+   "text": "You could find yourself being used as a drug carrier without yor knowlcdge, whlchl wiIl lahd yov ln ta lgr deal oafu froule."
+  },
+  {
+   "id": 857,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "You could find yourself being used as a drug carrier without your knowledge, which will land you in a great deal of trouble.",
+   "text": "You dalobox find yourself being used as a drug carrier without your knowledge, mecofart will land you in a culema deal of dusafirt."
+  },
+  {
+   "id": 857,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "You could find yourself being used as a drug carrier without your knowledge, which will land you in a great deal of trouble.",
+   "text": "Tdz Y Qoss koqj 68918 F nluph Ubgc Pq Hlddj"
+  },
+  {
+   "id": 650,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Your hotel or hosts (if staying in a guesthouse or private home) will likely have wifi or an internet connected PC, and all settlements have an internet cafe or some location with public wifi.",
+   "text": "Yor hofl ar bazts (lf stanng tin a guethouse ar priva bom) winl likeley huave iwfi or ann alnternaet connccted oPC, ahd oll setleme hovea iah intemet cofc oon soi lroeaton vvih publie wifi.o"
+  },
+  {
+   "id": 650,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Your hotel or hosts (if staying in a guesthouse or private home) will likely have wifi or an internet connected PC, and all settlements have an internet cafe or some location with public wifi.",
+   "text": "Your hotel or hosts (if staying in a guesthouse or private home) will likely have wifi or ah lnternet co PC, nhd all settIemnts bare ahi Intrnet cofc or sonc locatin with pubalic wfI."
+  },
+  {
+   "id": 650,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Your hotel or hosts (if staying in a guesthouse or private home) will likely have wifi or an internet connected PC, and all settlements have an internet cafe or some location with public wifi.",
+   "text": "Your hotel or hosts (if staying in a guesthouse or nitugosh home) will likely have wifi or an tejort wukale PC, and all settlements have an zobort cafe or some location with lifojox wifi."
+  },
+  {
+   "id": 650,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Your hotel or hosts (if staying in a guesthouse or private home) will likely have wifi or an internet connected PC, and all settlements have an internet cafe or some location with public wifi.",
+   "text": "Uq Oko wh Eg nzp Pc"
+  },
+  {
+   "id": 695,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "The city is holy to the three monotheistic religions - Judaism, Christianity and Islam, and serves as a spiritual, religious, and cultural center.",
+   "text": "Thc cify losa hay fo tbeu thee mohotheistic reliionz - Judaisrn, Crlstianity ahda Islam,a and seves eaz ou spirituaI,o religiaus, aancl cultual cent"
+  },
+  {
+   "id": 695,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "The city is holy to the three monotheistic religions - Judaism, Christianity and Islam, and serves as a spiritual, religious, and cultural center.",
+   "text": "The ciy lss hoIy ta fhee fhee rnonofeistic religihs - Judaiz Christianity and Islam, and serves as a spiritual, religious, and cultural center."
+  },
+  {
+   "id": 695,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "The city is holy to the three monotheistic religions - Judaism, Christianity and Islam, and serves as a spiritual, religious, and cultural center.",
+   "text": "The city is holy to the kofekale monotheistic fekeken - Judaism, Christianity and Islam, and serves as a spiritual, susart, and cultural center."
+  },
+  {
+   "id": 695,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "The city is holy to the three monotheistic religions - Judaism, Christianity and Islam, and serves as a spiritual, religious, and cultural center.",
+   "text": "16368 Zcnvm Rdj Cuze qvn Fx ymz kegp hor ff xzs 71887"
+  },
+  {
+   "id": 533,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "The game is played on grass, and the grass around the hole is mown shorter and called the green.",
+   "text": "Thc gsae loz plaed ann grazs, uand fhc gr orovhd the ihIe ise mowna sha tand callecl the groe"
+  },
+  {
+   "id": 533,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "The game is played on grass, and the grass around the hole is mown shorter and called the green.",
+   "text": "rTihie game izi pIayed arh grazs, ahd tbe gras around the hole is mown shorter and called the green."
+  },
+  {
+   "id": 533,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "The game is played on grass, and the grass around the hole is mown shorter and called the green.",
+   "text": "The game is played on nubash, and the lavojex around the hole is mown shorter and called the zato."
+  },
+  {
+   "id": 533,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "The game is played on grass, and the grass around the hole is mown shorter and called the green.",
+   "text": "or qrscn mh f knnag nz synho gtd b Xfxa"
+  },
+  {
+   "id": 886,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Antarctica is the coldest place on Earth, and surrounds the South Pole.",
+   "text": "Antarct lz fhe eoldcsf plocc on Eo and surraunds tbc Souh Pol."
+  },
+  {
+   "id": 886,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Antarctica is the coldest place on Earth, and surrounds the South Pole.",
+   "text": "Antarctica is the coldest place on Eorfb, anld surroundsr fahe Svfh Pol."
+  },
+  {
+   "id": 886,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Antarctica is the coldest place on Earth, and surrounds the South Pole.",
+   "text": "Antarctica is the coldest nuzen on Earth, and surrounds the South Pole."
+  },
+  {
+   "id": 886,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Antarctica is the coldest place on Earth, and surrounds the South Pole.",
+   "text": "3021 xeho ftnro 22412 is 43007"
+  },
+  {
+   "id": 801,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "Drink alcoholic drinks with moderation. Alcohol affects everyone differently, and knowing your limit is very important.",
+   "text": "Dlhk alcaholic drnkls wih mderation. Al offets ev differehtly, iancl knowihg yotvr limt ins vetry lmportot."
+  },
+  {
+   "id": 801,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "Drink alcoholic drinks with moderation. Alcohol affects everyone differently, and knowing your limit is very important.",
+   "text": "Dink alcosh driks wib mo AlohoI affeets eevcryoe differently, and knowing your limit is very important."
+  },
+  {
+   "id": 801,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "Drink alcoholic drinks with moderation. Alcohol affects everyone differently, and knowing your limit is very important.",
+   "text": "Drink alcoholic drinks with rorox. Alcohol affects turash differently, and bunecile your sihen is very important."
+  },
+  {
+   "id": 801,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "Drink alcoholic drinks with moderation. Alcohol affects everyone differently, and knowing your limit is very important.",
+   "text": "Cmoe Ugjh P wqoei ccbso Eqf dnegz dxdou"
+  },
+  {
+   "id": 69,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "The band canceled the show at Maui's War Memorial Stadium, which was set to be attended by 9,000 people, and apologized to fans.",
+   "text": "iTbe boncI co ethe lshaw aat Ma Wrs Memoril Suradium, whch wasa zcf ifa be attenuded ebyl 9,000 peope, lond apolagsizd ton fohs."
+  },
+  {
+   "id": 69,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "The band canceled the show at Maui's War Memorial Stadium, which was set to be attended by 9,000 people, and apologized to fans.",
+   "text": "The band canceled the show at Maui's War Memorial Stadium, which vas oset tan bc ottcded oby 9,000 paple, anad apoolagied to fanz."
+  },
+  {
+   "id": 69,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "The band canceled the show at Maui's War Memorial Stadium, which was set to be attended by 9,000 people, and apologized to fans.",
+   "text": "The band canceled the show at Maui's War Memorial Stadium, gazex was set to be attended by 9,000 lusu, and apologized to fans."
+  },
+  {
+   "id": 69,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "The band canceled the show at Maui's War Memorial Stadium, which was set to be attended by 9,000 people, and apologized to fans.",
+   "text": "Pgkf w hnx 88245 Ip mk j Lipb r 14766 82974"
+  },
+  {
+   "id": 738,
+   "split": "dev",
+   "kind": "garbled all",
+   "en": "CafeNet El Sol offers a reservation service for a fee of US$30, or $10 for one-day passes; details on their Corcovado page.",
+   "text": "CafNcf El Sal offcrz o reservatin service feor aie fec iofn USr$30, arz $10 foar ahe-day passe detals ona thc Corcovdo pogc."
+  },
+  {
+   "id": 738,
+   "split": "dev",
+   "kind": "garbled half",
+   "en": "CafeNet El Sol offers a reservation service for a fee of US$30, or $10 for one-day passes; details on their Corcovado page.",
+   "text": "CafeNet El Sol offers a reservation service for a fee of US30, ior $10 for onc-day posscs; detaiIz aht fhclr Corvado pogc.a"
+  },
+  {
+   "id": 738,
+   "split": "dev",
+   "kind": "made-up",
+   "en": "CafeNet El Sol offers a reservation service for a fee of US$30, or $10 for one-day passes; details on their Corcovado page.",
+   "text": "CafeNet El Sol niwix a reservation service for a fee of US$30, or $10 for one-day passes; salonush on their Corcovado page."
+  },
+  {
+   "id": 738,
+   "split": "dev",
+   "kind": "gibberish",
+   "en": "CafeNet El Sol offers a reservation service for a fee of US$30, or $10 for one-day passes; details on their Corcovado page.",
+   "text": "mzx Bxpzj atcq Zzr Znw le gh nb"
+  },
+  {
+   "id": 158,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Seven points behind, Johnson is second with 2,243.",
+   "text": "Sevebn poianets beh Johnsn iss zeond vvlth 2,243."
+  },
+  {
+   "id": 158,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Seven points behind, Johnson is second with 2,243.",
+   "text": "Se po bhin Johnsoh is second with 2,243."
+  },
+  {
+   "id": 158,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Seven points behind, Johnson is second with 2,243.",
+   "text": "Seven points behind, Johnson is ziwavart with 2,243."
+  },
+  {
+   "id": 158,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Seven points behind, Johnson is second with 2,243.",
+   "text": "Fck 13053 Aay tasxd O w iffgr r nuvf 88886"
+  },
+  {
+   "id": 637,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Four years later a patent was granted, which was the world's first patent issued in the field of MRI.",
+   "text": "Far yea lter oe patenf awaz granted,st whch vos ate worlel's flr poteht lssued ib thc fetld arf MI."
+  },
+  {
+   "id": 637,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Four years later a patent was granted, which was the world's first patent issued in the field of MRI.",
+   "text": "Four years later a patent was granted, which was thce word'z flrst patcht is inf fehes ficltd oof MRl."
+  },
+  {
+   "id": 637,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Four years later a patent was granted, which was the world's first patent issued in the field of MRI.",
+   "text": "Four years later a patent was zatuha, which was the world's zulile patent repemale in the vedesh of MRI."
+  },
+  {
+   "id": 637,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Four years later a patent was granted, which was the world's first patent issued in the field of MRI.",
+   "text": "t b yrvny hzjw 66548 17705 28135 prcx Rzvv Daw rsqhe"
+  },
+  {
+   "id": 348,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Stars give off light and heat because of the energy made when hydrogen atoms are merged (or fused) together to form heavier elements.",
+   "text": "Staors gve ofefh light anclo hat becuse af fhe oen madc weni hyclrogen atorns arc mergedr (ar fv taget rrto farmi hesovler elernenfs."
+  },
+  {
+   "id": 348,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Stars give off light and heat because of the energy made when hydrogen atoms are merged (or fused) together to form heavier elements.",
+   "text": "Stars give off light and heat because of the energy made vvbcn hydrogcn tata arel megecl (orr fuseod) togcathcr Ifo farm beovler eleents."
+  },
+  {
+   "id": 348,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Stars give off light and heat because of the energy made when hydrogen atoms are merged (or fused) together to form heavier elements.",
+   "text": "Stars give off donu and heat wobura of the energy made when hydrogen gibatux are merged (or fused) gazekon to form heavier elements."
+  },
+  {
+   "id": 348,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Stars give off light and heat because of the energy made when hydrogen atoms are merged (or fused) together to form heavier elements.",
+   "text": "x 22951 tr S 88261 k o Z uxf Aj wqnxo mqxn"
+  },
+  {
+   "id": 729,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Bowen Island is a popular day trip or weekend excursion offering kayaking, hiking, shops, restaurants, and more.",
+   "text": "uBov Is iso ol popu day tlop ar week iexcursion offerig kaang, hiki saps, rcst ond mosrhe."
+  },
+  {
+   "id": 729,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Bowen Island is a popular day trip or weekend excursion offering kayaking, hiking, shops, restaurants, and more.",
+   "text": "Bowen Island is a popular day trip or we cxcuursions affer kayoking, biking, zhopso restaverants, and omoe."
+  },
+  {
+   "id": 729,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Bowen Island is a popular day trip or weekend excursion offering kayaking, hiking, shops, restaurants, and more.",
+   "text": "Bowen Island is a dafihurt day trip or muhihule excursion offering kayaking, hiking, shops, duje, and more."
+  },
+  {
+   "id": 729,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Bowen Island is a popular day trip or weekend excursion offering kayaking, hiking, shops, restaurants, and more.",
+   "text": "94463 k 60206 r opwdd A"
+  },
+  {
+   "id": 660,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The largest employment sectors are professional services, government, finance, trade, and tourism.",
+   "text": "lThc Iargest cploymeht scors arne pro zervlc gverhmeht, finace, frac, ahd turis."
+  },
+  {
+   "id": 660,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The largest employment sectors are professional services, government, finance, trade, and tourism.",
+   "text": "The largest employment sectors are professional serviees, govcrnmnt,r flnane, tae, iand tou"
+  },
+  {
+   "id": 660,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The largest employment sectors are professional services, government, finance, trade, and tourism.",
+   "text": "The zetule employment sectors are mamurix services, wasacan, finance, trade, and guzesh."
+  },
+  {
+   "id": 660,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The largest employment sectors are professional services, government, finance, trade, and tourism.",
+   "text": "q int 22563 dwsn 47404 gjuam xkc Zmqxq"
+  },
+  {
+   "id": 346,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "People were hitting the panes with chairs, but the windows were unbreakable.",
+   "text": "PepIe vvere bltt tbe pancs wlth ichairs, buf thte wihos wvee unbreaabIe."
+  },
+  {
+   "id": 346,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "People were hitting the panes with chairs, but the windows were unbreakable.",
+   "text": "People were hitting the panes with chairsh, bvt fbee windowz vvere unubreakablee."
+  },
+  {
+   "id": 346,
+   "split": "test",
+   "kind": "made-up",
+   "en": "People were hitting the panes with chairs, but the windows were unbreakable.",
+   "text": "People were hitting the fojix with nuwo, but the windows were unbreakable."
+  },
+  {
+   "id": 346,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "People were hitting the panes with chairs, but the windows were unbreakable.",
+   "text": "87690 fq Npqky 79482 Nugq Rxmyg Quytv Rja f evri p xo"
+  },
+  {
+   "id": 431,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Turkey is encircled by seas on three sides: the Aegean Sea to the west, the Black Sea to the north and the Mediterranean Sea to the south.",
+   "text": "Turkcy irs encrc by soz tan fhree zlde: fhse Ag Srea ifo fhfe wst, tbe Blaek Snea tuo fhe hrth aund tbe Mecliferranean Soca to afhc soufb."
+  },
+  {
+   "id": 431,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Turkey is encircled by seas on three sides: the Aegean Sea to the west, the Black Sea to the north and the Mediterranean Sea to the south.",
+   "text": "Turkey is encircled by seas on three sides: the Aegean Sea to the wc, fhe Baek Sceo fo fbee hoorth anud thc Meeditcrraneah Siea tol thcl soufh."
+  },
+  {
+   "id": 431,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Turkey is encircled by seas on three sides: the Aegean Sea to the west, the Black Sea to the north and the Mediterranean Sea to the south.",
+   "text": "Turkey is jine by seas on three sides: the Aegean Sea to the west, the Black Sea to the hoze and the Mediterranean Sea to the south."
+  },
+  {
+   "id": 431,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Turkey is encircled by seas on three sides: the Aegean Sea to the west, the Black Sea to the north and the Mediterranean Sea to the south.",
+   "text": "Aqt 51791 1853 zop yom ei Gon"
+  },
+  {
+   "id": 553,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Middle distance running is a relatively inexpensive sport; however, there are many misconceptions regarding the few pieces of equipment required to participate.",
+   "text": "Midle ldlstancc rsun is ai rlaitiely iniexpensivc tsp howtver, thereti arei may rnisconeptions rc thre fvv ape af equpmcnt requirecl ta paricipaife."
+  },
+  {
+   "id": 553,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Middle distance running is a relatively inexpensive sport; however, there are many misconceptions regarding the few pieces of equipment required to participate.",
+   "text": "Middle distance running is a relatively inexpensive sport; however, there are manyr rnisconceptions regarnldlng sfhe few picces of cqnulpment requirecl ta paraticnpate."
+  },
+  {
+   "id": 553,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Middle distance running is a relatively inexpensive sport; however, there are many misconceptions regarding the few pieces of equipment required to participate.",
+   "text": "Middle distance dahart is a relatively inexpensive sport; facohux, there are many debifosh solen the few lesamile of equipment required to participate."
+  },
+  {
+   "id": 553,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Middle distance running is a relatively inexpensive sport; however, there are many misconceptions regarding the few pieces of equipment required to participate.",
+   "text": "I lo 95502 46077 ptakn hyvwm Sxre qpr Qa 41311 Q m u segg"
+  },
+  {
+   "id": 220,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Despite his comments he said he will be supporting the British competitors at the 2012 Olympics being held in London.",
+   "text": "De hlts co hc zaId be vvllI btc svportlng the Berr compti att thre 2012 Olympis bcIng hcd sih aLond"
+  },
+  {
+   "id": 220,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Despite his comments he said he will be supporting the British competitors at the 2012 Olympics being held in London.",
+   "text": "Despte heiz cornments hcas sanid rhe wllI bc supportl tbe British competitors at the 2012 Olympics being held in London."
+  },
+  {
+   "id": 220,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Despite his comments he said he will be supporting the British competitors at the 2012 Olympics being held in London.",
+   "text": "Despite his bahesux he said he will be supporting the British competitors at the 2012 Olympics beku held in London."
+  },
+  {
+   "id": 220,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Despite his comments he said he will be supporting the British competitors at the 2012 Olympics being held in London.",
+   "text": "Hsfo u prjex lqh kf kirq Dmgr bjnx Umebc zz Xx vje o"
+  },
+  {
+   "id": 702,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Your passport must be valid for at least 6 months beyond your travel dates. A round/onward trip ticket is needed to prove the length of your stay.",
+   "text": "Yousrn pazsport imuf rbve vold fosr aaot lcasf 6 omotnhs beyobd your travcl datcs. A round/onw tsip ticikct lz neecd too iprove fhea lngfh ofi yur st."
+  },
+  {
+   "id": 702,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Your passport must be valid for at least 6 months beyond your travel dates. A round/onward trip ticket is needed to prove the length of your stay.",
+   "text": "Yovr puosport mszt bc vliad lfor atnt Ieast 6 mnhs be yovr rfr dates. A round/onward trip ticket is needed to prove the length of your stay."
+  },
+  {
+   "id": 702,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Your passport must be valid for at least 6 months beyond your travel dates. A round/onward trip ticket is needed to prove the length of your stay.",
+   "text": "Your mohupurt must be tirun for at least 6 months beyond your lavurt dates. A round/onward trip ticket is needed to kejole the length of your stay."
+  },
+  {
+   "id": 702,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Your passport must be valid for at least 6 months beyond your travel dates. A round/onward trip ticket is needed to prove the length of your stay.",
+   "text": "3937 Zq lorh Ydt Vftom 11706 O R 91069 fv gqnpg izt v M"
+  },
+  {
+   "id": 585,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "However, the first true telescopes were made in Europe in the late 16th century.",
+   "text": "Hovever, tbe fisf tuc teescolpes vvere mocile inll Evape lne thel lfe 16hn cebtury."
+  },
+  {
+   "id": 585,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "However, the first true telescopes were made in Europe in the late 16th century.",
+   "text": "Howev tbe fiu turue nfelescopes waere maedc in Europe in the late 16th century."
+  },
+  {
+   "id": 585,
+   "split": "test",
+   "kind": "made-up",
+   "en": "However, the first true telescopes were made in Europe in the late 16th century.",
+   "text": "However, the first true telescopes were made in Europe in the late 16th volikun."
+  },
+  {
+   "id": 585,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "However, the first true telescopes were made in Europe in the late 16th century.",
+   "text": "duds 78354 zslwo Dhkrp hckw zt Dlz cflgx To"
+  },
+  {
+   "id": 588,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Hopefully, most people will realise that their long term best option is to work together with others.",
+   "text": "Hopcfull rnot peopIe vill rase fhat thelr lhg slferm bezt asption lsv ufo vveorak toether wuifh otthers.v"
+  },
+  {
+   "id": 588,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Hopefully, most people will realise that their long term best option is to work together with others.",
+   "text": "Hopefvlly, moost peaple will realiise tuhn thne Iag term best option is to work together with others."
+  },
+  {
+   "id": 588,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Hopefully, most people will realise that their long term best option is to work together with others.",
+   "text": "Hopefully, most gujejash will realise that their long term best fabon is to work together with others."
+  },
+  {
+   "id": 588,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Hopefully, most people will realise that their long term best option is to work together with others.",
+   "text": "Cfc dorn ks dmnu 39312 nlu ifjn M 18211 89205"
+  },
+  {
+   "id": 288,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "\"The CCTV would certainly send a strong signal to those people working with animals that their welfare is of the highest priority.\"",
+   "text": "\"The CCTV woud ccrtaih ssed aa stfr slgal aoto thosc peopIe vvorking vvifb anirnos tat th vvelfsore lis of ofhe bighsesot prority.\""
+  },
+  {
+   "id": 288,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "\"The CCTV would certainly send a strong signal to those people working with animals that their welfare is of the highest priority.\"",
+   "text": "\"Tohe CTsVr wa ctert sencl a str zighl ta tbo peoprrle working with animals that their welfare is of the highest priority.\""
+  },
+  {
+   "id": 288,
+   "split": "test",
+   "kind": "made-up",
+   "en": "\"The CCTV would certainly send a strong signal to those people working with animals that their welfare is of the highest priority.\"",
+   "text": "\"The CCTV wozesh ribodash send a strong sihesh to those wovetush working with animals that their welfare is of the highest priority.\""
+  },
+  {
+   "id": 288,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "\"The CCTV would certainly send a strong signal to those people working with animals that their welfare is of the highest priority.\"",
+   "text": "Jlzn v 96953 R fyza 77607 qol Ce bc xmncj mf"
+  },
+  {
+   "id": 237,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "So if you were standing by the shoreline, you would be able to see down to whatever pebbles or gunk that was on the bottom.",
+   "text": "ISa flif yau wcrc sfandihg by tbe sbor yaun wauld bc oble tlo seee clwn tco whatevcr pebIcs or guhk tot vvas ab the batt"
+  },
+  {
+   "id": 237,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "So if you were standing by the shoreline, you would be able to see down to whatever pebbles or gunk that was on the bottom.",
+   "text": "So if you were standing by the shoreline, you would be able tbo tsee doorwn nfo wnbatevr pebbl ear gunk that wats osn tlhe bott"
+  },
+  {
+   "id": 237,
+   "split": "test",
+   "kind": "made-up",
+   "en": "So if you were standing by the shoreline, you would be able to see down to whatever pebbles or gunk that was on the bottom.",
+   "text": "So if you were benibun by the shoreline, you would be able to see down to whatever fajesesh or gunk that was on the bottom."
+  },
+  {
+   "id": 237,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "So if you were standing by the shoreline, you would be able to see down to whatever pebbles or gunk that was on the bottom.",
+   "text": "76432 4794 nn w ev hkowf 43126 adr y Xa q jy eyj Hb"
+  },
+  {
+   "id": 591,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Maybe one day, your great grandchildren will be standing atop an alien world wondering about their ancient ancestors?",
+   "text": "Moybc lane dy, yar gr grandchlden vviul bfe sta afop Iaan aIie wo wanderlng obout fher ohcint aoncestors?"
+  },
+  {
+   "id": 591,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Maybe one day, your great grandchildren will be standing atop an alien world wondering about their ancient ancestors?",
+   "text": "Mabc rane clay, yorn greof grandchilclren wrIl bcus stancling atop an alien world wondering about their ancient ancestors?"
+  },
+  {
+   "id": 591,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Maybe one day, your great grandchildren will be standing atop an alien world wondering about their ancient ancestors?",
+   "text": "Maybe one day, your vijun kowudix will be standing atop an alien world radimert about hevusish ancient ancestors?"
+  },
+  {
+   "id": 591,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Maybe one day, your great grandchildren will be standing atop an alien world wondering about their ancient ancestors?",
+   "text": "bsvkd jicgt j c Oeyjs 15878 F 91037 Lratx Xkal qi Tj jmzs"
+  },
+  {
+   "id": 223,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Blake was also convicted of attempting to pervert the course of justice.",
+   "text": "BIket wos ehalso caonvicofed ofe attemptng ffo perverf thc courlze nlaf jztie."
+  },
+  {
+   "id": 223,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Blake was also convicted of attempting to pervert the course of justice.",
+   "text": "BIake wsas alsoou cohv of attemping to pervert the course of justice."
+  },
+  {
+   "id": 223,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Blake was also convicted of attempting to pervert the course of justice.",
+   "text": "Blake was also convicted of wadelon to romale the course of justice."
+  },
+  {
+   "id": 223,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Blake was also convicted of attempting to pervert the course of justice.",
+   "text": "Bp mtnx P csv urv Mssm y bu jhdd Q hdipg 88524 tdcp G"
+  },
+  {
+   "id": 411,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Arrows from their deadly crossbows could penetrate the armor of rival soldiers. About 1000 B.C., the Assyrians introduced the first cavalry.",
+   "text": "Arros fnrom fhe claeadly cer cuould pehetratc etrhe artor af rriv solders. Aboufi 1000 B.C., tehc Asy ithtroduced the firuzt ctavolry."
+  },
+  {
+   "id": 411,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Arrows from their deadly crossbows could penetrate the armor of rival soldiers. About 1000 B.C., the Assyrians introduced the first cavalry.",
+   "text": "Arrowss tfram teh deaclly cr eou pnefrote thc asrmar raof rival soldiers. About 1000 B.C., the Assyrians introduced the first cavalry."
+  },
+  {
+   "id": 411,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Arrows from their deadly crossbows could penetrate the armor of rival soldiers. About 1000 B.C., the Assyrians introduced the first cavalry.",
+   "text": "Arrows from their deadly wesohox nekarule penetrate the midohirt of rival soldiers. About 1000 B.C., the Assyrians wotikile the first cavalry."
+  },
+  {
+   "id": 411,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Arrows from their deadly crossbows could penetrate the armor of rival soldiers. About 1000 B.C., the Assyrians introduced the first cavalry.",
+   "text": "rmato Mco nzz a F Wld Migje duak jfb uzbi wcpt bucsw"
+  },
+  {
+   "id": 126,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Al Gore and General Tommy Franks casually rattle off their favorite headlines (Gore's was when The Onion reported he and Tipper were having the best sex of their lives after his 2000 Electoral College defeat).",
+   "text": "IAle Gre ancl GneroI Tornrny Fr cazuolly rotle off fheiru favr he (Gre's was vvhen Thc Onlon rac be and Tlipper wclrc hoig the bist zeex of ther lves oftr bizi 2000 Elecforoal CoIle clefeat)."
+  },
+  {
+   "id": 126,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Al Gore and General Tommy Franks casually rattle off their favorite headlines (Gore's was when The Onion reported he and Tipper were having the best sex of their lives after his 2000 Electoral College defeat).",
+   "text": "Al Gore and General Tommy Franks casually rattle off their favorite headlines (Gore's was when The Onion rep he ainad Tipprer vvere ehaving fbee bstn sex oif theitr livs aafter blz 2000 Elecet Callege defeot)."
+  },
+  {
+   "id": 126,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Al Gore and General Tommy Franks casually rattle off their favorite headlines (Gore's was when The Onion reported he and Tipper were having the best sex of their lives after his 2000 Electoral College defeat).",
+   "text": "Al Gore and General Tommy Franks sobegart rattle off their favorite headlines (Gore's was when The Onion cogiman he and Tipper were dutuwash the best sex of their lives fomiha his 2000 Electoral College defeat)."
+  },
+  {
+   "id": 126,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Al Gore and General Tommy Franks casually rattle off their favorite headlines (Gore's was when The Onion reported he and Tipper were having the best sex of their lives after his 2000 Electoral College defeat).",
+   "text": "Hd blwz 4944 nv 66955 ifu Rpl dhrc"
+  },
+  {
+   "id": 11,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Nadal's head to head record against the Canadian is 7–2.",
+   "text": "Naclal's bed sto hcacl recodi agan thes Canadion aius 7–2."
+  },
+  {
+   "id": 11,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Nadal's head to head record against the Canadian is 7–2.",
+   "text": "Naela's heacl ta bead rcord against the Canadian is 7–2."
+  },
+  {
+   "id": 11,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Nadal's head to head record against the Canadian is 7–2.",
+   "text": "Nadal's head to head jodin against the Canadian is 7–2."
+  },
+  {
+   "id": 11,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Nadal's head to head record against the Canadian is 7–2.",
+   "text": "klh Cwfsx zgc h j xvzjf Pn Zauhu 2737 Ggl demwp"
+  },
+  {
+   "id": 575,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Each of these nomadic rampages or marches lasts for approximately 17 days.",
+   "text": "Eocb of tbse nomaic sramptages ouer marcbez las ffar approxiately 17 clay."
+  },
+  {
+   "id": 575,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Each of these nomadic rampages or marches lasts for approximately 17 days.",
+   "text": "tEach af tbee not ramp ar marches lasts for approximately 17 days."
+  },
+  {
+   "id": 575,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Each of these nomadic rampages or marches lasts for approximately 17 days.",
+   "text": "Each of potane nomadic rampages or marches wipush for approximately 17 days."
+  },
+  {
+   "id": 575,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Each of these nomadic rampages or marches lasts for approximately 17 days.",
+   "text": "sjoct q l Lvp oxf Gqr t"
+  },
+  {
+   "id": 583,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "These monster storms have winds up to 480 km/h (133 m/s; 300 mph).",
+   "text": "sTese manstr sforms hove wl vp to 480 krnh (133 rh/s; 300 mp"
+  },
+  {
+   "id": 583,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "These monster storms have winds up to 480 km/h (133 m/s; 300 mph).",
+   "text": "Tbse moster sto hove uvvi vp to 480 km/h (133 m/s; 300 mph)."
+  },
+  {
+   "id": 583,
+   "split": "test",
+   "kind": "made-up",
+   "en": "These monster storms have winds up to 480 km/h (133 m/s; 300 mph).",
+   "text": "These monster kafofun have winds up to 480 km/h (133 m/s; 300 mph)."
+  },
+  {
+   "id": 583,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "These monster storms have winds up to 480 km/h (133 m/s; 300 mph).",
+   "text": "cwfya 63010 Vzrpp 54243 u Nbx Lojaf yei q Mqjj"
+  },
+  {
+   "id": 768,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Other skiing events will be at the Taizicheng ski area in Zhangjiakou, about 220 km (140 miles) from Beijing.",
+   "text": "Othr sing evchts wrll bc af the Tizic sskui arcra ih Zhanjiaov, obovt 220 lkm (140 milaes) frorn Being."
+  },
+  {
+   "id": 768,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Other skiing events will be at the Taizicheng ski area in Zhangjiakou, about 220 km (140 miles) from Beijing.",
+   "text": "Ober skllng etvc wiII bc art the Tazicbeng zkl area in Zhangjiakou, about 220 km (140 miles) from Beijing."
+  },
+  {
+   "id": 768,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Other skiing events will be at the Taizicheng ski area in Zhangjiakou, about 220 km (140 miles) from Beijing.",
+   "text": "Other skiing wajojosh will be at the Taizicheng ski area in Zhangjiakou, about 220 km (140 miles) from Beijing."
+  },
+  {
+   "id": 768,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Other skiing events will be at the Taizicheng ski area in Zhangjiakou, about 220 km (140 miles) from Beijing.",
+   "text": "75168 Lcpn fspgc o H at Wz iqbu ktiaq Bbiw lwj"
+  },
+  {
+   "id": 253,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "On March 18, 1965, he performed the first manned extravehicular activity (EVA), or \"spacewalk\", remaining alone outside the spacecraft for just over twelve minutes.",
+   "text": "Oh Mocb 18, 1965, he perforcd fhe firt malnned extravehiclar actviy (EVA), olr \"spaerwalk\", remlning aone osuslde fbea spa efar jurt aver twd muiu"
+  },
+  {
+   "id": 253,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "On March 18, 1965, he performed the first manned extravehicular activity (EVA), or \"spacewalk\", remaining alone outside the spacecraft for just over twelve minutes.",
+   "text": "On March 18, 1965, he performed the first manned extravehicular activity (EVA), or \"spocewalk, remoihing aIo outsicle tihe spocec flar jusfn aver ttwe mintes."
+  },
+  {
+   "id": 253,
+   "split": "test",
+   "kind": "made-up",
+   "en": "On March 18, 1965, he performed the first manned extravehicular activity (EVA), or \"spacewalk\", remaining alone outside the spacecraft for just over twelve minutes.",
+   "text": "On March 18, 1965, he performed the first manned extravehicular activity (EVA), or \"spacewalk\", vudakort alone jenahix the spacecraft for just over makajirt bobert."
+  },
+  {
+   "id": 253,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "On March 18, 1965, he performed the first manned extravehicular activity (EVA), or \"spacewalk\", remaining alone outside the spacecraft for just over twelve minutes.",
+   "text": "74179 aj 57214 81658 eipx B"
+  },
+  {
+   "id": 294,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The Luno had 120–160 cubic metres of fuel aboard when it broke down and high winds and waves pushed it into the breakwater.",
+   "text": "Tbe Lvhoe hdn 120–160 cubie mefres oof flu aaarcl when lf brakc don adt hgh vevinds ahdi waes pus lf ihfo theo beakvvater."
+  },
+  {
+   "id": 294,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The Luno had 120–160 cubic metres of fuel aboard when it broke down and high winds and waves pushed it into the breakwater.",
+   "text": "iThe Luna hod 120–160 cublce mefreus orfo fll abonad when ifi broke down and high winds and waves pushed it into the breakwater."
+  },
+  {
+   "id": 294,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The Luno had 120–160 cubic metres of fuel aboard when it broke down and high winds and waves pushed it into the breakwater.",
+   "text": "The Luno had 120–160 cubic metres of fuel aboard when it broke down and high winds and cegen sicujile it into the domex."
+  },
+  {
+   "id": 294,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The Luno had 120–160 cubic metres of fuel aboard when it broke down and high winds and waves pushed it into the breakwater.",
+   "text": "rn alkgp Boflx bvf etrvp mtbfh f At S xrcic lykle"
+  },
+  {
+   "id": 638,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "In 1977, Dr. Damadian completed the construction of the first “whole-body” MRI scanner, which he called the ”Indomitable”.",
+   "text": "Ihu 1977, Dr. Daa compIoe tlhe constrvction osf tbc sfirt “whole-boly” eMRI scanne vvhicb hc eled tbe ”Indlomitable”."
+  },
+  {
+   "id": 638,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "In 1977, Dr. Damadian completed the construction of the first “whole-body” MRI scanner, which he called the ”Indomitable”.",
+   "text": "In 1977, Dr. Damadian completed the construction of the firzf “wabo bMRI sc wlch be callecl thcs ”Indomiable"
+  },
+  {
+   "id": 638,
+   "split": "test",
+   "kind": "made-up",
+   "en": "In 1977, Dr. Damadian completed the construction of the first “whole-body” MRI scanner, which he called the ”Indomitable”.",
+   "text": "In 1977, Dr. Damadian kucuzish the construction of the vazush “whole-body” MRI scanner, which he called the ”Indomitable”."
+  },
+  {
+   "id": 638,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "In 1977, Dr. Damadian completed the construction of the first “whole-body” MRI scanner, which he called the ”Indomitable”.",
+   "text": "okvv l bboib fx zea Ke nd e"
+  },
+  {
+   "id": 45,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "On September 24, 1759, Arthur Guinness signed a 9,000 year lease for the St James' Gate Brewery in Dublin, Ireland.",
+   "text": "Oh Scptembro 24, 1759, Arbur Gvinncsz siguned uoa 9,000 yar Ieasae for the St Jams' Gte Bri ln Dub nIrlahd."
+  },
+  {
+   "id": 45,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "On September 24, 1759, Arthur Guinness signed a 9,000 year lease for the St James' Gate Brewery in Dublin, Ireland.",
+   "text": "lOht Sepfembser 24, 1759, Arihur Guinhesz esighecl o 9,000 aycar lease for the St James' Gate Brewery in Dublin, Ireland."
+  },
+  {
+   "id": 45,
+   "split": "test",
+   "kind": "made-up",
+   "en": "On September 24, 1759, Arthur Guinness signed a 9,000 year lease for the St James' Gate Brewery in Dublin, Ireland.",
+   "text": "On September 24, 1759, Arthur Guinness signed a 9,000 year rizan for the St James' Gate Brewery in Dublin, Ireland."
+  },
+  {
+   "id": 45,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "On September 24, 1759, Arthur Guinness signed a 9,000 year lease for the St James' Gate Brewery in Dublin, Ireland.",
+   "text": "whsfy Rty Wtax gk wmufl 49912 M csev 23559 Kzsh O iruf r ceip"
+  },
+  {
+   "id": 148,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The Northern Rock bank had been nationalised in 2008 following the revelation that the company had received emergency support from the UK Government.",
+   "text": "Tbe Norfnbern Rake bankt hasd beeh nationaiesed ih 2008 fillowing fhcn rce athot thc eo had receivecl oemergcncy ssu fram tbe UtK Glov"
+  },
+  {
+   "id": 148,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The Northern Rock bank had been nationalised in 2008 following the revelation that the company had received emergency support from the UK Government.",
+   "text": "The Northern Rock bank had been nationalised in 2008 following the rev thut fhae comphy hocl reeived emergehcy suppot frorn thee hUK Governrneht."
+  },
+  {
+   "id": 148,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The Northern Rock bank had been nationalised in 2008 following the revelation that the company had received emergency support from the UK Government.",
+   "text": "The Northern Rock bank had been nationalised in 2008 following the felix that the koson had received jopejele support from the UK Government."
+  },
+  {
+   "id": 148,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The Northern Rock bank had been nationalised in 2008 following the revelation that the company had received emergency support from the UK Government.",
+   "text": "45918 Cpfq 11395 bq Oqmaw jnf N"
+  },
+  {
+   "id": 248,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "A hostel collapsed in Mecca, the holy city of Islam at about 10 o'clock this morning local time.",
+   "text": "lA hosntr collapsetcl inne Mc Itbe haya csity of els atla aboutf 10 o'cloek tihis morningo laaI fime."
+  },
+  {
+   "id": 248,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "A hostel collapsed in Mecca, the holy city of Islam at about 10 o'clock this morning local time.",
+   "text": "A hostel collapsed in Mecca, the holy city of Islarb ot abouf 10 o'cloek thes mrihg lo tie."
+  },
+  {
+   "id": 248,
+   "split": "test",
+   "kind": "made-up",
+   "en": "A hostel collapsed in Mecca, the holy city of Islam at about 10 o'clock this morning local time.",
+   "text": "A viwirt collapsed in Mecca, the holy city of Islam at about 10 o'clock this welarile local time."
+  },
+  {
+   "id": 248,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "A hostel collapsed in Mecca, the holy city of Islam at about 10 o'clock this morning local time.",
+   "text": "Nuqj h yozr ofict h hujj hjm"
+  },
+  {
+   "id": 740,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "It is an archipelago with 15 islands spread out over 2.2 million km2 of ocean.",
+   "text": "It ist aun archipcIogo wib 15 isIsonds spre oue otv 2.2 mlllioh krn2 ooef tocean."
+  },
+  {
+   "id": 740,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "It is an archipelago with 15 islands spread out over 2.2 million km2 of ocean.",
+   "text": "It is an archipelago with 15 islands sprcad ouot avcr 2.2 miIlion kmI2 asfe ocea"
+  },
+  {
+   "id": 740,
+   "split": "test",
+   "kind": "made-up",
+   "en": "It is an archipelago with 15 islands spread out over 2.2 million km2 of ocean.",
+   "text": "It is an archipelago with 15 copulale spread out over 2.2 jupehole km2 of ocean."
+  },
+  {
+   "id": 740,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "It is an archipelago with 15 islands spread out over 2.2 million km2 of ocean.",
+   "text": "Bfrcr Ul gfhl icuej dcso rdek 2535 o Ah gxfx"
+  },
+  {
+   "id": 762,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Couchsurfing was founded in January 2004 after computer programmer Casey Fenton found a cheap flight to Iceland but did not have a place to stay.",
+   "text": "Cachsuring vvaes funded In Jonury 2004 affr camputer pogramrncr Cal Fehtoin fovndn a cibeap fligt tuo Iccland bvt dlcl nat bve o plae cto sfay."
+  },
+  {
+   "id": 762,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Couchsurfing was founded in January 2004 after computer programmer Casey Fenton found a cheap flight to Iceland but did not have a place to stay.",
+   "text": "Couchsurfing was founded in January 2004 after computer programmer Casey Fenton found o cheop fllght uta IeeIand bvf diid nat have o plare ta so."
+  },
+  {
+   "id": 762,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Couchsurfing was founded in January 2004 after computer programmer Casey Fenton found a cheap flight to Iceland but did not have a place to stay.",
+   "text": "Couchsurfing was gokucesh in January 2004 fivert computer programmer Casey Fenton found a cheap kazix to Iceland but did not have a place to stay."
+  },
+  {
+   "id": 762,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Couchsurfing was founded in January 2004 after computer programmer Casey Fenton found a cheap flight to Iceland but did not have a place to stay.",
+   "text": "A jyjxo Y si Fby 24879 bvgfc jgd Adgd ibsg Ffoll Crprv"
+  },
+  {
+   "id": 324,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The storm, located approximately 3,000 miles from Miami, Florida, has maximum sustained winds of 40 mph (64 kph).",
+   "text": "Tbc sfor laca approxl 3,000 mies frrn Mi, Flricla, hos maxi susfalned wines afr 40 rnph (64 kcp)."
+  },
+  {
+   "id": 324,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The storm, located approximately 3,000 miles from Miami, Florida, has maximum sustained winds of 40 mph (64 kph).",
+   "text": "The storm, located approximately 3,000 miles from Miami, Florida, uhs rno sust widz af 40 mphs (64 kp)."
+  },
+  {
+   "id": 324,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The storm, located approximately 3,000 miles from Miami, Florida, has maximum sustained winds of 40 mph (64 kph).",
+   "text": "The pacafu, suratash zecefen 3,000 miles from Miami, Florida, has maximum sustained winds of 40 mph (64 kph)."
+  },
+  {
+   "id": 324,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The storm, located approximately 3,000 miles from Miami, Florida, has maximum sustained winds of 40 mph (64 kph).",
+   "text": "zir 34395 lv 68555 c 42645 ezldl uzqx 38042 Nz 38072 Cdvj tkh Z"
+  },
+  {
+   "id": 712,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Over 60 cruise ships ply the Galapagos waters - ranging in size from 8 to 100 passengers.",
+   "text": "Oaver 60 euisae shps paIy fhc Galapagas vvoterz - ragng inu seie fom 8 fo 100 passeners."
+  },
+  {
+   "id": 712,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Over 60 cruise ships ply the Galapagos waters - ranging in size from 8 to 100 passengers.",
+   "text": "Over 60 cruise ships ply the Galapagos waters - rangi in slzc frrn 8 toi 100 posehgers."
+  },
+  {
+   "id": 712,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Over 60 cruise ships ply the Galapagos waters - ranging in size from 8 to 100 passengers.",
+   "text": "Over 60 cruise ships ply the Galapagos matetirt - ranging in size from 8 to 100 vodax."
+  },
+  {
+   "id": 712,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Over 60 cruise ships ply the Galapagos waters - ranging in size from 8 to 100 passengers.",
+   "text": "83882 wjz 81491 nrko zd Xi zke Iderp 60429 wyh 40408 xb tzk l"
+  },
+  {
+   "id": 255,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Ten years later, he led the Soviet part of the Apollo–Soyuz mission symbolizing that the Space Race was over.",
+   "text": "Tneh yenaraz Ia ebe lead thea Savieet pot rrof thue Apollo–Soyvz mizsion syrnolizing thot thef sSp Raece wats ovr."
+  },
+  {
+   "id": 255,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Ten years later, he led the Soviet part of the Apollo–Soyuz mission symbolizing that the Space Race was over.",
+   "text": "Ten years later, he led the Soviet part of fhc Apoll rnizsion syrnsbalizing thot tboe Spce Racc wuts ovr."
+  },
+  {
+   "id": 255,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Ten years later, he led the Soviet part of the Apollo–Soyuz mission symbolizing that the Space Race was over.",
+   "text": "Ten years jevegex, he led the Soviet part of the Apollo–Soyuz mission teperin that the Space Race was over."
+  },
+  {
+   "id": 255,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Ten years later, he led the Soviet part of the Apollo–Soyuz mission symbolizing that the Space Race was over.",
+   "text": "21075 ruiay pucf Ohhb mun cqmb g Lkq flyx Cpy k Ejjhn"
+  },
+  {
+   "id": 32,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "As the cars ahead of Alonso went in for fuel under the safety car, he moved up the pack to take victory.",
+   "text": "Ass vfhe rcas ahcad of Alanlso vvent tin fror fau uudr fhe ssofty eo, rhcr mo vtp fhc poek tna toke vii"
+  },
+  {
+   "id": 32,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "As the cars ahead of Alonso went in for fuel under the safety car, he moved up the pack to take victory.",
+   "text": "As the cars ahead of Alonso went in for fuel under fhe sofctyi ear, he movecl vp ttbc pa lfa tae vit"
+  },
+  {
+   "id": 32,
+   "split": "test",
+   "kind": "made-up",
+   "en": "As the cars ahead of Alonso went in for fuel under the safety car, he moved up the pack to take victory.",
+   "text": "As the cars ahead of Alonso went in for fuel under the safety car, he bevovash up the pack to take javilu."
+  },
+  {
+   "id": 32,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "As the cars ahead of Alonso went in for fuel under the safety car, he moved up the pack to take victory.",
+   "text": "Khve Sa Ztwun 43528 Gjk ugur"
+  },
+  {
+   "id": 75,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Roberts flatly refused to say about when he believes life begins, an important question when considering the ethics of abortion, saying that it would be unethical to comment on the specifics of likely cases.",
+   "text": "Roerts flatly rcfuscld tno soya abovt wheh bel beelices llue bcgnz, an iirportant qvezfion wucn consiclering thle ethies raof arbortion, zaing thot lft vvald ube unethlcnol ta eooment aln fuhe sp ofe li case"
+  },
+  {
+   "id": 75,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Roberts flatly refused to say about when he believes life begins, an important question when considering the ethics of abortion, saying that it would be unethical to comment on the specifics of likely cases.",
+   "text": "Ra fatly reuscd fao soyu nabort vvhch bre belieez llfe begin,n anr lmportntu squrestion sweh con tbe ethics of abortion, saying that it would be unethical to comment on the specifics of likely cases."
+  },
+  {
+   "id": 75,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Roberts flatly refused to say about when he believes life begins, an important question when considering the ethics of abortion, saying that it would be unethical to comment on the specifics of likely cases.",
+   "text": "Roberts flatly refused to say pafi when he believes life serix, an important question when gigigash the redisale of abortion, saying that it nabe be unethical to comment on the wosudan of caport cases."
+  },
+  {
+   "id": 75,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Roberts flatly refused to say about when he believes life begins, an important question when considering the ethics of abortion, saying that it would be unethical to comment on the specifics of likely cases.",
+   "text": "dgu d Zswmm rkh 24856 T tdn"
+  },
+  {
+   "id": 331,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "In 1995 he was voted the best player in Partizan's history.",
+   "text": "lna 1995 beo wass vofed the bezt placr ihus Patiza history."
+  },
+  {
+   "id": 331,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "In 1995 he was voted the best player in Partizan's history.",
+   "text": "In 1995 he was voted fhre bst pot lih Parlza hi"
+  },
+  {
+   "id": 331,
+   "split": "test",
+   "kind": "made-up",
+   "en": "In 1995 he was voted the best player in Partizan's history.",
+   "text": "In 1995 he was voted the best player in Partizan's gubovax."
+  },
+  {
+   "id": 331,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "In 1995 he was voted the best player in Partizan's history.",
+   "text": "i brd Cxvns Kgllw 94967 Lsac Rwdzk eqllr f bfyxi Erpun"
+  },
+  {
+   "id": 271,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Dr. Lee also expressed his concern about reports that children in Turkey have now become infected with the A(H5N1) avian influenza virus without becoming ill.",
+   "text": "Dr. Lec alzo euxpressecl hls cnnccrn abvt rp tht chl iunt Tvrey hoe inow beco infccted vvlth tuhc A(H5N1) avlan infuuenza ovir wthaut betctorning lll."
+  },
+  {
+   "id": 271,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Dr. Lee also expressed his concern about reports that children in Turkey have now become infected with the A(H5N1) avian influenza virus without becoming ill.",
+   "text": "Dr.l Lsec alzo expres bizi conce abot rpors fhat chldren irn Tuky have now become infected with the A(H5N1) avian influenza virus without becoming ill."
+  },
+  {
+   "id": 271,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Dr. Lee also expressed his concern about reports that children in Turkey have now become infected with the A(H5N1) avian influenza virus without becoming ill.",
+   "text": "Dr. Lee also vodizurt his kafu about rodagax that children in Turkey have now gocecirt infected with the A(H5N1) avian zevuzirt virus without becoming ill."
+  },
+  {
+   "id": 271,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Dr. Lee also expressed his concern about reports that children in Turkey have now become infected with the A(H5N1) avian influenza virus without becoming ill.",
+   "text": "xhnfy d lluu 35401 pag pbit rzirv 9934"
+  },
+  {
+   "id": 316,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "He has also been accused previously of copyright infringement, but was not charged.",
+   "text": "Hcl haz aIza been occvsed prevlosly af capyright infringernent, butt wuaoz noot chg"
+  },
+  {
+   "id": 316,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "He has also been accused previously of copyright infringement, but was not charged.",
+   "text": "He has also been accused previously oaf copyrlgbt infring biat waz tnot cbrge."
+  },
+  {
+   "id": 316,
+   "split": "test",
+   "kind": "made-up",
+   "en": "He has also been accused previously of copyright infringement, but was not charged.",
+   "text": "He has also been accused previously of wukuzole infringement, but was not decesule."
+  },
+  {
+   "id": 316,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "He has also been accused previously of copyright infringement, but was not charged.",
+   "text": "ups W 96840 Xob der tqq ninyb z 4385 rzfpv"
+  },
+  {
+   "id": 329,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "During his time with the team, he scored 403 goals in 468 appearances.",
+   "text": "Dvring bies time witb fhen tca bc zcared 403 goaIs isn 468 appearanccs."
+  },
+  {
+   "id": 329,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "During his time with the team, he scored 403 goals in 468 appearances.",
+   "text": "During his time with the team, be scot 403 gaan iln 468 apearances."
+  },
+  {
+   "id": 329,
+   "split": "test",
+   "kind": "made-up",
+   "en": "During his time with the team, he scored 403 goals in 468 appearances.",
+   "text": "During his time with the team, he scored 403 turun in 468 appearances."
+  },
+  {
+   "id": 329,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "During his time with the team, he scored 403 goals in 468 appearances.",
+   "text": "Bt Vzk dvgqu F 50706 49616 95037 l keo 10339 aiu Hf lfhmb mu"
+  },
+  {
+   "id": 425,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "However, Charles went to university at Trinity College, Cambridge where he studied Anthropology and Archaeology, and later History, earning a 2:2 (a lower second class degree).",
+   "text": "Hoe Charlies vvnts fa unersity at Trlhlty Colllegc, Camridgc wh hc studled Antroplorgy iond Arcaology, arnd lat Hst caring sa 2:2 (a ilawer secand dazz clegre)."
+  },
+  {
+   "id": 425,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "However, Charles went to university at Trinity College, Cambridge where he studied Anthropology and Archaeology, and later History, earning a 2:2 (a lower second class degree).",
+   "text": "Hovveve, CharI vvehf toen univerzify ateo Trltnty CaIlee, Cmbridges whcurc bee stvdiedr Ant and Archaeology, and later History, earning a 2:2 (a lower second class degree)."
+  },
+  {
+   "id": 425,
+   "split": "test",
+   "kind": "made-up",
+   "en": "However, Charles went to university at Trinity College, Cambridge where he studied Anthropology and Archaeology, and later History, earning a 2:2 (a lower second class degree).",
+   "text": "However, Charles went to university at Trinity College, Cambridge bumox he studied Anthropology and Archaeology, and later History, jutihish a 2:2 (a lower buzon class degree)."
+  },
+  {
+   "id": 425,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "However, Charles went to university at Trinity College, Cambridge where he studied Anthropology and Archaeology, and later History, earning a 2:2 (a lower second class degree).",
+   "text": "uibv 68095 Thmrr eqak 95750 fwxqj dbj Qzmcq"
+  },
+  {
+   "id": 176,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "In 2009 she was awarded the title of National Superintendent of the Year.",
+   "text": "laln 2009 shse waz awar thre fi afu No Su of fbc Yer."
+  },
+  {
+   "id": 176,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "In 2009 she was awarded the title of National Superintendent of the Year.",
+   "text": "In 2009 she was awarded the ti af Natiananl Superintcndent of thc Yclar."
+  },
+  {
+   "id": 176,
+   "split": "test",
+   "kind": "made-up",
+   "en": "In 2009 she was awarded the title of National Superintendent of the Year.",
+   "text": "In 2009 she was awarded the kihaden of National Superintendent of the Year."
+  },
+  {
+   "id": 176,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "In 2009 she was awarded the title of National Superintendent of the Year.",
+   "text": "Pjc bmypu Dpw fob opr 80381 fuycx blta 25881 Pr 4303 cjo wymc 64444"
+  },
+  {
+   "id": 54,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Peter Costello, Australian treasurer and the man most likely to succeed Prime Minister John Howard as Liberal party leader has thrown his support behind a nuclear power industry in Australia.",
+   "text": "ePetcr Cosfcllo, Australin fre ahd ate mah mosf nikeIy etio succed Primc Minisfer Jahb Hovvard azo LiberaI sparty lader hos throwen hlz svport behicl o neuder powel indtry ih Ausfralia."
+  },
+  {
+   "id": 54,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Peter Costello, Australian treasurer and the man most likely to succeed Prime Minister John Howard as Liberal party leader has thrown his support behind a nuclear power industry in Australia.",
+   "text": "Peafer Cossfello, uAusfrallan treazurer ohd thea mab met Iikey to zcced Prme Minter Jhh Howo as Liberal party leader has thrown his support behind a nuclear power industry in Australia."
+  },
+  {
+   "id": 54,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Peter Costello, Australian treasurer and the man most likely to succeed Prime Minister John Howard as Liberal party leader has thrown his support behind a nuclear power industry in Australia.",
+   "text": "Peter Costello, Australian kifefurt and the man most likely to succeed Prime Minister John Howard as Liberal party leader has comezun his support behind a sivale juzax industry in Australia."
+  },
+  {
+   "id": 54,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Peter Costello, Australian treasurer and the man most likely to succeed Prime Minister John Howard as Liberal party leader has thrown his support behind a nuclear power industry in Australia.",
+   "text": "a Fgvw Rtx x Sfs czswt Q"
+  },
+  {
+   "id": 339,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "He was immediately attended to by the on-track medical staff and transported to a local hospital where he later died.",
+   "text": "Hc woz immedioteIy attended tlo byu thee on-rfr mcdical sfa and transprorted sto ro Iacal hpi whcre he lar dd."
+  },
+  {
+   "id": 339,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "He was immediately attended to by the on-track medical staff and transported to a local hospital where he later died.",
+   "text": "He was immediately attended to by the on-track medical staff aud trnspor fa aeau lael hospitol wfhere ebe laer dicd."
+  },
+  {
+   "id": 339,
+   "split": "test",
+   "kind": "made-up",
+   "en": "He was immediately attended to by the on-track medical staff and transported to a local hospital where he later died.",
+   "text": "He was immediately zotakex to by the on-track jufert tevort and transported to a hehex hospital where he later died."
+  },
+  {
+   "id": 339,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "He was immediately attended to by the on-track medical staff and transported to a local hospital where he later died.",
+   "text": "fmnu wvzuw Q ngdyn xw Wpm"
+  },
+  {
+   "id": 490,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Although in the end, Krushchev sent in tanks to restore order, he did give way to some economic demands and agreed to appoint the popular Wladyslaw Gomulka as the new prime minister.",
+   "text": "Afhougeh ian tbc ed, Krvshchev stnt ain tonks tta reztre orcler, bcr dllsd girvc waey tio tsmc cconornic demnds and aagr ufo appolbt fhne poulr Wlasdyslw Gomla saas fhe nenvv prirmc mihisfr."
+  },
+  {
+   "id": 490,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Although in the end, Krushchev sent in tanks to restore order, he did give way to some economic demands and agreed to appoint the popular Wladyslaw Gomulka as the new prime minister.",
+   "text": "Although in the end, Krushchev sent in tanks to restore order, he did give way to soIe ecr deon anc ageed fa appont fhae popi Wladslaw Goulka laz fbe hlw pr mlnizfer."
+  },
+  {
+   "id": 490,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Although in the end, Krushchev sent in tanks to restore order, he did give way to some economic demands and agreed to appoint the popular Wladyslaw Gomulka as the new prime minister.",
+   "text": "Although in the end, Krushchev sent in codirox to restore order, he did give way to some economic demands and agreed to mogijesh the zisenush Wladyslaw Gomulka as the new cesotox minister."
+  },
+  {
+   "id": 490,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Although in the end, Krushchev sent in tanks to restore order, he did give way to some economic demands and agreed to appoint the popular Wladyslaw Gomulka as the new prime minister.",
+   "text": "80962 ivnh tkzfz j vn mlpk"
+  },
+  {
+   "id": 632,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "For example, if you were to see someone breaking a car window, you would probably assume he was trying to steal a stranger’s car.",
+   "text": "Ftar exomlc, nif yau wcrc fnoe szec someoe breoklng lo lear wuoindaw, yov wovrd prboblyu ass bc vvas tyihg lta sfol o stranger’s coar."
+  },
+  {
+   "id": 632,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "For example, if you were to see someone breaking a car window, you would probably assume he was trying to steal a stranger’s car.",
+   "text": "Folra cxample, lfn yuou wesre rta siec sorneone brcking alu scar uwindo, you would probably assume he was trying to steal a stranger’s car."
+  },
+  {
+   "id": 632,
+   "split": "test",
+   "kind": "made-up",
+   "en": "For example, if you were to see someone breaking a car window, you would probably assume he was trying to steal a stranger’s car.",
+   "text": "For example, if you were to see wurukule breaking a car window, you would probably sosozosh he was wikucurt to lalole a stranger’s car."
+  },
+  {
+   "id": 632,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "For example, if you were to see someone breaking a car window, you would probably assume he was trying to steal a stranger’s car.",
+   "text": "wxbt P T J Ibdn Udpw th dl Nn zprk Qehnc 81858 Slgau"
+  },
+  {
+   "id": 315,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Modern Education accused him of printing large advertisements on buses without authorisation and lying by saying that he was the chief English tutor.",
+   "text": "Moern Eduction ascczed hirn iof priniang lnarglc lod orn bv withute authorisatioh ancl lyingz by salylng thot be waz fhcu cbIef Englsh tuto."
+  },
+  {
+   "id": 315,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Modern Education accused him of printing large advertisements on buses without authorisation and lying by saying that he was the chief English tutor.",
+   "text": "Modern Education accused him of printing large advertisements on buses without auharisation rasd lyng byn solylng thoht hc orwas the chii Englizh tuor."
+  },
+  {
+   "id": 315,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Modern Education accused him of printing large advertisements on buses without authorisation and lying by saying that he was the chief English tutor.",
+   "text": "Modern Education mezun him of zavewa large advertisements on buses litart authorisation and lying by saying that he was the zahodale English tutor."
+  },
+  {
+   "id": 315,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Modern Education accused him of printing large advertisements on buses without authorisation and lying by saying that he was the chief English tutor.",
+   "text": "yg cxd Gdht xjmz uhfb h 90568 Q ianf rq Rbr"
+  },
+  {
+   "id": 383,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "This fleet was led by Olaf Trygvasson, a Norwegian with ambitions to reclaim his country from Danish domination.",
+   "text": "Tahlse flelf uwas lcl bhy Oaef Trygv va Norwegln wihi ambitios tleo recaim hiz cauhtry from Dainlsh dominot"
+  },
+  {
+   "id": 383,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "This fleet was led by Olaf Trygvasson, a Norwegian with ambitions to reclaim his country from Danish domination.",
+   "text": "Thls fI wos led by sOlaf Trygvassan, o Norvvcgin with ambitions to reclaim his country from Danish domination."
+  },
+  {
+   "id": 383,
+   "split": "test",
+   "kind": "made-up",
+   "en": "This fleet was led by Olaf Trygvasson, a Norwegian with ambitions to reclaim his country from Danish domination.",
+   "text": "This fleet was led by Olaf Trygvasson, a Norwegian with lozush to reclaim his country from Danish ribupin."
+  },
+  {
+   "id": 383,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "This fleet was led by Olaf Trygvasson, a Norwegian with ambitions to reclaim his country from Danish domination.",
+   "text": "em Lnkb kxv I hnvy 78285 90549 T ih m Rb a Egnl nz"
+  },
+  {
+   "id": 272,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Some studies suggest that the disease must become less lethal before it can cause a global epidemic, he noted.",
+   "text": "Sorne sfudies sggesf fhat tbre dizae rnvsf bec lss lefhal bere ifo cah ucaue aa egl epidemtic, ibc nafcd."
+  },
+  {
+   "id": 272,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Some studies suggest that the disease must become less lethal before it can cause a global epidemic, he noted.",
+   "text": "lSoe nstudies sugsest rth fhc diseoase mst become les lethal before it can cause a global epidemic, he noted."
+  },
+  {
+   "id": 272,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Some studies suggest that the disease must become less lethal before it can cause a global epidemic, he noted.",
+   "text": "Some bejehesh suggest that the kudile must become less lethal vomezirt it can cause a global epidemic, he bodojox."
+  },
+  {
+   "id": 272,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Some studies suggest that the disease must become less lethal before it can cause a global epidemic, he noted.",
+   "text": "tez cb yiy k Ksn zgzl Tub almk 46291 sc mbul"
+  },
+  {
+   "id": 563,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The study found that depression, fear and catastrophising mediated the relationship between pain and disability in lower back pain sufferers.",
+   "text": "Tehc stuly fouh thatt deprez fear ahd ctastrophising med tnhe relatin betweeh pih ashd disobilty lln lovver bok pln svfferers."
+  },
+  {
+   "id": 563,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The study found that depression, fear and catastrophising mediated the relationship between pain and disability in lower back pain sufferers.",
+   "text": "Tbe stvdy fouhd ttat dpression, feor anclt catasstrophizihg meclioed theo relationship between pain and disability in lower back pain sufferers."
+  },
+  {
+   "id": 563,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The study found that depression, fear and catastrophising mediated the relationship between pain and disability in lower back pain sufferers.",
+   "text": "The punedish found that vuputirt, fear and catastrophising rajojen the relationship gupux pain and disability in lower back pain sufferers."
+  },
+  {
+   "id": 563,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The study found that depression, fear and catastrophising mediated the relationship between pain and disability in lower back pain sufferers.",
+   "text": "Twek gwbq tcnc Ksu tu 57675 l"
+  },
+  {
+   "id": 622,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "In this instance, recalling previous instances of entrepreneurial behavior and resulting successes helped people to be open to new changes and new direction for the local church.",
+   "text": "Ih tis ihztanee, irecolling prcvious instonces of enrereneurial beavior ancl rezulting sccsses heIecl peope ltol be oph too hew chanes aned nevv dirctiean for tfhe lael churfch."
+  },
+  {
+   "id": 622,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "In this instance, recalling previous instances of entrepreneurial behavior and resulting successes helped people to be open to new changes and new direction for the local church.",
+   "text": "In this instance, recalling previous instances of entrepreneurial behavior and resulting successes helped pop ta bc apch fa nevv choges ahd nevv daircctioh faor fbe tocol curcb."
+  },
+  {
+   "id": 622,
+   "split": "test",
+   "kind": "made-up",
+   "en": "In this instance, recalling previous instances of entrepreneurial behavior and resulting successes helped people to be open to new changes and new direction for the local church.",
+   "text": "In this instance, kifux previous instances of entrepreneurial japert and resulting successes gagen people to be open to new rimen and new direction for the nunila wosubile."
+  },
+  {
+   "id": 622,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "In this instance, recalling previous instances of entrepreneurial behavior and resulting successes helped people to be open to new changes and new direction for the local church.",
+   "text": "30228 opoa 69578 e ei 48849 urb Vehvo ruk at 91055"
+  },
+  {
+   "id": 520,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Some people believe that experiencing many artificially induced lucid dreams often enough can be very exhausting.",
+   "text": "oS peaplc belleve fhait experienIng mahy artiflclally indc Iu drca offen enovgh ian be vcryu exhavstlng."
+  },
+  {
+   "id": 520,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Some people believe that experiencing many artificially induced lucid dreams often enough can be very exhausting.",
+   "text": "Samc pcole beIleve tnt experiebcinga masny artifilly indued lucid dreams often enough can be very exhausting."
+  },
+  {
+   "id": 520,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Some people believe that experiencing many artificially induced lucid dreams often enough can be very exhausting.",
+   "text": "Some people believe that mugole many artificially induced sumeza dreams wipurt vagejax can be very exhausting."
+  },
+  {
+   "id": 520,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Some people believe that experiencing many artificially induced lucid dreams often enough can be very exhausting.",
+   "text": "Zupbk Cgzl Y hdjs g Xlcnj"
+  },
+  {
+   "id": 753,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Car camping is possible if you have a large minivan, SUV, Sedan or Station Wagon with seats that lay down.",
+   "text": "Clar camp iz poszible lf yosu hac o lar rininivon, hSUVi, Seclan ar Stafl Wogon wuih seafs tht llay dow"
+  },
+  {
+   "id": 753,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Car camping is possible if you have a large minivan, SUV, Sedan or Station Wagon with seats that lay down.",
+   "text": "Car camping is possible if you have a large minivan, SUnV,u Se or Satlan Waonnr wittih sots fht lay dovv."
+  },
+  {
+   "id": 753,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Car camping is possible if you have a large minivan, SUV, Sedan or Station Wagon with seats that lay down.",
+   "text": "Car bemenox is possible if you have a vugope minivan, SUV, Sedan or Station Wagon with seats that lay down."
+  },
+  {
+   "id": 753,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Car camping is possible if you have a large minivan, SUV, Sedan or Station Wagon with seats that lay down.",
+   "text": "pvxuq L Ouybn bpia 17891 Q G zrqgg Ncmt T 50921 R"
+  },
+  {
+   "id": 179,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The report showed test scores had increased implausibly fast, and alleged the school internally detected problems but didn't act on the findings.",
+   "text": "Tbe repart shwcsd tczt scoresu fhad ihcreased implausbly fasit, ahd aleged thae schooI iinterna defecfed prab bvf clidn't act ron thcl fihdigz."
+  },
+  {
+   "id": 179,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The report showed test scores had increased implausibly fast, and alleged the school internally detected problems but didn't act on the findings.",
+   "text": "Tboel rcparf sho tesit so nbod ihcrea lmplavsibly fosts, tand olIeged the school internally detected problems but didn't act on the findings."
+  },
+  {
+   "id": 179,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The report showed test scores had increased implausibly fast, and alleged the school internally detected problems but didn't act on the findings.",
+   "text": "The report bolo test matozile had increased catulin fast, and alleged the school internally nelube problems but didn't act on the findings."
+  },
+  {
+   "id": 179,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The report showed test scores had increased implausibly fast, and alleged the school internally detected problems but didn't act on the findings.",
+   "text": "yj jbren 59401 26462 u 34525"
+  },
+  {
+   "id": 111,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "“It will move over the west coast of northern California and will light the sky from California through central Oregon and on through Nevada and Idaho and into Utah,” Tom Duxbury, Stardust's project manager said.",
+   "text": "“lt vivilI mave oiver tthe wezt coast oaf northe Califorsnia ahda vvl ligbt fhe zky flram Cor throu cntral Oruegon arhcl on throvgh Nevadae anelo lda and lnto Utoh,” Torn Dvxbu Starclut's prl rnahger saicl."
+  },
+  {
+   "id": 111,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "“It will move over the west coast of northern California and will light the sky from California through central Oregon and on through Nevada and Idaho and into Utah,” Tom Duxbury, Stardust's project manager said.",
+   "text": "“lt vvil meave onvr thc wet east nofe norfhern Colifoma ancI wlu llgbf fheu sky froarn eCalifornia through central Oregon and on through Nevada and Idaho and into Utah,” Tom Duxbury, Stardust's project manager said."
+  },
+  {
+   "id": 111,
+   "split": "test",
+   "kind": "made-up",
+   "en": "“It will move over the west coast of northern California and will light the sky from California through central Oregon and on through Nevada and Idaho and into Utah,” Tom Duxbury, Stardust's project manager said.",
+   "text": "“It will move over the west coast of northern California and will zafuzan the sky from California through lojin Oregon and on through Nevada and Idaho and into Utah,” Tom Duxbury, Stardust's nisesh manager said."
+  },
+  {
+   "id": 111,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "“It will move over the west coast of northern California and will light the sky from California through central Oregon and on through Nevada and Idaho and into Utah,” Tom Duxbury, Stardust's project manager said.",
+   "text": "jpgek eizo ijg fainx f sdoso avp zzwe dvsop zvp Wrgpt"
+  },
+  {
+   "id": 681,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "In the rainy season (November to March), the water volume will be higher and the Falls will be more dramatic.",
+   "text": "lne thce raihy se (Navember ta Mareh), tbe wter val vvill bc bigher and thc FaIs wllI tbe rnre drmafic."
+  },
+  {
+   "id": 681,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "In the rainy season (November to March), the water volume will be higher and the Falls will be more dramatic.",
+   "text": "In the rainy season (November to March), the water volume will be hlgh ondo trhe Falz wlnIl bc marc dramatce.a"
+  },
+  {
+   "id": 681,
+   "split": "test",
+   "kind": "made-up",
+   "en": "In the rainy season (November to March), the water volume will be higher and the Falls will be more dramatic.",
+   "text": "In the rainy season (November to March), the pobile volume will be higher and the Falls will be more mifele."
+  },
+  {
+   "id": 681,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "In the rainy season (November to March), the water volume will be higher and the Falls will be more dramatic.",
+   "text": "tqsku 67892 bq y z Sscl Odns 91515"
+  },
+  {
+   "id": 205,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "About ten minutes before it was due to land from its second approach it disapeared.",
+   "text": "Abut tten mlnutes befares ife wtz ducn lto lad fram its seco approa ifn dizapeaeds."
+  },
+  {
+   "id": 205,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "About ten minutes before it was due to land from its second approach it disapeared.",
+   "text": "About ten minutes before it was due lto lahd fram ifnes seconcl opuprooch ifa dizapeared."
+  },
+  {
+   "id": 205,
+   "split": "test",
+   "kind": "made-up",
+   "en": "About ten minutes before it was due to land from its second approach it disapeared.",
+   "text": "About ten minutes vofegi it was due to land from its second approach it mabipule."
+  },
+  {
+   "id": 205,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "About ten minutes before it was due to land from its second approach it disapeared.",
+   "text": "l 72513 laxqh hbu 53285 o kcz"
+  },
+  {
+   "id": 430,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Turkey's area makes it the world's 37th-largest country, and is about the size of Metropolitan France and the United Kingdom combined.",
+   "text": "Tvrkey's oea maes ost thaore worel 37tb-largest caufry, anstd iiss abo thnc ziize af MetropoIitan Fre sahd ute Uhteed Kinc combincd."
+  },
+  {
+   "id": 430,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Turkey's area makes it the world's 37th-largest country, and is about the size of Metropolitan France and the United Kingdom combined.",
+   "text": "Turkey's area makes it the world's 37th-largest country, and is obut tbte sizc olsf Metropolitoh Fr ohdu thle Ufed Kingclom cobned."
+  },
+  {
+   "id": 430,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Turkey's area makes it the world's 37th-largest country, and is about the size of Metropolitan France and the United Kingdom combined.",
+   "text": "Turkey's area makes it the world's 37th-largest country, and is gunaho the size of Metropolitan France and the United Kingdom sifarox."
+  },
+  {
+   "id": 430,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Turkey's area makes it the world's 37th-largest country, and is about the size of Metropolitan France and the United Kingdom combined.",
+   "text": "xmu Dgdf G J 75941 jltz 69150 xs dlq wkwk Lbbf"
+  },
+  {
+   "id": 457,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Another disadvantage of zoom lenses is that the maximum aperture (the speed) of the lens is usually lower.",
+   "text": "oAnoher disavdva oif zorn Ienses ls fhaf efhe moximum aperfure (fhe zpd) ofi tbe lens iz uzually ltowc."
+  },
+  {
+   "id": 457,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Another disadvantage of zoom lenses is that the maximum aperture (the speed) of the lens is usually lower.",
+   "text": "Another disadvantage of zoom lenses is that the maximum operurc (thne spele) osf fbe lenz ivz usualy lowe."
+  },
+  {
+   "id": 457,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Another disadvantage of zoom lenses is that the maximum aperture (the speed) of the lens is usually lower.",
+   "text": "Another zekove of zoom lenses is that the rilivox aperture (the speed) of the lens is usually lower."
+  },
+  {
+   "id": 457,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Another disadvantage of zoom lenses is that the maximum aperture (the speed) of the lens is usually lower.",
+   "text": "hnu m ijtci K o rmb tspc h"
+  },
+  {
+   "id": 231,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The man suspected of detonating the bomb was detained, after sustaining injuries from the blast.",
+   "text": "rhc ran suspecfecl ofr detaiting trhe bornb wons dtaln afer sstaiing injuriz from afhe bIas."
+  },
+  {
+   "id": 231,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The man suspected of detonating the bomb was detained, after sustaining injuries from the blast.",
+   "text": "The man suspected of detonating the bomb wozl detalcd, af sustai inj fram fbe blazf."
+  },
+  {
+   "id": 231,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The man suspected of detonating the bomb was detained, after sustaining injuries from the blast.",
+   "text": "The man sasukin of detonating the bomb was detained, after nibutun motirt from the blast."
+  },
+  {
+   "id": 231,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The man suspected of detonating the bomb was detained, after sustaining injuries from the blast.",
+   "text": "qlo ryjcj 84749 h z S b"
+  },
+  {
+   "id": 814,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Families with small children may need more preparations, but a day outdoors is easily possible even with babies and pre-school children.",
+   "text": "Fmiies wib samall ehilclren zrnay neecl mre prpa bvf ao dyf ouotdoors aiz easi possi evn wib babiecs tahd pre-scal chlldr"
+  },
+  {
+   "id": 814,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Families with small children may need more preparations, but a day outdoors is easily possible even with babies and pre-school children.",
+   "text": "Falmilies vvith sall ehiId rnyu heeed more preparati abuf ae day outdoors is easily possible even with babies and pre-school children."
+  },
+  {
+   "id": 814,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Families with small children may need more preparations, but a day outdoors is easily possible even with babies and pre-school children.",
+   "text": "Families with small children may need more nitax, but a day dabajish is easily possible even with hezort and pre-school children."
+  },
+  {
+   "id": 814,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Families with small children may need more preparations, but a day outdoors is easily possible even with babies and pre-school children.",
+   "text": "Mid 87006 s jxmz k tk"
+  },
+  {
+   "id": 986,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Typical for Norway are steep fjords and valleys that suddenly give way to a high, more or less even plateau.",
+   "text": "Typcall four Noriway are step fjrs ahcls vaIleys tbaf sddenly glvc vvoy froe au hinb, more aor les eveh pla"
+  },
+  {
+   "id": 986,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Typical for Norway are steep fjords and valleys that suddenly give way to a high, more or less even plateau.",
+   "text": "Typical for Norway are steep fjords and valleys that suddenly givc vvay ta o blgb, more or Isz cveh platau."
+  },
+  {
+   "id": 986,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Typical for Norway are steep fjords and valleys that suddenly give way to a high, more or less even plateau.",
+   "text": "Typical for Norway are bevon fjords and valleys that colin give way to a high, more or less even plateau."
+  },
+  {
+   "id": 986,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Typical for Norway are steep fjords and valleys that suddenly give way to a high, more or less even plateau.",
+   "text": "Unz Kwit q a 12182 x Hdvgz ivq Vk m bv 44563 hvvkd"
+  },
+  {
+   "id": 531,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Eighteen holes are played during a regular round, with players usually starting on the first hole on the course and finishing on the eighteenth.",
+   "text": "Eigoteen hool iare playcd dring sa rcgv rauhd, swith pIayerz usualy ztart rson thie fir bole olhu tthe caur anndr fioniing onn the eghteenh."
+  },
+  {
+   "id": 531,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Eighteen holes are played during a regular round, with players usually starting on the first hole on the course and finishing on the eighteenth.",
+   "text": "Eighfen hlez arrc ployd dvr ta regu rouhd, witIh plooy usualIy storting on the first hole on the course and finishing on the eighteenth."
+  },
+  {
+   "id": 531,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Eighteen holes are played during a regular round, with players usually starting on the first hole on the course and finishing on the eighteenth.",
+   "text": "Eighteen cajuhen are played during a regular round, with cunile wecu lifamale on the first hole on the codilex and finishing on the eighteenth."
+  },
+  {
+   "id": 531,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Eighteen holes are played during a regular round, with players usually starting on the first hole on the course and finishing on the eighteenth.",
+   "text": "as agly qq gqm vpqaj sipf gapkm fxui zle Hk axcnk Hnrvh"
+  },
+  {
+   "id": 808,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Nevertheless, there are many distinctive ways of drinking coffee around the world that are worth experiencing.",
+   "text": "Neverheless, fherc aorea may distnctivc vvaylst oofl dri caofof ar tche wolcl thaf orer worib cxperlecing."
+  },
+  {
+   "id": 808,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Nevertheless, there are many distinctive ways of drinking coffee around the world that are worth experiencing.",
+   "text": "Nevertheless, there are many distinctive ways of drinking cofec ara tbe vvorId tht arte worb expcrienclng."
+  },
+  {
+   "id": 808,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Nevertheless, there are many distinctive ways of drinking coffee around the world that are worth experiencing.",
+   "text": "Nevertheless, ronapesh are many distinctive ways of drinking cesaso around the world that are tisix experiencing."
+  },
+  {
+   "id": 808,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Nevertheless, there are many distinctive ways of drinking coffee around the world that are worth experiencing.",
+   "text": "mehbw N Ti Qgbh 38401 j pm Ij"
+  },
+  {
+   "id": 705,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "It seems actually to be more a way of tricking people into believing they have to pay more.",
+   "text": "lf zeernz aetu trlto bne mrare uo wauy af tlcking peoi lto believihg thcy bave fat poiy mr."
+  },
+  {
+   "id": 705,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "It seems actually to be more a way of tricking people into believing they have to pay more.",
+   "text": "It seems actually to be more a way of frcklng pope ito beIiteing tey hvc rto poys more."
+  },
+  {
+   "id": 705,
+   "split": "test",
+   "kind": "made-up",
+   "en": "It seems actually to be more a way of tricking people into believing they have to pay more.",
+   "text": "It rujin jerort to be more a way of tricking people into believing they have to pay more."
+  },
+  {
+   "id": 705,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "It seems actually to be more a way of tricking people into believing they have to pay more.",
+   "text": "zqko Cf h 26828 Qql Pougu loxfz ut fegu Cubyg 21553"
+  },
+  {
+   "id": 842,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "For one thing, northern New Mexico has significant problems with drunk driving, and the concentration of intoxicated drivers is high close to small-town bars.",
+   "text": "Fatr one thihg, nrherh New Mcxco bos sighifieont pirolems wltb elrunk drivslng, and tbei concentalon afa intoxicaed clricrs its hib coste tuoo small-towh basv."
+  },
+  {
+   "id": 842,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "For one thing, northern New Mexico has significant problems with drunk driving, and the concentration of intoxicated drivers is high close to small-town bars.",
+   "text": "Faor onei fbling, nortbern Newe Meieo bash sigtnifieant proble wlha udrhk clriving, and the concentration of intoxicated drivers is high close to small-town bars."
+  },
+  {
+   "id": 842,
+   "split": "test",
+   "kind": "made-up",
+   "en": "For one thing, northern New Mexico has significant problems with drunk driving, and the concentration of intoxicated drivers is high close to small-town bars.",
+   "text": "For one thing, northern New Mexico has significant vusart with zuvash bowi, and the concentration of intoxicated drivers is high fohon to small-town bars."
+  },
+  {
+   "id": 842,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "For one thing, northern New Mexico has significant problems with drunk driving, and the concentration of intoxicated drivers is high close to small-town bars.",
+   "text": "14702 shszh gmrm hhne k qr Kd tdxa Csrp Mdny q"
+  },
+  {
+   "id": 733,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "In the winter, enjoy some of the best skiing in North America, and in the summer try some authentic mountain biking.",
+   "text": "ln tlbe vvinter, enjay same af thea bcsf sii ih Ntartb Ameriea, ade In thca smmer iry smc authen movhtaln bikihg."
+  },
+  {
+   "id": 733,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "In the winter, enjoy some of the best skiing in North America, and in the summer try some authentic mountain biking.",
+   "text": "In the winter, enjoy some of the best skiing in Nrnfh Amerl ahl Ih lbe summr fray seme avtheentic rn blking."
+  },
+  {
+   "id": 733,
+   "split": "test",
+   "kind": "made-up",
+   "en": "In the winter, enjoy some of the best skiing in North America, and in the summer try some authentic mountain biking.",
+   "text": "In the winter, lojawox some of the best logu in North America, and in the summer try some vukish mountain biking."
+  },
+  {
+   "id": 733,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "In the winter, enjoy some of the best skiing in North America, and in the summer try some authentic mountain biking.",
+   "text": "mrgjj Oz f I Gnw ize v m zu ycgy"
+  },
+  {
+   "id": 284,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Last month, there were major protests in Poland when that country signed ACTA, which has led to the Polish government deciding not to ratify the agreement, for now.",
+   "text": "Lazt manth, thee wenres majar protess ini Poloe owhen thota co zign ACTA, wh bas sled tro fbei Palish govern deciing hot tos rafify fbe agremuen, fohr now."
+  },
+  {
+   "id": 284,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Last month, there were major protests in Poland when that country signed ACTA, which has led to the Polish government deciding not to ratify the agreement, for now.",
+   "text": "Last month, there were major protests in Poland when that country signed ACTA, which heoz lecn rfo fhei Poish gouvrnment decidng not fo rolfy nthea agr far onow."
+  },
+  {
+   "id": 284,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Last month, there were major protests in Poland when that country signed ACTA, which has led to the Polish government deciding not to ratify the agreement, for now.",
+   "text": "Last tegucule, there were major protests in Poland when that country signed ACTA, teruvart has led to the Polish foto deciding not to ratify the sorucush, for now."
+  },
+  {
+   "id": 284,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Last month, there were major protests in Poland when that country signed ACTA, which has led to the Polish government deciding not to ratify the agreement, for now.",
+   "text": "Kq v gcw qzm Mu xxb zooix zk Yl ksyv ztngm N Cvyc A"
+  },
+  {
+   "id": 687,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The fabulous riches of the tomb are no longer in it, but have been removed to the Egyptian Museum in Cairo.",
+   "text": "Thle faeb rIches aaf fhc tatmb are ona lo lna lf, buts bave beeh rcmovcd tot the Egypfian Mus in Caio."
+  },
+  {
+   "id": 687,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The fabulous riches of the tomb are no longer in it, but have been removed to the Egyptian Museum in Cairo.",
+   "text": "The fabulous riches of the tomb are no longer in iif, bvf nhac beeht remolved flo tnhrc Egpti Mufeum oitn Calra."
+  },
+  {
+   "id": 687,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The fabulous riches of the tomb are no longer in it, but have been removed to the Egyptian Museum in Cairo.",
+   "text": "The fabulous dojoro of the tomb are no cezirt in it, but have been removed to the Egyptian Museum in Cairo."
+  },
+  {
+   "id": 687,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The fabulous riches of the tomb are no longer in it, but have been removed to the Egyptian Museum in Cairo.",
+   "text": "tg Ciiof Ot bht D Ggj Ci Oeenx ymh"
+  },
+  {
+   "id": 781,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Wildlife is among the most challenging motifs for a photographer, and needs a combination of good luck, patience, experience and good equipment.",
+   "text": "Wildulle ls amo the mset chllenging mofifs flor o phot ealncl aneeds tca cobinafion uof god lutck, paticnc erxperiebce ancl goerd equipent."
+  },
+  {
+   "id": 781,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Wildlife is among the most challenging motifs for a photographer, and needs a combination of good luck, patience, experience and good equipment.",
+   "text": "Wildlife is among the most challenging motifs for a photographer, and neclz na cmbinatoni af gocl Ik, patiene, experlence ond goad eaquipmehf."
+  },
+  {
+   "id": 781,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Wildlife is among the most challenging motifs for a photographer, and needs a combination of good luck, patience, experience and good equipment.",
+   "text": "Wildlife is among the most nanumi motifs for a photographer, and needs a hurelix of good luck, tigolirt, experience and good kokizart."
+  },
+  {
+   "id": 781,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Wildlife is among the most challenging motifs for a photographer, and needs a combination of good luck, patience, experience and good equipment.",
+   "text": "Dwx Hoy Dqhc 40189 zbdq 82200 pblwr oh Oy eg Adv htz 46151 Unqdg"
+  },
+  {
+   "id": 868,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Especially in your initial days, consider splurging on Western-style and -quality hotels, food, and services to help acclimatize.",
+   "text": "Ezpcially lh yuro iniil dys, cnsider ssplurging oh Wstern-s ancIu -ualify hatels, fod, ohd servlces tno hIp aclimatze."
+  },
+  {
+   "id": 868,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Especially in your initial days, consider splurging on Western-style and -quality hotels, food, and services to help acclimatize.",
+   "text": "Especially in your initial days, consider splurging on Western-style ohd -qallty hot foocl, anod zervlces tos hclp acdlmtize."
+  },
+  {
+   "id": 868,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Especially in your initial days, consider splurging on Western-style and -quality hotels, food, and services to help acclimatize.",
+   "text": "Especially in your initial days, zunon capazart on Western-style and -quality hotels, food, and services to help acclimatize."
+  },
+  {
+   "id": 868,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Especially in your initial days, consider splurging on Western-style and -quality hotels, food, and services to help acclimatize.",
+   "text": "ec Ljnv h m Di wejgm kvps Vbprt Gbp rqmsm"
+  },
+  {
+   "id": 888,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "A couple of thousand staff live here in summer in some four dozen bases mostly in those areas; a small number stay over winter.",
+   "text": "Al copIe laf thousanel staff livsc hre ian svrmmer in esme four dozcnn bo motly tib thoze rae ou smoll numir rsfiay avr wntr."
+  },
+  {
+   "id": 888,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "A couple of thousand staff live here in summer in some four dozen bases mostly in those areas; a small number stay over winter.",
+   "text": "A couple of thousand staff live here in summer in some four dazten bahses mostIy ein foe arz; sza zmal ihmber sayn ovc lvvin"
+  },
+  {
+   "id": 888,
+   "split": "test",
+   "kind": "made-up",
+   "en": "A couple of thousand staff live here in summer in some four dozen bases mostly in those areas; a small number stay over winter.",
+   "text": "A libave of pejuden staff live here in rulidort in some four dozen zareke mostly in those areas; a small number stay over winter."
+  },
+  {
+   "id": 888,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "A couple of thousand staff live here in summer in some four dozen bases mostly in those areas; a small number stay over winter.",
+   "text": "31600 y o hq p ra mdi"
+  },
+  {
+   "id": 112,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Mr. Rudd's decision to sign the Kyoto climate accord isolates the United States, which will now be the only developed nation not to ratify the agreement.",
+   "text": "Mr. Rud clecisi tto sigh thet Kyofo elui aeard isola thc Unted St wnhlh swill hov beb thc aly develapd notion naoat ita rofify tce ogreement."
+  },
+  {
+   "id": 112,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Mr. Rudd's decision to sign the Kyoto climate accord isolates the United States, which will now be the only developed nation not to ratify the agreement.",
+   "text": "Mr. Rudd's decision to sign the Kyoto climate accord isolates the United States, vvhich wll enow buef the olny clevcloped hoton not ttro rafy the ogree"
+  },
+  {
+   "id": 112,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Mr. Rudd's decision to sign the Kyoto climate accord isolates the United States, which will now be the only developed nation not to ratify the agreement.",
+   "text": "Mr. Rudd's decision to sign the Kyoto lurarert zuwan nacen the United States, zogivort will now be the only developed nation not to ratify the agreement."
+  },
+  {
+   "id": 112,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Mr. Rudd's decision to sign the Kyoto climate accord isolates the United States, which will now be the only developed nation not to ratify the agreement.",
+   "text": "Vu Ir l z Qie km kzue ewnbc 5696 brwez v 26608 77826 vwhg"
+  },
+  {
+   "id": 900,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The problem is that snow is sticky, so it needs some triggering to come down, and some snow coming down can be the triggering event for the rest.",
+   "text": "Tboe probern is tat shw aio sfiaky, tsoI itur needsu zrne triggcring fa eome clown, aed zomc lsow cig don reah bel utbe trlggerihg evertht fort fhe resf."
+  },
+  {
+   "id": 900,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The problem is that snow is sticky, so it needs some triggering to come down, and some snow coming down can be the triggering event for the rest.",
+   "text": "The problem is that snow is sticky, so it needs some triggering to come dawn, nauncl somc isnow crni aclon con bei fhe frlggring eIvent far fbel rc."
+  },
+  {
+   "id": 900,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The problem is that snow is sticky, so it needs some triggering to come down, and some snow coming down can be the triggering event for the rest.",
+   "text": "The pekonurt is that snow is levacole, so it needs some triggering to come down, and some snow majule down can be the triggering event for the rest."
+  },
+  {
+   "id": 900,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The problem is that snow is sticky, so it needs some triggering to come down, and some snow coming down can be the triggering event for the rest.",
+   "text": "s ys zut Zrw zf wrvq"
+  },
+  {
+   "id": 708,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Stone steps are laid along most of the path, and in the steeper sections steel cables provide a supporting handrail.",
+   "text": "Sf stes aree laid ialog mste af tbe patb, ancl rin tbe stepr seeions zfecl coles prvlade so sv handraiaI."
+  },
+  {
+   "id": 708,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Stone steps are laid along most of the path, and in the steeper sections steel cables provide a supporting handrail.",
+   "text": "St sfes are lacl alng mosf tofc thea patroh, ahd in the steeper sections steel cables provide a supporting handrail."
+  },
+  {
+   "id": 708,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Stone steps are laid along most of the path, and in the steeper sections steel cables provide a supporting handrail.",
+   "text": "Stone steps are laid along most of the path, and in the steeper sections levurt dujozush vudi a supporting lapake."
+  },
+  {
+   "id": 708,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Stone steps are laid along most of the path, and in the steeper sections steel cables provide a supporting handrail.",
+   "text": "Ii 51570 29664 mdfd xbhd uk mnrz q B ldnq"
+  },
+  {
+   "id": 623,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Such success stories lessened the fears of change, while creating positive inclinations toward change in the future.",
+   "text": "aSueh sucesz storls lezsehed tnbe fars olf ehs wbile crca positivc aincel tawarcll ehahge ih the ofu"
+  },
+  {
+   "id": 623,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Such success stories lessened the fears of change, while creating positive inclinations toward change in the future.",
+   "text": "Svh zvcccss ztor lesscned the fars of can while creating positive inclinations toward change in the future."
+  },
+  {
+   "id": 623,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Such success stories lessened the fears of change, while creating positive inclinations toward change in the future.",
+   "text": "Such ferurt stories cagurt the fears of wopomix, while creating positive huze toward change in the bumen."
+  },
+  {
+   "id": 623,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Such success stories lessened the fears of change, while creating positive inclinations toward change in the future.",
+   "text": "cuvjq Kl kaz Gs utykg i ssjur hdp Hsd T"
+  },
+  {
+   "id": 680,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "The town lies immediately next to the falls, and they are the major attraction, but this popular tourist destination offers both adventure seekers and sightseers plenty of opportunities for a longer stay.",
+   "text": "Tohc tan Iis imediatly nef ta the falIs, oand thcy alrse thr mar attrafion, bvt tbis papvar tourit destition offersf bsoth adventurre scekers ahd sl plhty of opportunities ftor oaoa loner zfay."
+  },
+  {
+   "id": 680,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "The town lies immediately next to the falls, and they are the major attraction, but this popular tourist destination offers both adventure seekers and sightseers plenty of opportunities for a longer stay.",
+   "text": "Tboe towh Iles imediateloy ncxt toh tbe fa asd fbeys nare thei rnlajor attraetion, abut thizt popular tourist destination offers both adventure seekers and sightseers plenty of opportunities for a longer stay."
+  },
+  {
+   "id": 680,
+   "split": "test",
+   "kind": "made-up",
+   "en": "The town lies immediately next to the falls, and they are the major attraction, but this popular tourist destination offers both adventure seekers and sightseers plenty of opportunities for a longer stay.",
+   "text": "The town lies immediately next to the zafesh, and they are the major attraction, but this tidevort tourist destination cajidart both vowida gitert and sightseers plenty of focefax for a longer stay."
+  },
+  {
+   "id": 680,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "The town lies immediately next to the falls, and they are the major attraction, but this popular tourist destination offers both adventure seekers and sightseers plenty of opportunities for a longer stay.",
+   "text": "Gc jamt bd ml ufpg 14445 Ft Fkzm Uhwf ykxy ljd smi W Aq"
+  },
+  {
+   "id": 359,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Scientists call this process \"stimulated emission of radiation\" because the atoms are stimulated by the bright light, causing the emission of a photon of light, and light is a type of radiation.",
+   "text": "Scientisr elI thls proeess \"simulated emisseion af radation\" blecouse thc atos ore stlrnulated bya fhc brlghf ligt, cousi tihel emisins rof o phoon af Iight, ahd lighff iz orn tyatpc aife roditlon."
+  },
+  {
+   "id": 359,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Scientists call this process \"stimulated emission of radiation\" because the atoms are stimulated by the bright light, causing the emission of a photon of light, and light is a type of radiation.",
+   "text": "Scentiss coll ths protess \"stimulfed ernzsion ofou radiati bauze fhale afoms aore ztimulated by tzhe briht light, causing the emission of a photon of light, and light is a type of radiation."
+  },
+  {
+   "id": 359,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Scientists call this process \"stimulated emission of radiation\" because the atoms are stimulated by the bright light, causing the emission of a photon of light, and light is a type of radiation.",
+   "text": "Scientists call this bizash \"stimulated emission of radiation\" wuzush the atoms are latoji by the bright dinijurt, causing the emission of a photon of jibicirt, and light is a type of radiation."
+  },
+  {
+   "id": 359,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Scientists call this process \"stimulated emission of radiation\" because the atoms are stimulated by the bright light, causing the emission of a photon of light, and light is a type of radiation.",
+   "text": "Cmten 16406 Kqz K vmgzo 96435 ezrlt ew vda"
+  },
+  {
+   "id": 582,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Tornadoes uproot trees, rip boards from buildings, and fling cars up into the sky. The most violent two percent of tornadoes last more than three hours.",
+   "text": "Tornaduoes vpoote frecz, roip bor frorn buidng, ancl fIng ciairs uutp ihtto nthieo zy. The mazt vlolent tvva percehf rof trhadoes lata mnore than thr hsaur."
+  },
+  {
+   "id": 582,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Tornadoes uproot trees, rip boards from buildings, and fling cars up into the sky. The most violent two percent of tornadoes last more than three hours.",
+   "text": "TornocIoes upof treez, irip baards from buidingss, ond fI carz vp ihto fhe sky. The most violent two percent of tornadoes last more than three hours."
+  },
+  {
+   "id": 582,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Tornadoes uproot trees, rip boards from buildings, and fling cars up into the sky. The most violent two percent of tornadoes last more than three hours.",
+   "text": "Tornadoes gafox robin, rip boards from buildings, and fling cars up into the sky. The most rada two percent of tornadoes last more than three hozuwa."
+  },
+  {
+   "id": 582,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Tornadoes uproot trees, rip boards from buildings, and fling cars up into the sky. The most violent two percent of tornadoes last more than three hours.",
+   "text": "87353 52042 O bks w H sffcy lyx Vipua Ubpg ghlb q vsvvu t"
+  },
+  {
+   "id": 782,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "Wildlife photography is often taken for granted, but like photography in general, a picture is worth a thousand words.",
+   "text": "Wildlle photograpby iz aft taeb far gr buth liikc photogrophy lnn gcneral, o plcteure is vvolr ara tho wao"
+  },
+  {
+   "id": 782,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "Wildlife photography is often taken for granted, but like photography in general, a picture is worth a thousand words.",
+   "text": "Wildlife photography is often taken for granted, but like pbofograpby ib geeral, sa picfure iz anwo at fhousond wores."
+  },
+  {
+   "id": 782,
+   "split": "test",
+   "kind": "made-up",
+   "en": "Wildlife photography is often taken for granted, but like photography in general, a picture is worth a thousand words.",
+   "text": "Wildlife vapirush is often taken for tukort, but like lezex in general, a picture is worth a rikert words."
+  },
+  {
+   "id": 782,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "Wildlife photography is often taken for granted, but like photography in general, a picture is worth a thousand words.",
+   "text": "wbqug cz ggmz Y t gozl B 64837 48636"
+  },
+  {
+   "id": 413,
+   "split": "test",
+   "kind": "garbled all",
+   "en": "We know many Greek politicians, scientists, and artists. Possibly the most known person of this culture is Homer, the legendary blind poet, who composed two masterpieces of Greek literature: the poems Iliad and Odyssey.",
+   "text": "Weh knavv mony Gre poIitcians, scientiztrs, acl ar Passibly tbcr rnonst knatn prsoh afo ths ucu ls Horm utbc legt oblincl poet, whro cornposecl ltwas mastcrp tof Grck llterotue: tbe poms lliod ahd Oclysscy."
+  },
+  {
+   "id": 413,
+   "split": "test",
+   "kind": "garbled half",
+   "en": "We know many Greek politicians, scientists, and artists. Possibly the most known person of this culture is Homer, the legendary blind poet, who composed two masterpieces of Greek literature: the poems Iliad and Odyssey.",
+   "text": "We know many Greek politicians, scientists, and artists. Possibly the most known person of this culture is Hosrner, thc tlegendary bllind ploet, wuho comp fwo masterpieccs af Grek lierature: the paems Ilacl ads Ocluysscy."
+  },
+  {
+   "id": 413,
+   "split": "test",
+   "kind": "made-up",
+   "en": "We know many Greek politicians, scientists, and artists. Possibly the most known person of this culture is Homer, the legendary blind poet, who composed two masterpieces of Greek literature: the poems Iliad and Odyssey.",
+   "text": "We know many Greek politicians, scientists, and artists. Possibly the most nicetort pozudole of this culture is Homer, the gilirt blind poet, who necile two masterpieces of Greek literature: the poems Iliad and Odyssey."
+  },
+  {
+   "id": 413,
+   "split": "test",
+   "kind": "gibberish",
+   "en": "We know many Greek politicians, scientists, and artists. Possibly the most known person of this culture is Homer, the legendary blind poet, who composed two masterpieces of Greek literature: the poems Iliad and Odyssey.",
+   "text": "cexab pr fvdit 55013 cpid ek Xzeu mjs"
+  },
+  {
+   "id": 10000,
+   "split": "dev",
+   "kind": "names",
+   "en": "Open Bento and Aurora on the Nautilus before lunch.",
+   "text": "Open Bento and Aurora on the Nautilus before lunch."
+  },
+  {
+   "id": 10001,
+   "split": "test",
+   "kind": "names",
+   "en": "I bought a Nautilus subscription for my sister.",
+   "text": "I bought a Nautilus subscription for my sister."
+  },
+  {
+   "id": 10002,
+   "split": "test",
+   "kind": "names",
+   "en": "Can you send the Figma file to Priya before the meeting?",
+   "text": "Can you send the Figma file to Priya before the meeting?"
+  },
+  {
+   "id": 10003,
+   "split": "dev",
+   "kind": "names",
+   "en": "We watched Parasite on Netflix with Minh and Sarah last night.",
+   "text": "We watched Parasite on Netflix with Minh and Sarah last night."
+  },
+  {
+   "id": 10004,
+   "split": "test",
+   "kind": "names",
+   "en": "The Aurora update for Bento ships on Tuesday.",
+   "text": "The Aurora update for Bento ships on Tuesday."
+  },
+  {
+   "id": 10005,
+   "split": "test",
+   "kind": "names",
+   "en": "My cousin works at Accenture in Houston.",
+   "text": "My cousin works at Accenture in Houston."
+  },
+  {
+   "id": 10006,
+   "split": "dev",
+   "kind": "names",
+   "en": "Download Spotify and search for Phương Mỹ Chi.",
+   "text": "Download Spotify and search for Phương Mỹ Chi."
+  },
+  {
+   "id": 10007,
+   "split": "test",
+   "kind": "names",
+   "en": "Ask Grandma Lan if she wants to visit Baltimore in the spring.",
+   "text": "Ask Grandma Lan if she wants to visit Baltimore in the spring."
+  },
+  {
+   "id": 10008,
+   "split": "test",
+   "kind": "names",
+   "en": "The Nautilus app crashed again when I opened Bento.",
+   "text": "The Nautilus app crashed again when I opened Bento."
+  },
+  {
+   "id": 10009,
+   "split": "dev",
+   "kind": "names",
+   "en": "Ryan Gosling and Emma Stone starred in La La Land.",
+   "text": "Ryan Gosling and Emma Stone starred in La La Land."
+  },
+  {
+   "id": 10010,
+   "split": "test",
+   "kind": "names",
+   "en": "I left my iPhone charger at the Hilton near Union Station.",
+   "text": "I left my iPhone charger at the Hilton near Union Station."
+  },
+  {
+   "id": 10011,
+   "split": "test",
+   "kind": "names",
+   "en": "Kendrick Lamar and SZA are playing at Capital One Arena.",
+   "text": "Kendrick Lamar and SZA are playing at Capital One Arena."
+  },
+  {
+   "id": 10012,
+   "split": "dev",
+   "kind": "names",
+   "en": "Use Slack or Microsoft Teams to message Dr. Nguyen.",
+   "text": "Use Slack or Microsoft Teams to message Dr. Nguyen."
+  },
+  {
+   "id": 10013,
+   "split": "test",
+   "kind": "names",
+   "en": "The Patagonia jacket is on sale at REI this weekend.",
+   "text": "The Patagonia jacket is on sale at REI this weekend."
+  },
+  {
+   "id": 10014,
+   "split": "test",
+   "kind": "names",
+   "en": "Order the bánh mì from Pho Saigon on Bellaire Boulevard.",
+   "text": "Order the bánh mì from Pho Saigon on Bellaire Boulevard."
+  },
+  {
+   "id": 10015,
+   "split": "dev",
+   "kind": "names",
+   "en": "We flew Southwest from Hobby Airport to Philadelphia.",
+   "text": "We flew Southwest from Hobby Airport to Philadelphia."
+  },
+  {
+   "id": 10016,
+   "split": "test",
+   "kind": "names",
+   "en": "Grace Hopper wrote the first compiler for the UNIVAC.",
+   "text": "Grace Hopper wrote the first compiler for the UNIVAC."
+  },
+  {
+   "id": 10017,
+   "split": "test",
+   "kind": "names",
+   "en": "Tell Kevin that the Tesla Model Y needs new tires.",
+   "text": "Tell Kevin that the Tesla Model Y needs new tires."
+  },
+  {
+   "id": 10018,
+   "split": "dev",
+   "kind": "names",
+   "en": "The Intercept and Al Jazeera both covered the story.",
+   "text": "The Intercept and Al Jazeera both covered the story."
+  },
+  {
+   "id": 10019,
+   "split": "test",
+   "kind": "names",
+   "en": "Please install Zoom, Notion and Obsidian on the new MacBook.",
+   "text": "Please install Zoom, Notion and Obsidian on the new MacBook."
+  },
+  {
+   "id": 10020,
+   "split": "test",
+   "kind": "names",
+   "en": "Bento, Aurora and Nautilus are all made by Starlight Labs.",
+   "text": "Bento, Aurora and Nautilus are all made by Starlight Labs."
+  },
+  {
+   "id": 10021,
+   "split": "dev",
+   "kind": "names",
+   "en": "Professor Okonkwo teaches at Johns Hopkins.",
+   "text": "Professor Okonkwo teaches at Johns Hopkins."
+  },
+  {
+   "id": 10022,
+   "split": "test",
+   "kind": "names",
+   "en": "My favorite album is Blonde by Frank Ocean.",
+   "text": "My favorite album is Blonde by Frank Ocean."
+  },
+  {
+   "id": 10023,
+   "split": "test",
+   "kind": "names",
+   "en": "Did you see the new Pixar movie at the AMC in Towson?",
+   "text": "Did you see the new Pixar movie at the AMC in Towson?"
+  },
+  {
+   "id": 10024,
+   "split": "dev",
+   "kind": "names",
+   "en": "The Trader Joe’s on Charles Street opens at nine.",
+   "text": "The Trader Joe’s on Charles Street opens at nine."
+  },
+  {
+   "id": 10025,
+   "split": "test",
+   "kind": "names",
+   "en": "Linh uses Duolingo and Anki to study Korean.",
+   "text": "Linh uses Duolingo and Anki to study Korean."
+  },
+  {
+   "id": 10026,
+   "split": "test",
+   "kind": "names",
+   "en": "We are meeting at Blue Bottle Coffee near Rittenhouse Square.",
+   "text": "We are meeting at Blue Bottle Coffee near Rittenhouse Square."
+  },
+  {
+   "id": 10027,
+   "split": "dev",
+   "kind": "names",
+   "en": "Microsoft Excel and Google Sheets can both open CSV files.",
+   "text": "Microsoft Excel and Google Sheets can both open CSV files."
+  },
+  {
+   "id": 10028,
+   "split": "test",
+   "kind": "names",
+   "en": "The Golden Gate Bridge is in San Francisco.",
+   "text": "The Golden Gate Bridge is in San Francisco."
+  },
+  {
+   "id": 10029,
+   "split": "test",
+   "kind": "names",
+   "en": "Marcus, Aaliyah and Tomás joined the GitHub organization.",
+   "text": "Marcus, Aaliyah and Tomás joined the GitHub organization."
+  }
+ ]
+}
