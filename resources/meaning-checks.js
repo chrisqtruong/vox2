@@ -37,6 +37,9 @@ const NEGATIVE_WORDS = new Set(['without', 'unknown', 'unknowingly', 'unaware', 
   'failed', 'failing', 'refuse', 'refuses', 'refused', 'deny', 'denies', 'denied', 'absent', 'hardly', 'barely', 'scarcely', 'rarely', 'seldom']);
 // Grown for Phase 1.2 (from runs 2–3's false alarms): "doubt" = not sure, "absence" = lack.
 for (const w of ['doubt', 'doubts', 'doubted', 'doubtful', 'absence']) NEGATIVE_WORDS.add(w);
+// Phase 1.3 (high-stakes test): "unless" means "if not", so "If pregnant, ask a doctor" and "Unless pregnant,
+// ask a doctor" don't balance, while "unless directed" ↩ "if not directed" does.
+NEGATIVE_WORDS.add('unless');
 // in-/im-/il-/ir- words are listed one by one: the prefix alone would also catch "important", "include", "image".
 const BUILT_NEGATIVE = new Set(['immoral', 'impractical', 'improper', 'impatient', 'imperfect', 'impolite',
   'implausible', 'incorrect', 'inaccurate', 'inadequate', 'incapable', 'incomplete', 'inconsistent', 'indestructible', 'indomitable',
@@ -220,6 +223,48 @@ function measures(s) {
 const sameMeasure = (u, w) => u.kind === w.kind && u.unit !== w.unit
   && (u.kind === 'temp' ? Math.abs(u.base - w.base) <= 1.5 : Math.abs(u.base - w.base) <= 0.06 * Math.max(u.base, w.base));
 
+// Units next to a number (Phase 1.3, from the high-stakes test): the same number with a different unit of
+// the same kind is a different amount: "1 to 2 days" ↩ "1 to 2 weeks", "4,000 mg" ↩ "4,000 g", "100.4 °F" ↩
+// "100.4 °C", "8:00 a.m." ↩ "8:00 p.m.", "each week" ↩ "each day". A conversion is still the same amount
+// ("2 weeks" = "14 days", "90°F" = "32°C"): only the same number with another unit counts.
+const UNIT_WORDS = [
+  ['time', 1, 'seconds?|secs?'], ['time', 60, 'minutes?|mins?'], ['time', 3600, 'hours?|hrs?'], ['time', 86400, 'days?'],
+  ['time', 604800, 'weeks?'], ['time', 2629800, 'months?'], ['time', 31557600, 'years?|yrs?'],
+  ['mass', 1e-6, 'mcg|µg|micrograms?'], ['mass', 1e-3, 'mg|milligrams?'], ['mass', 1, 'g|grams?'], ['mass', 1e3, 'kg|kilograms?'],
+  ['volume', 1, 'ml|millilit(?:er|re)s?'], ['volume', 1e3, 'l|lit(?:er|re)s?'], ['volume', 4.93, 'tsp|teaspoons?(?:ful)?'], ['volume', 14.79, 'tbsp|tablespoons?(?:ful)?'],
+];
+const UNIT_AFTER_NUMBER = new RegExp(String.raw`(\d+(?:\.\d+)?)((?:\s*(?:to|-|–|or|and)\s*\d+(?:\.\d+)?)*)[\s-]*(?:(?:calendar|business|working)[\s-]+)?(${UNIT_WORDS.map((u) => u[2]).join('|')})(?![\p{L}\d])`, 'giu');
+function unitAmounts(s) {
+  const t = numberWordsToDigits(s.replace(/(\d)[,](?=\d{3}(?!\d))/g, '$1'), 'en');
+  const found = [];
+  for (const m of t.matchAll(UNIT_AFTER_NUMBER)) {
+    const [kind, factor] = UNIT_WORDS.find(([, , re]) => new RegExp(`^(?:${re})$`, 'i').test(m[3]));
+    for (const v of [m[1], ...(m[2].match(/\d+(?:\.\d+)?/g) || [])]) found.push({ v: parseFloat(v), kind, factor, word: m[3] });
+  }
+  for (const u of measures(s)) if (u.kind === 'temp') found.push({ v: u.v, kind: 'temp', factor: u.unit.source.includes('F') ? 'F' : 'C', word: u.unit.source.includes('F') ? '°F' : '°C' });
+  return found;
+}
+// How often: "each day", "twice a day", "daily" → day.
+const FREQUENCY = /\b(?:per|each|every)\s+(hour|day|week|month|year)\b|\b(?:once|twice|times?|\d+\s+[a-z]+)\s+an?\s+(hour|day|week|month|year)\b|\b(hour|dai|week|month|year)ly\b|\b(annual)ly\b/gi;
+const frequencies = (s) => new Set([...numberWordsToDigits(s, 'en').matchAll(FREQUENCY)].map((m) => ({ dai: 'day', annual: 'year' })[(m[1] || m[2] || m[3] || m[4]).toLowerCase()] || (m[1] || m[2] || m[3] || m[4]).toLowerCase()));
+// Clock times: "8:00 a.m." ↩ "8:00 p.m." keeps the number but not the time.
+const clockTimes = (s) => [...s.matchAll(/\b(\d{1,2})(?::(\d\d))?\s*([ap])\.?\s?m\b\.?/gi)].map((m) => ({ t: `${m[1]}:${m[2] || '00'}`, half: m[3].toLowerCase() }));
+function unitChange(original, back) {
+  const [ua, ub] = [unitAmounts(original), unitAmounts(back)];
+  for (const x of ua) {
+    const same = ub.filter((y) => y.kind === x.kind && y.v === x.v);
+    if (!same.length || same.some((y) => y.factor === x.factor)) continue;
+    const converted = (y) => typeof x.factor === 'number' && Math.abs(y.v * y.factor - x.v * x.factor) <= 0.06 * x.v * x.factor;
+    if (ub.some((y) => y.kind === x.kind && converted(y))) continue;
+    return { from: x.word, to: same[0].word };
+  }
+  const [fa, fb] = [frequencies(original), frequencies(back)];
+  if (fa.size && fb.size && ![...fb].every((f) => fa.has(f))) return { from: `each ${[...fa][0]}`, to: `each ${[...fb].find((f) => !fa.has(f))}`, word: [...fb].find((f) => !fa.has(f)) };
+  const [ca, cb] = [clockTimes(original), clockTimes(back)];
+  for (const x of ca) { const y = cb.find((z) => z.t === x.t && z.half !== x.half); if (y) return { from: `${x.t} ${x.half}.m.`, to: `${y.t} ${y.half}.m.`, word: `${y.half}.m` }; }
+  return null;
+}
+
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -236,7 +281,9 @@ export function meaningChecks(original, back, lang) {
   if (na.length % 2 !== nb.length % 2 && (na.length + built(original)) % 2 !== (nb.length + built(back)) % 2) {
     // The words to point at: the extra negation in the ↩ line, or the one of yours that didn't come back.
     const more = nb.length > na.length;
-    found.push({ kind: 'negation', detail: more ? 'a "not" (or "no", "never"…) appeared' : 'a "not" (or "no", "never"…) from your text didn\'t come back', words: more ? nb : [], missing: more ? [] : na });
+    const unless = (more ? nb : na).includes('unless');
+    const what = unless ? 'an "unless" (if not)' : 'a "not" (or "no", "never"…)';
+    found.push({ kind: 'negation', detail: more ? `${what} appeared` : `${what} from your text didn't come back`, words: more ? nb : [], missing: more ? [] : na });
   }
 
   const has = (ws, set) => ws.some((w) => set.has(w));
@@ -266,6 +313,9 @@ export function meaningChecks(original, back, lang) {
       break;
     }
   }
+
+  const unit = unitChange(original, back);
+  if (unit) found.push({ kind: 'unit', detail: `a unit changed: "${unit.from}" became "${unit.to}"`, words: [unit.word || unit.to] });
 
   for (const list of [MONTHS, DAYS]) {
     const ma = list.filter((w) => sa.has(w)).join();

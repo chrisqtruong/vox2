@@ -51,16 +51,20 @@ for (const lang of langs) {
   if (doneLangs.has(lang)) continue;
   const g = GOOGLE[lang];
   const [goodFwd, badFwd] = [await translate(items.map((x) => x.en), 'en', g), await translate(items.map((x) => x.bad_en), 'en', g)];
+  // Item sets without professional translations (e.g. items-hs1.json) skip that row.
+  const hasRefs = items.every((x) => x.refs?.[lang]);
   const [refBack, goodBack, badBack] = [
-    await translate(items.map((x) => x.refs[lang]), g, 'en'),
+    hasRefs ? await translate(items.map((x) => x.refs[lang]), g, 'en') : [],
     await translate(goodFwd, g, 'en'),
     await translate(badFwd, g, 'en'),
   ];
   for (let i = 0; i < items.length; i++) {
     const it = items[i];
-    for (const [kind, translation, back] of [['good: professional', it.refs[lang], refBack[i]], ['good: Google', goodFwd[i], goodBack[i]], ['bad', badFwd[i], badBack[i]]]) {
+    const rows = [['good: Google', goodFwd[i], goodBack[i]], ['bad', badFwd[i], badBack[i]]];
+    if (hasRefs) rows.unshift(['good: professional', it.refs[lang], refBack[i]]);
+    for (const [kind, translation, back] of rows) {
       const { score, similarity, numbersDiffer, checks } = await matchScore(it.en, back, 'en');
-      results.push({ lang, id: it.id, split: it.split || 'dev', error: it.kind, kind, en: it.en, bad_en: it.bad_en, translation, back,
+      results.push({ lang, id: it.id, split: it.split || 'dev', error: it.kind, ...(it.domain ? { domain: it.domain } : {}), kind, en: it.en, bad_en: it.bad_en, translation, back,
         score, similarity, numbersDiffer, checks: checks.map((c) => c.kind), scoreRun1: oldScore(it.en, back, similarity) });
     }
   }

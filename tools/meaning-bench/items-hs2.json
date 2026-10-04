@@ -1,0 +1,1313 @@
+{
+ "langs": [
+  "vie_Latn",
+  "jpn_Jpan",
+  "kor_Hang",
+  "zho_Hans",
+  "spa_Latn",
+  "arb_Arab",
+  "hin_Deva",
+  "fra_Latn",
+  "tgl_Latn",
+  "por_Latn",
+  "urd_Arab"
+ ],
+ "items": [
+  {
+   "id": 9201,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/food-safety/foods/chicken.html",
+   "en": "Wash your hands with soap and water for at least 20 seconds before and after handling raw chicken.",
+   "bad_en": "Wash your hands with soap and water for at least 5 seconds before and after handling raw chicken.",
+   "split": "test"
+  },
+  {
+   "id": 9202,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Never leave perishable food out for more than 2 hours.",
+   "bad_en": "Never leave perishable food out for more than 4 hours.",
+   "split": "test"
+  },
+  {
+   "id": 9203,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "If the food is exposed to temperatures above 90°F, like a hot car or picnic, refrigerate it within 1 hour.",
+   "bad_en": "If the food is exposed to temperatures above 90°F, like a hot car or picnic, refrigerate it within 3 hours.",
+   "split": "test"
+  },
+  {
+   "id": 9204,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Keep your refrigerator at 40°F or below and your freezer at 0°F or below.",
+   "bad_en": "Keep your refrigerator at 50°F or below and your freezer at 0°F or below.",
+   "split": "test"
+  },
+  {
+   "id": 9205,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Cook poultry to a safe minimum internal temperature of 165°F, as measured with a food thermometer.",
+   "bad_en": "Cook poultry to a safe minimum internal temperature of 145°F, as measured with a food thermometer.",
+   "split": "test"
+  },
+  {
+   "id": 9206,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Allow the meat to rest for 3 minutes before carving or eating.",
+   "bad_en": "Allow the meat to rest for 30 minutes before carving or eating.",
+   "split": "test"
+  },
+  {
+   "id": 9207,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If your blood glucose is less than 70 mg/dL, eat or drink 15 to 20 grams of glucose or carbohydrates right away.",
+   "bad_en": "If your blood glucose is less than 50 mg/dL, eat or drink 15 to 20 grams of glucose or carbohydrates right away.",
+   "split": "test"
+  },
+  {
+   "id": 9208,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "Drink half a cup, or 4 ounces, of fruit juice to treat low blood glucose.",
+   "bad_en": "Drink two cups, or 16 ounces, of fruit juice to treat low blood glucose.",
+   "split": "test"
+  },
+  {
+   "id": 9209,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "Increasing your physical activity can lower your blood glucose level for up to 24 hours after the activity.",
+   "bad_en": "Increasing your physical activity can lower your blood glucose level for up to 2 hours after the activity.",
+   "split": "test"
+  },
+  {
+   "id": 9210,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Reapply sunscreen at least every two hours, and more often if you're sweating or swimming.",
+   "bad_en": "Reapply sunscreen at least every five hours, and more often if you're sweating or swimming.",
+   "split": "test"
+  },
+  {
+   "id": 9211,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Choose a broad-spectrum sunscreen with an SPF of at least 15.",
+   "bad_en": "Choose a broad-spectrum sunscreen with an SPF of at least 5.",
+   "split": "test"
+  },
+  {
+   "id": 9212,
+   "domain": "medical",
+   "kind": "number",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "The chance of severe stomach bleeding is higher if you are 60 or older.",
+   "bad_en": "The chance of severe stomach bleeding is higher if you are 80 or older.",
+   "split": "test"
+  },
+  {
+   "id": 9213,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.cdc.gov/food-safety/foods/chicken.html",
+   "en": "Wash your hands with soap and water for at least 20 seconds after handling raw chicken.",
+   "bad_en": "Wash your hands with soap and water for at least 20 minutes after handling raw chicken.",
+   "split": "test"
+  },
+  {
+   "id": 9214,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Refrigerate perishable food, such as meat, seafood, dairy and cooked leftovers, within 2 hours.",
+   "bad_en": "Refrigerate perishable food, such as meat, seafood, dairy and cooked leftovers, within 2 days.",
+   "split": "test"
+  },
+  {
+   "id": 9215,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "If the food is exposed to temperatures above 90°F, refrigerate it within 1 hour.",
+   "bad_en": "If the food is exposed to temperatures above 90°C, refrigerate it within 1 hour.",
+   "split": "test"
+  },
+  {
+   "id": 9216,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Cook poultry to an internal temperature of 165°F.",
+   "bad_en": "Cook poultry to an internal temperature of 165°C.",
+   "split": "test"
+  },
+  {
+   "id": 9217,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Let the meat rest for 3 minutes before carving or eating it.",
+   "bad_en": "Let the meat rest for 3 hours before carving or eating it.",
+   "split": "test"
+  },
+  {
+   "id": 9218,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If your blood glucose is below your target, take 15 to 20 grams of glucose or carbohydrates right away.",
+   "bad_en": "If your blood glucose is below your target, take 15 to 20 milligrams of glucose or carbohydrates right away.",
+   "split": "test"
+  },
+  {
+   "id": 9219,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "Drink 4 ounces of fruit juice to treat low blood glucose.",
+   "bad_en": "Drink 4 quarts of fruit juice to treat low blood glucose.",
+   "split": "test"
+  },
+  {
+   "id": 9220,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "Physical activity can lower your blood glucose for up to 24 hours afterward.",
+   "bad_en": "Physical activity can lower your blood glucose for up to 24 days afterward.",
+   "split": "test"
+  },
+  {
+   "id": 9221,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Reapply sunscreen every two hours when you are outdoors.",
+   "bad_en": "Reapply sunscreen every two days when you are outdoors.",
+   "split": "test"
+  },
+  {
+   "id": 9222,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Apply sunscreen 15 minutes before sun exposure.",
+   "bad_en": "Apply sunscreen 15 hours before sun exposure.",
+   "split": "test"
+  },
+  {
+   "id": 9223,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "An average-sized adult needs at least one ounce of sunscreen to cover the body from head to toe.",
+   "bad_en": "An average-sized adult needs at least one pound of sunscreen to cover the body from head to toe.",
+   "split": "test"
+  },
+  {
+   "id": 9224,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "Stop use and ask a doctor if pain gets worse or lasts more than 10 days.",
+   "bad_en": "Stop use and ask a doctor if pain gets worse or lasts more than 10 weeks.",
+   "split": "test"
+  },
+  {
+   "id": 9225,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Never thaw food on the counter.",
+   "bad_en": "Thaw food on the counter.",
+   "split": "test"
+  },
+  {
+   "id": 9226,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Raw chicken is ready to cook and doesn't need to be washed first.",
+   "bad_en": "Raw chicken is ready to cook but needs to be washed first.",
+   "split": "test"
+  },
+  {
+   "id": 9227,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If you have kidney disease, don't drink orange juice, because it has a lot of potassium.",
+   "bad_en": "If you have kidney disease, drink orange juice, because it has a lot of potassium.",
+   "split": "test"
+  },
+  {
+   "id": 9228,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Sunscreen is not recommended for infants under six months old.",
+   "bad_en": "Sunscreen is recommended for infants under six months old.",
+   "split": "test"
+  },
+  {
+   "id": 9229,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Spray sunscreens should never be applied directly to your face.",
+   "bad_en": "Spray sunscreens should be applied directly to your face.",
+   "split": "test"
+  },
+  {
+   "id": 9230,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "Do not use if you have ever had an allergic reaction to any other pain reliever or fever reducer.",
+   "bad_en": "Use it even if you have had an allergic reaction to another pain reliever or fever reducer.",
+   "split": "test"
+  },
+  {
+   "id": 9231,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+   "en": "Stay with the worker until emergency medical services arrive.",
+   "bad_en": "Do not stay with the worker until emergency medical services arrive.",
+   "split": "test"
+  },
+  {
+   "id": 9232,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Never leave perishable food out for more than 2 hours.",
+   "bad_en": "You can leave perishable food out for more than 2 hours.",
+   "split": "test"
+  },
+  {
+   "id": 9233,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "It is okay to put small portions of hot food in the refrigerator, since they will chill faster.",
+   "bad_en": "It is not okay to put small portions of hot food in the refrigerator, even though they will chill faster.",
+   "split": "test"
+  },
+  {
+   "id": 9234,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "If a food is recalled, throw it away.",
+   "bad_en": "If a food is recalled, don't throw it away.",
+   "split": "test"
+  },
+  {
+   "id": 9235,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+   "en": "Call 911 for emergency medical care.",
+   "bad_en": "Do not call 911 for emergency medical care.",
+   "split": "test"
+  },
+  {
+   "id": 9236,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "You might eat a snack before physical activity to prevent low blood glucose.",
+   "bad_en": "You should not eat a snack before physical activity, to prevent low blood glucose.",
+   "split": "test"
+  },
+  {
+   "id": 9237,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.cdc.gov/food-safety/foods/chicken.html",
+   "en": "Wash your hands for 20 seconds after handling raw chicken.",
+   "bad_en": "Wash your hands for 20 seconds before handling raw chicken, but not after.",
+   "split": "test"
+  },
+  {
+   "id": 9238,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Keep your refrigerator at 40°F or below.",
+   "bad_en": "Keep your refrigerator at 40°F or above.",
+   "split": "test"
+  },
+  {
+   "id": 9239,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "The chance of stomach bleeding is higher if you are 60 or older.",
+   "bad_en": "The chance of stomach bleeding is higher if you are 60 or younger.",
+   "split": "test"
+  },
+  {
+   "id": 9240,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Apply sunscreen 15 minutes before sun exposure.",
+   "bad_en": "Apply sunscreen 15 minutes after sun exposure.",
+   "split": "test"
+  },
+  {
+   "id": 9241,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Sunscreen is not recommended for infants under six months old.",
+   "bad_en": "Sunscreen is not recommended for infants over six months old.",
+   "split": "test"
+  },
+  {
+   "id": 9242,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Choose a broad-spectrum sunscreen with an SPF of at least 15.",
+   "bad_en": "Choose a broad-spectrum sunscreen with an SPF of at most 15.",
+   "split": "test"
+  },
+  {
+   "id": 9243,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If your blood glucose is below your target, take 15 to 20 grams of glucose right away.",
+   "bad_en": "If your blood glucose is above your target, take 15 to 20 grams of glucose right away.",
+   "split": "test"
+  },
+  {
+   "id": 9244,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "Physical activity can lower your blood glucose during the activity and for hours afterward.",
+   "bad_en": "Physical activity can raise your blood glucose during the activity and for hours afterward.",
+   "split": "test"
+  },
+  {
+   "id": 9245,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "The risk of heart attack or stroke is higher if you use more than directed or for longer than directed.",
+   "bad_en": "The risk of heart attack or stroke is higher if you use less than directed or for shorter than directed.",
+   "split": "test"
+  },
+  {
+   "id": 9246,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Limit time in the sun between 10 a.m. and 2 p.m., when the sun's rays are most intense.",
+   "bad_en": "Limit time in the sun between 10 a.m. and 2 p.m., when the sun's rays are least intense.",
+   "split": "test"
+  },
+  {
+   "id": 9247,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+   "en": "Move the worker to a shaded, cool area.",
+   "bad_en": "Move the worker to a sunny, warm area.",
+   "split": "test"
+  },
+  {
+   "id": 9248,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Reapply sunscreen at least every two hours, and more often if you're sweating or swimming.",
+   "bad_en": "Reapply sunscreen at least every two hours, and less often if you're sweating or swimming.",
+   "split": "test"
+  },
+  {
+   "id": 9249,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Raw meat, poultry, seafood, and eggs can spread germs to ready-to-eat food unless you keep them separate.",
+   "bad_en": "Raw meat, poultry, seafood, and eggs can spread germs to ready-to-eat food even if you keep them separate.",
+   "split": "test"
+  },
+  {
+   "id": 9250,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If you have kidney disease, don't drink orange juice.",
+   "bad_en": "Unless you have kidney disease, don't drink orange juice.",
+   "split": "test"
+  },
+  {
+   "id": 9251,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If you drink alcoholic beverages, it's safer to eat some food at the same time.",
+   "bad_en": "Unless you drink alcoholic beverages, it's safer to eat some food at the same time.",
+   "split": "test"
+  },
+  {
+   "id": 9252,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "If the food is exposed to temperatures above 90°F, refrigerate it within 1 hour.",
+   "bad_en": "Unless the food is exposed to temperatures above 90°F, refrigerate it within 1 hour.",
+   "split": "test"
+  },
+  {
+   "id": 9253,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "Ask a doctor before use if you are taking a diuretic.",
+   "bad_en": "Ask a doctor before use unless you are taking a diuretic.",
+   "split": "test"
+  },
+  {
+   "id": 9254,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "Stop use and ask a doctor if pain gets worse or lasts more than 10 days.",
+   "bad_en": "Stop use and ask a doctor if pain gets worse and lasts more than 10 days.",
+   "split": "test"
+  },
+  {
+   "id": 9255,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "The risk is higher if you use more than directed or for longer than directed.",
+   "bad_en": "The risk is higher only if you use more than directed and for longer than directed.",
+   "split": "test"
+  },
+  {
+   "id": 9256,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "If a food is recalled, throw it away.",
+   "bad_en": "Unless a food is recalled, throw it away.",
+   "split": "test"
+  },
+  {
+   "id": 9257,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Reapply sunscreen every two hours, and more often if you're sweating or swimming.",
+   "bad_en": "Reapply sunscreen every two hours, and more often unless you're sweating or swimming.",
+   "split": "test"
+  },
+  {
+   "id": 9258,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "Do not use this product if you have ever had an allergic reaction to a pain reliever.",
+   "bad_en": "Do not use this product unless you have had an allergic reaction to a pain reliever.",
+   "split": "test"
+  },
+  {
+   "id": 9259,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If your blood glucose is below your target, eat or drink 15 to 20 grams of carbohydrates right away.",
+   "bad_en": "Unless your blood glucose is below your target, eat or drink 15 to 20 grams of carbohydrates right away.",
+   "split": "test"
+  },
+  {
+   "id": 9260,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Never leave perishable food out for more than 2 hours, or 1 hour if it is exposed to temperatures above 90°F.",
+   "bad_en": "Never leave perishable food out for more than 2 hours, or 1 hour unless it is exposed to temperatures above 90°F.",
+   "split": "test"
+  },
+  {
+   "id": 9261,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+   "en": "Stay with the worker until emergency medical services arrive.",
+   "bad_en": "The worker should stay with you until emergency medical services arrive.",
+   "split": "test"
+  },
+  {
+   "id": 9262,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "Ask your health care team if any of your diabetes medicines can cause low blood glucose.",
+   "bad_en": "Your health care team will ask you if any of their medicines can cause low blood glucose.",
+   "split": "test"
+  },
+  {
+   "id": 9263,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Ask a doctor before applying sunscreen to children under six months of age.",
+   "bad_en": "A doctor should ask you before applying sunscreen to children under six months of age.",
+   "split": "test"
+  },
+  {
+   "id": 9264,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "FDA recommends that infants be kept out of the sun between 10 a.m. and 2 p.m.",
+   "bad_en": "FDA recommends that older adults be kept out of the sun between 10 a.m. and 2 p.m.",
+   "split": "test"
+  },
+  {
+   "id": 9265,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+   "en": "Move the worker to a shaded, cool area.",
+   "bad_en": "The worker should move you to a shaded, cool area.",
+   "split": "test"
+  },
+  {
+   "id": 9266,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "You may need to check your blood glucose before, during, and after physical activity.",
+   "bad_en": "Your coach may need to check their blood glucose before, during, and after physical activity.",
+   "split": "test"
+  },
+  {
+   "id": 9267,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "If you have kidney disease, don't drink orange juice.",
+   "bad_en": "If your child has kidney disease, don't let them drink orange juice.",
+   "split": "test"
+  },
+  {
+   "id": 9268,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia",
+   "en": "Ask your health care team how you can prevent and treat symptoms of low blood glucose.",
+   "bad_en": "Your health care team will ask you how they can prevent and treat symptoms of low blood glucose.",
+   "split": "test"
+  },
+  {
+   "id": 9269,
+   "domain": "medical",
+   "kind": "role",
+   "source": "FDA Drug Facts label wording for NSAID pain relievers (21 CFR 201.326)",
+   "en": "Do not use if you have ever had an allergic reaction to any other pain reliever.",
+   "bad_en": "Do not use if your parent has ever had an allergic reaction to any other pain reliever.",
+   "split": "test"
+  },
+  {
+   "id": 9270,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.cdc.gov/food-safety/foods/chicken.html",
+   "en": "Wash your hands with soap and water before and after handling raw chicken.",
+   "bad_en": "Wash the chicken with soap and water before and after handling it.",
+   "split": "test"
+  },
+  {
+   "id": 9271,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.cdc.gov/food-safety/prevention/index.html",
+   "en": "Raw chicken is ready to cook and doesn't need to be washed first.",
+   "bad_en": "Raw chicken is ready to eat and doesn't need to be cooked first.",
+   "split": "test"
+  },
+  {
+   "id": 9272,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+   "en": "Spray sunscreens should never be applied directly to your face.",
+   "bad_en": "Spray sunscreens should never be applied directly to your hands.",
+   "split": "test"
+  },
+  {
+   "id": 9273,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A refund is due within 7 business days after you reject an offer if you paid for the ticket with a credit card.",
+   "bad_en": "A refund is due within 17 business days after you reject an offer if you paid for the ticket with a credit card.",
+   "split": "test"
+  },
+  {
+   "id": 9274,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A refund is due within 20 calendar days if you paid with another form of payment, such as a check or cash.",
+   "bad_en": "A refund is due within 60 calendar days if you paid with another form of payment, such as a check or cash.",
+   "split": "test"
+  },
+  {
+   "id": 9275,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A flight is significantly delayed if you arrive 3 hours or more later than scheduled on a domestic itinerary.",
+   "bad_en": "A flight is significantly delayed if you arrive 5 hours or more later than scheduled on a domestic itinerary.",
+   "split": "test"
+  },
+  {
+   "id": 9276,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "For international itineraries, a significant delay means arriving 6 hours or more late.",
+   "bad_en": "For international itineraries, a significant delay means arriving 12 hours or more late.",
+   "split": "test"
+  },
+  {
+   "id": 9277,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "Passengers are entitled to a refund of their checked bag fee if it is not delivered within 12 hours of their domestic flight arriving at the gate.",
+   "bad_en": "Passengers are entitled to a refund of their checked bag fee if it is not delivered within 24 hours of their domestic flight arriving at the gate.",
+   "split": "test"
+  },
+  {
+   "id": 9278,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "Eligible employees may take up to 12 workweeks of leave in a 12-month period.",
+   "bad_en": "Eligible employees may take up to 16 workweeks of leave in a 12-month period.",
+   "split": "test"
+  },
+  {
+   "id": 9279,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "Employees must have at least 1,250 hours of service with the employer during the 12 months before their leave starts.",
+   "bad_en": "Employees must have at least 2,250 hours of service with the employer during the 12 months before their leave starts.",
+   "split": "test"
+  },
+  {
+   "id": 9280,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "The employee must work at a location where the employer has at least 50 employees within 75 miles.",
+   "bad_en": "The employee must work at a location where the employer has at least 15 employees within 75 miles.",
+   "split": "test"
+  },
+  {
+   "id": 9281,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep records for 3 years if none of the special situations apply to you.",
+   "bad_en": "Keep records for 2 years if none of the special situations apply to you.",
+   "split": "test"
+  },
+  {
+   "id": 9282,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "Liquids in carry-on bags are limited to containers of 3.4 ounces or less per item.",
+   "bad_en": "Liquids in carry-on bags are limited to containers of 6.8 ounces or less per item.",
+   "split": "test"
+  },
+  {
+   "id": 9283,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+   "en": "Furnishers generally must investigate and respond to your dispute within 30 days of when they receive it.",
+   "bad_en": "Furnishers generally must investigate and respond to your dispute within 90 days of when they receive it.",
+   "split": "test"
+  },
+  {
+   "id": 9284,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://travel.state.gov/en/passports/renew-replace/mail.html",
+   "en": "You can renew your passport by mail if it was issued within the last 15 years.",
+   "bad_en": "You can renew your passport by mail if it was issued within the last 25 years.",
+   "split": "test"
+  },
+  {
+   "id": 9285,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A refund is due within 7 business days if you paid with a credit card.",
+   "bad_en": "A refund is due within 7 business weeks if you paid with a credit card.",
+   "split": "test"
+  },
+  {
+   "id": 9286,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A refund is due within 20 calendar days if you paid by check or cash.",
+   "bad_en": "A refund is due within 20 calendar months if you paid by check or cash.",
+   "split": "test"
+  },
+  {
+   "id": 9287,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A domestic flight is significantly changed if it arrives 3 hours or more later than scheduled.",
+   "bad_en": "A domestic flight is significantly changed if it arrives 3 days or more later than scheduled.",
+   "split": "test"
+  },
+  {
+   "id": 9288,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "You can get your bag fee back if your checked bag is not delivered within 12 hours of a domestic flight.",
+   "bad_en": "You can get your bag fee back if your checked bag is not delivered within 12 days of a domestic flight.",
+   "split": "test"
+  },
+  {
+   "id": 9289,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "Eligible employees may take up to 12 workweeks of leave in a 12-month period.",
+   "bad_en": "Eligible employees may take up to 12 months of leave in a 12-month period.",
+   "split": "test"
+  },
+  {
+   "id": 9290,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "A family member of a covered servicemember may take up to 26 workweeks of leave in a single 12-month period.",
+   "bad_en": "A family member of a covered servicemember may take up to 26 days of leave in a single 12-month period.",
+   "split": "test"
+  },
+  {
+   "id": 9291,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep records for 7 years if you file a claim for a loss from worthless securities.",
+   "bad_en": "Keep records for 7 months if you file a claim for a loss from worthless securities.",
+   "split": "test"
+  },
+  {
+   "id": 9292,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep employment tax records for at least 4 years after the tax becomes due or is paid.",
+   "bad_en": "Keep employment tax records for at least 4 months after the tax becomes due or is paid.",
+   "split": "test"
+  },
+  {
+   "id": 9293,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "Each liquid item in your carry-on must be 100 milliliters or less.",
+   "bad_en": "Each liquid item in your carry-on must be 100 liters or less.",
+   "split": "test"
+  },
+  {
+   "id": 9294,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "The purchase must have been made within 48 hours.",
+   "bad_en": "The purchase must have been made within 48 days.",
+   "split": "test"
+  },
+  {
+   "id": 9295,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+   "en": "Furnishers must respond to your dispute within 30 days of receiving it.",
+   "bad_en": "Furnishers must respond to your dispute within 30 weeks of receiving it.",
+   "split": "test"
+  },
+  {
+   "id": 9296,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://travel.state.gov/en/passports/renew-replace/mail.html",
+   "en": "Passports for applicants 16 and older are valid for 10 years.",
+   "bad_en": "Passports for applicants 16 and older are valid for 10 months.",
+   "split": "test"
+  },
+  {
+   "id": 9297,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "If you chose to take a significantly delayed flight, you are not entitled to a refund under DOT rules.",
+   "bad_en": "If you chose to take a significantly delayed flight, you are entitled to a refund under DOT rules.",
+   "split": "test"
+  },
+  {
+   "id": 9298,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "An eligible employee may not take intermittent leave for the birth of a child unless the employer agrees.",
+   "bad_en": "An eligible employee may take intermittent leave for the birth of a child unless the employer agrees.",
+   "split": "test"
+  },
+  {
+   "id": 9299,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "Employers are required to provide FMLA leave where all requirements are met.",
+   "bad_en": "Employers are not required to provide FMLA leave where all requirements are met.",
+   "split": "test"
+  },
+  {
+   "id": 9300,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep records indefinitely if you do not file a return.",
+   "bad_en": "Keep records indefinitely if you file a return.",
+   "split": "test"
+  },
+  {
+   "id": 9301,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "When your records are no longer needed for tax purposes, do not discard them until you check whether you have to keep them longer.",
+   "bad_en": "When your records are no longer needed for tax purposes, you can discard them without checking whether you have to keep them longer.",
+   "split": "test"
+  },
+  {
+   "id": 9302,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "Pack items in containers larger than 3.4 ounces in checked baggage.",
+   "bad_en": "Do not pack items in containers larger than 3.4 ounces in checked baggage.",
+   "split": "test"
+  },
+  {
+   "id": 9303,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "The items inside the secure bags must be screened and cleared.",
+   "bad_en": "The items inside the secure bags do not need to be screened and cleared.",
+   "split": "test"
+  },
+  {
+   "id": 9304,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+   "en": "Then, the credit reporting companies must update your credit reports.",
+   "bad_en": "Then, the credit reporting companies do not have to update your credit reports.",
+   "split": "test"
+  },
+  {
+   "id": 9305,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "You are entitled to a refund if the airline cancelled your flight and you choose not to travel.",
+   "bad_en": "You are entitled to a refund if the airline cancelled your flight and you choose to travel.",
+   "split": "test"
+  },
+  {
+   "id": 9306,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "Airlines must let you know that you are entitled to a refund if you don't accept the offer.",
+   "bad_en": "Airlines must let you know that you are entitled to a refund if you accept the offer.",
+   "split": "test"
+  },
+  {
+   "id": 9307,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://travel.state.gov/en/passports/renew-replace/mail.html",
+   "en": "You can renew by mail if your passport was issued when you were 16 or older.",
+   "bad_en": "You cannot renew by mail if your passport was issued when you were 16 or older.",
+   "split": "test"
+  },
+  {
+   "id": 9308,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "To request leave, employees must communicate with their employer about their leave needs.",
+   "bad_en": "To request leave, employees do not need to communicate with their employer about their leave needs.",
+   "split": "test"
+  },
+  {
+   "id": 9309,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A refund is due within 7 business days after you reject the airline's offer.",
+   "bad_en": "A refund is due at least 7 business days after you reject the airline's offer.",
+   "split": "test"
+  },
+  {
+   "id": 9310,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A flight is significantly changed if you arrive 3 hours or more later than scheduled.",
+   "bad_en": "A flight is significantly changed if you arrive 3 hours or more earlier than scheduled.",
+   "split": "test"
+  },
+  {
+   "id": 9311,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "Employees must have at least 1,250 hours of service during the 12 months before their leave starts.",
+   "bad_en": "Employees must have at least 1,250 hours of service during the 12 months after their leave starts.",
+   "split": "test"
+  },
+  {
+   "id": 9312,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "The employer must have at least 50 employees within 75 miles.",
+   "bad_en": "The employer must have at most 50 employees within 75 miles.",
+   "split": "test"
+  },
+  {
+   "id": 9313,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep employment tax records for at least 4 years after the tax becomes due or is paid, whichever is later.",
+   "bad_en": "Keep employment tax records for at least 4 years after the tax becomes due or is paid, whichever is earlier.",
+   "split": "test"
+  },
+  {
+   "id": 9314,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Returns filed before the due date are treated as filed on the due date.",
+   "bad_en": "Returns filed after the due date are treated as filed on the due date.",
+   "split": "test"
+  },
+  {
+   "id": 9315,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "Liquids are limited to travel-sized containers of 3.4 ounces or less per item.",
+   "bad_en": "Liquids are limited to travel-sized containers of 3.4 ounces or more per item.",
+   "split": "test"
+  },
+  {
+   "id": 9316,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "Pack items in containers larger than 3.4 ounces in checked baggage.",
+   "bad_en": "Pack items in containers smaller than 3.4 ounces in checked baggage.",
+   "split": "test"
+  },
+  {
+   "id": 9317,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://travel.state.gov/en/passports/renew-replace/mail.html",
+   "en": "You can renew by mail if your passport was issued when you were 16 or older.",
+   "bad_en": "You can renew by mail if your passport was issued when you were 16 or younger.",
+   "split": "test"
+  },
+  {
+   "id": 9318,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://travel.state.gov/en/passports/renew-replace/mail.html",
+   "en": "Passports for applicants 16 and older are valid for 10 years.",
+   "bad_en": "Passports for applicants under 16 are valid for 10 years.",
+   "split": "test"
+  },
+  {
+   "id": 9319,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://travel.state.gov/en/passports/renew-replace/mail.html",
+   "en": "You can renew by mail if your passport was issued within the last 15 years.",
+   "bad_en": "You can renew by mail if your passport was issued more than 15 years ago.",
+   "split": "test"
+  },
+  {
+   "id": 9320,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "The receipt must show the purchase was made within the last 48 hours.",
+   "bad_en": "The receipt must show the purchase was made more than 48 hours ago.",
+   "split": "test"
+  },
+  {
+   "id": 9321,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "You are entitled to a refund if the airline cancelled your flight and you choose not to travel.",
+   "bad_en": "You are entitled to a refund if the airline cancelled your flight or you choose not to travel.",
+   "split": "test"
+  },
+  {
+   "id": 9322,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "If you chose to take a significantly delayed flight, you are not entitled to a refund.",
+   "bad_en": "Unless you chose to take a significantly delayed flight, you are not entitled to a refund.",
+   "split": "test"
+  },
+  {
+   "id": 9323,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "If the downgraded passenger continues to travel, the airline must refund the difference between the original fare and the lower fare.",
+   "bad_en": "Unless the downgraded passenger continues to travel, the airline must refund the difference between the original fare and the lower fare.",
+   "split": "test"
+  },
+  {
+   "id": 9324,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "Passengers can get their bag fee refunded if the bag is not delivered within 12 hours.",
+   "bad_en": "Passengers can get their bag fee refunded unless the bag is not delivered within 12 hours.",
+   "split": "test"
+  },
+  {
+   "id": 9325,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "To be eligible, employees must have at least 1,250 hours of service and work at a location with at least 50 employees within 75 miles.",
+   "bad_en": "To be eligible, employees must have at least 1,250 hours of service or work at a location with at least 50 employees within 75 miles.",
+   "split": "test"
+  },
+  {
+   "id": 9326,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "An employee may not take intermittent leave for the birth of a child unless the employer agrees.",
+   "bad_en": "An employee may not take intermittent leave for the birth of a child if the employer agrees.",
+   "split": "test"
+  },
+  {
+   "id": 9327,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep records for 7 years if you file a claim for a loss from worthless securities.",
+   "bad_en": "Keep records for 7 years unless you file a claim for a loss from worthless securities.",
+   "split": "test"
+  },
+  {
+   "id": 9328,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep records indefinitely if you do not file a return.",
+   "bad_en": "Keep records indefinitely unless you do not file a return.",
+   "split": "test"
+  },
+  {
+   "id": 9329,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+   "en": "If the information cannot be verified, the furnisher must update or remove it.",
+   "bad_en": "Unless the information cannot be verified, the furnisher must update or remove it.",
+   "split": "test"
+  },
+  {
+   "id": 9330,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "Airlines must tell you that you are entitled to a refund if you don't accept their offer.",
+   "bad_en": "Airlines must tell you that you are entitled to a refund unless you don't accept their offer.",
+   "split": "test"
+  },
+  {
+   "id": 9331,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "Keep employment tax records for 4 years after the date the tax becomes due or is paid, whichever is later.",
+   "bad_en": "Keep employment tax records for 4 years after the date the tax becomes due and is paid.",
+   "split": "test"
+  },
+  {
+   "id": 9332,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "A refund is due within 20 calendar days if you paid with another form of payment, such as a check or cash.",
+   "bad_en": "A refund is due within 20 calendar days unless you paid with another form of payment, such as a check or cash.",
+   "split": "test"
+  },
+  {
+   "id": 9333,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "Airlines must issue refunds within seven business days for credit card purchases.",
+   "bad_en": "Passengers must pay the airline back within seven business days for credit card purchases.",
+   "split": "test"
+  },
+  {
+   "id": 9334,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "Airlines must let you know that you are entitled to a refund.",
+   "bad_en": "You must let the airline know that it is entitled to a refund.",
+   "split": "test"
+  },
+  {
+   "id": 9335,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "Employees must communicate with their employer about their leave needs.",
+   "bad_en": "Employers must communicate with their employees about their own leave needs.",
+   "split": "test"
+  },
+  {
+   "id": 9336,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "Employers are required to provide FMLA leave where all requirements are met.",
+   "bad_en": "Employees are required to provide FMLA leave where all requirements are met.",
+   "split": "test"
+  },
+  {
+   "id": 9337,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.dol.gov/agencies/whd/fmla",
+   "en": "A family member of a covered servicemember may take up to 26 workweeks of leave to care for the servicemember.",
+   "bad_en": "A covered servicemember may take up to 26 workweeks of leave to care for a family member.",
+   "split": "test"
+  },
+  {
+   "id": 9338,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+   "en": "Furnishers must investigate and respond to your dispute within 30 days.",
+   "bad_en": "You must investigate and respond to the furnisher's dispute within 30 days.",
+   "split": "test"
+  },
+  {
+   "id": 9339,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+   "en": "The furnisher must update or remove the information and notify all the credit reporting companies.",
+   "bad_en": "The credit reporting companies must update or remove the information and notify the furnisher.",
+   "split": "test"
+  },
+  {
+   "id": 9340,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+   "en": "The credit reporting companies must update your credit reports.",
+   "bad_en": "You must update the credit reporting companies' records.",
+   "split": "test"
+  },
+  {
+   "id": 9341,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.tsa.gov/travel/security-screening/liquids-aerosols-gels-rule",
+   "en": "The items inside the secure bags must be screened and cleared by TSA.",
+   "bad_en": "The items inside the secure bags must be screened and cleared by the passenger.",
+   "split": "test"
+  },
+  {
+   "id": 9342,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.transportation.gov/individuals/aviation-consumer-protection/refunds",
+   "en": "If the downgraded passenger continues to travel, the airline must refund the fare difference to the passenger.",
+   "bad_en": "If the downgraded passenger continues to travel, the passenger must pay the fare difference to the airline.",
+   "split": "test"
+  },
+  {
+   "id": 9343,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records",
+   "en": "You must keep records for 3 years.",
+   "bad_en": "The IRS keeps your records for 3 years.",
+   "split": "test"
+  },
+  {
+   "id": 9344,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://travel.state.gov/en/passports/renew-replace/mail.html",
+   "en": "You can renew your passport by mail if it was issued when you were 16 or older.",
+   "bad_en": "Your parent must renew your passport by mail if it was issued when you were 16 or older.",
+   "split": "test"
+  }
+ ]
+}

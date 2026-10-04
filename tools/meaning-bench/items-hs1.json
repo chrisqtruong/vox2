@@ -1,0 +1,1097 @@
+{
+ "langs": [
+  "vie_Latn",
+  "jpn_Jpan",
+  "kor_Hang",
+  "zho_Hans",
+  "spa_Latn",
+  "arb_Arab",
+  "hin_Deva",
+  "fra_Latn",
+  "tgl_Latn",
+  "por_Latn",
+  "urd_Arab"
+ ],
+ "items": [
+  {
+   "id": 9001,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "The maximum total amount of acetaminophen taken in 24 hours should not be more than 4,000 mg for adults and children 12 years of age and older.",
+   "bad_en": "The maximum total amount of acetaminophen taken in 24 hours should not be more than 6,000 mg for adults and children 12 years of age and older.",
+   "split": "dev"
+  },
+  {
+   "id": 9002,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Severe liver damage may occur if you have three or more alcoholic drinks per day while using acetaminophen.",
+   "bad_en": "Severe liver damage may occur if you have five or more alcoholic drinks per day while using acetaminophen.",
+   "split": "dev"
+  },
+  {
+   "id": 9003,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Oseltamivir and zanamivir are given twice a day for five days.",
+   "bad_en": "Oseltamivir and zanamivir are given twice a day for ten days.",
+   "split": "test"
+  },
+  {
+   "id": 9004,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Peramivir is approved for early treatment of flu in people 6 months and older.",
+   "bad_en": "Peramivir is approved for early treatment of flu in people 2 months and older.",
+   "split": "test"
+  },
+  {
+   "id": 9005,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Baloxavir is approved for early treatment of uncomplicated flu in people 5 years and older.",
+   "bad_en": "Baloxavir is approved for early treatment of uncomplicated flu in people 2 years and older.",
+   "split": "test"
+  },
+  {
+   "id": 9006,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments",
+   "en": "Some people with diabetes who take insulin need 2 to 4 shots a day to reach their blood glucose targets.",
+   "bad_en": "Some people with diabetes who take insulin need 6 to 8 shots a day to reach their blood glucose targets.",
+   "split": "test"
+  },
+  {
+   "id": 9007,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.fda.gov/consumers/consumer-updates/should-you-give-kids-medicine-coughs-and-colds",
+   "en": "Call a doctor if an infant 2 months or younger has a fever of 100.4 degrees Fahrenheit or higher.",
+   "bad_en": "Call a doctor if an infant 2 months or younger has a fever of 102.4 degrees Fahrenheit or higher.",
+   "split": "test"
+  },
+  {
+   "id": 9008,
+   "domain": "medical",
+   "kind": "number",
+   "source": "https://www.fda.gov/consumers/consumer-updates/should-you-give-kids-medicine-coughs-and-colds",
+   "en": "The FDA doesn't recommend over-the-counter medicines for cough and cold symptoms in children younger than 2.",
+   "bad_en": "The FDA doesn't recommend over-the-counter medicines for cough and cold symptoms in children younger than 1.",
+   "split": "test"
+  },
+  {
+   "id": 9009,
+   "domain": "medical",
+   "kind": "number",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "Adults and children 12 years and over: take 2 caplets every 6 hours while symptoms last.",
+   "bad_en": "Adults and children 12 years and over: take 2 caplets every 2 hours while symptoms last.",
+   "split": "test"
+  },
+  {
+   "id": 9010,
+   "domain": "medical",
+   "kind": "number",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "Do not take more than 6 caplets in 24 hours, unless directed by a doctor.",
+   "bad_en": "Do not take more than 10 caplets in 24 hours, unless directed by a doctor.",
+   "split": "test"
+  },
+  {
+   "id": 9011,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "The maximum amount of acetaminophen in 24 hours should not be more than 4,000 mg for adults.",
+   "bad_en": "The maximum amount of acetaminophen in 24 hours should not be more than 4,000 g for adults.",
+   "split": "dev"
+  },
+  {
+   "id": 9012,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Flu antiviral drugs are usually taken for five days.",
+   "bad_en": "Flu antiviral drugs are usually taken for five weeks.",
+   "split": "dev"
+  },
+  {
+   "id": 9013,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Antiviral drugs work best when started within 1 to 2 days after flu symptoms begin.",
+   "bad_en": "Antiviral drugs work best when started within 1 to 2 weeks after flu symptoms begin.",
+   "split": "test"
+  },
+  {
+   "id": 9014,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments",
+   "en": "Premixed insulin starts to work in 15 to 60 minutes and can last from 10 to 16 hours.",
+   "bad_en": "Premixed insulin starts to work in 15 to 60 hours and can last from 10 to 16 hours.",
+   "split": "test"
+  },
+  {
+   "id": 9015,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments",
+   "en": "With gestational diabetes, brisk walking for 150 minutes each week can help you manage your blood glucose level.",
+   "bad_en": "With gestational diabetes, brisk walking for 150 minutes each day can help you manage your blood glucose level.",
+   "split": "test"
+  },
+  {
+   "id": 9016,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments",
+   "en": "The plastic tube of an insulin pump stays inserted for several days.",
+   "bad_en": "The plastic tube of an insulin pump stays inserted for several hours.",
+   "split": "test"
+  },
+  {
+   "id": 9017,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "Do not use for more than 10 days for pain unless directed by a doctor.",
+   "bad_en": "Do not use for more than 10 weeks for pain unless directed by a doctor.",
+   "split": "test"
+  },
+  {
+   "id": 9018,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "Stop use and ask a doctor if fever gets worse or lasts more than 3 days.",
+   "bad_en": "Stop use and ask a doctor if fever gets worse or lasts more than 3 weeks.",
+   "split": "test"
+  },
+  {
+   "id": 9019,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.fda.gov/consumers/consumer-updates/should-you-give-kids-medicine-coughs-and-colds",
+   "en": "Call a doctor if an infant has a fever of 100.4 degrees Fahrenheit or higher.",
+   "bad_en": "Call a doctor if an infant has a fever of 100.4 degrees Celsius or higher.",
+   "split": "test"
+  },
+  {
+   "id": 9020,
+   "domain": "medical",
+   "kind": "unit",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "Taking medicines on an empty stomach generally means taking your pills at least two hours before you eat.",
+   "bad_en": "Taking medicines on an empty stomach generally means taking your pills at least two minutes before you eat.",
+   "split": "test"
+  },
+  {
+   "id": 9021,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Do not use more than one acetaminophen-containing product at a time.",
+   "bad_en": "Use more than one acetaminophen-containing product at a time.",
+   "split": "dev"
+  },
+  {
+   "id": 9022,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Never take more acetaminophen than what the label says, even if you still have fever or pain.",
+   "bad_en": "Take more acetaminophen than what the label says if you still have fever or pain.",
+   "split": "dev"
+  },
+  {
+   "id": 9023,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Do not use a product intended for adults if the child is less than 12 years of age.",
+   "bad_en": "Use a product intended for adults if the child is less than 12 years of age.",
+   "split": "test"
+  },
+  {
+   "id": 9024,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "If giving liquid acetaminophen, do not use a kitchen spoon or a dosing device from a different product.",
+   "bad_en": "If giving liquid acetaminophen, use a kitchen spoon or a dosing device from a different product.",
+   "split": "test"
+  },
+  {
+   "id": 9025,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Do not stop taking any prescribed drugs without first talking to your health care professional.",
+   "bad_en": "Stop taking any prescribed drugs without first talking to your health care professional.",
+   "split": "test"
+  },
+  {
+   "id": 9026,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "When flying, carry your medicines with you; do not pack them in your checked luggage.",
+   "bad_en": "When flying, do not carry your medicines with you; pack them in your checked luggage.",
+   "split": "test"
+  },
+  {
+   "id": 9027,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "Do not chew, break, or crush tablets without first asking if this will change the way the drug works.",
+   "bad_en": "Chew, break, or crush tablets without first asking if this will change the way the drug works.",
+   "split": "test"
+  },
+  {
+   "id": 9028,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Baloxavir is not recommended for treatment of flu during pregnancy or while breastfeeding.",
+   "bad_en": "Baloxavir is recommended for treatment of flu during pregnancy or while breastfeeding.",
+   "split": "test"
+  },
+  {
+   "id": 9029,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "Even if you are feeling better, you should not stop taking your prescription drug unless your doctor says it's okay.",
+   "bad_en": "Even if you are not feeling better, you should stop taking your prescription drug unless your doctor says it's okay.",
+   "split": "test"
+  },
+  {
+   "id": 9030,
+   "domain": "medical",
+   "kind": "negation",
+   "source": "https://www.fda.gov/drugs/safe-disposal-medicines/disposal-unused-medicines-what-you-should-know",
+   "en": "Don't crush pills before mixing them with dirt, cat litter, or used coffee grounds.",
+   "bad_en": "Crush the pills before mixing them with dirt, cat litter, or used coffee grounds.",
+   "split": "test"
+  },
+  {
+   "id": 9031,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Flu antiviral drugs should ideally be started within two days after becoming sick.",
+   "bad_en": "Flu antiviral drugs should ideally be started only after two days of being sick.",
+   "split": "dev"
+  },
+  {
+   "id": 9032,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Ask your health care professional before use if you have liver disease.",
+   "bad_en": "Ask your health care professional after use if you have liver disease.",
+   "split": "dev"
+  },
+  {
+   "id": 9033,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "Check the label on your medicine before leaving the pharmacy.",
+   "bad_en": "Check the label on your medicine after leaving the pharmacy.",
+   "split": "test"
+  },
+  {
+   "id": 9034,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/consumers/consumer-updates/should-you-give-kids-medicine-coughs-and-colds",
+   "en": "The FDA doesn't recommend over-the-counter cough and cold medicines for children younger than 2.",
+   "bad_en": "The FDA doesn't recommend over-the-counter cough and cold medicines for children older than 2.",
+   "split": "test"
+  },
+  {
+   "id": 9035,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/consumers/consumer-updates/should-you-give-kids-medicine-coughs-and-colds",
+   "en": "Call a doctor if an infant 2 months or younger has a fever of 100.4 degrees Fahrenheit or higher.",
+   "bad_en": "Call a doctor if an infant 2 months or younger has a fever of 100.4 degrees Fahrenheit or lower.",
+   "split": "test"
+  },
+  {
+   "id": 9036,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Peramivir is approved for early treatment of flu in people 6 months and older.",
+   "bad_en": "Peramivir is approved for early treatment of flu in people 6 months and younger.",
+   "split": "test"
+  },
+  {
+   "id": 9037,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "Stop use and ask a doctor if fever gets worse or lasts more than 3 days.",
+   "bad_en": "Stop use and ask a doctor if fever gets worse or lasts less than 3 days.",
+   "split": "test"
+  },
+  {
+   "id": 9038,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "The total amount of acetaminophen taken in 24 hours should not be more than 4,000 mg for adults.",
+   "bad_en": "The total amount of acetaminophen taken in 24 hours should not be less than 4,000 mg for adults.",
+   "split": "test"
+  },
+  {
+   "id": 9039,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "When you travel, ask your doctor or pharmacist about changes to your medicine schedule before you depart.",
+   "bad_en": "When you travel, ask your doctor or pharmacist about changes to your medicine schedule after you return.",
+   "split": "test"
+  },
+  {
+   "id": 9040,
+   "domain": "medical",
+   "kind": "direction",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "If you think you have taken too much acetaminophen, get medical help right away.",
+   "bad_en": "If you think you have taken too little acetaminophen, get medical help right away.",
+   "split": "test"
+  },
+  {
+   "id": 9041,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "Do not take more than 6 caplets in 24 hours, unless directed by a doctor.",
+   "bad_en": "Do not take more than 6 caplets in 24 hours, even if directed by a doctor.",
+   "split": "dev"
+  },
+  {
+   "id": 9042,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "Do not use for more than 10 days for pain unless directed by a doctor.",
+   "bad_en": "Do not use for more than 10 days for pain if directed by a doctor.",
+   "split": "dev"
+  },
+  {
+   "id": 9043,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "FDA Drug Facts label wording (21 CFR 201.66), acetaminophen products",
+   "en": "If pregnant or breast-feeding, ask a health professional before use.",
+   "bad_en": "Unless pregnant or breast-feeding, ask a health professional before use.",
+   "split": "test"
+  },
+  {
+   "id": 9044,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Serious skin reactions can occur even if you have taken acetaminophen in the past without any problems.",
+   "bad_en": "Serious skin reactions can occur only if you have never taken acetaminophen before.",
+   "split": "test"
+  },
+  {
+   "id": 9045,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "If you develop any skin rash while using a medication containing acetaminophen, stop the medication and seek medical attention immediately.",
+   "bad_en": "Unless you develop a skin rash while using a medication containing acetaminophen, stop the medication and seek medical attention immediately.",
+   "split": "test"
+  },
+  {
+   "id": 9046,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.fda.gov/drugs/safe-disposal-medicines/disposal-unused-medicines-what-you-should-know",
+   "en": "Don't flush any medicine unless it is on the Flush List.",
+   "bad_en": "Don't flush any medicine if it is on the Flush List.",
+   "split": "test"
+  },
+  {
+   "id": 9047,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.fda.gov/consumers/consumer-updates/should-you-give-kids-medicine-coughs-and-colds",
+   "en": "Nonprescription cough and cold products can be harmful to children if they get more than the recommended dose.",
+   "bad_en": "Nonprescription cough and cold products can be harmful to children unless they get more than the recommended dose.",
+   "split": "test"
+  },
+  {
+   "id": 9048,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Ask your health care professional before use if you have liver disease.",
+   "bad_en": "Ask your health care professional before use unless you have liver disease.",
+   "split": "test"
+  },
+  {
+   "id": 9049,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "If you have had a serious skin reaction with acetaminophen, do not take any products containing acetaminophen again.",
+   "bad_en": "Unless you have had a serious skin reaction with acetaminophen, do not take any products containing acetaminophen again.",
+   "split": "test"
+  },
+  {
+   "id": 9050,
+   "domain": "medical",
+   "kind": "condition",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "CDC recommends prompt treatment for people who have flu and who are at increased risk of serious flu complications.",
+   "bad_en": "CDC recommends prompt treatment for people who have flu or who are at increased risk of serious flu complications.",
+   "split": "test"
+  },
+  {
+   "id": 9051,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments",
+   "en": "Inhaled insulin is only for adults with type 1 or type 2 diabetes.",
+   "bad_en": "Inhaled insulin is only for children with type 1 or type 2 diabetes.",
+   "split": "dev"
+  },
+  {
+   "id": 9052,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments",
+   "en": "An artificial pancreas is mainly used to help people with type 1 diabetes.",
+   "bad_en": "An artificial pancreas is mainly used to help people with type 2 diabetes.",
+   "split": "dev"
+  },
+  {
+   "id": 9053,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Oseltamivir is recommended by CDC for treatment of flu in children beginning from birth.",
+   "bad_en": "Oseltamivir is recommended by CDC for treatment of flu in adults beginning from age 65.",
+   "split": "test"
+  },
+  {
+   "id": 9054,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "Tell the pharmacist if you have trouble swallowing pills.",
+   "bad_en": "The pharmacist will tell you if you have trouble swallowing pills.",
+   "split": "test"
+  },
+  {
+   "id": 9055,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "Ask your pharmacist to explain any terms or abbreviations on your prescription label that you don't understand.",
+   "bad_en": "Your pharmacist will ask you to explain any terms or abbreviations on your prescription label that they don't understand.",
+   "split": "test"
+  },
+  {
+   "id": 9056,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "A health care professional should evaluate you to determine if you are experiencing a serious skin reaction.",
+   "bad_en": "You should evaluate yourself to determine if you are experiencing a serious skin reaction.",
+   "split": "test"
+  },
+  {
+   "id": 9057,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Inform your health care professional of all drugs, vitamins, and supplements you take.",
+   "bad_en": "Your health care professional will inform you of all drugs, vitamins, and supplements you take.",
+   "split": "test"
+  },
+  {
+   "id": 9058,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.fda.gov/drugs/safe-use-over-counter-pain-relievers-and-fever-reducers/acetaminophen",
+   "en": "Contact your child's health care professional if you are unsure how to measure a dose.",
+   "bad_en": "Your child's health care professional will contact you if they are unsure how to measure a dose.",
+   "split": "test"
+  },
+  {
+   "id": 9059,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.cdc.gov/flu/treatment/antiviral-drugs.html",
+   "en": "Baloxavir is not recommended for treatment of flu in hospitalized patients.",
+   "bad_en": "Baloxavir is not recommended for treatment of flu in outpatients.",
+   "split": "test"
+  },
+  {
+   "id": 9060,
+   "domain": "medical",
+   "kind": "role",
+   "source": "https://www.nia.nih.gov/health/medicines-and-medication-management/taking-medicines-safely-you-age",
+   "en": "Do not take medicines prescribed for another person.",
+   "bad_en": "Do not take medicines prescribed for you.",
+   "split": "test"
+  },
+  {
+   "id": 9061,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/what-information-does-a-debt-collector-have-to-give-me-about-the-debt-en-331/",
+   "en": "Once you receive the debt validation information, you have 30 days to dispute the debt in writing.",
+   "bad_en": "Once you receive the debt validation information, you have 60 days to dispute the debt in writing.",
+   "split": "dev"
+  },
+  {
+   "id": 9062,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/what-information-does-a-debt-collector-have-to-give-me-about-the-debt-en-331/",
+   "en": "This information is provided in a written notice within five days of the debt collector's first communication with you.",
+   "bad_en": "This information is provided in a written notice within fifteen days of the debt collector's first communication with you.",
+   "split": "dev"
+  },
+  {
+   "id": 9063,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "Report any changes that may affect your SSI no later than 10 days after the end of the month in which the change occurred.",
+   "bad_en": "Report any changes that may affect your SSI no later than 30 days after the end of the month in which the change occurred.",
+   "split": "test"
+  },
+  {
+   "id": 9064,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "We may apply a penalty that will reduce your SSI payment by $25 to $100 for each time you fail to report a change.",
+   "bad_en": "We may apply a penalty that will reduce your SSI payment by $250 to $1,000 for each time you fail to report a change.",
+   "split": "test"
+  },
+  {
+   "id": 9065,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "The first sanction period is a withholding of payments for 6 months.",
+   "bad_en": "The first sanction period is a withholding of payments for 3 months.",
+   "split": "test"
+  },
+  {
+   "id": 9066,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "You must replace your Green Card if it is expired or will expire within the next six months.",
+   "bad_en": "You must replace your Green Card if it is expired or will expire within the next twelve months.",
+   "split": "test"
+  },
+  {
+   "id": 9067,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "Please wait 72 hours after you filed your Form I-90 to check your case status.",
+   "bad_en": "Please wait 12 hours after you filed your Form I-90 to check your case status.",
+   "split": "test"
+  },
+  {
+   "id": 9068,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.eeoc.gov/how-file-charge-employment-discrimination",
+   "en": "The 180-calendar-day filing deadline is extended to 300 calendar days if a state or local agency enforces a law that prohibits the same discrimination.",
+   "bad_en": "The 180-calendar-day filing deadline is extended to 400 calendar days if a state or local agency enforces a law that prohibits the same discrimination.",
+   "split": "test"
+  },
+  {
+   "id": 9069,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "The Cooling-Off Rule gives you three days to cancel certain sales made at your home, workplace, or dormitory.",
+   "bad_en": "The Cooling-Off Rule gives you ten days to cancel certain sales made at your home, workplace, or dormitory.",
+   "split": "test"
+  },
+  {
+   "id": 9070,
+   "domain": "legal",
+   "kind": "number",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "You may qualify to apply online for a long-term payment plan if you owe $50,000 or less in combined tax, penalties and interest.",
+   "bad_en": "You may qualify to apply online for a long-term payment plan if you owe $500,000 or less in combined tax, penalties and interest.",
+   "split": "test"
+  },
+  {
+   "id": 9071,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "The Cooling-Off Rule gives you three days to cancel certain sales made at your home.",
+   "bad_en": "The Cooling-Off Rule gives you three weeks to cancel certain sales made at your home.",
+   "split": "dev"
+  },
+  {
+   "id": 9072,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "Report changes no later than 10 days after the end of the month in which the change occurred.",
+   "bad_en": "Report changes no later than 10 months after the end of the month in which the change occurred.",
+   "split": "dev"
+  },
+  {
+   "id": 9073,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "This notice provides evidence of your lawful permanent resident status for 36 months from the expiration date on your card.",
+   "bad_en": "This notice provides evidence of your lawful permanent resident status for 36 days from the expiration date on your card.",
+   "split": "test"
+  },
+  {
+   "id": 9074,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "Please wait 72 hours after you filed your Form I-90 to check your case status.",
+   "bad_en": "Please wait 72 days after you filed your Form I-90 to check your case status.",
+   "split": "test"
+  },
+  {
+   "id": 9075,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "Applicants should submit the form to the IRS within 30 days from the date of their installment agreement acceptance letter.",
+   "bad_en": "Applicants should submit the form to the IRS within 30 weeks from the date of their installment agreement acceptance letter.",
+   "split": "test"
+  },
+  {
+   "id": 9076,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "Allow one to three weeks for a recent payment to be credited to your account.",
+   "bad_en": "Allow one to three months for a recent payment to be credited to your account.",
+   "split": "test"
+  },
+  {
+   "id": 9077,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "A short-term payment plan means paying in 180 days or less.",
+   "bad_en": "A short-term payment plan means paying in 180 weeks or less.",
+   "split": "test"
+  },
+  {
+   "id": 9078,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "If the requested installment agreement is rejected, the running of the collection period is suspended for 30 days.",
+   "bad_en": "If the requested installment agreement is rejected, the running of the collection period is suspended for 30 months.",
+   "split": "test"
+  },
+  {
+   "id": 9079,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "Subsequent sanction periods are for 12 months and then 24 months.",
+   "bad_en": "Subsequent sanction periods are for 12 weeks and then 24 weeks.",
+   "split": "test"
+  },
+  {
+   "id": 9080,
+   "domain": "legal",
+   "kind": "unit",
+   "source": "https://www.eeoc.gov/how-file-charge-employment-discrimination",
+   "en": "Our offices are open from 8:00 a.m. to 4:30 p.m. Monday through Friday.",
+   "bad_en": "Our offices are open from 8:00 p.m. to 4:30 a.m. Monday through Friday.",
+   "split": "test"
+  },
+  {
+   "id": 9081,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "You cannot appeal a denial.",
+   "bad_en": "You can appeal a denial.",
+   "split": "dev"
+  },
+  {
+   "id": 9082,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "You may be underpaid if you do not report changes on time.",
+   "bad_en": "You may be underpaid if you report changes on time.",
+   "split": "dev"
+  },
+  {
+   "id": 9083,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "Some types of sales can't be canceled, even if they occur in places that the Cooling-Off Rule normally covers.",
+   "bad_en": "Some types of sales can be canceled, even if they occur in places that the Cooling-Off Rule normally covers.",
+   "split": "test"
+  },
+  {
+   "id": 9084,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "Saturday is considered a business day, but Sundays and federal holidays are not.",
+   "bad_en": "Saturday is not considered a business day, and neither are Sundays and federal holidays.",
+   "split": "test"
+  },
+  {
+   "id": 9085,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "If you qualify for a short-term payment plan you will not be liable for a user fee.",
+   "bad_en": "If you qualify for a short-term payment plan you will be liable for a user fee.",
+   "split": "test"
+  },
+  {
+   "id": 9086,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "There's also a penalty for failure to file a tax return, so you should file on time even if you can't pay your balance in full.",
+   "bad_en": "There's no penalty for failure to file a tax return, so you don't need to file on time if you can't pay your balance in full.",
+   "split": "test"
+  },
+  {
+   "id": 9087,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.eeoc.gov/how-file-charge-employment-discrimination",
+   "en": "The deadline is not extended if only a local law prohibits age discrimination.",
+   "bad_en": "The deadline is extended if only a local law prohibits age discrimination.",
+   "split": "test"
+  },
+  {
+   "id": 9088,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "You must replace your Green Card if your card contains incorrect information.",
+   "bad_en": "You do not need to replace your Green Card if your card contains incorrect information.",
+   "split": "test"
+  },
+  {
+   "id": 9089,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/what-information-does-a-debt-collector-have-to-give-me-about-the-debt-en-331/",
+   "en": "The debt collector must pause collecting the amount of the debt you are disputing until they've adequately responded to your request.",
+   "bad_en": "The debt collector does not have to pause collecting the amount of the debt you are disputing until they've adequately responded to your request.",
+   "split": "test"
+  },
+  {
+   "id": 9090,
+   "domain": "legal",
+   "kind": "negation",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "The contract or receipt must be in the same language that's used in the sales presentation.",
+   "bad_en": "The contract or receipt does not have to be in the same language that's used in the sales presentation.",
+   "split": "test"
+  },
+  {
+   "id": 9091,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "Make sure the envelope is postmarked before midnight of the third business day after the contract date.",
+   "bad_en": "Make sure the envelope is postmarked after midnight of the third business day after the contract date.",
+   "split": "dev"
+  },
+  {
+   "id": 9092,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "If the sale happens on a Monday in a week without a federal holiday, you have until midnight on Thursday to cancel.",
+   "bad_en": "If the sale happens on a Monday in a week without a federal holiday, you have until midnight on Tuesday to cancel.",
+   "split": "dev"
+  },
+  {
+   "id": 9093,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "If you are outside the United States and your Green Card will expire within six months, you should file Form I-90 as soon as you return to the United States.",
+   "bad_en": "If you are outside the United States and your Green Card will expire within six months, you should file Form I-90 before you return to the United States.",
+   "split": "test"
+  },
+  {
+   "id": 9094,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "You may qualify for a long-term payment plan if you owe $50,000 or less in combined tax, penalties and interest.",
+   "bad_en": "You may qualify for a long-term payment plan if you owe $50,000 or more in combined tax, penalties and interest.",
+   "split": "test"
+  },
+  {
+   "id": 9095,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "You may qualify for a short-term payment plan if you owe less than $100,000 in combined tax, penalties and interest.",
+   "bad_en": "You may qualify for a short-term payment plan if you owe more than $100,000 in combined tax, penalties and interest.",
+   "split": "test"
+  },
+  {
+   "id": 9096,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "You must replace your Green Card if you received it before you were 14 and you have reached your 14th birthday.",
+   "bad_en": "You must replace your Green Card if you received it after you were 14 and you have reached your 14th birthday.",
+   "split": "test"
+  },
+  {
+   "id": 9097,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "Report any changes as soon as possible and no later than 10 days after the end of the month in which the change occurred.",
+   "bad_en": "Report any changes no earlier than 10 days after the end of the month in which the change occurred.",
+   "split": "test"
+  },
+  {
+   "id": 9098,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.eeoc.gov/how-file-charge-employment-discrimination",
+   "en": "If your filing deadline is fast approaching, call 1-800-669-4000 to ask for an immediate interview.",
+   "bad_en": "If your filing deadline has already passed, call 1-800-669-4000 to ask for an immediate interview.",
+   "split": "test"
+  },
+  {
+   "id": 9099,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.eeoc.gov/how-file-charge-employment-discrimination",
+   "en": "You must file a charge with the EEOC before you can file a lawsuit for unlawful discrimination.",
+   "bad_en": "You must file a charge with the EEOC after you file a lawsuit for unlawful discrimination.",
+   "split": "test"
+  },
+  {
+   "id": 9100,
+   "domain": "legal",
+   "kind": "direction",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "Applicants should submit the form within 30 days from the date of their installment agreement acceptance letter.",
+   "bad_en": "Applicants should submit the form at least 30 days after the date of their installment agreement acceptance letter.",
+   "split": "test"
+  },
+  {
+   "id": 9101,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "If you qualify for a short-term payment plan, you will not be charged a user fee.",
+   "bad_en": "Unless you qualify for a short-term payment plan, you will not be charged a user fee.",
+   "split": "dev"
+  },
+  {
+   "id": 9102,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "If you are a low-income taxpayer, the user fee is waived if you agree to make electronic debit payments.",
+   "bad_en": "If you are a low-income taxpayer, the user fee is waived unless you agree to make electronic debit payments.",
+   "split": "dev"
+  },
+  {
+   "id": 9103,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "If the seller gave you any items, you must make them available to the seller in as good condition as when you got them.",
+   "bad_en": "Unless the seller gave you any items, you must make them available to the seller in as good condition as when you got them.",
+   "split": "test"
+  },
+  {
+   "id": 9104,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.eeoc.gov/how-file-charge-employment-discrimination",
+   "en": "For age discrimination, the filing deadline is only extended to 300 days if there is a state law prohibiting age discrimination and a state agency enforcing that law.",
+   "bad_en": "For age discrimination, the filing deadline is only extended to 300 days if there is a state law prohibiting age discrimination or a state agency enforcing that law.",
+   "split": "test"
+  },
+  {
+   "id": 9105,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "You may qualify to apply online if you owe $50,000 or less in combined tax, penalties and interest, and filed all required returns.",
+   "bad_en": "You may qualify to apply online if you owe $50,000 or less in combined tax, penalties and interest, or filed all required returns.",
+   "split": "test"
+  },
+  {
+   "id": 9106,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "If you knowingly fail to report important changes, we may impose a sanction against your payments.",
+   "bad_en": "Unless you knowingly fail to report important changes, we may impose a sanction against your payments.",
+   "split": "test"
+  },
+  {
+   "id": 9107,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/what-information-does-a-debt-collector-have-to-give-me-about-the-debt-en-331/",
+   "en": "If you send the debt collector a written verification request within this 30-day period, the debt collector must pause collecting the amount you are disputing.",
+   "bad_en": "Unless you send the debt collector a written verification request within this 30-day period, the debt collector must pause collecting the amount you are disputing.",
+   "split": "test"
+  },
+  {
+   "id": 9108,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "If you received your card before you were 14, you must replace it when you turn 14, unless your card expires before your 16th birthday.",
+   "bad_en": "If you received your card before you were 14, you must replace it when you turn 14, if your card expires before your 16th birthday.",
+   "split": "test"
+  },
+  {
+   "id": 9109,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "If we approve your application, we will mail you a new Green Card.",
+   "bad_en": "Unless we approve your application, we will mail you a new Green Card.",
+   "split": "test"
+  },
+  {
+   "id": 9110,
+   "domain": "legal",
+   "kind": "condition",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "If you don't make the items available to the seller, you remain responsible for paying the seller as you agreed under the contract.",
+   "bad_en": "Even if you make the items available to the seller, you remain responsible for paying the seller as you agreed under the contract.",
+   "split": "test"
+  },
+  {
+   "id": 9111,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "The seller must give you two copies of a cancellation form.",
+   "bad_en": "You must give the seller two copies of a cancellation form.",
+   "split": "dev"
+  },
+  {
+   "id": 9112,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help",
+   "en": "If the seller gave you any items, you must make them available to the seller.",
+   "bad_en": "If you gave the seller any items, the seller must make them available to you.",
+   "split": "dev"
+  },
+  {
+   "id": 9113,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "If we determine you must submit biometrics, we will mail you a biometrics appointment notice.",
+   "bad_en": "If we determine you must submit biometrics, you must mail us a biometrics appointment request.",
+   "split": "test"
+  },
+  {
+   "id": 9114,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "You must report any of these changes to us, because they may affect your eligibility for SSI.",
+   "bad_en": "We must report any of these changes to you, because they may affect your eligibility for SSI.",
+   "split": "test"
+  },
+  {
+   "id": 9115,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.ssa.gov/ssi/text-report-ussi.htm",
+   "en": "We may overpay you, and you may have to pay us back.",
+   "bad_en": "You may overpay us, and we may have to pay you back.",
+   "split": "test"
+  },
+  {
+   "id": 9116,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/what-information-does-a-debt-collector-have-to-give-me-about-the-debt-en-331/",
+   "en": "Once you receive the debt validation information, you have 30 days to dispute the debt in writing.",
+   "bad_en": "Once the debt collector receives your information, they have 30 days to dispute the debt in writing.",
+   "split": "test"
+  },
+  {
+   "id": 9117,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.consumerfinance.gov/ask-cfpb/what-information-does-a-debt-collector-have-to-give-me-about-the-debt-en-331/",
+   "en": "The debt collector must give you the name of the creditor you owe the debt to.",
+   "bad_en": "You must give the debt collector the name of the creditor you owe the debt to.",
+   "split": "test"
+  },
+  {
+   "id": 9118,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "If the IRS approves your payment plan, a setup fee will be charged to you.",
+   "bad_en": "If the IRS approves your payment plan, a setup fee will be paid to you.",
+   "split": "test"
+  },
+  {
+   "id": 9119,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.uscis.gov/green-card/after-we-grant-your-green-card/replace-your-green-card",
+   "en": "You may submit a motion to reopen to the same office that made the unfavorable decision.",
+   "bad_en": "You may submit a motion to reopen to a different office than the one that made the unfavorable decision.",
+   "split": "test"
+  },
+  {
+   "id": 9120,
+   "domain": "legal",
+   "kind": "role",
+   "source": "https://www.irs.gov/payments/payment-plans-installment-agreements",
+   "en": "If you are a sole proprietor or independent contractor, apply for a payment plan as an individual.",
+   "bad_en": "If you are a sole proprietor or independent contractor, apply for a payment plan as a business.",
+   "split": "test"
+  }
+ ]
+}
