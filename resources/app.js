@@ -11,7 +11,7 @@ import {
 } from './dictation.js';
 import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
 import {
-  native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
+  native, loadData, saveData, setAlwaysOnTop, onWindowFocus, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight,
   getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
@@ -1727,14 +1727,26 @@ $('#tone-note').addEventListener('input', (e) => { settings.toneNote = e.target.
 // Pinned on top and you're working elsewhere: fade so it doesn't block what's behind it.
 const FADED = 165;
 let windowFocused = document.hasFocus();
+// The pointer is over the window, having moved there since you last switched away. (WebKit keeps
+// :hover from before the switch until the mouse moves, so a pointer resting on Vox2 when you ⌘Tab
+// away used to keep it from fading.)
+let pointerInside = false;
 function applyFade() {
-  const faded = settings.onTop && settings.fade && !windowFocused && !document.documentElement.matches(':hover');
+  const faded = settings.onTop && settings.fade && !windowFocused && !pointerInside;
   setWindowAlpha(faded ? FADED : 255);
 }
-addEventListener('focus', () => { windowFocused = true; applyFade(); });
-addEventListener('blur', () => { windowFocused = false; applyFade(); });
-document.documentElement.addEventListener('mouseenter', applyFade);
-document.documentElement.addEventListener('mouseleave', applyFade);
+function setWindowFocused(focused) {
+  if (focused === windowFocused) return;
+  windowFocused = focused;
+  if (!focused) pointerInside = false;
+  applyFade();
+}
+// Both the page's focus events and the system's (the page's are sometimes missed on ⌘Tab).
+addEventListener('focus', () => setWindowFocused(true));
+addEventListener('blur', () => setWindowFocused(false));
+onWindowFocus(setWindowFocused);
+document.documentElement.addEventListener('pointermove', () => { if (!pointerInside) { pointerInside = true; applyFade(); } });
+document.documentElement.addEventListener('mouseleave', () => { pointerInside = false; applyFade(); });
 
 function renderWindowOpts() {
   $('#fade-toggle').checked = settings.fade;

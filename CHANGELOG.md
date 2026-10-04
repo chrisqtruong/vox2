@@ -21,6 +21,10 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 - **Esc in the bubble stops reading first.** While the bubble is reading aloud, Esc just stops the reading; the next Esc closes the bubble. *Windows and Mac.*
 - **Type anywhere in settings to search them.** With settings open, just start typing ("appea") and it goes straight into the settings search, which jumps to the matching settings (appearance). Works wherever the keyboard focus is, except while you're typing in a field or recording a shortcut. *Windows and Mac.*
 
+### Fixed
+
+- **Pinned Vox2 fades reliably when you switch away.** It sometimes stayed solid after ⌘Tab / Alt+Tab: the window's focus change could be missed, and a mouse resting over Vox2 at the moment you switched counted as "hovering". Vox2 now also listens to the system's focus change, and only un-fades for the mouse once it moves over the window. *Windows and Mac.*
+
 ## 0.4.21 (2026-10-04)
 
 ### Changed
