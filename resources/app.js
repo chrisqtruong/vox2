@@ -35,14 +35,17 @@ const DEFAULTS = {
   sttOutput: 'spoken', // dictating into another app types 'spoken' (what you said) or 'translation'
   // Lone right-hand modifier, like Wispr Flow / SuperWhisper: easy to hit, rarely used otherwise.
   sttShortcut: { code: MAC ? 'AltRight' : 'ControlRight' },
-  summonShortcut: MAC ? { code: 'Space', meta: true, shift: true } : { code: 'Space', ctrl: true, shift: true },
-  selectShortcut: MAC ? { code: 'KeyT', meta: true, alt: true } : { code: 'KeyT', ctrl: true, alt: true },
+  // Mac: the everywhere-shortcuts are ⌃⌥ + a letter (V = Vox, T = translate, S = snip): one
+  // left-hand press, unused by macOS, rare in apps, unlike ⌘ combos (apps' own) or ⌃⌥Space
+  // (switches keyboard language). Vox2 takes the keypress, so the app in front doesn't also act.
+  summonShortcut: MAC ? { code: 'KeyV', ctrl: true, alt: true } : { code: 'Space', ctrl: true, shift: true },
+  selectShortcut: MAC ? { code: 'KeyT', ctrl: true, alt: true } : { code: 'KeyT', ctrl: true, alt: true },
   pinShortcut: MAC ? { code: 'KeyP', meta: true } : { code: 'KeyP', ctrl: true }, // while Vox2 is in front
   // Also only while Vox2 is in front. Mac: ⌘H would hide the app, so history is ⌘Y (as in Safari).
   fitShortcut: MAC ? { code: 'KeyF', meta: true, shift: true } : { code: 'KeyF', ctrl: true, shift: true },
   historyShortcut: MAC ? { code: 'KeyY', meta: true } : { code: 'KeyH', ctrl: true },
   settingsShortcut: MAC ? { code: 'Comma', meta: true } : { code: 'Comma', ctrl: true },
-  snipShortcut: MAC ? { code: 'KeyS', meta: true, alt: true } : { code: 'KeyS', ctrl: true, alt: true },
+  snipShortcut: MAC ? { code: 'KeyS', ctrl: true, alt: true } : { code: 'KeyS', ctrl: true, alt: true },
   quickResult: 'bubble', // quick translations (selected text, snips) show in: 'bubble' or 'window'
   conversation: false, // conversation mode: speak each dictated phrase's translation aloud
   tone: 'auto', toneNote: '',
@@ -70,7 +73,21 @@ async function loadSettings() {
   // Speed used to be a percent change baked into the voice (-20 / 0 / +15).
   if (saved.ttsRate != null && saved.ttsSpeed == null) saved.ttsSpeed = saved.ttsRate < 0 ? 0.75 : saved.ttsRate > 0 ? 1.25 : 1;
   delete saved.ttsRate;
+  // Mac shortcuts moved from ⌘ combos to ⌃⌥ (0.4.19): anyone still on an old default gets the new
+  // one; shortcuts you set yourself stay.
+  if (MAC) {
+    const OLD = {
+      summonShortcut: { code: 'Space', meta: true, shift: true },
+      selectShortcut: { code: 'KeyT', meta: true, alt: true },
+      snipShortcut: { code: 'KeyS', meta: true, alt: true },
+    };
+    const same = (a, b) => !!a && ['code', 'ctrl', 'alt', 'shift', 'meta'].every((k) => (a[k] || false) === (b[k] || false));
+    for (const [name, old] of Object.entries(OLD)) if (same(saved[name], old)) delete saved[name];
+  }
   settings = { ...DEFAULTS, ...saved, keys: { ...saved.keys } };
+  // A shortcut that's Shift or a left-side modifier on its own (easy to record by accident) fires
+  // all the time while typing: put that one back to its default.
+  for (const k of Object.keys(DEFAULTS)) if (k.endsWith('Shortcut') && badLone(settings[k])) settings[k] = DEFAULTS[k];
   await loadKeys();
 }
 
@@ -1081,6 +1098,10 @@ $('#swap').addEventListener('click', abandonDictation, { capture: true });
 const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform);
 const MODIFIER_CODES = new Set(['ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'ShiftLeft', 'ShiftRight', 'MetaLeft', 'MetaRight']);
 const isLone = (sc) => MODIFIER_CODES.has(sc.code) && !sc.ctrl && !sc.alt && !sc.shift && !sc.meta;
+// A key on its own is only a shortcut if it's a right-side Ctrl / Option / Cmd: Shift and the
+// left-side ones are pressed all the time while typing, so one of those alone would fire constantly.
+const LONE_OK = new Set(['ControlRight', 'AltRight', 'MetaRight']);
+const badLone = (sc) => !!sc?.code && isLone(sc) && !LONE_OK.has(sc.code);
 
 // Macs write shortcuts with symbols in this order, e.g. ⌥⌘T, like the menu bar does.
 const MAC_SYMBOLS = { Control: '⌃', Alt: '⌥', Shift: '⇧', Meta: '⌘' };
@@ -1268,7 +1289,14 @@ function recordShortcut(chip) {
     if (!held.includes(e.code)) return;
     // First modifier released: one modifier = that exact key (e.g. Right Ctrl);
     // several = a modifier-only chord (e.g. Ctrl+Alt+Shift).
-    if (held.length === 1) return done({ code: held[0] });
+    if (held.length === 1) {
+      if (!LONE_OK.has(held[0])) {
+        held.length = 0; // keep recording
+        chip.textContent = IS_MAC ? 'add a letter (alone: right ⌥ ⌃ ⌘ only)' : 'add a letter (alone: right Ctrl / Alt / Win only)';
+        return;
+      }
+      return done({ code: held[0] });
+    }
     const code = held[held.length - 1];
     const others = new Set(held.slice(0, -1).map(modClass));
     others.delete(modClass(code));
@@ -1551,7 +1579,7 @@ async function updateExtras(dst, translation, lang, backTo, original) {
     const backLine = box.querySelector('.back');
     backLine.textContent = settings.showBack ? back : '';
     box.hidden = !box.textContent.trim();
-    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, translation, back, id, backTo);
+    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, translation, back, id, backTo, lang);
   } catch {}
 }
 
@@ -1566,7 +1594,7 @@ document.body.append(matchTip);
 const escapeHtml = (t) => t.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
 function showMatchTip(badge) {
-  const { score, numbers, checks, missing, untranslated: copied } = badge.dataset;
+  const { score, numbers, checks, missing, heShe, untranslated: copied } = badge.dataset;
   if (copied) {
     matchTip.innerHTML = '<b>can\'t check</b>'
       + '<p>part of your text came through untranslated, so the ↩ line just repeats it and a match score would mean nothing</p>'
@@ -1579,8 +1607,9 @@ function showMatchTip(badge) {
     + '<p>how much of your meaning survived the round trip, compared by meaning, not exact words</p>'
     + TIERS.map(([k, range, label]) => `<div class="tier ${k}${k === t ? ' on' : ''}"><i></i><span>${range}</span>${label}</div>`).join('')
     + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '')
-    + (checks ? checks.split('\n').map((c) => `<p class="warn">${c}, so it's capped at 60%</p>`).join('') : '')
-    + (missing ? `<p class="missing">didn't come back: ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '');
+    + (checks ? checks.split('\n').map((c) => `<p class="warn">${escapeHtml(c)}, so ${Number(score) > 60 ? 'it\'s kept below 85%' : 'it\'s capped at 60%'}</p>`).join('') : '')
+    + (missing ? `<p class="missing">didn't come back: ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '')
+    + (heShe ? `<p class="missing">pronouns can't be checked: ${escapeHtml(heShe)} pronouns usually don't say he, she or they, so a change wouldn't come back</p>` : '');
   placeMatchTip(badge);
 }
 
@@ -1593,7 +1622,7 @@ function placeMatchTip(badge) {
   matchTip.style.top = `${r.top / z - h - 6 > 8 ? r.top / z - h - 6 : r.bottom / z + 6}px`; // above, else below
 }
 
-async function showMatch(backLine, original, translation, back, id, lang) {
+async function showMatch(backLine, original, translation, back, id, lang, target) {
   const badge = document.createElement('span');
   badge.addEventListener('mouseenter', () => showMatchTip(badge));
   badge.addEventListener('mouseleave', () => { matchTip.hidden = true; });
@@ -1612,7 +1641,7 @@ async function showMatch(backLine, original, translation, back, id, lang) {
   badge.title = 'checking meaning (first time downloads a ~120 MB model)';
   backLine.append(' ', badge);
   try {
-    const { score, numbersDiffer, checks, changed, missing } = await matchScore(original, back, lang);
+    const { score, numbersDiffer, checks, changed, missing, heSheUnchecked } = await matchScore(original, back, lang, target);
     if (id !== extrasJob) return;
     badge.className = `match ${tier(score)}`;
     badge.textContent = `${score}% match`;
@@ -1621,6 +1650,7 @@ async function showMatch(backLine, original, translation, back, id, lang) {
     if (numbersDiffer) badge.dataset.numbers = '1';
     if (checks.length) badge.dataset.checks = checks.map((c) => c.detail).join('\n');
     if (missing.length) badge.dataset.missing = missing.join('\n');
+    if (heSheUnchecked) badge.dataset.heShe = langName(target);
     markChanged(backLine, changed);
   } catch {
     badge.remove(); // no model (e.g. offline the first time): just leave the score out
