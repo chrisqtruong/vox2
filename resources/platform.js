@@ -154,3 +154,32 @@ export async function resizeWindowHeight(factor) {
   }
   return { capped: want > max };
 }
+
+// Set the window's width (in CSS pixels, keeping its height), within the screen's usable area,
+// and nudge it left if it would run off the right edge. `width` 'wide' picks a wider reading size:
+// about 1.8 times the given normal width, at most 45% of the screen. Returns the new width in CSS px.
+export async function setWindowWidth(width) {
+  if (!native) return null;
+  const win = tauri.window.getCurrentWindow();
+  if (await win.isMaximized()) await win.unmaximize();
+  const [inner, pos, mon, scale] = await Promise.all([win.innerSize(), win.outerPosition(), tauri.window.currentMonitor(), win.scaleFactor()]);
+  const area = mon?.workArea ?? (mon && { position: mon.position, size: mon.size });
+  const margin = Math.round(8 * scale);
+  let w = Math.round(width * scale);
+  if (area) w = Math.min(w, area.size.width - 2 * margin);
+  w = Math.max(w, Math.round(300 * scale)); // 300 = the window's minimum
+  await win.setSize(new tauri.dpi.PhysicalSize(w, inner.height));
+  if (area) {
+    const right = area.position.x + area.size.width - margin;
+    if (pos.x + w > right) await win.setPosition(new tauri.dpi.PhysicalPosition(Math.max(area.position.x + margin, right - w), pos.y));
+  }
+  return w / scale;
+}
+
+// The screen's usable width in CSS pixels (for sizing the wide reading width).
+export async function screenWidth() {
+  if (!native) return innerWidth;
+  const mon = await tauri.window.currentMonitor();
+  const area = mon?.workArea ?? mon;
+  return area ? area.size.width / (mon.scaleFactor || 1) : innerWidth;
+}
