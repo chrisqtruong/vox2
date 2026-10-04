@@ -1,7 +1,7 @@
 import { langName } from './languages.js';
 import { ENGINES, translate, detectLanguage, checkBack } from './engines.js';
 import { attachLangPicker } from './langpicker.js';
-import { readText, tesseractLang } from './ocr.js';
+import { readText, tesseractLang, joinLines } from './ocr.js';
 import { matchScore, tier } from './meaning.js';
 import { THEME_GROUPS, applyTheme } from './themes.js';
 import {
@@ -12,7 +12,7 @@ import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, 
 import {
   native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
-  sendBubble, openBubble, showWindow, startSnip, takeSnip, getSecret, setSecret, memoryInfo, resizeWindowHeight,
+  sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight,
   getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
 } from './platform.js';
 
@@ -1328,12 +1328,27 @@ function ocrLangs() {
   return [...new Set(picks)].slice(0, 3);
 }
 
+// macOS reads snips with Apple's text recognizer (the Live Text engine), which reads screen text
+// far better than Tesseract. Empty when it can't (a language it doesn't read, an error), and then
+// Tesseract reads it as on Windows.
+async function readSnipMac() {
+  const lang = quickPane().lang;
+  const detect = lang.value === 'auto';
+  const langs = detect ? ['en', lang.detected, ...settings.pinnedLangs] : [lang.value, 'en'];
+  try {
+    const text = joinLines(await readSnipText([...new Set(langs.filter(Boolean))], detect));
+    if (text) takeSnip().catch(() => {}); // done with the image
+    return text;
+  } catch {
+    return '';
+  }
+}
+
 onNative('snip', async ({ x, y }) => {
   const session = useBubble() ? await startBubble({ x, y }, 'reading the text…') : 0;
   if (!session) setStatus('busy', 'reading the text…');
   try {
-    const png = await takeSnip();
-    const text = await readText(new Blob([png], { type: 'image/png' }), ocrLangs());
+    const text = (MAC && (await readSnipMac())) || (await readText(new Blob([await takeSnip()], { type: 'image/png' }), ocrLangs()));
     if (!text) throw new Error('no text found in that area');
     quickTranslate(text, { x, y }, session);
   } catch (err) {
