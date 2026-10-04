@@ -227,7 +227,6 @@ fn main() {
             set_window_alpha,
             ensure_pill,
             hotkey::set_hotkey,
-            hotkey::set_highlight_key,
             hotkey::reset_keys,
             hotkey::hide_main,
             hotkey::show_window,

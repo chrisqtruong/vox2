@@ -3,11 +3,9 @@
 //             the page owns tap / hold logic (shared with the in-window mic button)
 //   summon  – show/hide the window (handled here)
 //   select  – copy whatever is selected in the current app and translate it (handled here)
-// It also watches the left mouse button for "translate while highlighting": hold a key (left
-// Option / left Alt), highlight text, let go of the key, and the selection is translated.
 
 #[cfg(not(target_os = "macos"))]
-use rdev::{listen, Button, EventType, Key};
+use rdev::{listen, EventType, Key};
 use serde::Deserialize;
 use serde_json::json;
 use std::collections::{HashMap, HashSet};
@@ -99,53 +97,6 @@ fn code_of(key: Key) -> Option<&'static str> {
         KeyY => "KeyY", KeyZ => "KeyZ",
         _ => return None,
     })
-}
-
-/* ---------- translate while highlighting ---------- */
-
-// The key to hold while highlighting ("AltLeft"); empty = off. Set from settings.
-static HIGHLIGHT_KEY: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
-static HL_HELD: AtomicBool = AtomicBool::new(false); // the key is down
-static HL_ARMED: AtomicBool = AtomicBool::new(false); // text was highlighted while it was down
-// Where the left button went down while the key was held, and whether it has moved far enough
-// since to be a highlight (a drag) rather than a click.
-static HL_DRAG: Mutex<Option<(f64, f64, bool)>> = Mutex::new(None);
-
-#[tauri::command]
-pub fn set_highlight_key(code: String) {
-    *HIGHLIGHT_KEY.lock().unwrap() = code;
-    HL_HELD.store(false, Ordering::Relaxed);
-    HL_ARMED.store(false, Ordering::Relaxed);
-}
-
-enum Mouse {
-    Down,
-    Move,
-    Up,
-}
-
-// Left-button events from either platform's watcher. Kept cheap: mouse moves arrive constantly,
-// and on macOS a slow watcher gets switched off.
-fn on_mouse(kind: Mouse, x: f64, y: f64) {
-    if !HL_HELD.load(Ordering::Relaxed) {
-        return;
-    }
-    let mut drag = HL_DRAG.lock().unwrap();
-    match kind {
-        Mouse::Down => *drag = Some((x, y, false)),
-        Mouse::Move => {
-            if let Some((sx, sy, moved)) = drag.as_mut() {
-                if !*moved && (x - *sx).abs() + (y - *sy).abs() > 6.0 {
-                    *moved = true;
-                }
-            }
-        }
-        Mouse::Up => {
-            if let Some((_, _, true)) = drag.take() {
-                HL_ARMED.store(true, Ordering::Relaxed);
-            }
-        }
-    }
 }
 
 // The watcher doesn't receive keys while Vox2 itself is in front (and can miss the key-ups
@@ -273,22 +224,12 @@ pub fn start(app: AppHandle) {
                 held.lock().unwrap().clear();
                 down.clear();
                 taken.clear();
-                HL_HELD.store(false, Ordering::Relaxed);
-                HL_ARMED.store(false, Ordering::Relaxed);
             }
-            let highlight = HIGHLIGHT_KEY.lock().unwrap().clone();
             let hotkeys = HOTKEYS.lock().unwrap().clone();
 
             if !pressed {
                 held.lock().unwrap().remove(code);
                 let was_taken = taken.remove(code);
-                // Translate while highlighting: the key came up after text was highlighted.
-                if !highlight.is_empty() && code == highlight {
-                    HL_HELD.store(false, Ordering::Relaxed);
-                    if HL_ARMED.swap(false, Ordering::Relaxed) {
-                        grab_selection(app.clone(), held.clone());
-                    }
-                }
                 for (name, hk) in &hotkeys {
                     // A modifier-only chord ends as soon as any of its keys comes up.
                     let ends = hk.code == code || (is_chord(hk) && is_modifier(code));
@@ -300,18 +241,6 @@ pub fn start(app: AppHandle) {
             }
 
             let repeat = !held.lock().unwrap().insert(code);
-            if !highlight.is_empty() {
-                if code == highlight {
-                    if !repeat {
-                        HL_HELD.store(true, Ordering::Relaxed);
-                        HL_ARMED.store(false, Ordering::Relaxed);
-                        *HL_DRAG.lock().unwrap() = None;
-                    }
-                } else if !is_modifier(code) {
-                    // Another key while it's held (typing an Option character, a shortcut): not a highlight.
-                    HL_ARMED.store(false, Ordering::Relaxed);
-                }
-            }
             if taken.contains(code) {
                 return true; // the key of a shortcut, repeating while held
             }
@@ -380,18 +309,10 @@ pub fn start(app: AppHandle) {
         };
 
         #[cfg(not(target_os = "macos"))]
-        let mut at = (0.0, 0.0); // the pointer, from the last mouse move (button events don't carry it)
-        #[cfg(not(target_os = "macos"))]
         let result = listen(move |event| {
             let (pressed, key) = match event.event_type {
                 EventType::KeyPress(k) => (true, k),
                 EventType::KeyRelease(k) => (false, k),
-                EventType::MouseMove { x, y } => {
-                    at = (x, y);
-                    return on_mouse(Mouse::Move, x, y);
-                }
-                EventType::ButtonPress(Button::Left) => return on_mouse(Mouse::Down, at.0, at.1),
-                EventType::ButtonRelease(Button::Left) => return on_mouse(Mouse::Up, at.0, at.1),
                 _ => return,
             };
             if let Some(code) = code_of(key) {
@@ -442,14 +363,6 @@ mod mac {
         fn CGEventTapEnable(tap: CFMachPortRef, enable: bool);
         fn CGEventGetIntegerValueField(event: CGEventRef, field: u32) -> i64;
         fn CGEventGetFlags(event: CGEventRef) -> u64;
-        fn CGEventGetLocation(event: CGEventRef) -> CGPoint;
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    struct CGPoint {
-        x: f64,
-        y: f64,
     }
 
     const SESSION_TAP: u32 = 1; // kCGSessionEventTap
@@ -459,10 +372,6 @@ mod mac {
     const KEY_DOWN: u32 = 10;
     const KEY_UP: u32 = 11;
     const FLAGS_CHANGED: u32 = 12;
-    // Left mouse button, for "translate while highlighting" (only looked at while its key is held).
-    const LEFT_MOUSE_DOWN: u32 = 1;
-    const LEFT_MOUSE_UP: u32 = 2;
-    const LEFT_MOUSE_DRAGGED: u32 = 6;
     const DISABLED_BY_TIMEOUT: u32 = 0xFFFF_FFFE;
     const DISABLED_BY_USER_INPUT: u32 = 0xFFFF_FFFF;
     const KEYCODE: u32 = 9; // kCGKeyboardEventKeycode
@@ -471,12 +380,7 @@ mod mac {
 
     pub fn listen(on_key: impl FnMut(bool, &'static str) -> bool + 'static) -> Result<(), &'static str> {
         let user_info = Box::into_raw(Box::new(Box::new(on_key) as OnKey)) as *mut c_void;
-        let mask = (1 << KEY_DOWN)
-            | (1 << KEY_UP)
-            | (1 << FLAGS_CHANGED)
-            | (1 << LEFT_MOUSE_DOWN)
-            | (1 << LEFT_MOUSE_UP)
-            | (1 << LEFT_MOUSE_DRAGGED);
+        let mask = (1 << KEY_DOWN) | (1 << KEY_UP) | (1 << FLAGS_CHANGED);
         // A tap that can hold keys back (so a shortcut's keys don't also reach the app in front)
         // needs Accessibility; without it, just watch, as before.
         let mut tap = unsafe { CGEventTapCreate(SESSION_TAP, HEAD_INSERT, DEFAULT, mask, on_event, user_info) };
@@ -501,18 +405,6 @@ mod mac {
             if !tap.is_null() {
                 unsafe { CGEventTapEnable(tap as CFMachPortRef, true) };
             }
-            return event;
-        }
-        // Mouse events always go on to the app; they only tell the highlight check where the pointer is.
-        let mouse = match kind {
-            LEFT_MOUSE_DOWN => Some(super::Mouse::Down),
-            LEFT_MOUSE_DRAGGED => Some(super::Mouse::Move),
-            LEFT_MOUSE_UP => Some(super::Mouse::Up),
-            _ => None,
-        };
-        if let Some(m) = mouse {
-            let p = unsafe { CGEventGetLocation(event) };
-            super::on_mouse(m, p.x, p.y);
             return event;
         }
         let keycode = unsafe { CGEventGetIntegerValueField(event, KEYCODE) } as u16;
