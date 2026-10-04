@@ -62,7 +62,7 @@ flowchart LR
 ```mermaid
 flowchart TD
     A[Your text] --> T[Translation]
-    T --> U{Did it come through<br/>untranslated?}
+    T --> U{Untranslated?}
     U -- yes --> C[can't check<br/>untranslated words underlined]
     U -- no --> B[↩ back-translation]
     B --> S[Meaning similarity<br/>small local model]
@@ -74,24 +74,26 @@ flowchart TD
 
 ## Where we are
 
-The work runs in **phases** (what the Meaning Check can do) and a **testing track** (how sure we are about the numbers).
+The work runs on two tracks: **phases** (what the Meaning Check can do) and **testing** (how sure we are about the numbers). ✓ done · ◐ in progress · → next · ○ later.
+
+**What it can do** (phases):
 
 ```mermaid
 flowchart LR
-    subgraph Phases[What it can do]
-        direction LR
-        P0[Phase 0<br/>similarity score<br/>DONE] --> P1[Phase 1 · 1.1 · 1.2<br/>word checks, fewer<br/>false alarms<br/>DONE]
-        P1 --> U[can't check<br/>for untranslated text<br/>DONE]
-        U --> P2[Phase 2<br/>show what changed<br/>IN PROGRESS]
-        P2 --> P3[Phase 3<br/>second opinions:<br/>other engine, direct<br/>comparison, AI check<br/>NEXT]
-        P3 --> P4[Phase 4<br/>per-language tuning<br/>LATER, if needed]
-    end
-    subgraph Tests[How sure we are]
-        direction LR
-        R1[Runs 1–5<br/>own test set,<br/>Google only<br/>DONE] --> R6[Run 6<br/>confirm 1.2b<br/>NEXT]
-        R6 --> E[More engines +<br/>independent judge<br/>NEXT]
-        E --> W[WMT research<br/>benchmark<br/>LATER]
-    end
+    P0[Phase 0<br/>similarity score<br/>✓ done] --> P1[Phase 1 · 1.1 · 1.2<br/>word checks,<br/>fewer false alarms<br/>✓ done]
+    P1 --> U[can't check<br/>for untranslated text<br/>✓ done]
+    U --> P2[Phase 2<br/>show what changed<br/>◐ in progress]
+    P2 --> P3[Phase 3<br/>second opinions:<br/>other engine, direct<br/>comparison, AI check<br/>→ next]
+    P3 --> P4[Phase 4<br/>per-language tuning<br/>○ later, if needed]
+```
+
+**How sure we are** (testing track):
+
+```mermaid
+flowchart LR
+    R1[Runs 1–5<br/>own test set,<br/>Google only<br/>✓ done] --> R6[Run 6<br/>confirm Phase 1.2b<br/>→ next]
+    R6 --> E[More engines +<br/>independent judge<br/>→ next]
+    E --> W[WMT research<br/>benchmark<br/>○ later]
 ```
 
 **What each step bought** (planted meaning errors caught on held-out sentences; Google both ways):
