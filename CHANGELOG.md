@@ -2,6 +2,16 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Changed
+
+- **Meaning check: inclusive pronouns.** Singular *they* and neopronouns (xe, ze, ey, fae) now count: if you write "they" or "xe" and the ↩ line says "he" or "she", or you write "partner" and it says "wife", the match is capped and the hover card says a gender appeared that you didn't write. A neopronoun that comes back as "they" (most languages don't have one) keeps the score below 85. In Tagalog, Hindi, Urdu and Spanish, whose pronouns can't carry he/she/they through the round trip, the hover card says pronouns can't be checked. Wording says "pronouns" instead of "he/she". *Windows and Mac.*
+
+### Fixed
+
+- **Fewer meaning-check false alarms.** Numbers written differently now match (eighteenth = 18th, 90°F = 32°C, "between 340 and 500 million", "both" = two, a conversion in brackets), and more ways of saying "not" are understood (unharmed = not hurt, treeless = without trees, immoral, "not long ago" isn't a negation, "No. 9" is a number). False alarms on good translations 4.8% → 4.1% on held-out sentences, errors caught unchanged ([report](docs/meaning-check-tests/2026-10-04-phase-1-2.md)). *Windows and Mac.*
+
 ## 0.4.19 (2026-10-04)
 
 ### Changed
