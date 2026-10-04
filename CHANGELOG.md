@@ -2,6 +2,12 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Added
+
+- **Star your favorite themes.** Hover a theme in settings → appearance and click the ☆ in its corner: starred themes show at the top under "starred", in the order you starred them (they stay in their group too). Star as many as you like; click ★ again to unstar. *Windows and Mac.*
+
 ## 0.4.16 (2026-10-03)
 
 ### Fixed

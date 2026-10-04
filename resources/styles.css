@@ -438,6 +438,21 @@ body.conversation .pane-head .mic { color: var(--accent); background: var(--hove
 .theme .swatch { display: flex; gap: 3px; flex: none; }
 .theme .swatch i { width: 9px; height: 9px; border-radius: 50%; }
 .theme span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Star in a tile's corner: shows on hover, stays (filled, in the accent color) once starred */
+.themes { padding-top: 6px; }
+.theme-tile { position: relative; display: flex; min-width: 0; }
+.theme-tile .theme { flex: 1; min-width: 0; }
+.theme-star {
+  position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; padding: 0;
+  display: grid; place-items: center; border-radius: 50%;
+  background: var(--bg); color: var(--muted); border: 1px solid var(--line);
+  opacity: 0; transition: opacity .1s;
+}
+.theme-tile:hover .theme-star, .theme-star:focus-visible, .theme-star[aria-pressed="true"] { opacity: 1; }
+.theme-star:hover { color: var(--ink); }
+.theme-star[aria-pressed="true"] { color: var(--accent); }
+.theme-star svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.theme-star[aria-pressed="true"] svg { fill: currentColor; }
 
 /* Read-aloud speed: a small popover from each box's speed button, mirrored in settings (volume is settings only) */
 .icon.speed { font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; }

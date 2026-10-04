@@ -25,6 +25,7 @@ const DEFAULTS = {
   engine: 'google', top: 'en', bottom: 'vi', onTop: false, keys: {}, models: {},
   pinnedLangs: [], // favorites shown first in the language menu
   theme: 'auto', font: 'mono', zoom: 1,
+  starredThemes: [], // favorite themes, shown first under appearance → theme
   mic: '', sttEngine: 'whisper', sttModel: 'small', sttOpenaiModel: 'gpt-4o-mini-transcribe',
   sttSilence: 3, // seconds of quiet that end a tapped dictation; 0 = never
   sttEnabled: true, sttKeep: 'save', // keep the voice model loaded: 'always' or 'save' (release when idle)
@@ -460,6 +461,9 @@ onTopToggle.addEventListener('change', () => setOnTop(onTopToggle.checked));
 
 const themesEl = $('#themes');
 
+const STAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>';
+
+// A theme tile, plus (except for auto) a star in its corner that keeps it at the top.
 function themeTile(name, colors) {
   const btn = document.createElement('button');
   btn.className = 'theme';
@@ -478,18 +482,51 @@ function themeTile(name, colors) {
     applyTheme(name);
     markTheme();
   });
-  return btn;
+  const tile = document.createElement('div');
+  tile.className = 'theme-tile';
+  tile.append(btn);
+  if (name !== 'auto') {
+    const starred = settings.starredThemes.includes(name);
+    const star = document.createElement('button');
+    star.className = 'theme-star';
+    star.innerHTML = STAR_SVG;
+    star.setAttribute('aria-pressed', String(starred));
+    star.setAttribute('aria-label', `${starred ? 'unstar' : 'star'} ${name}`);
+    star.title = starred ? 'Unstar' : 'Star: keep at the top';
+    star.addEventListener('click', () => toggleThemeStar(name));
+    tile.append(star);
+  }
+  return tile;
+}
+
+function toggleThemeStar(name) {
+  const list = settings.starredThemes;
+  settings.starredThemes = list.includes(name) ? list.filter((n) => n !== name) : [...list, name];
+  saveSettings();
+  renderThemes();
+  themesEl.querySelector(`.theme-tile:has([data-theme="${CSS.escape(name)}"]) .theme-star`)?.focus();
+  searchSections = null; // the tiles were rebuilt: re-read them for settings search
+  if (searchInput.value) searchSettings();
 }
 
 function renderThemes() {
   const auto = matchMedia('(prefers-color-scheme: dark)').matches
     ? { bg: '#171717', main: '#7aa5ff', sub: '#66665f', text: '#ececea' }
     : { bg: '#fafaf9', main: '#2f6feb', sub: '#a8a8a4', text: '#1c1c1b' };
+  const all = new Map(THEME_GROUPS.flatMap(({ themes }) => themes.map((t) => [t.name, t])));
   const nodes = [];
   const grid = () => Object.assign(document.createElement('div'), { className: 'themes' });
   const first = grid();
   first.append(themeTile('auto', auto));
   nodes.push(first);
+  // Starred themes first, in the order they were starred (they stay in their group too).
+  const starred = settings.starredThemes.filter((n) => all.has(n));
+  if (starred.length) {
+    nodes.push(Object.assign(document.createElement('h3'), { textContent: 'starred' }));
+    const g = grid();
+    g.append(...starred.map((n) => themeTile(n, all.get(n))));
+    nodes.push(g);
+  }
   for (const { group, themes } of THEME_GROUPS) {
     nodes.push(Object.assign(document.createElement('h3'), { textContent: group }));
     const g = grid();
