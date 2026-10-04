@@ -6,17 +6,28 @@ sessions that worked on Vox2, sorts every turn into a bucket (meaning check,
 Mac port, bug fixes...) and serves a live page at http://localhost:8642.
 
     python3 docs/expenditure/coinop.py              # live page, updates as you work
-    python3 docs/expenditure/coinop.py --snapshot   # write data.json for the website
+    python3 docs/expenditure/coinop.py --install    # keep it running from login, and keep the website current
+    python3 docs/expenditure/coinop.py --uninstall  # undo --install
 
-No installs needed (Python 3.9+ standard library only). Nothing leaves your
-computer; the snapshot holds only daily totals per bucket, never your prompts.
+With --publish (which --install turns on), every few minutes it pushes this
+computer's totals to the repo's `coin-op-data` branch, merged with the other
+computers' totals already there; the website reads that branch. Never main, so
+nothing to merge and no CI runs. Only daily totals per bucket go up, never prompts.
+
+No installs needed (Python 3.9+ standard library only).
 """
 
 import argparse
+import hashlib
 import json
+import os
+import platform
 import re
+import socket
+import subprocess
 import sys
 import threading
+import urllib.request
 import time
 import webbrowser
 from collections import defaultdict
@@ -26,6 +37,11 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 README = HERE.parent.parent / "README.md"
+README_URL = "https://raw.githubusercontent.com/chrisqtruong/vox2/main/README.md"
+REPO_URL = "https://github.com/chrisqtruong/vox2.git"
+DATA_BRANCH = "coin-op-data"
+DATA_DIR = Path.home() / ".coin-op"          # private clone of the data branch, logs
+PUBLISH_EVERY = 5 * 60                        # seconds
 PORT = 8642
 
 # API list prices, $ per million tokens (Anthropic first-party, 2026-09).
@@ -250,11 +266,27 @@ VALUE = {"very high": 4, "high": 3, "medium-high": 2.5, "medium": 2, "low": 1}
 EFFORT = {"small": 1, "medium": 2, "large": 3}
 
 
+_readme = {"at": 0, "text": None}
+
+
+def readme_text():
+    """The roadmap lives in README.md on main; fetch it at most every 10 minutes."""
+    if time.time() - _readme["at"] > 600 or _readme["text"] is None:
+        try:
+            with urllib.request.urlopen(README_URL, timeout=10) as r:
+                _readme["text"] = r.read().decode("utf-8")
+        except Exception:
+            if _readme["text"] is None:
+                try:
+                    _readme["text"] = README.read_text(encoding="utf-8")
+                except OSError:
+                    _readme["text"] = ""
+        _readme["at"] = time.time()
+    return _readme["text"]
+
+
 def parse_roadmap():
-    try:
-        text = README.read_text(encoding="utf-8")
-    except OSError:
-        return {"items": [], "done": []}
+    text = readme_text()
     m = re.search(r"^## Roadmap\s*$(.*?)^## ", text, re.M | re.S)
     if not m:
         return {"items": [], "done": []}
@@ -320,23 +352,24 @@ def plan_next(roadmap, theme_cost):
     return picks, {t: round(g, 3) for t, g in gaps.items()}, {t: round(value[t] / value_total, 3) for t in road_themes}
 
 
+
+
 # ---------------------------------------------------------------- report
 
 def local_day(ts):
     return datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone().strftime("%Y-%m-%d")
 
 
-def build(roots, live):
-    sessions = load_all(roots)
-    days = defaultdict(lambda: defaultdict(lambda: {"cost": 0.0, "tokens": 0, "output": 0}))
-    totals = {"cost": 0.0, "tokens": 0, "input": 0, "output": 0, "cache_write": 0, "cache_read": 0, "turns": 0}
-    by_bucket = defaultdict(lambda: {"cost": 0.0, "tokens": 0, "output": 0, "turns": 0})
-    recent, kept = [], []
-    for sid, events in sessions.items():
+def collect(roots, live):
+    """This computer's Vox2 sessions -> ({session_id: totals}, recent turns)."""
+    out, recent = {}, []
+    for sid, events in load_all(roots).items():
         turns = build_turns(events)
         if not is_vox2(turns):
             continue
-        kept.append(sid)
+        days = defaultdict(lambda: defaultdict(lambda: {"cost": 0.0, "tokens": 0, "output": 0}))
+        buckets = defaultdict(lambda: {"cost": 0.0, "tokens": 0, "turns": 0})
+        totals = {"cost": 0.0, "tokens": 0, "input": 0, "output": 0, "cache_write": 0, "cache_read": 0, "turns": 0}
         prev = "docs"
         for t in turns:
             if scope(t) == "other":  # e.g. a website turn inside a mostly-Vox2 session
@@ -363,39 +396,163 @@ def build(roots, live):
             if not t["replies"]:
                 continue
             totals["turns"] += 1
-            b = by_bucket[bucket]
+            b = buckets[bucket]
             b["cost"] += tcost
             b["tokens"] += ttok
             b["turns"] += 1
             if live and not t["cont"]:
                 recent.append({"ts": t["ts"], "bucket": bucket, "prompt": t["prompt"][:120], "cost": round(tcost, 2), "tokens": ttok})
+        out[sid] = {"days": days, "buckets": buckets, "totals": totals}
+    return out, recent
+
+
+def rounded(v):
+    if isinstance(v, float):
+        return round(v, 4)
+    if isinstance(v, dict):
+        return {k: rounded(x) for k, x in v.items()}
+    return v
+
+
+def combine(sessions, live, recent=(), machines=1):
+    """Add up sessions (from any number of computers) into what the page shows."""
+    days = defaultdict(lambda: defaultdict(lambda: {"cost": 0.0, "tokens": 0, "output": 0}))
+    by_bucket = defaultdict(lambda: {"cost": 0.0, "tokens": 0, "output": 0, "turns": 0})
+    totals = defaultdict(float)
+    for s in sessions.values():
+        for d, cells in s["days"].items():
+            for bid, c in cells.items():
+                for k in ("cost", "tokens", "output"):
+                    days[d][bid][k] += c[k]
+                by_bucket[bid]["output"] += c["output"]
+        for bid, b in s["buckets"].items():
+            for k in ("cost", "tokens", "turns"):
+                by_bucket[bid][k] += b[k]
+        for k, v in s["totals"].items():
+            totals[k] += v
+    for k in ("tokens", "input", "output", "cache_write", "cache_read", "turns"):
+        totals[k] = int(totals[k])
     for d in days.values():
-        for bid, cell in d.items():
-            by_bucket[bid]["output"] += cell["output"]
+        for c in d.values():
+            c["tokens"], c["output"] = int(c["tokens"]), int(c["output"])
 
     theme_of = {b["id"]: b["theme"] for b in BUCKETS}
     theme_cost = defaultdict(float)
     for bid, v in by_bucket.items():
-        theme_cost[theme_of[bid]] += v["cost"]
+        theme_cost[theme_of.get(bid, "upkeep")] += v["cost"]
     roadmap = parse_roadmap()
     picks, gaps, value_share = plan_next(roadmap, theme_cost)
     on_road = sum(theme_cost[t["id"]] for t in THEMES if t["roadmap"])
-    recent.sort(key=lambda r: r["ts"])
 
     return {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "live": live,
+        "machines": machines,
         "pricing": {"model": DEFAULT_MODEL, **PRICES[DEFAULT_MODEL]},
-        "sessions": len(kept),
-        "buckets": [{k: b[k] for k in ("id", "name", "color", "theme")} | {k: round(v, 4) if isinstance(v, float) else v for k, v in by_bucket[b["id"]].items()} for b in BUCKETS],
+        "sessions": len(sessions),
+        "buckets": [{k: b[k] for k in ("id", "name", "color", "theme")} | rounded(dict(by_bucket[b["id"]])) for b in BUCKETS],
         "themes": [t | {"cost": round(theme_cost[t["id"]], 4), "value_share": value_share.get(t["id"]), "gap": gaps.get(t["id"])} for t in THEMES],
-        "days": [{"date": d, "by": {b: {k: round(v, 4) if isinstance(v, float) else v for k, v in c.items()} for b, c in days[d].items()}} for d in sorted(days)],
-        "totals": {k: round(v, 4) if isinstance(v, float) else v for k, v in totals.items()},
+        "days": [{"date": d, "by": rounded({b: dict(c) for b, c in days[d].items()})} for d in sorted(days)],
+        "totals": rounded(dict(totals)),
         "alignment": round(on_road / (sum(theme_cost.values()) or 1), 3),
         "roadmap": roadmap,
         "next": picks,
-        "recent": recent[-12:],
+        "recent": sorted(recent, key=lambda r: r["ts"])[-12:],
     }
+
+
+# ---------------------------------------------------------------- publishing
+# The data branch holds one file per computer (machines/<id>.json, totals per
+# session) plus data.json, all of them added up. Each computer rewrites only
+# its own file, so the Mac and the PC never overwrite each other.
+
+def machine_id():
+    host = hashlib.sha1(socket.gethostname().encode()).hexdigest()[:6]
+    return f"{platform.system().lower()}-{host}"
+
+
+def git(*args, check=True):
+    return subprocess.run(["git", "-C", str(DATA_DIR / "data"), *args], capture_output=True, text=True, check=check)
+
+
+def remote_url():
+    try:
+        return subprocess.run(["git", "-C", str(HERE), "remote", "get-url", "origin"],
+                              capture_output=True, text=True, check=True).stdout.strip() or REPO_URL
+    except Exception:
+        return REPO_URL
+
+
+def ensure_data_clone():
+    repo = DATA_DIR / "data"
+    if (repo / ".git").exists():
+        return
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    url = remote_url()
+    has_branch = subprocess.run(["git", "ls-remote", "--heads", url, DATA_BRANCH], capture_output=True, text=True).stdout.strip()
+    if has_branch:
+        subprocess.run(["git", "clone", "-q", "--single-branch", "--branch", DATA_BRANCH, url, str(repo)], check=True)
+    else:  # first computer: start an empty branch that shares nothing with main
+        repo.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+        git("remote", "add", "origin", url)
+        git("checkout", "-q", "--orphan", DATA_BRANCH)
+        (repo / "README.md").write_text("Data for Coin-Op (docs/expenditure on main). Written automatically; don't edit.\n")
+
+
+def other_machines():
+    """Sessions the other computers published, from the local copy of the data branch."""
+    out, n = {}, 0
+    for f in sorted((DATA_DIR / "data" / "machines").glob("*.json")):
+        if f.stem == machine_id():
+            continue
+        try:
+            out.update(json.loads(f.read_text(encoding="utf-8"))["sessions"])
+            n += 1
+        except (OSError, ValueError, KeyError):
+            pass
+    return out, n
+
+
+def publish(roots):
+    ensure_data_clone()
+    repo = DATA_DIR / "data"
+    if git("ls-remote", "--heads", "origin", DATA_BRANCH, check=False).stdout.strip():
+        git("pull", "-q", "--rebase", "origin", DATA_BRANCH, check=False)
+    mine, _ = collect(roots, live=False)
+    (repo / "machines").mkdir(exist_ok=True)
+    (repo / "machines" / f"{machine_id()}.json").write_text(
+        json.dumps({"machine": machine_id(), "sessions": rounded(mine)}, sort_keys=True) + "\n", encoding="utf-8")
+    others, n = other_machines()
+    data = combine({**others, **mine}, live=False, machines=n + 1)
+    old = repo / "data.json"
+    try:  # don't commit a new file just because the timestamp moved
+        before = json.loads(old.read_text(encoding="utf-8"))
+        before.pop("generated", None)
+    except (OSError, ValueError):
+        before = None
+    if before != {k: v for k, v in json.loads(json.dumps(data)).items() if k != "generated"}:
+        old.write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
+    git("add", "-A")
+    if not git("status", "--porcelain").stdout.strip():
+        return "no change"
+    git("commit", "-q", "-m", f"Coin-Op data from {machine_id()}")
+    for _ in range(2):
+        if git("push", "-q", "-u", "origin", DATA_BRANCH, check=False).returncode == 0:
+            return f"published ${data['totals'].get('cost', 0):,.2f}"
+        git("pull", "-q", "--rebase", "origin", DATA_BRANCH, check=False)
+    return "push failed (will retry)"
+
+
+def publish_loop(roots):
+    while True:
+        try:
+            with Handler.lock:
+                result = publish(roots)
+        except Exception as e:  # keep serving even if git or the network hiccups
+            result = f"publish error: {e}"
+        print(f"{datetime.now():%Y-%m-%d %H:%M} {result}", flush=True)
+        time.sleep(PUBLISH_EVERY)
 
 
 # ---------------------------------------------------------------- server
@@ -410,7 +567,9 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path.split("?")[0] == "/data.json":
             with self.lock:
-                body = json.dumps(build(self.roots, live=True)).encode()
+                mine, recent = collect(self.roots, live=True)
+                others, n = other_machines()
+                body = json.dumps(combine({**others, **mine}, live=True, recent=recent, machines=n + 1)).encode()
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Cache-Control", "no-store")
@@ -424,27 +583,85 @@ class Handler(SimpleHTTPRequestHandler):
         pass
 
 
+# ---------------------------------------------------------------- start at login
+
+PLIST = Path.home() / "Library" / "LaunchAgents" / "com.chrisqtruong.coinop.plist"
+WIN_STARTUP = Path(os.environ.get("APPDATA", "")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup" / "coin-op.cmd"
+
+
+def install():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    script = str(Path(__file__).resolve())
+    if sys.platform == "darwin":
+        log = str(DATA_DIR / "log.txt")
+        PLIST.parent.mkdir(parents=True, exist_ok=True)
+        PLIST.write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.chrisqtruong.coinop</string>
+  <key>ProgramArguments</key><array>
+    <string>{sys.executable}</string><string>{script}</string><string>--publish</string><string>--no-open</string>
+  </array>
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>{log}</string>
+  <key>StandardErrorPath</key><string>{log}</string>
+</dict></plist>
+""")
+        uid = os.getuid()
+        subprocess.run(["launchctl", "bootout", f"gui/{uid}", str(PLIST)], capture_output=True)
+        subprocess.run(["launchctl", "bootstrap", f"gui/{uid}", str(PLIST)], check=True)
+        print(f"Coin-Op now runs from login: http://localhost:{PORT}\nLog: {log}\nUndo: python3 {script} --uninstall")
+    elif sys.platform == "win32":
+        pyw = Path(sys.executable).with_name("pythonw.exe")
+        WIN_STARTUP.write_text(f'@start "" "{pyw if pyw.exists() else sys.executable}" "{script}" --publish --no-open\r\n')
+        subprocess.Popen([str(pyw if pyw.exists() else sys.executable), script, "--publish", "--no-open"],
+                         creationflags=getattr(subprocess, "DETACHED_PROCESS", 0))
+        print(f"Coin-Op now runs from login: http://localhost:{PORT}\nUndo: python {script} --uninstall")
+    else:
+        sys.exit("--install supports macOS and Windows")
+
+
+def uninstall():
+    if sys.platform == "darwin":
+        subprocess.run(["launchctl", "bootout", f"gui/{os.getuid()}", str(PLIST)], capture_output=True)
+        PLIST.unlink(missing_ok=True)
+    elif sys.platform == "win32":
+        WIN_STARTUP.unlink(missing_ok=True)
+        print("Removed from startup. Close the running copy from Task Manager (pythonw) or restart.")
+    print("Coin-Op no longer starts at login. The data already published stays on the coin-op-data branch.")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Coin-Op: Vox2 project expenditure")
-    ap.add_argument("--snapshot", action="store_true", help="write data.json (no prompts) and exit")
+    ap.add_argument("--install", action="store_true", help="run from login and keep the website current")
+    ap.add_argument("--uninstall", action="store_true", help="undo --install")
+    ap.add_argument("--publish", action="store_true", help=f"push totals to the {DATA_BRANCH} branch every few minutes")
     ap.add_argument("--projects", action="append", help="extra transcript folder (repeatable), e.g. a copy from another computer")
     ap.add_argument("--port", type=int, default=PORT)
     ap.add_argument("--no-open", action="store_true", help="don't open the browser")
     args = ap.parse_args()
+    if args.install:
+        return install()
+    if args.uninstall:
+        return uninstall()
     roots = [Path.home() / ".claude" / "projects"] + [Path(p) for p in args.projects or []]
 
-    if args.snapshot:
-        data = build(roots, live=False)
-        (HERE / "data.json").write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
-        t = data["totals"]
-        print(f"data.json: {data['sessions']} sessions, {t['turns']} turns, {t['tokens']:,} tokens, ~${t['cost']:,.2f}")
-        return
-
     Handler.roots = roots
-    build(roots, live=True)  # warm the cache before the first page load
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    collect(roots, live=True)  # warm the cache before the first page load
+    try:
+        server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    except OSError:
+        url = f"http://localhost:{args.port}"
+        print(f"Coin-Op is already running at {url}")
+        if not args.no_open:
+            webbrowser.open(url)
+        return
     url = f"http://localhost:{args.port}"
-    print(f"Coin-Op is live at {url}  (Ctrl+C to stop)")
+    print(f"Coin-Op is live at {url}  (Ctrl+C to stop)", flush=True)
+    if args.publish:
+        threading.Thread(target=publish_loop, args=(roots,), daemon=True).start()
     if not args.no_open:
         threading.Timer(0.5, lambda: webbrowser.open(url)).start()
     try:
