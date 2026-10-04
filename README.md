@@ -30,23 +30,23 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 ## What it does
 
 - **Live, both ways.** Type in either box and the other translates as you go. New words show grey until the engine settles.
-- **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>T</kbd>); the translation appears in a bubble by your cursor.
-- **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language. On Mac, it's read by Apple's built-in text recognizer (the Live Text engine); on Windows, the snip is cleaned up first (enlarged, dark themes flipped, contrast boosted). Either way, screen text comes through word for word. The image stays in memory and is never saved.
+- **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: <kbd>⌃</kbd><kbd>⌥</kbd><kbd>T</kbd>); the translation appears in a bubble by your cursor.
+- **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌃</kbd><kbd>⌥</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language. On Mac, it's read by Apple's built-in text recognizer (the Live Text engine); on Windows, the snip is cleaned up first (enlarged, dark themes flipped, contrast boosted). Either way, screen text comes through word for word. The image stays in memory and is never saved.
 - **Dictation.** Tap or hold <kbd>Right Ctrl</kbd> (Mac: <kbd>Right ⌥ Option</kbd>) and talk. Transcribed on your machine; optionally typed into the app you're using, as said or translated.
 - **Read aloud.** Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow (0.75×), normal and fast (1.25×) speeds and a volume slider, which take effect mid-sentence. Press <kbd>Esc</kbd> in any app to stop it.
 - **Conversation mode (beta).** Two people who speak different languages take turns through one computer; each phrase is translated and read aloud to the other. See [how it works and its limits](#conversation-mode-beta).
 - **Engines.** Google Translate (free), or Claude, ChatGPT or Gemini with your own key. The AI engines add a tone setting (natural, casual, polite, formal) and a "who it's for" note so pronouns come out right (settings → translation; dimmed while Google Translate is selected). They're told to translate gender-inclusively: keep each person's gender and pronouns (including singular "they" and neopronouns) as your text gives them, never assume one it doesn't state, and prefer gender-neutral wording where a language would otherwise force a gender.
 - **Back-translation with a match score.** See your translation turned back into your language, with a score for how much of your meaning survived (see below). Theme colors by default, or colorblind-friendly colors with symbols (settings → appearance).
 - Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top (fades while you work elsewhere), 37 themes (star your favorites to keep them on top), search in settings, self-updates.
-- **Windows and Mac.** The same app on both; on Mac the shortcuts use ⌘ and ⌥, and a permissions screen walks you through what macOS asks for.
+- **Windows and Mac.** The same app on both; on Mac the shortcuts follow Mac conventions, and a permissions screen walks you through what macOS asks for.
 
 ## Shortcuts
 
 | Windows | Mac | Action |
 |---|---|---|
-| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>Space</kbd> | show / hide Vox2, ready to type |
-| <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> | <kbd>⌥</kbd><kbd>⌘</kbd><kbd>T</kbd> | translate the selected text in any app |
-| <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> | <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd> | snip an area of the screen and translate it |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd> | <kbd>⌃</kbd><kbd>⌥</kbd><kbd>V</kbd> | show / hide Vox2, ready to type |
+| <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> | <kbd>⌃</kbd><kbd>⌥</kbd><kbd>T</kbd> | translate the selected text in any app |
+| <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> | <kbd>⌃</kbd><kbd>⌥</kbd><kbd>S</kbd> | snip an area of the screen and translate it |
 | <kbd>Right Ctrl</kbd> | <kbd>Right ⌥ Option</kbd> | dictate: tap to start (stops when you go quiet, or tap again), or hold to talk |
 | <kbd>Esc</kbd> | <kbd>Esc</kbd> | stop reading aloud or dictating, from any app (does nothing otherwise) |
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | <kbd>⌘</kbd><kbd>P</kbd> | pin on top (while Vox2 is in front) |
@@ -102,13 +102,13 @@ Apple Silicon Macs (M1 and newer). Tested on macOS 26.
 | Permission | Used for |
 |---|---|
 | Input Monitoring | hearing your shortcuts while you're in other apps |
-| Accessibility | typing what you dictate into other apps, copying the selected text to translate it |
+| Accessibility | typing what you dictate into other apps, copying the selected text to translate it, keeping Vox2's shortcuts from also reaching the app in front |
 | Screen Recording | snip & translate (only the area you box is read, on your Mac) |
 | Microphone | dictation (only shown when dictation is on) |
 
 **Why permissions survive updates.** Mac builds are signed with Vox2's own certificate (free, self-made; not Apple-issued). macOS remembers permissions per signature, so every update counts as the same app. Unsigned builds would lose their permissions on every update.
 
-**Shortcuts look Mac-native.** Settings shows them the way the menu bar does (⌥⌘T), and the defaults use ⌘ and ⌥ instead of Ctrl and Alt.
+**Shortcuts look Mac-native.** Settings shows them the way the menu bar does (⌃⌥T). The shortcuts that work from any app are ⌃⌥ + a letter (V show/hide, T translate selection, S snip): one left-hand press that macOS and most apps leave free. Vox2 keeps those keys from also reaching the app in front (this needs Accessibility, which Vox2 already asks for). If another app uses the same combo (e.g. a window manager like Rectangle), change either one in settings → shortcuts. The ones that only work while Vox2 is in front use ⌘ (⌘, settings, ⌘Y history, ⌘P pin, ⇧⌘F fit).
 
 **If a shortcut does nothing.** Check settings → permissions. If a row stays "needed" even though Vox2 looks switched on in System Settings, an old entry is in the way: select Vox2 there, remove it with **−**, add it again with **+**, then restart Vox2. To clear every Vox2 entry at once, run this in Terminal and allow them again:
 
