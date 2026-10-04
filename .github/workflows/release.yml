@@ -1,9 +1,11 @@
 # Make a full release (Windows + Mac) on GitHub's machines, so it can be done from anywhere,
-# including the Mac or a phone: Actions → release → Run workflow.
+# including the Mac or a phone: Actions → release → Run workflow, type the new version
+# (e.g. 0.4.19), untick "Test run".
 #
-# Before running: the version in src-tauri/tauri.conf.json, src-tauri/Cargo.toml (and
-# Cargo.lock) is bumped on main, and CHANGELOG.md has a "## <version>" section. The release
-# text is that section.
+# With a version typed in, it first bumps the version (src-tauri/tauri.conf.json, Cargo.toml,
+# Cargo.lock) and turns CHANGELOG.md's "## Unreleased" into "## <version> (<date>)", and commits
+# that to main. Left empty, it releases the version already in those files, which then needs its
+# own "## <version>" changelog section. Either way, the release text is that changelog section.
 #
 # What it does: builds the Windows installer and the Mac app, puts both on a **draft** release
 # with the same files the PC release has (Vox2-setup.exe, Vox2_<ver>_x64-setup.exe,
@@ -12,7 +14,8 @@
 # If anything fails, nothing is published, so apps never see a half-finished release.
 #
 # "Test run" makes the draft under a throwaway tag (v<ver>-test-<run>) and never publishes it:
-# look at it, then delete the draft.
+# look at it, then delete the draft. A test run's version bump goes on a temporary branch (deleted
+# at the end), never on main.
 #
 # Releases published by this workflow don't start build.yml's "release published" Mac job
 # (GitHub doesn't start workflows from releases made with the workflow's own token). If you
@@ -23,6 +26,10 @@ name: release
 on:
   workflow_dispatch:
     inputs:
+      version:
+        description: "New version, e.g. 0.4.19 (bumps the files and the changelog). Empty: release the version already set"
+        type: string
+        default: ""
       test_run:
         description: "Test run: make a draft under a test tag, don't publish"
         type: boolean
@@ -38,19 +45,59 @@ concurrency:
 
 jobs:
   prepare:
-    name: Check version and changelog
+    name: Version and changelog
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # commit the version bump
     outputs:
       version: ${{ steps.v.outputs.version }}
       tag: ${{ steps.v.outputs.tag }}
+      sha: ${{ steps.v.outputs.sha }}
+      branch: ${{ steps.v.outputs.branch }}
     steps:
       - uses: actions/checkout@v7
       - id: v
-        name: Read the version
+        name: Bump (if asked) and check the version
         env:
           GH_TOKEN: ${{ github.token }}
           TEST_RUN: ${{ github.event_name != 'workflow_dispatch' || inputs.test_run }}
+          NEW: ${{ inputs.version }}
         run: |
+          cur=$(python3 -c 'import json; print(json.load(open("src-tauri/tauri.conf.json"))["version"])')
+          NEW="${NEW#v}"; NEW="${NEW// /}"
+          sha=$(git rev-parse HEAD)
+          branch=""
+          if [ -n "$NEW" ] && [ "$NEW" != "$cur" ]; then
+            [[ "$NEW" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::'$NEW' isn't a version like 0.4.19"; exit 1; }
+            python3 - "$cur" "$NEW" "$(TZ=America/New_York date +%F)" <<'PY'
+          import re, sys
+          cur, new, date = sys.argv[1:]
+          def edit(path, old, repl, count=1, regex=False):
+              s = open(path, encoding="utf-8").read()
+              t = re.sub(old, repl, s, count=count) if regex else s.replace(old, repl, count)
+              if t == s: sys.exit(f"::error::couldn't update {path}")
+              open(path, "w", encoding="utf-8").write(t)
+          edit("src-tauri/tauri.conf.json", f'"version": "{cur}"', f'"version": "{new}"')
+          edit("src-tauri/Cargo.toml", f'version = "{cur}"', f'version = "{new}"')
+          edit("src-tauri/Cargo.lock", r'(name = "vox2"\nversion = )"' + re.escape(cur) + '"', r'\g<1>"' + new + '"', regex=True)
+          log = open("CHANGELOG.md", encoding="utf-8").read()
+          m = re.search(r"^## Unreleased\n(.*?)(?=^## )", log, re.S | re.M)
+          if not m or not m.group(1).strip():
+              sys.exit("::error::CHANGELOG.md has nothing under '## Unreleased' to release")
+          edit("CHANGELOG.md", "## Unreleased", f"## {new} ({date})")
+          PY
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -qam "Release $NEW"
+            sha=$(git rev-parse HEAD)
+            if [ "$TEST_RUN" = "true" ]; then
+              branch="release-test-$GITHUB_RUN_NUMBER" # never touch main on a test run
+              git push -q origin "HEAD:refs/heads/$branch"
+            else
+              git push -q origin "HEAD:$GITHUB_REF" || { echo "::error::couldn't push the version bump (did main change meanwhile? run it again)"; exit 1; }
+            fi
+            echo "Bumped $cur → $NEW"
+          fi
           ver=$(python3 -c 'import json; print(json.load(open("src-tauri/tauri.conf.json"))["version"])')
           cargo_ver=$(sed -n 's/^version = "\(.*\)"/\1/p' src-tauri/Cargo.toml | head -1)
           [ "$ver" = "$cargo_ver" ] || { echo "::error::tauri.conf.json says $ver but Cargo.toml says $cargo_ver"; exit 1; }
@@ -62,12 +109,14 @@ jobs:
             tag="v$ver"
             if gh release view "$tag" -R "$GITHUB_REPOSITORY" > /dev/null 2>&1 \
                || git ls-remote --exit-code --tags origin "refs/tags/$tag" > /dev/null 2>&1; then
-              echo "::error::$tag already exists. Bump the version first."; exit 1
+              echo "::error::$tag already exists. Type a new version."; exit 1
             fi
           fi
           echo "version=$ver" >> "$GITHUB_OUTPUT"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
-          echo "Releasing $ver as $tag (test run: $TEST_RUN)"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "Releasing $ver as $tag from $sha (test run: $TEST_RUN)"
 
   windows:
     name: Windows installer
@@ -75,6 +124,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
@@ -104,6 +155,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
@@ -169,6 +222,8 @@ jobs:
       TEST_RUN: ${{ github.event_name != 'workflow_dispatch' || inputs.test_run }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
       - uses: actions/download-artifact@v7
         with:
           path: dist
@@ -211,7 +266,7 @@ jobs:
           cp "dist/Vox2_${VER}_aarch64.dmg" Vox2-mac.dmg
       - name: Draft release
         run: |
-          gh release create "$TAG" --draft --target "$GITHUB_SHA" \
+          gh release create "$TAG" --draft --target "${{ needs.prepare.outputs.sha }}" \
             --title "Vox2 $VER$([ "$TEST_RUN" = true ] && echo ' (test run)')" --notes-file body.md \
             latest.json Vox2-setup.exe Vox2-mac.dmg \
             "dist/Vox2_${VER}_x64-setup.exe" "dist/Vox2_${VER}_aarch64.dmg" "dist/Vox2_${VER}_aarch64.app.tar.gz"
@@ -249,3 +304,16 @@ jobs:
           else
             echo "Published Vox2 $VER: $url" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+  cleanup:
+    name: Remove the test branch
+    needs: [prepare, publish]
+    if: always() && needs.prepare.outputs.branch != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ needs.prepare.outputs.branch }}
+        run: gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$BRANCH"
