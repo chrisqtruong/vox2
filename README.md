@@ -30,7 +30,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 ## What it does
 
 - **Live, both ways.** Type in either box and the other translates as you go. New words show grey until the engine settles.
-- **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: <kbd>⌃</kbd><kbd>⌥</kbd><kbd>T</kbd>); the translation appears in a bubble by your cursor.
+- **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: just tap <kbd>Right ⌘</kbd>); the translation appears in a bubble by your cursor, with a match score. Tab to its language and type to switch ("spa" → Spanish).
 - **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌃</kbd><kbd>⌥</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language. On Mac, it's read by Apple's built-in text recognizer (the Live Text engine); on Windows, the snip is cleaned up first (enlarged, dark themes flipped, contrast boosted). Either way, screen text comes through word for word. The image stays in memory and is never saved.
 - **Dictation.** Tap or hold <kbd>Right Ctrl</kbd> (Mac: <kbd>Right ⌥ Option</kbd>) and talk. Transcribed on your machine; optionally typed into the app you're using, as said or translated.
 - **Read aloud.** Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow (0.75×), normal and fast (1.25×) speeds and a volume slider, which take effect mid-sentence. Press <kbd>Esc</kbd> in any app to stop it.
@@ -45,10 +45,14 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 | Windows | Mac | Action |
 |---|---|---|
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd> | <kbd>⌃</kbd><kbd>⌥</kbd><kbd>V</kbd> | show / hide Vox2, ready to type |
-| <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> | <kbd>⌃</kbd><kbd>⌥</kbd><kbd>T</kbd> | translate the selected text in any app |
+| <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> | tap <kbd>Right ⌘</kbd> | translate the selected text in any app (a quick tap on its own, so <kbd>Right ⌘</kbd> + a key still works as usual) |
 | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> | <kbd>⌃</kbd><kbd>⌥</kbd><kbd>S</kbd> | snip an area of the screen and translate it |
 | <kbd>Right Ctrl</kbd> | <kbd>Right ⌥ Option</kbd> | dictate: tap to start (stops when you go quiet, or tap again), or hold to talk |
 | <kbd>Esc</kbd> | <kbd>Esc</kbd> | stop reading aloud or dictating, from any app (does nothing otherwise) |
+| <kbd>Ctrl</kbd>+<kbd>L</kbd> | <kbd>⌘</kbd><kbd>L</kbd> | listen to the translation, again to stop (while Vox2 or the bubble is in front) |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>C</kbd> | copy the translation (in the bubble: <kbd>⌘</kbd><kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>C</kbd>) |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>S</kbd> | swap the two languages (while Vox2 is in front) |
+| <kbd>Tab</kbd> | <kbd>Tab</kbd> | go round the languages and text boxes; on a language, just type its name ("spa") |
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | <kbd>⌘</kbd><kbd>P</kbd> | pin on top (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>F</kbd> | fit the window to its text (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>H</kbd> | <kbd>⌘</kbd><kbd>Y</kbd> | open / close history (while Vox2 is in front) |

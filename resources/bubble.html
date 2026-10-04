@@ -27,18 +27,42 @@
     button:hover, button:focus-visible { background: var(--line); color: var(--ink); outline: none; }
     button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
     .close { padding: 2px; }
+    /* target language: a button you can Tab to and type into (like the window's language buttons) */
+    .to { color: var(--ink); padding: 1px 5px; font-size: 11px; margin-left: 2px; }
+    .to::after { content: " ▾"; color: var(--muted); }
+    .pick { display: grid; gap: 4px; }
+    .pick[hidden] { display: none; }
+    .pick input { font: inherit; font-size: 12px; color: var(--ink); background: var(--line); border: 0; border-radius: 6px; padding: 5px 8px; outline: none; }
+    .pick-row { padding: 3px 8px; border-radius: 6px; font-size: 12px; color: var(--muted); cursor: pointer; }
+    .pick-row.active { background: var(--line); color: var(--ink); }
+    .back { font-size: 12px; color: var(--muted); }
+    .back:empty { display: none; }
+    .back::before { content: "↩ "; }
+    .match { font-size: 11px; color: var(--muted); }
+    .match:empty { display: none; }
+    .match b { font-weight: 600; }
+    .match.high b { color: var(--accent); }
+    .match.mid b { color: var(--ink); }
+    .match.low b, .match.unchecked b { color: var(--danger); }
+    .match.checking b { color: var(--pending); font-weight: 400; }
     ::highlight(vox-word) { color: var(--accent); background-color: color-mix(in srgb, var(--accent) 18%, transparent); }
   </style>
 </head>
 <body>
   <div class="card" id="card">
     <div class="top">
-      <span class="langs" id="langs">translating…</span>
+      <span class="langs"><span id="langs">translating…</span><button class="to" id="to" hidden aria-haspopup="listbox" title="Translate into another language (Tab, then type)"></button></span>
       <button class="close" id="close" title="Close (Esc)"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="src" id="src"></div>
     <div class="out pending" id="out">…</div>
     <div class="roman" id="roman"></div>
+    <div class="match" id="match"></div>
+    <div class="back" id="back" title="your text, translated back: what the translation says"></div>
+    <div class="pick" id="pick" hidden>
+      <input id="pick-q" placeholder="translate into…" spellcheck="false" autocomplete="off" aria-label="Translate into">
+      <div id="pick-list" role="listbox"></div>
+    </div>
     <div class="actions">
       <button id="speak" title="Read aloud"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>listen</button>
       <button id="copy" title="Copy the translation"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>copy</button>
@@ -54,12 +78,18 @@
     let session = 0;
     let lastHeight = 0;
     let shown = false;
+    let shownAt = 0; // macOS hands the keyboard to the main window for a moment as the bubble opens
+    let speaking = false; // reading aloud: Esc stops that first, and only the next Esc closes the bubble
+    let stoppedAt = 0;
     const MAC = /Mac/.test(navigator.platform);
+    const MOD = MAC ? '⌘' : 'Ctrl+';
+    const label = (id) => $(id).lastChild; // the button's text: "listen", "copy"…
 
     function place() {
       const h = Math.ceil(card.getBoundingClientRect().height) + 12;
       if (shown && Math.abs(h - lastHeight) < 4) return;
       lastHeight = h;
+      if (!shown) shownAt = Date.now();
       shown = true;
       T.core.invoke('place_bubble', { height: h });
     }
@@ -75,23 +105,28 @@
       if (p.session > session) { // new quick translation: reset
         session = p.session;
         shown = false;
-        $('src').textContent = ''; $('roman').textContent = '';
+        $('src').textContent = ''; $('roman').textContent = ''; $('match').textContent = ''; $('back').textContent = ''; closePick();
         $('out').textContent = '…'; $('out').className = 'out pending';
-        $('speak').lastChild.textContent = 'listen'; $('speak').title = 'Read aloud';
+        label('speak').textContent = 'listen'; $('speak').title = `Read aloud (${MOD}L)`;
         startReading(null);
       }
       if (p.colors) for (const [k, v] of Object.entries(p.colors)) document.documentElement.style.setProperty(`--${k}`, v);
-      if (p.status) $('langs').textContent = p.status;
-      if (p.langs) $('langs').textContent = p.langs;
+      if (p.status) { $('langs').textContent = p.status; $('to').hidden = true; }
+      if (p.to) { $('langs').textContent = `${p.from} →`; $('to').textContent = p.to; $('to').hidden = false; toCode = p.toCode; }
+      else if (p.langs) $('langs').textContent = p.langs;
+      if ('match' in p) showMatch(p.match);
+      if (p.score) scoreHere(p.session, p.score);
       if (p.source != null) $('src').textContent = p.source;
       if (p.translation != null) { $('out').textContent = p.translation || '…'; $('out').className = p.done ? 'out' : 'out pending'; }
       if (p.roman != null) $('roman').textContent = p.roman;
       if (p.error) { $('out').textContent = p.error; $('out').className = 'out error'; }
       if ('words' in p) startReading(p.words);
       if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt, rate: p.sayRate || 1 };
+      if (p.speaking != null) speaking = p.speaking;
+      if (p.speaking === false) stoppedAt = Date.now();
       if (p.speaking != null) { // the listen button doubles as stop while reading
-        $('speak').lastChild.textContent = p.speaking ? 'stop' : 'listen';
-        $('speak').title = p.speaking ? 'Stop (Esc)' : 'Read aloud';
+        label('speak').textContent = p.speaking ? 'stop' : 'listen';
+        $('speak').title = p.speaking ? `Stop (${MOD}L or Esc)` : `Read aloud (${MOD}L)`;
       }
       // macOS (WebKit) doesn't run animation frames in a hidden window, and the bubble is hidden
       // until it has placed itself, so measure right away there.
@@ -139,13 +174,144 @@
     $('close').addEventListener('click', hide);
     $('copy').addEventListener('click', async () => {
       try { await navigator.clipboard.writeText($('out').textContent); } catch {}
-      $('copy').lastChild.textContent = 'copied';
-      setTimeout(() => { $('copy').lastChild.textContent = 'copy'; }, 900);
+      label('copy').textContent = 'copied';
+      setTimeout(() => { label('copy').textContent = 'copy'; }, 900);
     });
-    // Esc: stop reading aloud, and put the bubble away.
-    addEventListener('keydown', (e) => { if (e.key === 'Escape') { act('stop'); hide(); } });
-    addEventListener('blur', () => { if (shown) hide(); }); // click anywhere else and it goes away
+    // Match score, worked out here (the main window is usually hidden, and macOS slows hidden
+    // windows down). The same check as the window's badge; gives up after 30 s rather than
+    // saying "checking…" for good.
+    const TIER_NOTE = { high: 'meaning kept', mid: 'check the details', low: 'likely off' };
+    async function scoreHere(forSession, { original, translation, back, lang, target }) {
+      const current = () => forSession === session;
+      if (!window.VOX_SCORE) return;
+      const { untranslated, matchScore, tier } = window.VOX_SCORE;
+      if (untranslated(original, translation)) return showMatch({ label: "can't check", tier: 'unchecked', note: 'part of it came through untranslated' });
+      showMatch({ label: 'checking…', tier: 'checking', note: '' });
+      $('back').textContent = '';
+      const giveUp = setTimeout(() => { if (current()) showMatch(null); }, 30000);
+      try {
+        const { score } = await matchScore(original, back, lang, target);
+        if (current()) {
+          showMatch({ label: `${score}% match`, tier: tier(score), note: TIER_NOTE[tier(score)] });
+          // Below "meaning kept", show what came back, so the number has its reason next to it.
+          $('back').textContent = score < 85 ? back : '';
+        }
+      } catch {
+        if (current()) showMatch(null); // no model (e.g. offline the first time): leave the score out
+      } finally {
+        clearTimeout(giveUp);
+      }
+    }
+
+    // Match score, as in the window: "92% match · meaning kept", or "can't check".
+    function showMatch(m) {
+      const el = $('match');
+      el.className = `match ${m?.tier || ''}`;
+      el.replaceChildren();
+      if (!m) return;
+      const b = document.createElement('b');
+      b.textContent = m.label;
+      el.append(b, m.note ? ` · ${m.note}` : '');
+    }
+
+    // Translate into another language from the keyboard: Tab to the language (or just start typing
+    // anywhere in the bubble), type a few letters, Enter or Tab picks. Esc closes the list first.
+    let toCode = '';
+    let picks = [];
+    let active = 0;
+    const pick = $('pick');
+    const q = $('pick-q');
+    function rankLangs(text) {
+      const t = text.trim().toLowerCase();
+      const all = (window.VOX_LANGS || []).filter(([code]) => code !== toCode);
+      if (!t) return all.slice(0, 6);
+      const rank = ([code, name]) => {
+        const n = name.toLowerCase();
+        if (code.toLowerCase() === t || n.startsWith(t)) return 0;
+        if (n.split(/[\s(]+/).some((w) => w.startsWith(t))) return 1;
+        return n.includes(t) ? 2 : -1;
+      };
+      return all.map((l) => [l, rank(l)]).filter(([, r]) => r >= 0).sort((a, b) => a[1] - b[1]).slice(0, 6).map(([l]) => l);
+    }
+    function renderPick() {
+      picks = rankLangs(q.value);
+      active = Math.min(active, Math.max(0, picks.length - 1));
+      $('pick-list').replaceChildren(...picks.map(([code, name], i) => {
+        const row = document.createElement('div');
+        row.className = `pick-row${i === active ? ' active' : ''}`;
+        row.setAttribute('role', 'option');
+        row.textContent = name;
+        row.addEventListener('pointerdown', (e) => { e.preventDefault(); choose(code); });
+        return row;
+      }));
+    }
+    function openPick(typed = '') {
+      if ($('to').hidden) return;
+      pick.hidden = false;
+      q.value = typed;
+      active = 0;
+      renderPick();
+      q.focus();
+    }
+    function closePick() {
+      if (pick.hidden) return;
+      pick.hidden = true;
+      if (!$('to').hidden) $('to').focus();
+    }
+    function choose(code) {
+      closePick();
+      if (!code || code === toCode) return;
+      $('out').textContent = '…'; $('out').className = 'out pending'; showMatch(null); $('back').textContent = '';
+      T.event.emitTo('main', 'bubble-action', { action: 'lang', code });
+    }
+    $('to').addEventListener('click', () => (pick.hidden ? openPick() : closePick()));
+    q.addEventListener('input', () => { active = 0; renderPick(); });
+    q.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') active = Math.min(active + 1, picks.length - 1);
+      else if (e.key === 'ArrowUp') active = Math.max(active - 1, 0);
+      else if (e.key === 'Enter' || (e.key === 'Tab' && q.value.trim())) return e.preventDefault(), choose(picks[active]?.[0]);
+      else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); return closePick(); }
+      else return;
+      e.preventDefault();
+      renderPick();
+    });
+    // Shortcuts, like the window's (⌘ on Mac, Ctrl on Windows): L listen / stop, C copy, O open in
+    // Vox2. They show in the buttons' tooltips.
+    for (const [id, key] of [['speak', 'L'], ['copy', 'C'], ['open', 'O']]) $(id).title += ` (${MOD}${key})`;
+    addEventListener('keydown', (e) => {
+      if (!(MAC ? e.metaKey : e.ctrlKey) || e.altKey || e.shiftKey) return;
+      const id = { KeyL: 'speak', KeyC: 'copy', KeyO: 'open' }[e.code];
+      if (!id || (id === 'copy' && getSelection().toString())) return; // copying text you selected in the bubble: let it
+      e.preventDefault();
+      $(id).click();
+    });
+
+    // Typing a letter anywhere else in the bubble (or on the language button) starts the search.
+    addEventListener('keydown', (e) => {
+      if (e.target === q || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key.length === 1 && /\p{L}/u.test(e.key)) { e.preventDefault(); openPick(e.key); }
+      else if (e.target === $('to') && e.key === 'ArrowDown') { e.preventDefault(); openPick(); }
+    });
+
+    // Esc: while reading aloud, just stop reading; otherwise put the bubble away. (Esc anywhere also
+    // reaches the main window, which may stop the reading a moment before this sees the key: treat
+    // a stop in the last half second as this Esc's.)
+    addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      act('stop');
+      if (!speaking && Date.now() - stoppedAt > 500) hide();
+    });
+    // Click anywhere else and it goes away (but not for the moment macOS takes the keyboard as it opens).
+    addEventListener('blur', () => { if (shown && Date.now() - shownAt > 1000) hide(); });
     T.event.emitTo('main', 'bubble-ready');
+  </script>
+  <script type="module">
+    // The language list for "translate into…" (same names as the window's menus).
+    import { LANGUAGES } from './languages.js';
+    import { matchScore, tier } from './meaning.js';
+    import { untranslated } from './meaning-checks.js';
+    window.VOX_LANGS = LANGUAGES;
+    window.VOX_SCORE = { matchScore, tier, untranslated };
   </script>
 </body>
 </html>

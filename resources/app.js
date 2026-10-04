@@ -11,7 +11,7 @@ import {
 } from './dictation.js';
 import { speak, stop as stopSpeech, setSpeed, setVolume, voicesFor, voiceLabel, defaultVoice, OPENAI_VOICES } from './tts.js';
 import {
-  native, loadData, saveData, setAlwaysOnTop, openUrl, onNative, setHotkey, typeText, sendPill,
+  native, loadData, saveData, setAlwaysOnTop, onWindowFocus, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight,
   getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
@@ -39,7 +39,9 @@ const DEFAULTS = {
   // left-hand press, unused by macOS, rare in apps, unlike ⌘ combos (apps' own) or ⌃⌥Space
   // (switches keyboard language). Vox2 takes the keypress, so the app in front doesn't also act.
   summonShortcut: MAC ? { code: 'KeyV', ctrl: true, alt: true } : { code: 'Space', ctrl: true, shift: true },
-  selectShortcut: MAC ? { code: 'KeyT', ctrl: true, alt: true } : { code: 'KeyT', ctrl: true, alt: true },
+  // Mac: a tap of right ⌘ on its own (fires on a clean tap, so right ⌘ + C still copies). Windows keeps
+  // Ctrl+Alt+T: tapping Alt on its own there opens the menu bar of the app you're in.
+  selectShortcut: MAC ? { code: 'MetaRight' } : { code: 'KeyT', ctrl: true, alt: true },
   pinShortcut: MAC ? { code: 'KeyP', meta: true } : { code: 'KeyP', ctrl: true }, // while Vox2 is in front
   // Also only while Vox2 is in front. Mac: ⌘H would hide the app, so history is ⌘Y (as in Safari).
   fitShortcut: MAC ? { code: 'KeyF', meta: true, shift: true } : { code: 'KeyF', ctrl: true, shift: true },
@@ -73,16 +75,16 @@ async function loadSettings() {
   // Speed used to be a percent change baked into the voice (-20 / 0 / +15).
   if (saved.ttsRate != null && saved.ttsSpeed == null) saved.ttsSpeed = saved.ttsRate < 0 ? 0.75 : saved.ttsRate > 0 ? 1.25 : 1;
   delete saved.ttsRate;
-  // Mac shortcuts moved from ⌘ combos to ⌃⌥ (0.4.19): anyone still on an old default gets the new
-  // one; shortcuts you set yourself stay.
+  // Mac shortcuts moved from ⌘ combos to ⌃⌥ (0.4.19), and "translate selected text" to a tap of
+  // right ⌘ (0.4.22): anyone still on an old default gets the new one; shortcuts you set yourself stay.
   if (MAC) {
     const OLD = {
-      summonShortcut: { code: 'Space', meta: true, shift: true },
-      selectShortcut: { code: 'KeyT', meta: true, alt: true },
-      snipShortcut: { code: 'KeyS', meta: true, alt: true },
+      summonShortcut: [{ code: 'Space', meta: true, shift: true }],
+      selectShortcut: [{ code: 'KeyT', meta: true, alt: true }, { code: 'KeyT', ctrl: true, alt: true }],
+      snipShortcut: [{ code: 'KeyS', meta: true, alt: true }],
     };
     const same = (a, b) => !!a && ['code', 'ctrl', 'alt', 'shift', 'meta'].every((k) => (a[k] || false) === (b[k] || false));
-    for (const [name, old] of Object.entries(OLD)) if (same(saved[name], old)) delete saved[name];
+    for (const [name, olds] of Object.entries(OLD)) if (olds.some((old) => same(saved[name], old))) delete saved[name];
   }
   settings = { ...DEFAULTS, ...saved, keys: { ...saved.keys } };
   // A shortcut that's Shift or a left-side modifier on its own (easy to record by accident) fires
@@ -795,6 +797,22 @@ searchInput.addEventListener('keydown', (e) => {
   // Esc clears the search first; with nothing typed it closes settings as usual.
   if (e.key === 'Escape' && searchInput.value) { e.preventDefault(); e.stopPropagation(); clearSettingsSearch(); }
 });
+
+// Type anywhere in settings to search them: a letter or number typed while settings is open goes
+// into the search box ("appea" → appearance), unless you're already typing in a field in settings,
+// a menu is open, or a shortcut is being recorded. (Focus may still be on the page behind, even
+// the text box: settings is in front, so the letters go to its search.)
+document.addEventListener('keydown', (e) => {
+  if (!sheet.classList.contains('open') || historySheet.classList.contains('open')) return;
+  if (e.defaultPrevented || recordingShortcut || e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+  if (e.key.length !== 1 || !/[\p{L}\p{N}]/u.test(e.key)) return;
+  if (sheet.contains(e.target) && e.target.closest('input, textarea, select, [contenteditable="true"], [contenteditable=""]')) return;
+  if (e.target.closest('.lang-menu')) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.value += e.key;
+  searchInput.dispatchEvent(new Event('input'));
+});
 // Ctrl+F / ⌘F while settings are open jumps to the search box.
 document.addEventListener('keydown', (e) => {
   if (sheet.classList.contains('open') && e.key.toLowerCase() === 'f' && (MAC ? e.metaKey : e.ctrlKey) && !e.shiftKey && !e.altKey) {
@@ -1315,10 +1333,10 @@ function renderShortcuts() {
     chip.classList.toggle('off', !sc?.code);
   }
   $('#shortcut-hint').textContent = (native ? 'the first four work from any app; pin, fit, history and settings while Vox2 is in front' : 'these work while this window is focused')
-    + ' · click one, then press the new key · backspace turns it off';
+    + ' · click one, then press the new key · backspace turns it off'
+    + (native ? ` · a key on its own (like right ${IS_MAC ? '⌘' : 'Alt'}) fires on a quick tap; dictation's can also be held` : '');
   for (const p of Object.values(panes)) {
-    p.root.querySelector('[data-act="mic"]').title = settings.sttShortcut.code
-      ? `Tap to dictate · hold to talk (${shortcutLabel()})` : 'Tap to dictate · hold to talk';
+    p.root.querySelector('[data-act="mic"]').title = 'Tap to dictate · hold to talk'; // the key shows in its tooltip
   }
 }
 for (const chip of shortcutChips) chip.addEventListener('click', () => recordShortcut(chip));
@@ -1343,7 +1361,7 @@ const useBubble = () => native && settings.quickResult === 'bubble';
 
 function themeColors() {
   const css = getComputedStyle(document.documentElement);
-  return Object.fromEntries(['bg', 'ink', 'muted', 'pending', 'line', 'accent', 'danger']
+  return Object.fromEntries(['bg', 'ink', 'muted', 'pending', 'line', 'accent', 'danger', 'kbd']
     .map((v) => [v, css.getPropertyValue(`--${v}`).trim()]));
 }
 
@@ -1351,6 +1369,7 @@ function themeColors() {
 async function startBubble(anchor, status) {
   quick.active = true;
   quick.session++;
+  quick.openedAt = Date.now();
   await openBubble(anchor?.x, anchor?.y);
   sendBubble({ session: quick.session, colors: themeColors(), status, source: '', translation: '' });
   return quick.session;
@@ -1358,7 +1377,8 @@ async function startBubble(anchor, status) {
 
 function toBubble(dst, text, done, from, to) {
   if (!quick.active || dst !== quick.dst) return;
-  sendBubble({ session: quick.session, langs: `${langName(from)} → ${langName(to)}`, translation: text, done });
+  // from / to / toCode: the bubble shows "English → [Vietnamese]" with the target as a button.
+  sendBubble({ session: quick.session, langs: `${langName(from)} → ${langName(to)}`, from: langName(from), to: langName(to), toCode: to, translation: text, done });
 }
 
 async function quickTranslate(text, anchor, session) {
@@ -1427,11 +1447,19 @@ onNative('snip', async ({ x, y }) => {
 // always tell the bubble it lost focus when you switch to another Vox2 window) and keep results here.
 addEventListener('focus', () => {
   if (!quick.active) return;
+  // On macOS, showing the bubble can hand this window the keyboard for a moment (if it's open) before
+  // the bubble takes it: that isn't you coming back here.
+  if (MAC && Date.now() - (quick.openedAt || 0) < 1500) return;
   quick.active = false;
   hideBubble();
 });
 
-onNative('bubble-action', ({ action }) => {
+onNative('bubble-action', ({ action, code }) => {
+  // A language picked in the bubble: translate into it, and keep it as that box's language.
+  if (action === 'lang' && quick.dst && code && code !== quick.dst.lang.value) {
+    quick.dst.lang.value = code;
+    quick.dst.lang.dispatchEvent(new Event('change'));
+  }
   if (action === 'speak' && quick.dst) readAloud(quick.dst);
   if (action === 'stop') stopAudio();
   if (action === 'open') { quick.active = false; showWindow(); }
@@ -1569,7 +1597,9 @@ async function updateExtras(dst, translation, lang, backTo, original) {
   hideExtras();
   const id = extrasJob;
   const wantRoman = settings.showRoman && hasNonLatin(translation);
-  if (!wantRoman && !settings.showBack) return;
+  // The bubble shows a match score whenever scoring is on, even if the ↩ line is off in the window.
+  const bubbleScore = settings.showMatch && quick.active && quick.dst === dst && useBubble();
+  if (!wantRoman && !settings.showBack && !bubbleScore) return;
   try {
     const { back, roman } = await checkBack(translation, lang, backTo, wantRoman);
     if (id !== extrasJob) return; // a newer translation replaced this one
@@ -1580,7 +1610,16 @@ async function updateExtras(dst, translation, lang, backTo, original) {
     backLine.textContent = settings.showBack ? back : '';
     box.hidden = !box.textContent.trim();
     if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, translation, back, id, backTo, lang);
+    if (bubbleScore && back) scoreBubble(original, translation, back, id, backTo, lang);
   } catch {}
+}
+
+// The match score for the bubble. The bubble works it out itself: this window is usually hidden
+// while you work in another app, and macOS slows down work in hidden windows, so the score could
+// sit on "checking…" for good.
+function scoreBubble(original, translation, back, id, lang, target) {
+  if (id !== extrasJob || !quick.active) return;
+  sendBubble({ session: quick.session, score: { original, translation, back, lang, target } });
 }
 
 // A small themed card on hover: what the score means, the tiers, and a note if a number changed.
@@ -1688,14 +1727,26 @@ $('#tone-note').addEventListener('input', (e) => { settings.toneNote = e.target.
 // Pinned on top and you're working elsewhere: fade so it doesn't block what's behind it.
 const FADED = 165;
 let windowFocused = document.hasFocus();
+// The pointer is over the window, having moved there since you last switched away. (WebKit keeps
+// :hover from before the switch until the mouse moves, so a pointer resting on Vox2 when you ⌘Tab
+// away used to keep it from fading.)
+let pointerInside = false;
 function applyFade() {
-  const faded = settings.onTop && settings.fade && !windowFocused && !document.documentElement.matches(':hover');
+  const faded = settings.onTop && settings.fade && !windowFocused && !pointerInside;
   setWindowAlpha(faded ? FADED : 255);
 }
-addEventListener('focus', () => { windowFocused = true; applyFade(); });
-addEventListener('blur', () => { windowFocused = false; applyFade(); });
-document.documentElement.addEventListener('mouseenter', applyFade);
-document.documentElement.addEventListener('mouseleave', applyFade);
+function setWindowFocused(focused) {
+  if (focused === windowFocused) return;
+  windowFocused = focused;
+  if (!focused) pointerInside = false;
+  applyFade();
+}
+// Both the page's focus events and the system's (the page's are sometimes missed on ⌘Tab).
+addEventListener('focus', () => setWindowFocused(true));
+addEventListener('blur', () => setWindowFocused(false));
+onWindowFocus(setWindowFocused);
+document.documentElement.addEventListener('pointermove', () => { if (!pointerInside) { pointerInside = true; applyFade(); } });
+document.documentElement.addEventListener('mouseleave', () => { pointerInside = false; applyFade(); });
 
 function renderWindowOpts() {
   $('#fade-toggle').checked = settings.fade;
@@ -1708,13 +1759,26 @@ $('#fade-toggle').addEventListener('change', (e) => { settings.fade = e.target.c
 $('#tray-toggle').addEventListener('change', (e) => { settings.closeToTray = e.target.checked; saveSettings(); setCloseToTray(settings.closeToTray); });
 $('#autostart-toggle').addEventListener('change', (e) => { settings.autostart = e.target.checked; saveSettings(); setAutostart(settings.autostart); });
 
-/* ---------- bottom bar tooltips ---------- */
+/* ---------- button tooltips ---------- */
 
-// The bar's buttons get a small themed tooltip instead of the system one: their name, plus the
-// keyboard shortcut (as you've set it) for the ones that have one, as a reminder.
+// Buttons get a small themed tooltip instead of the system one: their name, plus the keyboard
+// shortcut (as you've set it) for the ones that have one, as a reminder. The bottom bar's, the
+// mic (dictation key), swap, and listen / copy on the translation's side (their shortcuts act on
+// the translation).
 const BAR_SHORTCUTS = {
   'snip-btn': 'snipShortcut', pin: 'pinShortcut', 'fit-btn': 'fitShortcut', 'history-btn': 'historyShortcut', gear: 'settingsShortcut',
 };
+const fixedShortcut = (code, shift = false) => ({ code, meta: MAC, ctrl: !MAC, shift });
+function tipShortcut(btn) {
+  if (BAR_SHORTCUTS[btn.id]) return settings[BAR_SHORTCUTS[btn.id]];
+  if (btn.id === 'swap') return fixedShortcut('KeyS', true);
+  const act = btn.dataset.act;
+  if (act === 'mic') return settings.sttShortcut;
+  const onTranslation = btn.closest('.pane') === panes[other(source)].root;
+  if (act === 'speak' && onTranslation) return fixedShortcut('KeyL');
+  if (act === 'copy' && onTranslation) return fixedShortcut('KeyC', true);
+  return null;
+}
 const barTip = document.createElement('div');
 barTip.className = 'bar-tip';
 barTip.hidden = true;
@@ -1729,7 +1793,7 @@ function showBarTip(btn) {
     btn.setAttribute('aria-label', btn.title);
     btn.removeAttribute('title');
   }
-  const sc = settings[BAR_SHORTCUTS[btn.id]];
+  const sc = tipShortcut(btn);
   barTip.replaceChildren(btn.dataset.tip || '');
   if (sc?.code) barTip.append(Object.assign(document.createElement('kbd'), { textContent: shortcutLabel(sc) }));
   barTip.hidden = false;
@@ -1739,7 +1803,9 @@ function showBarTip(btn) {
   const w = barTip.offsetWidth;
   const left = Math.max(8, Math.min((r.left + r.width / 2) / z - w / 2, innerWidth / z - w - 8));
   barTip.style.left = `${left}px`;
-  barTip.style.top = `${r.top / z - barTip.offsetHeight - 8}px`;
+  // Above the button, or below it when there's no room (the buttons at the top of the window).
+  const above = r.top / z - barTip.offsetHeight - 8;
+  barTip.style.top = `${above >= 4 ? above : r.bottom / z + 8}px`;
 }
 
 function hideBarTip() {
@@ -1748,7 +1814,7 @@ function hideBarTip() {
   barTip.hidden = true;
 }
 
-for (const btn of document.querySelectorAll('.bar-actions button')) {
+for (const btn of document.querySelectorAll('.bar-actions button, .pane-head .icon, #swap')) {
   btn.addEventListener('pointerenter', () => {
     clearTimeout(barTipTimer);
     barTipTimer = setTimeout(() => showBarTip(btn), Date.now() < barTipWarmUntil ? 0 : 350);
@@ -2232,6 +2298,25 @@ function renderHistory() {
   $('#history-clear').title = 'Clear recents (starred stay)';
 }
 
+// Arrow keys in history: ↓ / ↑ move between translations (↓ from anywhere starts at the top),
+// → / ← between a translation and its star, Enter opens (it's a button). Tab still goes round it all.
+historySheet.addEventListener('keydown', (e) => {
+  if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key) || e.metaKey || e.ctrlKey || e.altKey) return;
+  const entries = [...historyList.querySelectorAll('.entry')];
+  if (!entries.length) return;
+  const row = e.target.closest('li');
+  const i = row ? entries.indexOf(row.querySelector('.entry')) : -1;
+  let next = null;
+  if (e.key === 'ArrowDown') next = entries[i < 0 ? 0 : Math.min(i + 1, entries.length - 1)];
+  else if (e.key === 'ArrowUp') next = entries[i < 0 ? entries.length - 1 : Math.max(i - 1, 0)];
+  else if (e.key === 'ArrowRight' && row) next = row.querySelector('.star');
+  else if (e.key === 'ArrowLeft' && row) next = row.querySelector('.entry');
+  if (!next) return;
+  e.preventDefault();
+  next.focus();
+  next.scrollIntoView({ block: 'nearest' });
+});
+
 function restoreHistory(h) {
   cancelAll();
   const { top, bottom } = panes;
@@ -2254,7 +2339,8 @@ function openHistory() {
   renderHistory();
   historySheet.classList.add('open');
   historySheet.setAttribute('aria-hidden', 'false');
-  $('#history-done').focus();
+  // Ready on the newest translation: ⌘Y then Enter reopens it, ↓ / ↑ move through the rest.
+  (historyList.querySelector('.entry') || $('#history-done')).focus();
 }
 
 function closeHistory() {
@@ -2377,6 +2463,42 @@ $('#perm-restart-btn').addEventListener('click', () => relaunch());
 $('#perm-startup').addEventListener('change', (e) => { settings.permCheck = e.target.checked; saveSettings(); });
 // Coming back from System Settings: check right away instead of waiting for the next tick.
 addEventListener('focus', () => { if (permSheet.classList.contains('open')) checkPerms(); });
+
+/* ---------- keyboard: a short Tab loop, and shortcuts for the small buttons ---------- */
+
+// Tab goes round just the four things you type into: top language → top text → bottom language →
+// bottom text → back to the top (Shift+Tab goes back), so going one too far costs a few presses
+// and you never fall off the end. The small icon buttons stay clickable but out of the Tab path;
+// their actions have shortcuts (below, and pin / history / settings in settings → shortcuts).
+// While a sheet is open (settings, history, permissions), Tab goes round that sheet instead.
+for (const el of $('main.app').querySelectorAll('button')) if (!el.classList.contains('lang')) el.tabIndex = -1;
+const tabStops = (root) => [...root.querySelectorAll('button, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')]
+  .filter((el) => el.tabIndex >= 0 && !el.disabled && el.getClientRects().length && !el.closest('[hidden]'));
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+  const open = document.querySelector('.sheet.open');
+  const stops = open ? tabStops(open) : [panes.top.lang, panes.top.el, panes.bottom.lang, panes.bottom.el];
+  if (!stops.length) return;
+  const i = stops.indexOf(document.activeElement);
+  const next = i < 0 ? (e.shiftKey ? stops.length - 1 : 0) : (i + (e.shiftKey ? -1 : 1) + stops.length) % stops.length;
+  e.preventDefault();
+  stops[next].focus();
+});
+
+// Shortcuts for the small buttons, like the bubble's (⌘ on Mac, Ctrl on Windows): L listen to the
+// translation (again to stop), Shift+C copy the translation (plain ⌘C still copies what you
+// selected), Shift+S swap the languages. Fixed, not in settings: there are already plenty there.
+// They show in the buttons' tooltips (see tipShortcut).
+document.addEventListener('keydown', (e) => {
+  if (!(MAC ? e.metaKey : e.ctrlKey) || e.altKey || e.repeat || recordingShortcut || document.querySelector('.sheet.open')) return;
+  const dst = panes[other(source)];
+  const button = !e.shiftKey && e.code === 'KeyL' ? dst.root.querySelector('[data-act="speak"]')
+    : e.shiftKey && e.code === 'KeyC' ? dst.root.querySelector('[data-act="copy"]')
+      : e.shiftKey && e.code === 'KeyS' ? $('#swap') : null;
+  if (!button) return;
+  e.preventDefault();
+  button.click();
+});
 
 /* ---------- start ---------- */
 

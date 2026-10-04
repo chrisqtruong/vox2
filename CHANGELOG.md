@@ -2,6 +2,29 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Added
+
+- **The bubble shows a match score** ("96% match · meaning kept", or "can't check") whenever match scoring is on, even with the ↩ line hidden in the window. Below "meaning kept" it also shows the ↩ line, so you can see why. The bubble works the score out itself, so it's quick even while the Vox2 window is hidden. *Windows and Mac.*
+- **Bubble shortcuts:** ⌘L / Ctrl+L listen (or stop), ⌘C / Ctrl+C copy, ⌘O / Ctrl+O open in Vox2, Esc close; hover a button to see its key. *Windows and Mac.*
+- **Change the bubble's language from the keyboard.** The bubble shows "English → Vietnamese ▾": press Tab (or just start typing), type a few letters ("spa"), and Enter or Tab re-translates into that language and keeps it for next time. Esc closes the list, a second Esc the bubble. *Windows and Mac.*
+
+### Changed
+
+- **Mac: translate selected text is now a tap of right ⌘.** Select text in any app and just tap the right command key: the bubble appears by your cursor. It fires only on a clean, quick tap, so right ⌘ + C still copies and right ⌘ + click still opens links. If you never changed the shortcut, you get the new one automatically. Any one-key shortcut you set yourself (a right-side Ctrl / Option / ⌘) now works the same way: on a clean tap. Windows keeps Ctrl+Alt+T: tapping Alt on its own there opens the menu bar of the app you're in. *Mac (the tap behavior: Windows and Mac).*
+- **Pick a language without the mouse.** Tab to a language button and just start typing ("spa"): the language menu opens already searching, and Enter or Tab picks the top match. ↓ opens the menu too. Names that start with what you typed come first ("s" → Samoan, Serbian, Spanish…), so a letter or two is often enough. After you pick (or press Esc), focus stays on the language button, so Tab carries on from there instead of getting lost. *Windows and Mac.*
+- **A short Tab loop.** Tab now goes round just the four things you type into: top language → top text → bottom language → bottom text, then back to the top (Shift+Tab goes back), so you can't fall off the end. The small icon buttons are out of the Tab path; their actions have shortcuts: ⌘L / Ctrl+L listen to the translation, ⌘⇧C / Ctrl+Shift+C copy it, ⌘⇧S / Ctrl+Shift+S swap the languages (pin, history and settings already had theirs). While settings or history is open, Tab goes round that instead. *Windows and Mac.*
+- **Every button with a shortcut shows it on hover**, in Vox2's own tooltip: listen and copy (on the translation's side), swap, the mic (your dictation key), and the bottom bar as before. Top-row tooltips open below the button so they aren't cut off. *Windows and Mac.*
+- **Shortcut hints you can read in every theme.** The key chips in tooltips use the theme's muted color only where it stands out enough from the background; otherwise its accent color (or text color). Most themes' muted color was too faint. *Windows and Mac.*
+- **History with the arrow keys.** ⌘Y / Ctrl+H opens history on your newest translation, so Enter reopens it; ↓ / ↑ move through the rest, → / ← go to a translation's star and back. *Windows and Mac.*
+- **Esc in the bubble stops reading first.** While the bubble is reading aloud, Esc just stops the reading; the next Esc closes the bubble. *Windows and Mac.*
+- **Type anywhere in settings to search them.** With settings open, just start typing ("appea") and it goes straight into the settings search, which jumps to the matching settings (appearance). Works wherever the keyboard focus is, except while you're typing in a field or recording a shortcut. *Windows and Mac.*
+
+### Fixed
+
+- **Pinned Vox2 fades reliably when you switch away.** It sometimes stayed solid after ⌘Tab / Alt+Tab: the window's focus change could be missed, and a mouse resting over Vox2 at the moment you switched counted as "hovering". Vox2 now also listens to the system's focus change, and only un-fades for the mouse once it moves over the window. *Windows and Mac.*
+
 ## 0.4.21 (2026-10-04)
 
 ### Changed

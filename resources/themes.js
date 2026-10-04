@@ -76,4 +76,34 @@ export function applyTheme(name) {
   }
   if (t) root.setProperty('color-scheme', isDark(t.bg) ? 'dark' : 'light');
   else root.removeProperty('color-scheme');
+  setKbdColor();
+}
+
+// Keyboard-shortcut hints (the key chips in tooltips, the bubble's "⌘L"): the theme's muted color,
+// unless it's too close to the background to read, then the accent color, then the text color.
+// Contrast as in WCAG: 4.5 for the small muted text, 3 for the accent (a bolder color).
+function rgb(color) {
+  const probe = document.createElement('i');
+  probe.style.color = color;
+  document.body.append(probe);
+  const [r, g, b] = getComputedStyle(probe).color.match(/[\d.]+/g).map(Number);
+  probe.remove();
+  return [r, g, b];
+}
+const luminance = (color) => {
+  const [r, g, b] = rgb(color).map((c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => { const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => setKbdColor()); // "auto" follows the system
+function setKbdColor() {
+  const root = document.documentElement;
+  if (!document.body) return;
+  root.style.removeProperty('--kbd');
+  const css = getComputedStyle(root);
+  const v = (name) => css.getPropertyValue(`--${name}`).trim();
+  const bg = v('bg');
+  if (!bg) return;
+  const pick = [['muted', 4.5], ['accent', 3], ['ink', 0]].find(([name, min]) => v(name) && contrast(v(name), bg) >= min);
+  root.style.setProperty('--kbd', v(pick[0]));
 }

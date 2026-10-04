@@ -13,6 +13,12 @@ export function saveData(key, value) {
   else try { localStorage.setItem(key, value); } catch {}
 }
 
+// The window gaining or losing focus, as the system sees it (WebKit's own focus / blur events are
+// sometimes missed, e.g. on ⌘Tab).
+export function onWindowFocus(cb) {
+  if (native) tauri.window.getCurrentWindow().onFocusChanged(({ payload }) => cb(payload)).catch(() => {});
+}
+
 export function setAlwaysOnTop(on) {
   if (native) tauri.window.getCurrentWindow().setAlwaysOnTop(on).catch(() => {});
 }

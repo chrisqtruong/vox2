@@ -11,7 +11,7 @@ use serde_json::json;
 use std::collections::{HashMap, HashSet};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, LazyLock, Mutex};
-use std::time::Duration;
+use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, Manager};
 
 #[derive(Clone, Deserialize)]
@@ -97,6 +97,34 @@ fn code_of(key: Key) -> Option<&'static str> {
         KeyY => "KeyY", KeyZ => "KeyZ",
         _ => return None,
     })
+}
+
+// A one-key shortcut other than dictation (e.g. right ⌘ for "translate selected text") fires on a
+// clean tap: when the key comes up, if nothing else happened while it was down. So right ⌘ + C
+// still copies, and right ⌘ + click still opens a link in a new tab. Set by any mouse button or
+// scroll while a tap is pending (the keys themselves are checked in the watcher).
+static TAP_SPOILED: AtomicBool = AtomicBool::new(false);
+const TAP_MAX: Duration = Duration::from_millis(600);
+
+fn spoil_tap() {
+    TAP_SPOILED.store(true, Ordering::Relaxed);
+}
+
+// The global shortcuts handled here (dictation goes to the page, see start()).
+fn run_shortcut(app: &AppHandle, held: &Arc<Mutex<HashSet<&'static str>>>, name: &str) {
+    match name {
+        // Off this thread: on macOS every key waits for it now (it can hold keys back).
+        "summon" => {
+            let app = app.clone();
+            std::thread::spawn(move || summon(&app));
+        }
+        "select" => grab_selection(app.clone(), held.clone()),
+        "snip" => {
+            let app = app.clone();
+            std::thread::spawn(move || crate::overlay::start_snip(&app));
+        }
+        _ => {}
+    }
 }
 
 // The watcher doesn't receive keys while Vox2 itself is in front (and can miss the key-ups
@@ -211,6 +239,8 @@ pub fn start(app: AppHandle) {
         // Keys whose press went to a shortcut: on macOS, their presses (and repeats) and release
         // are kept from the app in front, so it doesn't act on the same keys too.
         let mut taken: HashSet<&'static str> = HashSet::new();
+        // A one-key shortcut waiting for its key to come up: (key, shortcut name, when it went down).
+        let mut tap: Option<(&'static str, String, Instant)> = None;
         #[cfg_attr(target_os = "macos", allow(unused_mut))] // only Windows calls it in place
         // → whether the key went to a shortcut (macOS then holds it back from other apps).
         let mut on_key = move |pressed: bool, code: &'static str| -> bool {
@@ -224,12 +254,21 @@ pub fn start(app: AppHandle) {
                 held.lock().unwrap().clear();
                 down.clear();
                 taken.clear();
+                tap = None;
             }
             let hotkeys = HOTKEYS.lock().unwrap().clone();
 
             if !pressed {
                 held.lock().unwrap().remove(code);
                 let was_taken = taken.remove(code);
+                // The tap key came up: fire if it was a clean, quick tap. (Another key coming up,
+                // e.g. a modifier pressed before it, leaves it waiting.)
+                if tap.as_ref().is_some_and(|(key, _, _)| *key == code) {
+                    let (_, name, at) = tap.take().unwrap();
+                    if !TAP_SPOILED.swap(false, Ordering::Relaxed) && at.elapsed() < TAP_MAX {
+                        run_shortcut(&app, &held, &name);
+                    }
+                }
                 for (name, hk) in &hotkeys {
                     // A modifier-only chord ends as soon as any of its keys comes up.
                     let ends = hk.code == code || (is_chord(hk) && is_modifier(code));
@@ -241,6 +280,10 @@ pub fn start(app: AppHandle) {
             }
 
             let repeat = !held.lock().unwrap().insert(code);
+            // Any other key while a tap is pending: it was a combination (right ⌘ + C), not a tap.
+            if !repeat && tap.as_ref().is_some_and(|(key, _, _)| *key != code) {
+                tap = None;
+            }
             if taken.contains(code) {
                 return true; // the key of a shortcut, repeating while held
             }
@@ -278,27 +321,22 @@ pub fn start(app: AppHandle) {
                     if repeat || down.contains(name) {
                         continue;
                     }
+                    // A lone modifier (other than dictation's) waits for a clean tap; see above.
+                    if lone && name != "dictate" {
+                        TAP_SPOILED.store(false, Ordering::Relaxed);
+                        tap = Some((code, name.clone(), Instant::now()));
+                        continue;
+                    }
                     down.insert(name.clone());
                     // Take a modifiers + key shortcut's key; never a modifier itself (a lone Right
                     // Option, or a modifiers-only chord), so other apps still see those.
                     if !is_modifier(code) {
                         taken.insert(code);
                     }
-                    match name.as_str() {
-                        "dictate" => {
-                            let _ = app.emit_to("main", "hotkey", json!({ "name": name, "type": "down" }));
-                        }
-                        // Off this thread: on macOS every key waits for it now (it can hold keys back).
-                        "summon" => {
-                            let app = app.clone();
-                            std::thread::spawn(move || summon(&app));
-                        }
-                        "select" => grab_selection(app.clone(), held.clone()),
-                        "snip" => {
-                            let app = app.clone();
-                            std::thread::spawn(move || crate::overlay::start_snip(&app));
-                        }
-                        _ => {}
+                    if name == "dictate" {
+                        let _ = app.emit_to("main", "hotkey", json!({ "name": name, "type": "down" }));
+                    } else {
+                        run_shortcut(&app, &held, name);
                     }
                 } else if lone && hk.code != code && name == "dictate" && down.contains(name) {
                     // e.g. Ctrl+C while Right Ctrl is the dictation key
@@ -313,6 +351,7 @@ pub fn start(app: AppHandle) {
             let (pressed, key) = match event.event_type {
                 EventType::KeyPress(k) => (true, k),
                 EventType::KeyRelease(k) => (false, k),
+                EventType::ButtonPress(_) | EventType::Wheel { .. } => return spoil_tap(),
                 _ => return,
             };
             if let Some(code) = code_of(key) {
@@ -372,6 +411,11 @@ mod mac {
     const KEY_DOWN: u32 = 10;
     const KEY_UP: u32 = 11;
     const FLAGS_CHANGED: u32 = 12;
+    // Mouse buttons and scrolling: only to tell a clean tap of a one-key shortcut from right ⌘ + click.
+    const LEFT_MOUSE_DOWN: u32 = 1;
+    const RIGHT_MOUSE_DOWN: u32 = 3;
+    const SCROLL_WHEEL: u32 = 22;
+    const OTHER_MOUSE_DOWN: u32 = 25;
     const DISABLED_BY_TIMEOUT: u32 = 0xFFFF_FFFE;
     const DISABLED_BY_USER_INPUT: u32 = 0xFFFF_FFFF;
     const KEYCODE: u32 = 9; // kCGKeyboardEventKeycode
@@ -380,7 +424,13 @@ mod mac {
 
     pub fn listen(on_key: impl FnMut(bool, &'static str) -> bool + 'static) -> Result<(), &'static str> {
         let user_info = Box::into_raw(Box::new(Box::new(on_key) as OnKey)) as *mut c_void;
-        let mask = (1 << KEY_DOWN) | (1 << KEY_UP) | (1 << FLAGS_CHANGED);
+        let mask = (1 << KEY_DOWN)
+            | (1 << KEY_UP)
+            | (1 << FLAGS_CHANGED)
+            | (1 << LEFT_MOUSE_DOWN)
+            | (1 << RIGHT_MOUSE_DOWN)
+            | (1 << SCROLL_WHEEL)
+            | (1 << OTHER_MOUSE_DOWN);
         // A tap that can hold keys back (so a shortcut's keys don't also reach the app in front)
         // needs Accessibility; without it, just watch, as before.
         let mut tap = unsafe { CGEventTapCreate(SESSION_TAP, HEAD_INSERT, DEFAULT, mask, on_event, user_info) };
@@ -406,6 +456,10 @@ mod mac {
                 unsafe { CGEventTapEnable(tap as CFMachPortRef, true) };
             }
             return event;
+        }
+        if matches!(kind, LEFT_MOUSE_DOWN | RIGHT_MOUSE_DOWN | SCROLL_WHEEL | OTHER_MOUSE_DOWN) {
+            super::spoil_tap();
+            return event; // mouse events always go on to the app
         }
         let keycode = unsafe { CGEventGetIntegerValueField(event, KEYCODE) } as u16;
         let Some(code) = code_of(keycode) else { return event };

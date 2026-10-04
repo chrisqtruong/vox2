@@ -107,6 +107,16 @@ pub fn place_bubble(app: AppHandle, height: f64) -> Result<(), String> {
     win.set_position(PhysicalPosition::new(x, y)).map_err(|e| e.to_string())?;
     win.show().map_err(|e| e.to_string())?;
     win.set_focus().map_err(|e| e.to_string())?;
+    // macOS: focusing the bubble activates Vox2, and activation finishes a moment later by making
+    // the window that last had the keyboard key again: the main window, if it's open. Focus the
+    // bubble once more after that, so the keyboard (Tab, ⌘L…) lands in the bubble.
+    #[cfg(target_os = "macos")]
+    std::thread::spawn(move || {
+        std::thread::sleep(std::time::Duration::from_millis(150));
+        if win.is_visible().unwrap_or(false) {
+            let _ = win.set_focus();
+        }
+    });
     Ok(())
 }
 
