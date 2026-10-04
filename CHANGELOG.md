@@ -4,6 +4,10 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ## Unreleased
 
+Nothing yet.
+
+## 0.4.14 (2026-10-03)
+
 ### Fixed
 
 - **Windows: back-translation and the match score disappeared after heavy use.** Google's back-translation service starts answering "too many requests" after a lot of translating (for hours, per internet connection), and Vox2 then showed nothing. The back-translation now goes through the same Google service as the main translation, as on Mac. Only the pronunciation line (romaji, pinyin…) still uses the old service, only when it's shown, and it simply stays empty while Google is refusing. *Windows.*
