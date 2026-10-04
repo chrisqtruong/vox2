@@ -18,6 +18,10 @@
     .top button { cursor: pointer; }
     .langs { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .src { color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+    /* your text is cut to two lines; when there's more, click it to see all of it (and click again to fold it) */
+    .src.more, .src.open { cursor: pointer; }
+    .src.more:hover, .src.open:hover { color: var(--ink); }
+    .src.open { display: block; max-height: 180px; overflow-y: auto; white-space: pre-wrap; }
     .out { font-size: 15px; line-height: 1.5; max-height: 220px; overflow-y: auto; overflow-wrap: anywhere; white-space: pre-wrap; }
     .out.pending, .out .pending { color: var(--pending); }
     .out.error { color: var(--danger); font-size: 13px; }
@@ -113,7 +117,7 @@
         session = p.session;
         shown = false;
         pinned = false;
-        $('src').textContent = ''; $('roman').textContent = ''; $('match').textContent = ''; $('back').textContent = ''; closePick();
+        $('src').textContent = ''; $('src').classList.remove('open', 'more'); $('roman').textContent = ''; $('match').textContent = ''; $('back').textContent = ''; closePick();
         $('out').textContent = '…'; $('out').className = 'out pending';
         label('speak').textContent = 'listen'; $('speak').title = `Read aloud (${MOD}L)`;
         startReading(null);
@@ -124,7 +128,7 @@
       else if (p.langs) $('langs').textContent = p.langs;
       if ('match' in p) showMatch(p.match);
       if (p.score) scoreHere(p.session, p.score);
-      if (p.source != null) $('src').textContent = p.source;
+      if (p.source != null) { $('src').textContent = p.source; requestAnimationFrame(markMore); if (MAC) markMore(); }
       if (p.translation != null) { $('out').textContent = p.translation || '…'; $('out').className = p.done ? 'out' : 'out pending'; }
       if (p.roman != null) $('roman').textContent = p.roman;
       if (p.error) { $('out').textContent = p.error; $('out').className = 'out error'; }
@@ -175,6 +179,22 @@
       }
       requestAnimationFrame(follow);
     }
+
+    // Your text, folded to two lines: mark it clickable only when there's more to see.
+    function markMore() {
+      const src = $('src');
+      if (src.classList.contains('open')) return;
+      const more = src.scrollHeight > src.clientHeight + 1;
+      src.classList.toggle('more', more);
+      src.title = more ? 'Show all of your text' : '';
+    }
+    $('src').addEventListener('click', () => {
+      const src = $('src');
+      if (!src.classList.contains('more') && !src.classList.contains('open')) return;
+      if (getSelection().toString()) return; // selecting text in it, not clicking
+      const open = src.classList.toggle('open');
+      src.title = open ? 'Fold your text' : 'Show all of your text';
+    });
 
     const act = (action) => T.event.emitTo('main', 'bubble-action', { action });
     $('speak').addEventListener('click', () => act('speak'));
