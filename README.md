@@ -50,6 +50,10 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> | <kbd>⌃</kbd><kbd>⌥</kbd><kbd>S</kbd> | snip an area of the screen and translate it |
 | <kbd>Right Ctrl</kbd> | <kbd>Right ⌥ Option</kbd> | dictate: tap to start (stops when you go quiet, or tap again), or hold to talk |
 | <kbd>Esc</kbd> | <kbd>Esc</kbd> | stop reading aloud or dictating, from any app (does nothing otherwise) |
+| <kbd>Ctrl</kbd>+<kbd>L</kbd> | <kbd>⌘</kbd><kbd>L</kbd> | listen to the translation, again to stop (while Vox2 or the bubble is in front) |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>C</kbd> | copy the translation (in the bubble: <kbd>⌘</kbd><kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>C</kbd>) |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>S</kbd> | swap the two languages (while Vox2 is in front) |
+| <kbd>Tab</kbd> | <kbd>Tab</kbd> | go round the languages and text boxes; on a language, just type its name ("spa") |
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | <kbd>⌘</kbd><kbd>P</kbd> | pin on top (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>F</kbd> | fit the window to its text (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>H</kbd> | <kbd>⌘</kbd><kbd>Y</kbd> | open / close history (while Vox2 is in front) |

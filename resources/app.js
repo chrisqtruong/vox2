@@ -2423,6 +2423,48 @@ $('#perm-startup').addEventListener('change', (e) => { settings.permCheck = e.ta
 // Coming back from System Settings: check right away instead of waiting for the next tick.
 addEventListener('focus', () => { if (permSheet.classList.contains('open')) checkPerms(); });
 
+/* ---------- keyboard: a short Tab loop, and shortcuts for the small buttons ---------- */
+
+// Tab goes round just the four things you type into: top language → top text → bottom language →
+// bottom text → back to the top (Shift+Tab goes back), so going one too far costs a few presses
+// and you never fall off the end. The small icon buttons stay clickable but out of the Tab path;
+// their actions have shortcuts (below, and pin / history / settings in settings → shortcuts).
+// While a sheet is open (settings, history, permissions), Tab goes round that sheet instead.
+for (const el of $('main.app').querySelectorAll('button')) if (!el.classList.contains('lang')) el.tabIndex = -1;
+const tabStops = (root) => [...root.querySelectorAll('button, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')]
+  .filter((el) => el.tabIndex >= 0 && !el.disabled && el.getClientRects().length && !el.closest('[hidden]'));
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+  const open = document.querySelector('.sheet.open');
+  const stops = open ? tabStops(open) : [panes.top.lang, panes.top.el, panes.bottom.lang, panes.bottom.el];
+  if (!stops.length) return;
+  const i = stops.indexOf(document.activeElement);
+  const next = i < 0 ? (e.shiftKey ? stops.length - 1 : 0) : (i + (e.shiftKey ? -1 : 1) + stops.length) % stops.length;
+  e.preventDefault();
+  stops[next].focus();
+});
+
+// Shortcuts for the small buttons, like the bubble's (⌘ on Mac, Ctrl on Windows): L listen to the
+// translation (again to stop), Shift+C copy the translation (plain ⌘C still copies what you
+// selected), Shift+S swap the languages. Fixed, not in settings: there are already plenty there.
+const MOD = MAC ? '⌘' : 'Ctrl+';
+const SHIFT = MAC ? '⇧' : 'Shift+';
+for (const p of Object.values(panes)) {
+  p.root.querySelector('[data-act="speak"]').title = `Read aloud (${MOD}L reads the translation)`;
+  p.root.querySelector('[data-act="copy"]').title = `Copy (${MOD}${SHIFT}C copies the translation)`;
+}
+$('#swap').title = `Swap languages (${MOD}${SHIFT}S)`;
+document.addEventListener('keydown', (e) => {
+  if (!(MAC ? e.metaKey : e.ctrlKey) || e.altKey || e.repeat || recordingShortcut || document.querySelector('.sheet.open')) return;
+  const dst = panes[other(source)];
+  const button = !e.shiftKey && e.code === 'KeyL' ? dst.root.querySelector('[data-act="speak"]')
+    : e.shiftKey && e.code === 'KeyC' ? dst.root.querySelector('[data-act="copy"]')
+      : e.shiftKey && e.code === 'KeyS' ? $('#swap') : null;
+  if (!button) return;
+  e.preventDefault();
+  button.click();
+});
+
 /* ---------- start ---------- */
 
 await loadSettings();

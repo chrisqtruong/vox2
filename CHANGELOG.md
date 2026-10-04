@@ -14,6 +14,7 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 ### Changed
 
 - **Pick a language without the mouse.** Tab to a language button and just start typing ("spa"): the language menu opens already searching, and Enter or Tab picks the top match. ↓ opens the menu too. Names that start with what you typed come first ("s" → Samoan, Serbian, Spanish…), so a letter or two is often enough. After you pick (or press Esc), focus stays on the language button, so Tab carries on from there instead of getting lost. *Windows and Mac.*
+- **A short Tab loop.** Tab now goes round just the four things you type into: top language → top text → bottom language → bottom text, then back to the top (Shift+Tab goes back), so you can't fall off the end. The small icon buttons are out of the Tab path; their actions have shortcuts: ⌘L / Ctrl+L listen to the translation, ⌘⇧C / Ctrl+Shift+C copy it, ⌘⇧S / Ctrl+Shift+S swap the languages (pin, history and settings already had theirs). While settings or history is open, Tab goes round that instead. *Windows and Mac.*
 - **Type anywhere in settings to search them.** With settings open, just start typing ("appea") and it goes straight into the settings search, which jumps to the matching settings (appearance). Works wherever the keyboard focus is, except while you're typing in a field or recording a shortcut. *Windows and Mac.*
 
 ## 0.4.21 (2026-10-04)
