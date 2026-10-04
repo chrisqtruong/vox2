@@ -14,7 +14,8 @@
       background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 8px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, .28); display: grid; gap: 6px;
     }
-    .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); cursor: grab; user-select: none; -webkit-user-select: none; }
+    .top button { cursor: pointer; }
     .langs { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .src { color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
     .out { font-size: 15px; line-height: 1.5; max-height: 220px; overflow-y: auto; overflow-wrap: anywhere; white-space: pre-wrap; }
@@ -81,6 +82,11 @@
     let shownAt = 0; // macOS hands the keyboard to the main window for a moment as the bubble opens
     let speaking = false; // reading aloud: Esc stops that first, and only the next Esc closes the bubble
     let stoppedAt = 0;
+    // Dragged somewhere by its top bar: it stays there like a sticky note (resizing in place,
+    // no longer closing when you click elsewhere) until you close it or a new quick translation starts.
+    let pinned = false;
+    let dragArmed = 0;  // when you grabbed the top bar
+    let placedAt = 0;   // when Vox2 itself last moved it (those moves aren't you dragging)
     const MAC = /Mac/.test(navigator.platform);
     const MOD = MAC ? '⌘' : 'Ctrl+';
     const label = (id) => $(id).lastChild; // the button's text: "listen", "copy"…
@@ -91,7 +97,8 @@
       lastHeight = h;
       if (!shown) shownAt = Date.now();
       shown = true;
-      T.core.invoke('place_bubble', { height: h });
+      placedAt = Date.now();
+      T.core.invoke('place_bubble', { height: h, keep: pinned });
     }
     new ResizeObserver(() => { if (shown) place(); }).observe(card);
 
@@ -105,6 +112,7 @@
       if (p.session > session) { // new quick translation: reset
         session = p.session;
         shown = false;
+        pinned = false;
         $('src').textContent = ''; $('roman').textContent = ''; $('match').textContent = ''; $('back').textContent = ''; closePick();
         $('out').textContent = '…'; $('out').className = 'out pending';
         label('speak').textContent = 'listen'; $('speak').title = `Read aloud (${MOD}L)`;
@@ -301,8 +309,25 @@
       act('stop');
       if (!speaking && Date.now() - stoppedAt > 500) hide();
     });
-    // Click anywhere else and it goes away (but not for the moment macOS takes the keyboard as it opens).
-    addEventListener('blur', () => { if (shown && Date.now() - shownAt > 1000) hide(); });
+    // Click anywhere else and it goes away (but not for the moment macOS takes the keyboard as it opens),
+    // unless you've moved it: then it stays like a sticky note until × or Esc.
+    addEventListener('blur', () => { if (shown && !pinned && Date.now() - shownAt > 1000) hide(); });
+
+    // Press and hold the top bar to move it (not on its buttons). It only counts as moved when the
+    // window moves within a few seconds of grabbing it and not because Vox2 placed it, so a plain
+    // click on the bar doesn't pin it.
+    $('card').querySelector('.top').addEventListener('mousedown', (e) => {
+      if (e.button !== 0 || e.target.closest('button, input')) return;
+      e.preventDefault();
+      dragArmed = Date.now();
+      T.window.getCurrentWindow().startDragging().catch(() => {});
+    });
+    T.window.getCurrentWindow().onMoved(() => {
+      if (pinned || !dragArmed || Date.now() - dragArmed > 3000 || Date.now() - placedAt < 400) return;
+      pinned = true;
+      act('pinned');
+    });
+
     T.event.emitTo('main', 'bubble-ready');
   </script>
   <script type="module">
