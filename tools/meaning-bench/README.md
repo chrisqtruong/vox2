@@ -2,6 +2,18 @@
 
 Measures how well Vox2's meaning check (back-translation + match score, `resources/meaning.js`) tells good translations from ones that say something different. Reports live in [`docs/meaning-check-tests/`](../../docs/meaning-check-tests/); each run gets a dated report and its raw results so runs can be compared over time.
 
+## Start here: which tool for what
+
+| You changed or want to… | Use | Time |
+|---|---|---|
+| …the word checks (`meaning-checks.js`) | `unit-tests.mjs`, then `offline.mjs` on saved results, `flips.mjs` row by row ([below](#re-scoring-offline-phase-12-on)) | seconds |
+| …the similarity part (`meaning.js`, the model) or the back-translation | a full run: `make_items.py` + `bench` ([How to run](#how-to-run)) | 30–45 min |
+| …the "can't check" rule for untranslated text | [Untranslated text](#untranslated-text-run-4) | ~1 hour |
+| …see which planted errors never reached the translation, or test comparing with the translation directly | `direct_embed.py` + `direct_eval.py` + `dump-scores.mjs` ([report](../../docs/meaning-check-tests/2026-10-04-direct-comparison.md)) | ~1 min |
+| …reproduce an older report exactly | the item file and script that report names (`items.json` + `analyze.py` for run 1, `items-v2/v3.json` + `analyze_v2.py` for runs 2–3). Kept unchanged on purpose | — |
+
+New runs: draw a **fresh held-out set** (a new seed in `make_items.py`) whenever the last one has been looked at.
+
 ## What it does
 
 1. `make_items.py` picks English sentences from [FLORES-200](https://github.com/facebookresearch/flores/blob/main/flores200/README.md) and plants one meaning error in each (negation flipped, number changed, he/she swapped, an opposite word, a clause dropped), keeping each sentence's professional translations. FLORES text is CC BY-SA 4.0.

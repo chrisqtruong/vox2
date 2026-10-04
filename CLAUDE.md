@@ -19,10 +19,11 @@ JS: `MAC` / `IS_MAC` (from `navigator.platform`), and `getPermissions()` returns
 
 | Area | Windows | macOS |
 |---|---|---|
-| Global keyboard watcher | `rdev 0.5` in `hotkey.rs` | own listen-only CGEventTap, `mod mac` in `hotkey.rs` |
+| Global keyboard watcher | `rdev 0.5` in `hotkey.rs` (watches only) | own CGEventTap, `mod mac` in `hotkey.rs`: holds back a shortcut's key from the app in front (needs Accessibility; falls back to watching only) |
 | Permissions screen | not shown | `permissions.rs` + the permissions sheet in `app.js` |
 | Window fade (`set_window_alpha`) | layered window alpha | NSWindow `alphaValue` |
 | Overlays (`overlay.rs`) | tool windows, cursor in pixels | cursor converted from points (`cursor_px`) |
+| Snip text reading | Tesseract (`ocr.js`) | Apple Vision (`ocr.rs`), Tesseract as fallback |
 | Dictation audio (`dictation.js`) | 16 kHz AudioContext | native-rate context, resampled to 16 kHz |
 | Bubble placement (`bubble.html`) | `requestAnimationFrame` | measured immediately |
 | Taskbar/tray icon tweaks | `main.rs` (Windows API) | — |
@@ -53,17 +54,19 @@ JS: `MAC` / `IS_MAC` (from `navigator.platform`), and `getPermissions()` returns
 
 ## Shared-code gotchas
 
-- **Meaning check changes (`meaning.js`, `meaning-checks.js`, `checkBack`) must be measured**: re-run `tools/meaning-bench/` (`items-v2.json`) and add a dated report + history row in `docs/meaning-check-tests/`. Tune only on the development split (`dev`); report the held-out split (`test`). When the held-out set has been used to choose between versions, say so, and draw a fresh held-out set next time.
+- **Meaning check changes (`meaning.js`, `meaning-checks.js`, `checkBack`) must be measured** with `tools/meaning-bench/` (its README says which tool for what; word-check-only changes can be re-scored offline in seconds) and get a dated report + history row in `docs/meaning-check-tests/`. Tune only on the development split (`dev`); report the held-out split (`test`). When the held-out set has been used to choose between versions, say so, and draw a fresh held-out set next time.
 - **Google sometimes answers in the wrong language** (whole batches of "back into English" in Japanese, 2026-10-03). The bench retries non-English back-translations; check the run log before trusting results.
-- **OCR (`ocr.js`) must prepare snips before Tesseract**: enlarge, grayscale, invert light-on-dark, stretch contrast, PSM 6, then fix lone `|` → `I`. Raw screen captures (small, dark themes) garble words. Test changes against several themes and both 1× and 2× captures.
+- **Tesseract OCR (`ocr.js`; Windows, and the Mac fallback) must prepare snips first**: enlarge, grayscale, invert light-on-dark, stretch contrast, PSM 6, then fix lone `|` → `I`. Raw screen captures (small, dark themes) garble words. Test changes against several themes and both 1× and 2× captures.
 - `quick.active` (a ⌃⌥T / Ctrl+Alt+T or snip session) routes translations to the bubble. Anything that moves work back into the main window must end it: typing, dictating, and focusing the window do.
 - Esc reaches the page two ways: the page's own keydown while Vox2 is in front, and the `escape` event from the native keyboard watcher otherwise (`stopAudio()` handles both).
 
 ## Workflow
 
 - Branch per change, PR into `main`, merge when checks pass. Commit/push/merge only when Chris asks.
-- Record user-visible changes in `CHANGELOG.md` under "Unreleased" (with *Windows and Mac* / *Mac* / *Windows*); Chris copies it into the release notes when he publishes, then it becomes that version's section.
+- Record user-visible changes in `CHANGELOG.md` under "Unreleased" (with *Windows and Mac* / *Mac* / *Windows*). The release workflow turns that section into the release notes and the in-app update note.
 - Chris works on both a Mac and a Windows PC; GitHub is the meeting point. `git pull` before starting.
+- **Several Claude sessions may work on the repo at once.** Before editing shared docs (README roadmap, `docs/meaning-check-tests/README.md`, CHANGELOG), pull `main` and check open PRs (`gh pr list`) for the same file; keep doc PRs small and merge them soon, so the next one doesn't have to be redone.
+- **Each fact lives in one place.** Meaning-check numbers and status live on `docs/meaning-check-tests/README.md` (and each dated report); the README and roadmap link there instead of repeating numbers. Release steps live here and in `.github/workflows/release.yml`.
 - Testing a Mac build: download the artifact, swap it into `/Applications` (old copy to the Trash), open it. Testing Windows needs his PC.
 
 ## Releases (don't break Windows updates)
