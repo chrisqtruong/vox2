@@ -519,5 +519,5 @@ body.conversation .pane-head .mic { color: var(--accent); background: var(--hove
 .bar-tip[hidden] { display: none; }
 .bar-tip kbd {
   font: 600 11px/1 var(--font); padding: 3px 6px; border-radius: 4px;
-  color: var(--muted); background: var(--hover); border: 1px solid var(--line);
+  color: var(--kbd, var(--muted)); background: var(--bg); border: 1px solid var(--line); /* --kbd: readable on --bg, see themes.js */
 }

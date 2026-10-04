@@ -1336,8 +1336,7 @@ function renderShortcuts() {
     + ' · click one, then press the new key · backspace turns it off'
     + (native ? ` · a key on its own (like right ${IS_MAC ? '⌘' : 'Alt'}) fires on a quick tap; dictation's can also be held` : '');
   for (const p of Object.values(panes)) {
-    p.root.querySelector('[data-act="mic"]').title = settings.sttShortcut.code
-      ? `Tap to dictate · hold to talk (${shortcutLabel()})` : 'Tap to dictate · hold to talk';
+    p.root.querySelector('[data-act="mic"]').title = 'Tap to dictate · hold to talk'; // the key shows in its tooltip
   }
 }
 for (const chip of shortcutChips) chip.addEventListener('click', () => recordShortcut(chip));
@@ -1362,7 +1361,7 @@ const useBubble = () => native && settings.quickResult === 'bubble';
 
 function themeColors() {
   const css = getComputedStyle(document.documentElement);
-  return Object.fromEntries(['bg', 'ink', 'muted', 'pending', 'line', 'accent', 'danger']
+  return Object.fromEntries(['bg', 'ink', 'muted', 'pending', 'line', 'accent', 'danger', 'kbd']
     .map((v) => [v, css.getPropertyValue(`--${v}`).trim()]));
 }
 
@@ -1748,13 +1747,26 @@ $('#fade-toggle').addEventListener('change', (e) => { settings.fade = e.target.c
 $('#tray-toggle').addEventListener('change', (e) => { settings.closeToTray = e.target.checked; saveSettings(); setCloseToTray(settings.closeToTray); });
 $('#autostart-toggle').addEventListener('change', (e) => { settings.autostart = e.target.checked; saveSettings(); setAutostart(settings.autostart); });
 
-/* ---------- bottom bar tooltips ---------- */
+/* ---------- button tooltips ---------- */
 
-// The bar's buttons get a small themed tooltip instead of the system one: their name, plus the
-// keyboard shortcut (as you've set it) for the ones that have one, as a reminder.
+// Buttons get a small themed tooltip instead of the system one: their name, plus the keyboard
+// shortcut (as you've set it) for the ones that have one, as a reminder. The bottom bar's, the
+// mic (dictation key), swap, and listen / copy on the translation's side (their shortcuts act on
+// the translation).
 const BAR_SHORTCUTS = {
   'snip-btn': 'snipShortcut', pin: 'pinShortcut', 'fit-btn': 'fitShortcut', 'history-btn': 'historyShortcut', gear: 'settingsShortcut',
 };
+const fixedShortcut = (code, shift = false) => ({ code, meta: MAC, ctrl: !MAC, shift });
+function tipShortcut(btn) {
+  if (BAR_SHORTCUTS[btn.id]) return settings[BAR_SHORTCUTS[btn.id]];
+  if (btn.id === 'swap') return fixedShortcut('KeyS', true);
+  const act = btn.dataset.act;
+  if (act === 'mic') return settings.sttShortcut;
+  const onTranslation = btn.closest('.pane') === panes[other(source)].root;
+  if (act === 'speak' && onTranslation) return fixedShortcut('KeyL');
+  if (act === 'copy' && onTranslation) return fixedShortcut('KeyC', true);
+  return null;
+}
 const barTip = document.createElement('div');
 barTip.className = 'bar-tip';
 barTip.hidden = true;
@@ -1769,7 +1781,7 @@ function showBarTip(btn) {
     btn.setAttribute('aria-label', btn.title);
     btn.removeAttribute('title');
   }
-  const sc = settings[BAR_SHORTCUTS[btn.id]];
+  const sc = tipShortcut(btn);
   barTip.replaceChildren(btn.dataset.tip || '');
   if (sc?.code) barTip.append(Object.assign(document.createElement('kbd'), { textContent: shortcutLabel(sc) }));
   barTip.hidden = false;
@@ -1779,7 +1791,9 @@ function showBarTip(btn) {
   const w = barTip.offsetWidth;
   const left = Math.max(8, Math.min((r.left + r.width / 2) / z - w / 2, innerWidth / z - w - 8));
   barTip.style.left = `${left}px`;
-  barTip.style.top = `${r.top / z - barTip.offsetHeight - 8}px`;
+  // Above the button, or below it when there's no room (the buttons at the top of the window).
+  const above = r.top / z - barTip.offsetHeight - 8;
+  barTip.style.top = `${above >= 4 ? above : r.bottom / z + 8}px`;
 }
 
 function hideBarTip() {
@@ -1788,7 +1802,7 @@ function hideBarTip() {
   barTip.hidden = true;
 }
 
-for (const btn of document.querySelectorAll('.bar-actions button')) {
+for (const btn of document.querySelectorAll('.bar-actions button, .pane-head .icon, #swap')) {
   btn.addEventListener('pointerenter', () => {
     clearTimeout(barTipTimer);
     barTipTimer = setTimeout(() => showBarTip(btn), Date.now() < barTipWarmUntil ? 0 : 350);
@@ -2442,13 +2456,7 @@ document.addEventListener('keydown', (e) => {
 // Shortcuts for the small buttons, like the bubble's (⌘ on Mac, Ctrl on Windows): L listen to the
 // translation (again to stop), Shift+C copy the translation (plain ⌘C still copies what you
 // selected), Shift+S swap the languages. Fixed, not in settings: there are already plenty there.
-const MOD = MAC ? '⌘' : 'Ctrl+';
-const SHIFT = MAC ? '⇧' : 'Shift+';
-for (const p of Object.values(panes)) {
-  p.root.querySelector('[data-act="speak"]').title = `Read aloud (${MOD}L reads the translation)`;
-  p.root.querySelector('[data-act="copy"]').title = `Copy (${MOD}${SHIFT}C copies the translation)`;
-}
-$('#swap').title = `Swap languages (${MOD}${SHIFT}S)`;
+// They show in the buttons' tooltips (see tipShortcut).
 document.addEventListener('keydown', (e) => {
   if (!(MAC ? e.metaKey : e.ctrlKey) || e.altKey || e.repeat || recordingShortcut || document.querySelector('.sheet.open')) return;
   const dst = panes[other(source)];
