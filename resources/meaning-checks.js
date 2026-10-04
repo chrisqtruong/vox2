@@ -90,13 +90,15 @@ export function numbersIn(s, lang) {
   return (t.match(/(?<!\p{L}[-–]?)(?<![\d.,:])\d+(?:[.,:]\d+)*/gu) || []).sort().join(' ');
 }
 
-// Your content words that never came back in the ↩ line (first 5 letters compared, so
-// "elections" and "election" match), for "didn't come back:" in the hover card.
+// Your content words that never came back in the ↩ line, for "didn't come back:" in the hover
+// card. Words are compared by their stem, so "testing" / "test", "elections" / "election" and
+// "studied" / "study" match.
 const STOP = new Set('a an the and or but if of to in on at by for from with as is are was were be been being it its this that these those there their they them he she his her him we our you your i my me not no so than then too very can could will would should may might must do does did have has had which who whom whose what when where why how all any each some such into over under about after before up down out off again also just only own other more most'.split(' '));
+const stem = (w) => w.replace(/'s$/, '').replace(/(?:ies|ied)$/, 'y').replace(/(?:ing|edly|ed|es|ly|s)$/, '').replace(/(.)\1$/, '$1').replace(/e$/, '');
 export function missingWords(original, back, lang) {
   if (!isEnglish(lang)) return [];
-  const kept = new Set(words(back).map((w) => w.slice(0, 5)));
-  return [...new Set(words(original).filter((w) => w.length > 2 && !STOP.has(w) && !kept.has(w.slice(0, 5))))];
+  const kept = new Set(words(back).map(stem));
+  return [...new Set(words(original).filter((w) => w.length > 2 && !STOP.has(w) && !kept.has(stem(w))))];
 }
 
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
