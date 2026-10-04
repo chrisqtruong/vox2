@@ -3,6 +3,7 @@ import { ENGINES, translate, detectLanguage, checkBack } from './engines.js';
 import { attachLangPicker } from './langpicker.js';
 import { readText, tesseractLang, joinLines } from './ocr.js';
 import { matchScore, tier } from './meaning.js';
+import { untranslated } from './meaning-checks.js';
 import { THEME_GROUPS, applyTheme } from './themes.js';
 import {
   Dictation, STT_MODELS, listMics, onWhisperEvent, preloadWhisper, whisperAwake, setKeepLoaded, scheduleUnload, isModelSaved,
@@ -1550,7 +1551,7 @@ async function updateExtras(dst, translation, lang, backTo, original) {
     const backLine = box.querySelector('.back');
     backLine.textContent = settings.showBack ? back : '';
     box.hidden = !box.textContent.trim();
-    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, back, id, backTo);
+    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, translation, back, id, backTo);
   } catch {}
 }
 
@@ -1562,8 +1563,17 @@ matchTip.className = 'match-tip';
 matchTip.hidden = true;
 document.body.append(matchTip);
 
+const escapeHtml = (t) => t.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+
 function showMatchTip(badge) {
-  const { score, numbers, checks, missing } = badge.dataset;
+  const { score, numbers, checks, missing, untranslated: copied } = badge.dataset;
+  if (copied) {
+    matchTip.innerHTML = '<b>can\'t check</b>'
+      + '<p>part of your text came through untranslated, so the ↩ line just repeats it and a match score would mean nothing</p>'
+      + '<p>usually: gibberish, a garbled snip, a typo-heavy passage, or text that\'s already in the other language</p>'
+      + `<p class="missing">not translated: <span>${copied.split('\n').slice(0, 8).map(escapeHtml).join(' ')}${copied.split('\n').length > 8 ? ' …' : ''}</span></p>`;
+    return placeMatchTip(badge);
+  }
   const t = tier(Number(score));
   matchTip.innerHTML = `<b class="${t}">${score}% match</b>`
     + '<p>how much of your meaning survived the round trip, compared by meaning, not exact words</p>'
@@ -1571,6 +1581,10 @@ function showMatchTip(badge) {
     + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '')
     + (checks ? checks.split('\n').map((c) => `<p class="warn">${c}, so it's capped at 60%</p>`).join('') : '')
     + (missing ? `<p class="missing">didn't come back: ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '');
+  placeMatchTip(badge);
+}
+
+function placeMatchTip(badge) {
   matchTip.hidden = false;
   const z = parseFloat(document.documentElement.style.zoom) || 1;
   const r = badge.getBoundingClientRect();
@@ -1579,8 +1593,20 @@ function showMatchTip(badge) {
   matchTip.style.top = `${r.top / z - h - 6 > 8 ? r.top / z - h - 6 : r.bottom / z + 6}px`; // above, else below
 }
 
-async function showMatch(backLine, original, back, id, lang) {
+async function showMatch(backLine, original, translation, back, id, lang) {
   const badge = document.createElement('span');
+  badge.addEventListener('mouseenter', () => showMatchTip(badge));
+  badge.addEventListener('mouseleave', () => { matchTip.hidden = true; });
+  // Text that came through untranslated would score ~100% for nothing: say so instead (#38).
+  const copied = untranslated(original, translation);
+  if (copied) {
+    badge.className = 'match unchecked';
+    badge.textContent = 'can\'t check';
+    badge.dataset.untranslated = copied.join('\n');
+    backLine.append(' ', badge);
+    markChanged(backLine, copied);
+    return;
+  }
   badge.className = 'match checking';
   badge.textContent = 'checking…';
   badge.title = 'checking meaning (first time downloads a ~120 MB model)';
@@ -1596,8 +1622,6 @@ async function showMatch(backLine, original, back, id, lang) {
     if (checks.length) badge.dataset.checks = checks.map((c) => c.detail).join('\n');
     if (missing.length) badge.dataset.missing = missing.join('\n');
     markChanged(backLine, changed);
-    badge.addEventListener('mouseenter', () => showMatchTip(badge));
-    badge.addEventListener('mouseleave', () => { matchTip.hidden = true; });
   } catch {
     badge.remove(); // no model (e.g. offline the first time): just leave the score out
   }

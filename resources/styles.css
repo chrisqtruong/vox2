@@ -180,6 +180,7 @@ body.fitted .extras { max-height: none; } /* window fitted to its text: show the
 .match.mid { color: var(--ink); }
 .match.low { color: var(--danger); }
 .match.checking { color: var(--pending); border-style: dashed; font-weight: 400; }
+.match.unchecked { color: var(--muted); } /* text came through untranslated: no score */
 .match-tip {
   position: fixed; z-index: 60; width: 220px; padding: 9px 11px; display: grid; gap: 4px; pointer-events: none;
   border-radius: 9px; background: var(--bg); border: 1px solid var(--line); box-shadow: 0 8px 22px rgba(0, 0, 0, .2);
@@ -210,6 +211,7 @@ body.fitted .extras { max-height: none; } /* window fitted to its text: show the
 :root[data-colorblind] .match.high::before { content: "✓ "; }
 :root[data-colorblind] .match.mid::before { content: "! "; }
 :root[data-colorblind] .match.low::before { content: "✕ "; }
+:root[data-colorblind] .match.unchecked::before { content: "? "; }
 
 /* Divider with swap */
 .divider { position: relative; height: 1px; background: var(--line); margin: 0 14px; flex: none; }
