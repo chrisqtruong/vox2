@@ -120,6 +120,8 @@ xychart-beta
     bar [35, 65, 71, 70]
 ```
 
+**Errors that never reached the translation.** About a third of the "misses" aren't misses at all: the translation came out exactly the same as the good one (French *sa femme* is both "his wife" and "her wife"), so there was nothing to catch. Counting only errors that reached the translation, the Meaning Check catches **77%** ([direct comparison](2026-10-04-direct-comparison.md)).
+
 **Strongest today:** dropped parts of a sentence (98%), changed numbers (94%), a "not" added or removed (85%). **Weakest:** opposite words (58%), swapped pronouns (44%), a gender added (40%). Most of those misses happen because the error is lost on the way out or smoothed over on the way back, so the ↩ line never shows it. Fixing that needs a second opinion, which is Phase 3.
 
 ## What's next
@@ -127,14 +129,15 @@ xychart-beta
 In order:
 
 1. **Confirm Phase 1.2b on a second fresh set** (run 6), so today's numbers aren't tuned to run 5.
-2. **Finish Phase 2: show what changed** ([#27](https://github.com/chrisqtruong/vox2/issues/27)). Today the word behind a flag is underlined and missing words are listed; next is highlighting added content too.
-3. **Test against more engines and an independent judge** ([#52](https://github.com/chrisqtruong/vox2/issues/52)): DeepL, Microsoft Translator, Apple's on-device translator and an AI engine, forward and back, with a research judge (COMET-Kiwi or an AI judge) and native-speaker spot checks (Vietnamese first). Every test so far uses Google for everything, one engine grading itself.
-4. **Phase 3: second opinions**, chosen by what step 3 shows:
+2. **High-stakes reliability** (medical, legal): an optional careful mode with a sharper check, measured on its own medical and legal test set, aiming for 95%+ of critical errors caught. See [the direct comparison report](2026-10-04-direct-comparison.md#what-we-take-from-it).
+3. **Finish Phase 2: show what changed** ([#27](https://github.com/chrisqtruong/vox2/issues/27)). Today the word behind a flag is underlined and missing words are listed; next is highlighting added content too.
+4. **Test against more engines and an independent judge** ([#52](https://github.com/chrisqtruong/vox2/issues/52)): DeepL, Microsoft Translator, Apple's on-device translator and an AI engine, forward and back, with a research judge (COMET-Kiwi or an AI judge) and native-speaker spot checks (Vietnamese first). Every test so far uses Google for everything, one engine grading itself.
+5. **Phase 3: second opinions**, chosen by what step 4 shows:
    - translate back with a **different engine** than the one that translated ([#29](https://github.com/chrisqtruong/vox2/issues/29));
-   - compare your text with the translation **directly** (the same local model reads both languages), so errors that vanish on the way back still show;
+   - ~~compare your text with the translation directly with the same local model~~: tested, adds about 1 point; the small model can't see he/she or many/few ([report](2026-10-04-direct-comparison.md));
    - an optional **AI double-check** that lists what differs ([#7](https://github.com/chrisqtruong/vox2/issues/7)), and **suggested fixes, verified** before they're shown ([#55](https://github.com/chrisqtruong/vox2/issues/55)).
-5. **Benchmark against the research state of the art** on the WMT human-annotated test sets ([#50](https://github.com/chrisqtruong/vox2/issues/50)), with an honest write-up of where Vox2 falls short.
-6. **Phase 4: per-language tuning**, only if the numbers still differ a lot by language after Phase 3.
+6. **Benchmark against the research state of the art** on the WMT human-annotated test sets ([#50](https://github.com/chrisqtruong/vox2/issues/50)), with an honest write-up of where Vox2 falls short.
+7. **Phase 4: per-language tuning**, only if the numbers still differ a lot by language after Phase 3.
 
 Light core, optional extras: anything heavier than today's small local model (an AI check, a big research model) stays opt-in.
 
@@ -151,6 +154,7 @@ Each run has a dated report (what was tested, how, results, what we noticed, gra
 | 2026-10-04 | [Run 4, untranslated text: bigger test](2026-10-04-run-4.md) | Independent test of the 0.4.18 check: 480 untranslatable texts (gibberish, garbled snips, half garbled, made-up words) from run 3's sentences + 30 name-heavy sentences, **all 11 languages**, Google both ways; plus a two-level alternative. Not comparable with the planted-error columns | 100% of good translations unaffected (two-level: 99.5%) | 0 of 6,160 (two-level: 0.4–0.5% capped at 84) | Held-out "meaning kept": gibberish 96% → **8%**, fully garbled 48% → **6%**, half garbled 54% → **35%** (two-level: 6%, 2%, **20%**); names 98% → 98% | – | **A** on gibberish and full garble, **D** on half-garbled (two-level: B). Weak spot for both: Hindi (spelled out phonetically) |
 | 2026-10-04 | [Phase 1.2: numbers, "not" words, inclusive pronouns](2026-10-04-phase-1-2.md) | **Offline re-score** of runs 2–3's saved translations (no new Google requests), 0.4.18 checks vs Phase 1.2 on the same pairs. Held-out sets had been read before, so optimistic for new text | run 3: 93% → **94%** (run 2: 93% → 94%) | run 3: 4.8% → **4.1%** (run 2: 4.6% → **3.5%**) | run 3: 78% → **79%** (run 2: 77% → 77%) | 21% | **C** on errors. Fewer false alarms in every language; they/xe → he/she and partner → wife now flagged; pronouns marked uncheckable in Tagalog, Hindi, Urdu, Spanish |
 | 2026-10-04 | [Run 5, fresh held-out; Phase 1.2b](2026-10-04-run-5.md) | **Fresh 96 held-out sentences** (none used before) + same 40 development; adds a 6th error type, **gender added** (they → he, people → men); run 1, 0.4.18, Phase 1.2 and Phase 1.2b on the same translations. 1.2b was designed after looking at this run | 93% / 91% / 90% / **91%** | 5.0% / 7.1% / 8.3% / **6.9%** | 35% / 65% / 71% / **70%**: negation 85%, number 94%, dropped clause 98%, opposite 58%, pronoun 44%, gender added 9% → **40%** | 30% | **C** on errors. Phase 1.2 raised false alarms on new text; 1.2b fixes it. Earlier phases score lower on fresh text too |
+| 2026-10-04 | [Direct comparison: the decisive experiment](2026-10-04-direct-comparison.md) | **Offline** on run 5's translations: also compare your text with the translation (same local model), tuned on development, reported on held-out. Plus: which planted errors never reached the translation | 91% (unchanged at the best setting) | 6.9% → 8.0% at the best setting | **+1 point** (69.9% → 70.4%); 79% only by marking 35% of good ones "check the details". **77.0%** of errors that actually reached the translation (99 of 318 misses were identical to the good translation) | 23% of real errors | Not shipped: the stopping rule applies. The small model can't see he/she or many/few; high stakes need a sharper, optional check |
 
 When you add a run, keep the same columns. If the method changed (more languages, new error types, different engines), say how in the Method column so rows stay comparable.
 
