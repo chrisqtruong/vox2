@@ -79,12 +79,16 @@ The work runs on two tracks: **phases** (what the Meaning Check can do) and **te
 **What it can do** (phases):
 
 ```mermaid
-flowchart LR
-    P0[Phase 0<br/>similarity score<br/>✓ done] --> P1[Phase 1 · 1.1 · 1.2<br/>word checks,<br/>fewer false alarms<br/>✓ done]
-    P1 --> U[can't check<br/>for untranslated text<br/>✓ done]
-    U --> P2[Phase 2<br/>show what changed<br/>◐ in progress]
-    P2 --> P3[Phase 3<br/>second opinions:<br/>other engine, direct<br/>comparison, AI check<br/>→ next]
-    P3 --> P4[Phase 4<br/>per-language tuning<br/>○ later, if needed]
+flowchart TB
+    subgraph Done[Done]
+        direction LR
+        P0[Phase 0<br/>similarity score] --> P1[Phase 1 · 1.1 · 1.2<br/>word checks,<br/>fewer false alarms] --> U[can't check<br/>for untranslated text]
+    end
+    subgraph Ahead[Ahead]
+        direction LR
+        P2[Phase 2<br/>show what changed<br/>◐ in progress] --> P3[Phase 3<br/>second opinions:<br/>other engine, direct<br/>comparison, AI check<br/>→ next] --> P4[Phase 4<br/>per-language tuning<br/>○ later, if needed]
+    end
+    Done --> Ahead
 ```
 
 **How sure we are** (testing track):
