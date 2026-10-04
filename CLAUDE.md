@@ -68,7 +68,9 @@ JS: `MAC` / `IS_MAC` (from `navigator.platform`), and `getPermissions()` returns
 
 ## Releases (don't break Windows updates)
 
-- Releases are published from Chris's **PC**: Windows installer + `latest.json`, signed with the updater key that lives only there.
-- When a release is published, the workflow builds the Mac app for that tag, attaches `Vox2-mac.dmg` and the updater archive, and **adds** `darwin-aarch64` entries to that release's `latest.json`.
-- The app's updater reads `releases/latest/download/latest.json`. **Never create a separate Mac release or let anything but a full PC release become "latest"**, and never remove or change the Windows entries in `latest.json`.
+- **Two ways to release.** Either way, first bump the version in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` and `Cargo.lock`, and turn CHANGELOG.md's "Unreleased" into a `## <version> (<date>)` section, on `main`.
+  - **From anywhere (Mac, phone):** Actions → **release** → Run workflow (or `gh workflow run release.yml -f test_run=false`). It builds Windows and Mac on GitHub, makes a draft with all the files and one `latest.json`, checks it, and only then publishes it as latest. Leave "Test run" ticked to get an unpublished draft under a `v<ver>-test-<n>` tag instead; delete it after looking. Never publish a test draft.
+  - **From Chris's PC:** Windows installer + `latest.json`, signed with the updater key. When that release is published, `build.yml` builds the Mac app for the tag, attaches `Vox2-mac.dmg` and the updater archive, and **adds** `darwin-aarch64` entries to that release's `latest.json`.
+- Both produce the same files: `Vox2-setup.exe`, `Vox2_<ver>_x64-setup.exe`, `Vox2-mac.dmg`, `Vox2_<ver>_aarch64.dmg`, `Vox2_<ver>_aarch64.app.tar.gz`, `latest.json` (windows-x86_64-nsis, windows-x86_64, darwin-aarch64, darwin-aarch64-app).
+- The app's updater reads `releases/latest/download/latest.json`. **Never create a separate Mac release or let anything but a full release (Windows + Mac) become "latest"**, and never remove or change the Windows entries in `latest.json`.
 - Repo secrets: `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY` (Mac signing), `TAURI_SIGNING_PRIVATE_KEY` (updates). Never print or commit them.

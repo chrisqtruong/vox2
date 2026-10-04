@@ -21,8 +21,6 @@
 name: release
 
 on:
-  push:
-    branches: [release-workflow] # TEMP: test run before merging
   workflow_dispatch:
     inputs:
       test_run:
