@@ -30,7 +30,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 ## What it does
 
 - **Live, both ways.** Type in either box and the other translates as you go. New words show grey until the engine settles.
-- **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: just tap <kbd>Right ⌘</kbd>); the translation appears in a bubble by your cursor, with a match score. Tab to its language and type to switch ("spa" → Spanish).
+- **From any app.** Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> (Mac: just tap <kbd>Right ⌘</kbd>); the translation appears in a bubble by your cursor, with a match score. Tab to its language and type to switch ("spa" → Spanish). Click your text in the bubble to see all of it, and drag the bubble by its top bar to put it anywhere: once moved, it stays put like a sticky note until you close it.
 - **Snip & translate.** <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd> (Mac: <kbd>⌃</kbd><kbd>⌥</kbd><kbd>S</kbd>), draw a box around text on screen (images, subtitles, apps that block copying), read it in your language. On Mac, it's read by Apple's built-in text recognizer (the Live Text engine); on Windows, the snip is cleaned up first (enlarged, dark themes flipped, contrast boosted). Either way, screen text comes through word for word. The image stays in memory and is never saved.
 - **Dictation.** Tap or hold <kbd>Right Ctrl</kbd> (Mac: <kbd>Right ⌥ Option</kbd>) and talk. Transcribed on your machine; optionally typed into the app you're using, as said or translated.
 - **Read aloud.** Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow (0.75×), normal and fast (1.25×) speeds and a volume slider, which take effect mid-sentence. Press <kbd>Esc</kbd> in any app to stop it.
@@ -54,7 +54,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>S</kbd> | swap the two languages (while Vox2 is in front) |
 | <kbd>Tab</kbd> | <kbd>Tab</kbd> | go round the languages and text boxes; on a language, just type its name ("spa") |
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | <kbd>⌘</kbd><kbd>P</kbd> | pin on top (while Vox2 is in front) |
-| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>F</kbd> | fit the window to its text (while Vox2 is in front) |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> | <kbd>⇧</kbd><kbd>⌘</kbd><kbd>F</kbd> | fit the window to its text; press again for a wider reading width, again for normal (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>H</kbd> | <kbd>⌘</kbd><kbd>Y</kbd> | open / close history (while Vox2 is in front) |
 | <kbd>Ctrl</kbd>+<kbd>,</kbd> | <kbd>⌘</kbd><kbd>,</kbd> | open / close settings (while Vox2 is in front) |
 
@@ -112,7 +112,7 @@ Apple Silicon Macs (M1 and newer). Tested on macOS 26.
 
 **Why permissions survive updates.** Mac builds are signed with Vox2's own certificate (free, self-made; not Apple-issued). macOS remembers permissions per signature, so every update counts as the same app. Unsigned builds would lose their permissions on every update.
 
-**Shortcuts look Mac-native.** Settings shows them the way the menu bar does (⌃⌥T). The shortcuts that work from any app are ⌃⌥ + a letter (V show/hide, T translate selection, S snip): one left-hand press that macOS and most apps leave free. Vox2 keeps those keys from also reaching the app in front (this needs Accessibility, which Vox2 already asks for). If another app uses the same combo (e.g. a window manager like Rectangle), change either one in settings → shortcuts. The ones that only work while Vox2 is in front use ⌘ (⌘, settings, ⌘Y history, ⌘P pin, ⇧⌘F fit).
+**Shortcuts look Mac-native.** Settings shows them the way the menu bar does (⌃⌥T). The shortcuts that work from any app are ⌃⌥ + a letter (V show/hide, S snip), one left-hand press that macOS and most apps leave free, and translating a selection is a quick tap of Right ⌘ on its own. Vox2 keeps those keys from also reaching the app in front (this needs Accessibility, which Vox2 already asks for). If another app uses the same combo (e.g. a window manager like Rectangle), change either one in settings → shortcuts. The ones that only work while Vox2 is in front use ⌘ (⌘, settings, ⌘Y history, ⌘P pin, ⇧⌘F fit).
 
 **If a shortcut does nothing.** Check settings → permissions. If a row stays "needed" even though Vox2 looks switched on in System Settings, an old entry is in the way: select Vox2 there, remove it with **−**, add it again with **+**, then restart Vox2. To clear every Vox2 entry at once, run this in Terminal and allow them again:
 
