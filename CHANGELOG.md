@@ -2,7 +2,7 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
-## Unreleased
+## 0.4.19 (2026-10-04)
 
 ### Changed
 
