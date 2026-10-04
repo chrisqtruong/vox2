@@ -38,7 +38,6 @@
     .back { font-size: 12px; color: var(--muted); }
     .back:empty { display: none; }
     .back::before { content: "↩ "; }
-    kbd { font: inherit; font-size: 10px; color: var(--kbd, var(--muted)); margin-left: 4px; } /* --kbd: readable on the background (themes.js) */
     .match { font-size: 11px; color: var(--muted); }
     .match:empty { display: none; }
     .match b { font-weight: 600; }
@@ -67,7 +66,7 @@
     <div class="actions">
       <button id="speak" title="Read aloud"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>listen</button>
       <button id="copy" title="Copy the translation"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>copy</button>
-      <button id="open" title="Open in Vox2"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>open</button>
+      <button id="open" title="Open in Vox2"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>open in Vox2</button>
     </div>
   </div>
   <script>
@@ -84,7 +83,7 @@
     let stoppedAt = 0;
     const MAC = /Mac/.test(navigator.platform);
     const MOD = MAC ? '⌘' : 'Ctrl+';
-    const label = (id) => [...$(id).childNodes].find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim()); // "listen", "copy"…
+    const label = (id) => $(id).lastChild; // the button's text: "listen", "copy"…
 
     function place() {
       const h = Math.ceil(card.getBoundingClientRect().height) + 12;
@@ -276,13 +275,9 @@
       e.preventDefault();
       renderPick();
     });
-    // Shortcuts, like the window's (⌘ on Mac, Ctrl on Windows): L listen / stop, C copy, O open in Vox2.
-    for (const [id, key] of [['speak', 'L'], ['copy', 'C'], ['open', 'O']]) {
-      const k = document.createElement('kbd');
-      k.textContent = `${MOD}${key}`;
-      $(id).append(k);
-      $(id).title += ` (${MOD}${key})`;
-    }
+    // Shortcuts, like the window's (⌘ on Mac, Ctrl on Windows): L listen / stop, C copy, O open in
+    // Vox2. They show in the buttons' tooltips.
+    for (const [id, key] of [['speak', 'L'], ['copy', 'C'], ['open', 'O']]) $(id).title += ` (${MOD}${key})`;
     addEventListener('keydown', (e) => {
       if (!(MAC ? e.metaKey : e.ctrlKey) || e.altKey || e.shiftKey) return;
       const id = { KeyL: 'speak', KeyC: 'copy', KeyO: 'open' }[e.code];
