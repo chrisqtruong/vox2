@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-04T04:51:04+00:00",
+ "generated": "2026-10-04T06:47:24+00:00",
  "live": false,
  "pricing": {
   "model": "claude-opus-5-5",
@@ -14,40 +14,40 @@
    "name": "Meaning & match score",
    "color": "#ff4d8d",
    "theme": "trust",
-   "cost": 33.2383,
-   "tokens": 99505996,
-   "output": 196949,
-   "turns": 34
+   "cost": 45.12,
+   "tokens": 136405085,
+   "output": 340004,
+   "turns": 42
   },
   {
    "id": "capture",
    "name": "Snip, voice & audio",
    "color": "#ffb000",
    "theme": "daily",
-   "cost": 7.6933,
-   "tokens": 27892466,
-   "output": 62300,
-   "turns": 15
+   "cost": 7.8713,
+   "tokens": 28648546,
+   "output": 63263,
+   "turns": 16
   },
   {
    "id": "look",
    "name": "Look, feel & features",
    "color": "#4dd2ff",
    "theme": "daily",
-   "cost": 26.3722,
-   "tokens": 83529110,
-   "output": 132683,
-   "turns": 37
+   "cost": 28.5632,
+   "tokens": 91771949,
+   "output": 151672,
+   "turns": 43
   },
   {
    "id": "mac",
    "name": "Mac version",
    "color": "#9b6bff",
    "theme": "reach",
-   "cost": 11.1093,
-   "tokens": 25616291,
-   "output": 78183,
-   "turns": 20
+   "cost": 11.7447,
+   "tokens": 27598042,
+   "output": 85647,
+   "turns": 21
   },
   {
    "id": "bugs",
@@ -64,30 +64,30 @@
    "name": "Releases & GitHub",
    "color": "#3ddc84",
    "theme": "upkeep",
-   "cost": 18.371,
-   "tokens": 63857431,
-   "output": 148474,
-   "turns": 44
+   "cost": 20.8509,
+   "tokens": 74378903,
+   "output": 160599,
+   "turns": 50
   },
   {
    "id": "docs",
    "name": "Docs & planning",
    "color": "#f2f2f2",
    "theme": "upkeep",
-   "cost": 15.6212,
-   "tokens": 63900901,
-   "output": 90032,
-   "turns": 19
+   "cost": 19.5767,
+   "tokens": 78245908,
+   "output": 124554,
+   "turns": 23
   },
   {
    "id": "learn",
    "name": "Learning & questions",
    "color": "#ffe14d",
    "theme": "upkeep",
-   "cost": 0.7725,
-   "tokens": 3379278,
-   "output": 3467,
-   "turns": 3
+   "cost": 0.8699,
+   "tokens": 3815070,
+   "output": 3961,
+   "turns": 4
   }
  ],
  "themes": [
@@ -96,34 +96,34 @@
    "name": "Trustworthy",
    "blurb": "Can you rely on what Vox2 tells you? The meaning check and match score.",
    "roadmap": true,
-   "cost": 33.2383,
+   "cost": 45.12,
    "value_share": 0.324,
-   "gap": -0.1
+   "gap": -0.16
   },
   {
    "id": "daily",
    "name": "Useful every day",
    "blurb": "Snip, voice, the window and the helpers you reach for daily.",
    "roadmap": true,
-   "cost": 34.0654,
+   "cost": 36.4345,
    "value_share": 0.559,
-   "gap": 0.124
+   "gap": 0.168
   },
   {
    "id": "reach",
    "name": "Reach more people",
    "blurb": "Mac, Intel, signed installers: Vox2 on more computers.",
    "roadmap": true,
-   "cost": 11.1093,
+   "cost": 11.7447,
    "value_share": 0.118,
-   "gap": -0.024
+   "gap": -0.008
   },
   {
    "id": "upkeep",
    "name": "Upkeep",
    "blurb": "Bugs, releases, docs and learning. Not on the roadmap, but it keeps the lights on.",
    "roadmap": false,
-   "cost": 37.3176,
+   "cost": 43.8504,
    "value_share": null,
    "gap": null
   }
@@ -218,28 +218,53 @@
    "date": "2026-10-04",
    "by": {
     "meaning": {
-     "cost": 6.1377,
-     "tokens": 19297162,
-     "output": 66278
+     "cost": 18.0194,
+     "tokens": 56196251,
+     "output": 209333
+    },
+    "learn": {
+     "cost": 0.0974,
+     "tokens": 435792,
+     "output": 494
     },
     "ship": {
-     "cost": 2.6817,
-     "tokens": 9583221,
-     "output": 23502
+     "cost": 5.1617,
+     "tokens": 20104693,
+     "output": 35627
+    },
+    "docs": {
+     "cost": 3.9555,
+     "tokens": 14345007,
+     "output": 34522
+    },
+    "mac": {
+     "cost": 0.6354,
+     "tokens": 1981751,
+     "output": 7464
+    },
+    "look": {
+     "cost": 2.191,
+     "tokens": 8242839,
+     "output": 18989
+    },
+    "capture": {
+     "cost": 0.1781,
+     "tokens": 756080,
+     "output": 963
     }
    }
   }
  ],
  "totals": {
-  "cost": 115.7306,
-  "tokens": 378131629,
-  "input": 1896,
-  "output": 726417,
-  "cache_write": 3296671,
-  "cache_read": 374106645,
-  "turns": 177
+  "cost": 137.1496,
+  "tokens": 451313659,
+  "input": 2310,
+  "output": 944029,
+  "cache_write": 3613633,
+  "cache_read": 446753687,
+  "turns": 204
  },
- "alignment": 0.678,
+ "alignment": 0.68,
  "roadmap": {
   "items": [
    {
@@ -389,7 +414,7 @@
    "n": 3,
    "title": "Explain this",
    "theme": "daily",
-   "why": "\"Useful every day\" holds 56% of the roadmap's value but got 43% of roadmap spend. This is its best value-for-effort item (high value, small effort)."
+   "why": "\"Useful every day\" holds 56% of the roadmap's value but got 39% of roadmap spend. This is its best value-for-effort item (high value, small effort)."
   },
   {
    "n": 4,
