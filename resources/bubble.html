@@ -35,6 +35,10 @@
     .pick input { font: inherit; font-size: 12px; color: var(--ink); background: var(--line); border: 0; border-radius: 6px; padding: 5px 8px; outline: none; }
     .pick-row { padding: 3px 8px; border-radius: 6px; font-size: 12px; color: var(--muted); cursor: pointer; }
     .pick-row.active { background: var(--line); color: var(--ink); }
+    .back { font-size: 12px; color: var(--muted); }
+    .back:empty { display: none; }
+    .back::before { content: "↩ "; }
+    kbd { font: inherit; font-size: 10px; color: var(--pending); margin-left: 4px; }
     .match { font-size: 11px; color: var(--muted); }
     .match:empty { display: none; }
     .match b { font-weight: 600; }
@@ -55,6 +59,7 @@
     <div class="out pending" id="out">…</div>
     <div class="roman" id="roman"></div>
     <div class="match" id="match"></div>
+    <div class="back" id="back" title="your text, translated back: what the translation says"></div>
     <div class="pick" id="pick" hidden>
       <input id="pick-q" placeholder="translate into…" spellcheck="false" autocomplete="off" aria-label="Translate into">
       <div id="pick-list" role="listbox"></div>
@@ -62,7 +67,7 @@
     <div class="actions">
       <button id="speak" title="Read aloud"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>listen</button>
       <button id="copy" title="Copy the translation"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>copy</button>
-      <button id="open" title="Open in Vox2"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>open in Vox2</button>
+      <button id="open" title="Open in Vox2"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>open</button>
     </div>
   </div>
   <script>
@@ -75,6 +80,8 @@
     let lastHeight = 0;
     let shown = false;
     const MAC = /Mac/.test(navigator.platform);
+    const MOD = MAC ? '⌘' : 'Ctrl+';
+    const label = (id) => [...$(id).childNodes].find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim()); // "listen", "copy"…
 
     function place() {
       const h = Math.ceil(card.getBoundingClientRect().height) + 12;
@@ -95,9 +102,9 @@
       if (p.session > session) { // new quick translation: reset
         session = p.session;
         shown = false;
-        $('src').textContent = ''; $('roman').textContent = ''; $('match').textContent = ''; closePick();
+        $('src').textContent = ''; $('roman').textContent = ''; $('match').textContent = ''; $('back').textContent = ''; closePick();
         $('out').textContent = '…'; $('out').className = 'out pending';
-        $('speak').lastChild.textContent = 'listen'; $('speak').title = 'Read aloud';
+        label('speak').textContent = 'listen'; $('speak').title = `Read aloud (${MOD}L)`;
         startReading(null);
       }
       if (p.colors) for (const [k, v] of Object.entries(p.colors)) document.documentElement.style.setProperty(`--${k}`, v);
@@ -105,6 +112,7 @@
       if (p.to) { $('langs').textContent = `${p.from} →`; $('to').textContent = p.to; $('to').hidden = false; toCode = p.toCode; }
       else if (p.langs) $('langs').textContent = p.langs;
       if ('match' in p) showMatch(p.match);
+      if (p.score) scoreHere(p.session, p.score);
       if (p.source != null) $('src').textContent = p.source;
       if (p.translation != null) { $('out').textContent = p.translation || '…'; $('out').className = p.done ? 'out' : 'out pending'; }
       if (p.roman != null) $('roman').textContent = p.roman;
@@ -112,8 +120,8 @@
       if ('words' in p) startReading(p.words);
       if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt, rate: p.sayRate || 1 };
       if (p.speaking != null) { // the listen button doubles as stop while reading
-        $('speak').lastChild.textContent = p.speaking ? 'stop' : 'listen';
-        $('speak').title = p.speaking ? 'Stop (Esc)' : 'Read aloud';
+        label('speak').textContent = p.speaking ? 'stop' : 'listen';
+        $('speak').title = p.speaking ? `Stop (${MOD}L or Esc)` : `Read aloud (${MOD}L)`;
       }
       // macOS (WebKit) doesn't run animation frames in a hidden window, and the bubble is hidden
       // until it has placed itself, so measure right away there.
@@ -161,9 +169,35 @@
     $('close').addEventListener('click', hide);
     $('copy').addEventListener('click', async () => {
       try { await navigator.clipboard.writeText($('out').textContent); } catch {}
-      $('copy').lastChild.textContent = 'copied';
-      setTimeout(() => { $('copy').lastChild.textContent = 'copy'; }, 900);
+      label('copy').textContent = 'copied';
+      setTimeout(() => { label('copy').textContent = 'copy'; }, 900);
     });
+    // Match score, worked out here (the main window is usually hidden, and macOS slows hidden
+    // windows down). The same check as the window's badge; gives up after 30 s rather than
+    // saying "checking…" for good.
+    const TIER_NOTE = { high: 'meaning kept', mid: 'check the details', low: 'likely off' };
+    async function scoreHere(forSession, { original, translation, back, lang, target }) {
+      const current = () => forSession === session;
+      if (!window.VOX_SCORE) return;
+      const { untranslated, matchScore, tier } = window.VOX_SCORE;
+      if (untranslated(original, translation)) return showMatch({ label: "can't check", tier: 'unchecked', note: 'part of it came through untranslated' });
+      showMatch({ label: 'checking…', tier: 'checking', note: '' });
+      $('back').textContent = '';
+      const giveUp = setTimeout(() => { if (current()) showMatch(null); }, 30000);
+      try {
+        const { score } = await matchScore(original, back, lang, target);
+        if (current()) {
+          showMatch({ label: `${score}% match`, tier: tier(score), note: TIER_NOTE[tier(score)] });
+          // Below "meaning kept", show what came back, so the number has its reason next to it.
+          $('back').textContent = score < 85 ? back : '';
+        }
+      } catch {
+        if (current()) showMatch(null); // no model (e.g. offline the first time): leave the score out
+      } finally {
+        clearTimeout(giveUp);
+      }
+    }
+
     // Match score, as in the window: "92% match · meaning kept", or "can't check".
     function showMatch(m) {
       const el = $('match');
@@ -222,7 +256,7 @@
     function choose(code) {
       closePick();
       if (!code || code === toCode) return;
-      $('out').textContent = '…'; $('out').className = 'out pending'; showMatch(null);
+      $('out').textContent = '…'; $('out').className = 'out pending'; showMatch(null); $('back').textContent = '';
       T.event.emitTo('main', 'bubble-action', { action: 'lang', code });
     }
     $('to').addEventListener('click', () => (pick.hidden ? openPick() : closePick()));
@@ -236,6 +270,21 @@
       e.preventDefault();
       renderPick();
     });
+    // Shortcuts, like the window's (⌘ on Mac, Ctrl on Windows): L listen / stop, C copy, O open in Vox2.
+    for (const [id, key] of [['speak', 'L'], ['copy', 'C'], ['open', 'O']]) {
+      const k = document.createElement('kbd');
+      k.textContent = `${MOD}${key}`;
+      $(id).append(k);
+      $(id).title += ` (${MOD}${key})`;
+    }
+    addEventListener('keydown', (e) => {
+      if (!(MAC ? e.metaKey : e.ctrlKey) || e.altKey || e.shiftKey) return;
+      const id = { KeyL: 'speak', KeyC: 'copy', KeyO: 'open' }[e.code];
+      if (!id || (id === 'copy' && getSelection().toString())) return; // copying text you selected in the bubble: let it
+      e.preventDefault();
+      $(id).click();
+    });
+
     // Typing a letter anywhere else in the bubble (or on the language button) starts the search.
     addEventListener('keydown', (e) => {
       if (e.target === q || e.ctrlKey || e.metaKey || e.altKey) return;
@@ -251,7 +300,10 @@
   <script type="module">
     // The language list for "translate into…" (same names as the window's menus).
     import { LANGUAGES } from './languages.js';
+    import { matchScore, tier } from './meaning.js';
+    import { untranslated } from './meaning-checks.js';
     window.VOX_LANGS = LANGUAGES;
+    window.VOX_SCORE = { matchScore, tier, untranslated };
   </script>
 </body>
 </html>

@@ -1604,19 +1604,12 @@ async function updateExtras(dst, translation, lang, backTo, original) {
   } catch {}
 }
 
-// The match score for the bubble: the same check as the window's badge, as a short line.
-async function scoreBubble(original, translation, back, id, lang, target) {
-  const session = quick.session;
-  const send = (match) => { if (id === extrasJob && session === quick.session && quick.active) sendBubble({ session, match }); };
-  if (untranslated(original, translation)) return send({ label: "can't check", tier: 'unchecked', note: 'part of it came through untranslated' });
-  send({ label: 'checking…', tier: 'checking', note: '' });
-  try {
-    const { score } = await matchScore(original, back, lang, target);
-    const t = tier(score);
-    send({ label: `${score}% match`, tier: t, note: TIERS.find(([k]) => k === t)[2] });
-  } catch {
-    send(null); // no model (e.g. offline the first time): leave the score out
-  }
+// The match score for the bubble. The bubble works it out itself: this window is usually hidden
+// while you work in another app, and macOS slows down work in hidden windows, so the score could
+// sit on "checking…" for good.
+function scoreBubble(original, translation, back, id, lang, target) {
+  if (id !== extrasJob || !quick.active) return;
+  sendBubble({ session: quick.session, score: { original, translation, back, lang, target } });
 }
 
 // A small themed card on hover: what the score means, the tiers, and a note if a number changed.
