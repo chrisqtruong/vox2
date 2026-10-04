@@ -12,7 +12,8 @@ Each run has a dated report (what was tested, how, results, what we noticed, gra
 
 | Date | Report | Method | Good shown as "meaning kept" | False alarms | Meaning errors caught | Missed | Overall |
 |---|---|---|---|---|---|---|---|
-| 2026-10-03 | [Run 1, baseline](2026-10-03.md) | 40 FLORES-200 sentences × 11 languages, 5 planted error types, Google both ways; Vox2 0.4.12 | 93% | 4% | 29% (numbers 100%, others 5–18%) | 71% | Confirms good translations well; misses most meaning errors except numbers |
+| 2026-10-03 | [Run 1, baseline](2026-10-03.md) | 40 FLORES-200 sentences × 11 languages, 5 planted error types, Google both ways; Vox2 0.4.12 | 93% | 4% | 29% (numbers 100%, others 5–18%) | 71% | **F** on errors. Confirms good translations well; misses most meaning errors except numbers |
+| 2026-10-03 | [Run 2, Phase 1 checks](2026-10-03-run-2.md) | Same method; **80 held-out sentences** (reported here) + run 1's 40 as development set; both methods scored on the same translations; Vox2 0.4.13 + targeted checks | 91% (run-1 method 95%) | 7% (3%) | **78%** (34%): negation 83%, number 98%, pronoun 70%, dropped clause 72%, opposite 66% | 22% (66%) | **C** on errors. Errors caught more than doubled in every language; a few more false alarms |
 
 When you add a run, keep the same columns. If the method changed (more languages, new error types, different engines), say how in the Method column so rows stay comparable.
 
@@ -105,11 +106,15 @@ Remember steps 1, 2 and 5 (number formatting, exact match, number cap) when comp
 - **Idioms confuse it.** "Raining cats and dogs" vs "raining heavily" scores 54 even though the meaning matches.
 - **The number is a hint, not proof.** Read the ↩ line, and use the number to spot what to look at.
 
+### Targeted checks (Phase 1, from run 2)
+
+On top of the similarity score, `resources/meaning-checks.js` compares your text with the ↩ line for meaning flips the score barely notices: a negation appearing or disappearing, he/she swapped, an opposite word, a changed month or weekday, and a ↩ line under 60% as long as your text (part missing). Number words count as numbers ("two" = 2). Any of these caps the score at 60 ("check the details"), and the hover card says what changed. Word lists are English for now. Details and measurements: [run 2 report](2026-10-03-run-2.md).
+
 ### Next steps for the score
 
-In order, based on the [2026-10-03 test](2026-10-03.md):
+In order, based on the [run 2 report](2026-10-03-run-2.md):
 
-1. **Catch negations, swapped pronouns, opposites, names and dates** ([#28](https://github.com/chrisqtruong/vox2/issues/28)), and read number words as numbers (about half of today's false alarms).
+1. **Fix the known false alarms and misses** of the targeted checks ([#28](https://github.com/chrisqtruong/vox2/issues/28)): "unknown" / "not only" rewordings, times like 11:00 vs 11am, numbers in names, a bigger opposites list, words like "lack" that negate.
 2. **Show what changed** between your text and the ↩ line, not just a number ([#27](https://github.com/chrisqtruong/vox2/issues/27)).
 3. **Translate back with a different engine** than the one that translated ([#29](https://github.com/chrisqtruong/vox2/issues/29)), and an **optional AI check** of the meaning ([#7](https://github.com/chrisqtruong/vox2/issues/7)).
 4. Per-language thresholds, only if still needed after 1–3.

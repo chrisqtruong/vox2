@@ -4,19 +4,21 @@ Measures how well Vox2's meaning check (back-translation + match score, `resourc
 
 ## What it does
 
-1. `make_items.py` picks 40 English sentences from [FLORES-200](https://github.com/facebookresearch/flores/blob/main/flores200/README.md) and plants one meaning error in each (8 each: negation flipped, number changed, he/she swapped, an opposite word, a clause dropped). It also keeps each sentence's professional translations. Output: `items.json` (already included; FLORES text is CC BY-SA 4.0).
-2. `run.html` does, per language: Google-translate the correct and the corrupted English into the language, then translate all three (professional, Google-correct, Google-corrupted) back into English, and score each against the **correct** English with Vox2's real `matchScore()`. Google is called through the same endpoint as Vox2's main translation, several sentences per request, with pauses and retries.
-3. `analyze.py` turns `results.json` into the tables used in the report.
+1. `make_items.py` picks English sentences from [FLORES-200](https://github.com/facebookresearch/flores/blob/main/flores200/README.md) and plants one meaning error in each (negation flipped, number changed, he/she swapped, an opposite word, a clause dropped), keeping each sentence's professional translations. FLORES text is CC BY-SA 4.0.
+   - `items.json`: run 1's 40 sentences (8 per error type).
+   - `items-v2.json` (from run 2): those 40 as the **development** set (`split: "dev"`, used while designing checks) plus 80 new **held-out** sentences (`split: "test"`, 16 per error type, never looked at while tuning). Report the held-out numbers as the headline.
+2. `run.html` does, per language: Google-translate the correct and the corrupted English into the language, translate all three (professional, Google-correct, Google-corrupted) back into English, and score each against the **correct** English with Vox2's real `matchScore()`. It also records `scoreRun1`, the run-1 method on the same translations, for a fair before/after. Google is called through the same endpoint as Vox2's main translation, several sentences per request, with pauses and retries. Results are saved after every language, and a restarted run continues where it stopped.
+3. `analyze.py` (run 1 format) and `analyze_v2.py` (before/after, development vs held-out) turn the results into the report's tables.
 
 ## How to run
 
 ```
-cp ../../resources/meaning.js ../../resources/meaning-worker.js .   # the scoring code under test
-swiftc -O bench.swift -o bench    # macOS: runs run.html in WebKit, like the Mac app
-./bench                           # ~7 minutes; writes results.json
-python3 analyze.py                # tables for the report
+cp ../../resources/meaning.js ../../resources/meaning-checks.js ../../resources/meaning-worker.js .   # the code under test
+swiftc -O bench.swift -o bench               # macOS: runs run.html in WebKit, like the Mac app
+./bench items-v2.json results.json           # ~30 minutes for items-v2; rerun the same command to resume
+python3 analyze_v2.py results.json           # tables for the report
 ```
 
-Then add a dated report (`docs/meaning-check-tests/YYYY-MM-DD.md`, copy the previous one's structure), save `results.json` next to it as `YYYY-MM-DD-results.json`, and add a row to the history table in `docs/meaning-check-tests/README.md`.
+Then add a dated report in `docs/meaning-check-tests/` (copy the previous one's structure), save the results next to it as `<report name>-results.json`, and add a row to the history table in `docs/meaning-check-tests/README.md`.
 
-Keep `items.json` unchanged between runs so results stay comparable. If the method changes (new error types, more languages, different thresholds), say so in the report and mark the history row.
+Keep `items-v2.json` unchanged between runs so results stay comparable. If the method changes (new error types, more languages, different thresholds), say so in the report and mark the history row.

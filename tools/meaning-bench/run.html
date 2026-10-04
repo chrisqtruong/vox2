@@ -2,7 +2,13 @@
 <script type="module">
 import { matchScore } from './meaning.js';
 const log = (m) => { document.getElementById('log').textContent += m + '\n'; window.__log = (window.__log || '') + m + '\n'; };
-const { langs, items } = await (await fetch('items.json')).json();
+const ITEMS = new URLSearchParams(location.search).get('items') || 'items.json';
+const { langs, items } = await (await fetch(ITEMS)).json();
+// Run-1 method, for a before/after on the same translations: similarity score, capped at 60
+// when the digits differ (no number words, no targeted checks).
+const plain = (s) => s.replace(/(\d)[,.   ](?=\d{3}(?!\d))/g, '$1');
+const digits = (s) => (s.match(/\d+(?:[.,]\d+)?/g) || []).sort().join(' ');
+const oldScore = (en, back, sim) => (digits(plain(en)) !== digits(plain(back)) ? Math.min(sim, 60) : sim);
 const GOOGLE = { vie_Latn: 'vi', jpn_Jpan: 'ja', kor_Hang: 'ko', zho_Hans: 'zh-CN', spa_Latn: 'es', arb_Arab: 'ar', hin_Deva: 'hi', fra_Latn: 'fr', tgl_Latn: 'tl', por_Latn: 'pt', urd_Arab: 'ur' };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // Same Google endpoint the app's main translation uses; several sentences per request.
@@ -18,11 +24,31 @@ async function translate(texts, sl, tl) {
     }
     await sleep(700);
   }
+  // Back into English must come back in English: Google occasionally answers in another language
+  // (2026-10-03: Japanese for whole batches). Retry those one at a time; flag any that still fail.
+  if (tl === 'en') {
+    const english = (t) => { const l = t.match(/\p{L}/gu) || []; return l.length > 0 && l.filter((c) => c.charCodeAt(0) < 128).length / l.length > 0.9; };
+    for (let i = 0; i < out.length; i++) {
+      for (let tries = 0; !english(out[i]) && tries < 4; tries++) {
+        await sleep(1500 * (tries + 1));
+        const r = await fetch(`https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=${sl}&tl=${tl}`, { method: 'POST', body: new URLSearchParams({ q: texts[i] }) });
+        if (r.ok) { const j = await r.json(); const x = j[0]; out[i] = Array.isArray(x) ? x[0] : x; }
+      }
+      if (!english(out[i])) { badBacks++; log(`  not English after retries (${sl}): ${out[i].slice(0, 60)}`); }
+    }
+  }
   return out;
 }
-const results = [];
+let badBacks = 0;
+// Saved after every language, so an interrupted run picks up where it stopped.
+const OUT = new URLSearchParams(location.search).get('out') || 'results.json';
+let results = [];
+try { results = await (await fetch(OUT)).json(); } catch {}
+const doneLangs = new Set(results.map((r) => r.lang));
+if (doneLangs.size) log(`resuming: ${[...doneLangs].join(', ')} already done`);
 const t0 = performance.now();
 for (const lang of langs) {
+  if (doneLangs.has(lang)) continue;
   const g = GOOGLE[lang];
   const [goodFwd, badFwd] = [await translate(items.map((x) => x.en), 'en', g), await translate(items.map((x) => x.bad_en), 'en', g)];
   const [refBack, goodBack, badBack] = [
@@ -33,13 +59,14 @@ for (const lang of langs) {
   for (let i = 0; i < items.length; i++) {
     const it = items[i];
     for (const [kind, translation, back] of [['good: professional', it.refs[lang], refBack[i]], ['good: Google', goodFwd[i], goodBack[i]], ['bad', badFwd[i], badBack[i]]]) {
-      const { score, numbersDiffer } = await matchScore(it.en, back);
-      results.push({ lang, id: it.id, error: it.kind, kind, en: it.en, bad_en: it.bad_en, translation, back, score, numbersDiffer });
+      const { score, similarity, numbersDiffer, checks } = await matchScore(it.en, back, 'en');
+      results.push({ lang, id: it.id, split: it.split || 'dev', error: it.kind, kind, en: it.en, bad_en: it.bad_en, translation, back,
+        score, similarity, numbersDiffer, checks: checks.map((c) => c.kind), scoreRun1: oldScore(it.en, back, similarity) });
     }
   }
-  log(`${lang} done (${Math.round((performance.now() - t0) / 1000)} s)`);
+  await fetch('/save', { method: 'POST', body: JSON.stringify(results) });
+  log(`${lang} done${badBacks ? ` (${badBacks} back-translations still not English)` : ''} (${Math.round((performance.now() - t0) / 1000)} s)`);
 }
-await fetch('/save', { method: 'POST', body: JSON.stringify(results) });
 log('SAVED ' + results.length);
 window.__done = true;
 </script>

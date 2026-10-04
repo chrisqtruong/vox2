@@ -1,4 +1,4 @@
-# Turns results.json into the markdown tables for docs/MEANING-CHECK-TESTS.md.
+# Turns results.json into the markdown tables for a dated report in docs/meaning-check-tests/.
 import json, statistics as st
 R = json.load(open('results.json'))
 NAMES = {'vie_Latn':'Vietnamese','jpn_Jpan':'Japanese','kor_Hang':'Korean','zho_Hans':'Chinese (simplified)','spa_Latn':'Spanish','arb_Arab':'Arabic','hin_Deva':'Hindi','fra_Latn':'French','tgl_Latn':'Tagalog','por_Latn':'Portuguese','urd_Arab':'Urdu'}

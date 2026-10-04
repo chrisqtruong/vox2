@@ -137,7 +137,9 @@ With **back-translation** on (settings → translation), Vox2 translates the res
 With **colorblind-friendly colors** on (settings → appearance), the tiers use the [Okabe–Ito](https://jfly.uni-koeln.de/color/) colorblind-safe palette instead, plus a symbol, so the tier never depends on color alone: blue ✓ (high), amber ! (moderate), vermillion ✕ (low), in a darker shade on light themes.
 
 
-**How well it works.** Tested on 1,320 translations in 11 languages ([2026-10-03 report](docs/meaning-check-tests/2026-10-03.md)): it confirms good translations reliably (93% shown as "meaning kept", 4% false alarms) and catches every changed number, but it still misses most other meaning errors, such as a flipped "not", an opposite word or a swapped he/she (29% caught overall). Improving that is at the top of the [roadmap](#roadmap).
+**Targeted checks.** On top of the score, Vox2 compares your text with the ↩ line for meaning flips: a "not" that appeared or disappeared, he/she swapped, an opposite word, a changed day or month, part missing, a changed number. Any of these caps the score at 60 and the hover card says what changed. (English for now.)
+
+**How well it works.** Measured on translations into 11 languages with planted meaning errors ([test history](docs/meaning-check-tests/README.md#test-history)). On new, held-out sentences, it now catches **78% of meaning errors** (up from 34% before the targeted checks) and still shows 91% of good translations as "meaning kept", with 7% false alarms ([run 2 report](docs/meaning-check-tests/2026-10-03-run-2.md)). Closing the remaining gap is at the top of the [roadmap](#roadmap).
 
 **More:** [how the score is computed, exactly](docs/meaning-check-tests/README.md#how-the-score-works), [all test reports](docs/meaning-check-tests/README.md#test-history), and [how to re-run the test](tools/meaning-bench/README.md).
 
@@ -167,7 +169,7 @@ With **colorblind-friendly colors** on (settings → appearance), the tiers use 
 
 Ordered by value for the effort, highest first: what makes Vox2 more trustworthy and useful day to day comes before bigger projects and paid certificates. Each item has an issue for discussion, all under the [roadmap label](https://github.com/chrisqtruong/vox2/issues?q=label%3Aroadmap). Ideas and requests are welcome in [Issues](https://github.com/chrisqtruong/vox2/issues). Tags: value · effort · platforms.
 
-1. **Meaning check: catch negations, pronouns, opposites, names and dates.** Today a flipped "not" or a swapped he/she still scores 100; the [tests](docs/meaning-check-tests/2026-10-03.md) show the mistake is usually visible in the ↩ line, so simple local checks can catch it. *High · small · both.* ([#28](https://github.com/chrisqtruong/vox2/issues/28))
+1. **Meaning check: sharpen the targeted checks.** Phase 1 shipped (errors caught 34% → 78%, [run 2](docs/meaning-check-tests/2026-10-03-run-2.md)); next: fewer false alarms from rewordings and times, a bigger opposites list, word lists for languages other than English. *High · small · both.* ([#28](https://github.com/chrisqtruong/vox2/issues/28))
 2. **Meaning check: show what changed.** Highlight the words that differ between your text and the ↩ line, so you can see why a score is high or low. *High · small · both.* ([#27](https://github.com/chrisqtruong/vox2/issues/27))
 3. **Explain this** (AI-assisted). Select a phrase and ask what it *really* means: slang, idioms, how formal or rude it is, cultural context, how a native speaker would say it. *High · small · both.* ([#21](https://github.com/chrisqtruong/vox2/issues/21))
 4. **Personal glossary** (AI-assisted). Names and terms that always come out your way: family names and nicknames, work terms, preferred words. *Medium-high · small · both.* ([#23](https://github.com/chrisqtruong/vox2/issues/23))

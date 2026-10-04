@@ -1478,7 +1478,7 @@ async function updateExtras(dst, translation, lang, backTo, original) {
     const backLine = box.querySelector('.back');
     backLine.textContent = settings.showBack ? back : '';
     box.hidden = !box.textContent.trim();
-    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, back, id);
+    if (settings.showBack && settings.showMatch && back) showMatch(backLine, original, back, id, backTo);
   } catch {}
 }
 
@@ -1491,12 +1491,13 @@ matchTip.hidden = true;
 document.body.append(matchTip);
 
 function showMatchTip(badge) {
-  const { score, numbers } = badge.dataset;
+  const { score, numbers, checks } = badge.dataset;
   const t = tier(Number(score));
   matchTip.innerHTML = `<b class="${t}">${score}% match</b>`
     + '<p>how much of your meaning survived the round trip, compared by meaning, not exact words</p>'
     + TIERS.map(([k, range, label]) => `<div class="tier ${k}${k === t ? ' on' : ''}"><i></i><span>${range}</span>${label}</div>`).join('')
-    + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '');
+    + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '')
+    + (checks ? checks.split('\n').map((c) => `<p class="warn">${c}, so it's capped at 60%</p>`).join('') : '');
   matchTip.hidden = false;
   const z = parseFloat(document.documentElement.style.zoom) || 1;
   const r = badge.getBoundingClientRect();
@@ -1505,20 +1506,21 @@ function showMatchTip(badge) {
   matchTip.style.top = `${r.top / z - h - 6 > 8 ? r.top / z - h - 6 : r.bottom / z + 6}px`; // above, else below
 }
 
-async function showMatch(backLine, original, back, id) {
+async function showMatch(backLine, original, back, id, lang) {
   const badge = document.createElement('span');
   badge.className = 'match checking';
   badge.textContent = 'checking…';
   badge.title = 'checking meaning (first time downloads a ~120 MB model)';
   backLine.append(' ', badge);
   try {
-    const { score, numbersDiffer } = await matchScore(original, back);
+    const { score, numbersDiffer, checks } = await matchScore(original, back, lang);
     if (id !== extrasJob) return;
     badge.className = `match ${tier(score)}`;
     badge.textContent = `${score}% match`;
     badge.removeAttribute('title');
     badge.dataset.score = score;
     if (numbersDiffer) badge.dataset.numbers = '1';
+    if (checks.length) badge.dataset.checks = checks.map((c) => c.detail).join('\n');
     badge.addEventListener('mouseenter', () => showMatchTip(badge));
     badge.addEventListener('mouseleave', () => { matchTip.hidden = true; });
   } catch {

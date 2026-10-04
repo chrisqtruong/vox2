@@ -1,3 +1,5 @@
+import { meaningChecks, numberWordsToDigits } from './meaning-checks.js';
+
 // Back-translation match: how much of your meaning survived the round trip
 // (your text → translation → back into your language). Compared by meaning, not exact words,
 // so rewording and synonyms ("good morning" / "good day") don't count against a good translation.
@@ -10,6 +12,7 @@ const IDLE_MS = 5 * 60 * 1000;
 const LOW = 0.55;
 const HIGH = 0.85;
 const NUMBER_CAP = 60; // a number that changed is a real error, whatever the model thinks
+const CHECK_CAP = 60; // same for the targeted checks in meaning-checks.js (negation, he/she, opposites…)
 
 let worker = null;
 let idleTimer = null;
@@ -65,19 +68,24 @@ const numbers = (s) => (s.match(/\d+(?:[.,]\d+)?/g) || []).sort().join(' ');
 
 export const tier = (score) => (score >= 85 ? 'high' : score >= 65 ? 'mid' : 'low');
 
-// → { score: 0–100, numbersDiffer }
-export async function matchScore(original, back) {
+// lang: your language (the one both texts are in), for the word-based checks.
+// → { score: 0–100, similarity: the score before any cap, numbersDiffer, checks: [{ kind, detail }] }
+export async function matchScore(original, back, lang) {
   original = plainNumbers(original);
   back = plainNumbers(back);
   const a = normalize(original);
   const b = normalize(back);
   if (!a || !b) throw new Error('nothing to compare');
-  const numbersDiffer = numbers(original) !== numbers(back);
-  let score = 100;
+  // "2 goals" and "two goals" are the same number.
+  const numbersDiffer = numbers(numberWordsToDigits(original, lang)) !== numbers(numberWordsToDigits(back, lang));
+  const checks = a === b ? [] : meaningChecks(original, back, lang);
+  let similarityScore = 100;
   if (a !== b) {
     const cosine = await similarity(original, back);
-    score = Math.round(Math.min(1, Math.max(0, (cosine - LOW) / (HIGH - LOW))) * 100);
+    similarityScore = Math.round(Math.min(1, Math.max(0, (cosine - LOW) / (HIGH - LOW))) * 100);
   }
+  let score = similarityScore;
   if (numbersDiffer) score = Math.min(score, NUMBER_CAP);
-  return { score, numbersDiffer };
+  if (checks.length) score = Math.min(score, CHECK_CAP);
+  return { score, similarity: similarityScore, numbersDiffer, checks };
 }
