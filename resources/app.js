@@ -161,6 +161,11 @@ async function detectCached(text) {
 }
 
 const getText = (pane) => pane.el.innerText.replace(/ /g, ' ');
+// The copy button turns into a check mark for a moment.
+function flashCopied(btn) {
+  $('use', btn).setAttribute('href', '#i-check');
+  setTimeout(() => $('use', btn).setAttribute('href', '#i-copy'), 900);
+}
 
 // Either side can be the one you write in, so placeholders follow the content, not the position:
 // both empty → each invites input in its language; one filled → the other is "translation…".
@@ -415,8 +420,27 @@ for (const pane of Object.values(panes)) {
     } catch {
       // clipboard blocked; nothing else to fall back to
     }
-    $('use', btn).setAttribute('href', '#i-check');
-    setTimeout(() => $('use', btn).setAttribute('href', '#i-copy'), 900);
+    flashCopied(btn);
+  });
+
+  // ⌘C / Ctrl+C in a box with nothing selected copies the whole box (with the copy button's
+  // check mark); with a selection, it copies just that, as usual. Caught both as the key and as
+  // the copy it turns into: on macOS the Edit menu's Copy can take ⌘C before the page sees the key.
+  const nothingSelected = () => {
+    const sel = getSelection();
+    return !(sel.rangeCount && !sel.isCollapsed && pane.el.contains(sel.anchorNode)) && !!getText(pane).trim();
+  };
+  const copyButton = pane.root.querySelector('[data-act="copy"]');
+  pane.el.addEventListener('keydown', (e) => {
+    if (!(MAC ? e.metaKey : e.ctrlKey) || e.shiftKey || e.altKey || e.code !== 'KeyC' || !nothingSelected()) return;
+    e.preventDefault();
+    copyButton.click();
+  });
+  pane.el.addEventListener('copy', (e) => {
+    if (!nothingSelected()) return;
+    e.preventDefault();
+    e.clipboardData.setData('text/plain', getText(pane));
+    flashCopied(copyButton);
   });
 
   pane.root.querySelector('[data-act="clear"]').addEventListener('click', () => {
