@@ -1867,26 +1867,38 @@ async function fitWindow() {
   document.body.classList.toggle('fitted', !result.capped); // extras may grow past their usual cap
 }
 
-// Fit, again and again: the first press fits the height at your normal width. Pressing again
-// with nothing changed switches to a wider reading width (more text per line, still a small window)
-// and fits there; again, back to normal; and so on. New text since the last fit? The next press
-// just fits the height again at the width you're on, normal or wide.
-const fitCycle = { wide: false, normalWidth: 0, last: '' };
+// Fit, again and again. The first press fits the height around the text at your normal width.
+// Pressing again with nothing changed goes round three sizes:
+//   fit      the height your text needs, at your normal width (up to the full screen height)
+//   wide     a wider reading width (more text per line), fitted there
+//   compact  a small window at your normal width (the size Vox2 opens at), the boxes scroll:
+//            handy when the text is long and "fit" fills the screen, and easy to drag around
+// then back to fit. New text since the last press? The next press fits again at the width you're
+// on (from compact: at normal width). A small label says which size you're on.
+const COMPACT_HEIGHT = 580; // CSS px: Vox2's opening size (tauri.conf.json)
+const fitCycle = { mode: 'fit', normalWidth: 0, last: '' };
 const fitKey = () => `${panes.top.el.textContent}\u0000${panes.bottom.el.textContent}\u0000${innerWidth}`;
+const reflow = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))); // let the text reflow
 async function cycleFit() {
-  if (fitCycle.last && fitCycle.last === fitKey()) {
-    // Nothing changed since the last fit: switch width.
-    if (!fitCycle.wide) {
-      fitCycle.normalWidth = innerWidth;
-      const wide = Math.min(Math.round(fitCycle.normalWidth * 1.8), Math.round((await screenWidth()) * 0.45));
-      await setWindowWidth(Math.max(wide, fitCycle.normalWidth));
-    } else {
-      await setWindowWidth(fitCycle.normalWidth || innerWidth);
-    }
-    fitCycle.wide = !fitCycle.wide;
-    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))); // let the text reflow at the new width
+  if (!fitCycle.normalWidth || fitCycle.mode === 'fit') fitCycle.normalWidth = innerWidth;
+  const same = fitCycle.last && fitCycle.last === fitKey();
+  const next = same ? { fit: 'wide', wide: 'compact', compact: 'fit' }[fitCycle.mode] : fitCycle.mode === 'compact' ? 'fit' : fitCycle.mode;
+  if (next === 'wide' && fitCycle.mode !== 'wide') {
+    const wide = Math.min(Math.round(fitCycle.normalWidth * 1.8), Math.round((await screenWidth()) * 0.45));
+    await setWindowWidth(Math.max(wide, fitCycle.normalWidth));
+    await reflow();
+  } else if (next !== 'wide' && fitCycle.mode === 'wide') {
+    await setWindowWidth(fitCycle.normalWidth);
+    await reflow();
   }
-  await fitWindow();
+  if (next === 'compact') {
+    unfit(); // equal boxes that scroll, as before any fit
+    await resizeWindowHeight(COMPACT_HEIGHT / innerHeight);
+  } else {
+    await fitWindow();
+  }
+  flashHud({ fit: 'fit to text', wide: 'wide', compact: 'compact' }[next]);
+  fitCycle.mode = next;
   fitCycle.last = fitKey();
 }
 

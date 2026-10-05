@@ -2,6 +2,12 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+## Unreleased
+
+### Changed
+
+- **Fit window: a compact size.** ⌘⇧F / Ctrl+Shift+F (or the fit button) now goes round three sizes when you press it again: fit to text → wide → **compact** → fit. Compact is a small window at your normal width (the size Vox2 opens at) with the boxes scrolling, so very long text doesn't leave you with a full-screen window. A small label shows which size you're on. *Windows and Mac.*
+- **Tab loops inside the bubble.** Tab goes round the bubble's buttons (language → listen → copy → open → close) and back to the start, Shift+Tab backwards, instead of jumping to the main window. *Windows and Mac.*
 
 ## 0.4.23 (2026-10-04)
 
