@@ -78,11 +78,12 @@
     <li><strong>Live, both ways.</strong> Type in either box and the other translates as you go. Words show grey until the engine settles, then go dark.</li>
     <li><strong>From any app.</strong> Select text anywhere and press a shortcut; the translation appears in a small bubble by your cursor, with a match score. Drag it anywhere, and it stays put like a sticky note.</li>
     <li><strong>Snip &amp; translate.</strong> Draw a box around text on screen (images, video subtitles, apps that block copying) and read it in your language.</li>
-    <li><strong>Dictation.</strong> Tap or hold a key and talk. Speech is transcribed on your machine, and can be typed straight into the app you're using.</li>
+    <li><strong>Dictation.</strong> Tap or hold a key and talk. Speech is transcribed on your machine by OpenAI's open Whisper models (up to Large v3 Turbo, the most accurate), and can be typed straight into the app you're using.</li>
     <li><strong>Read aloud.</strong> Natural male and female voices in about 75 languages. Each word lights up as it is spoken; slow, normal or fast.</li>
     <li><strong>Conversation mode.</strong> Two people take turns talking; each phrase is translated and spoken to the other person.</li>
     <li><strong>Engines.</strong> Google Translate (free), or Claude, ChatGPT or Gemini with your own API key, with tone and "who it's for" so pronouns come out right.</li>
     <li><strong>Back-translation with a match score.</strong> See your translation turned back into your language, scored by how much of your meaning survived. It compares meaning, not exact words, on your computer. <a href="https://github.com/chrisqtruong/vox2/blob/main/docs/meaning-check-tests/README.md">How it works, and how well</a>.</li>
+    <li><strong>In your language.</strong> Every menu, button and message in any of 133 languages, following your computer's language to start. Right-to-left languages flip the layout. Machine-translated, then checked by translating each string back; Vietnamese read in full by a person.</li>
     <li><strong>Small things.</strong> Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top, 37 themes.</li>
     <li><strong>Windows and Mac.</strong> The same app on both. On Mac the shortcuts follow Mac conventions, and a permissions screen walks you through what macOS asks for.</li>
   </ul>
@@ -124,7 +125,7 @@
     <li><strong>UI:</strong> plain HTML, CSS and JavaScript. No framework, no build step.</li>
     <li><strong>Native side (Rust):</strong> a global keyboard hook for the shortcuts (<code>rdev</code> on Windows, a Core Graphics event tap on Mac), simulated input (<code>enigo</code>) to copy selections and type dictation into other apps, screen capture (<code>xcap</code>), the tray, and signed self-updates.</li>
     <li><strong>Speech to text:</strong> OpenAI's Whisper model running locally through <a href="https://huggingface.co/docs/transformers.js">transformers.js</a> and ONNX Runtime, on the GPU via WebGPU when available. The model downloads once (41–250 MB) and is released from memory when idle.</li>
-    <li><strong>Screen text:</strong> <a href="https://tesseract.projectnaptha.com">Tesseract.js</a>, also local; language data is fetched on first use.</li>
+    <li><strong>Screen text:</strong> Apple's built-in text recognizer on Mac; <a href="https://tesseract.projectnaptha.com">Tesseract.js</a> on Windows, also local, with language data fetched on first use.</li>
     <li><strong>Voices:</strong> Microsoft's neural voices (the ones Edge's Read Aloud uses), or OpenAI's, or the system's.</li>
     <li><strong>Translation:</strong> Google Translate's public web endpoint, or the Anthropic, OpenAI and Gemini APIs, called directly from your machine.</li>
   </ul>

@@ -177,6 +177,7 @@ With **colorblind-friendly colors** on (settings → appearance), the tiers use 
 | UI | plain HTML/CSS/JS in `resources/`, no framework or build step |
 | Global shortcuts, typing into other apps, selection grab | Rust: keyboard hook (`rdev` on Windows; on Mac a listen-only Core Graphics event tap in `hotkey.rs`), `enigo` simulated input, `arboard` clipboard |
 | Mac permissions | `permissions.rs`: checks and prompts for Input Monitoring, Accessibility, Screen Recording and Microphone |
+| App language | Every word through `tr()` (`resources/i18n.js`), looked up by its English wording in `resources/i18n/<code>.json`. Machine-translated, checked by translating back and scoring with the meaning model, hand-fixed where flagged ([details](tools/i18n/README.md)) |
 | Speech to text | Whisper (tiny, base, small or large-v3-turbo; see [Dictation models](#dictation-models)) running locally via [transformers.js](https://huggingface.co/docs/transformers.js) + ONNX Runtime, WebGPU when available. Kept loaded after use for 2, 10 or 30 min depending on the computer's memory, and released early if memory runs low |
 | Back-translation score | [paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2) sentence embeddings via transformers.js, local; released from memory when idle |
 | Screen text | `xcap` capture, read locally: Apple's Vision text recognizer on Mac (`ocr.rs`), [Tesseract.js](https://tesseract.projectnaptha.com) on Windows and as the Mac fallback |
@@ -214,7 +215,7 @@ With **colorblind-friendly colors** on (settings → appearance), the tiers use 
 17. **Mac: Intel support and Apple notarization.** Notarization removes the "Open Anyway" step on first launch ($99/year Apple Developer account). *Medium · small + cost · Mac.* ([#5](https://github.com/chrisqtruong/vox2/issues/5))
 18. **Windows code signing.** A verified publisher name on the installer, so Windows stops showing "unknown publisher". Planned once Vox2 has more users; until then, see [Install](#install). *Medium · small + cost · Windows.* ([#9](https://github.com/chrisqtruong/vox2/issues/9))
 
-Done: **macOS version** (beta), see [macOS notes](#macos-notes). **Meaning check says "can't check"** instead of 100% when text came through untranslated ([#38](https://github.com/chrisqtruong/vox2/issues/38)).
+Done: **Vox2 in your language** (0.4.25): the whole app in 133 languages, see [App languages](tools/i18n/README.md). **macOS version** (beta), see [macOS notes](#macos-notes). **Meaning check says "can't check"** instead of 100% when text came through untranslated ([#38](https://github.com/chrisqtruong/vox2/issues/38)).
 
 ## Build
 
