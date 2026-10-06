@@ -902,7 +902,9 @@ onWhisperEvent((e) => {
   }
 });
 
+// Which voice models are on disk ("downloaded" in settings), checked once each.
 const checkModelSaved = (model) => isModelSaved(model).then((saved) => { modelSaved[model] ||= saved; });
+Promise.all(Object.keys(STT_MODELS).map(checkModelSaved)).then(() => { if (!$('#settings').hidden) renderVoice(); }).catch(() => {});
 
 // Dictation on/off and "keep the voice model ready" (always loaded vs released when idle).
 function applyDictationSettings() {
@@ -1546,25 +1548,39 @@ function renderVoice() {
   for (const b of $('#stt-silence').children) b.setAttribute('aria-pressed', String(Number(b.dataset.s) === settings.sttSilence));
   $('#stt-output-row').hidden = !native;
   for (const b of $('#stt-output').children) b.setAttribute('aria-pressed', String(b.dataset.out === settings.sttOutput));
-  for (const b of $('#stt-engines').children) b.setAttribute('aria-pressed', String(b.dataset.stt === settings.sttEngine));
   $('#stt-whisper').hidden = settings.sttEngine !== 'whisper';
   $('#stt-openai').hidden = settings.sttEngine !== 'openai';
-  $('#stt-models').replaceChildren(...Object.entries(STT_MODELS).map(([m, size]) => {
+  // One list: the local Whisper models, then OpenAI online. Like the translation engine picker.
+  const row = (name, note, checked, pick) => {
     const b = document.createElement('button');
-    b.innerHTML = `${m}<small>${size}</small>`;
-    b.setAttribute('aria-pressed', String(m === settings.sttModel));
-    b.addEventListener('click', () => { settings.sttModel = m; saveSettings(); renderVoice(); applyDictationSettings(); });
+    b.className = 'engine';
+    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-checked', String(checked));
+    b.innerHTML = '<span class="radio"></span><span><b></b><small></small></span>';
+    $('b', b).textContent = name;
+    $('small', b).textContent = note;
+    b.addEventListener('click', () => { pick(); saveSettings(); renderVoice(); applyDictationSettings(); });
     return b;
-  }));
-  $('#stt-hint').textContent = 'runs on this computer, free and private · downloads once on first use · '
-    + 'bigger = more accurate, slower';
+  };
+  $('#stt-models').replaceChildren(
+    ...Object.entries(STT_MODELS).map(([m, info]) => row(info.name, [info.tag, info.size, modelSaved[m] && 'downloaded'].filter(Boolean).join(' · '),
+      settings.sttEngine === 'whisper' && m === settings.sttModel, () => { settings.sttEngine = 'whisper'; settings.sttModel = m; })),
+    row('OpenAI', 'online · uses your OpenAI key', settings.sttEngine === 'openai', () => { settings.sttEngine = 'openai'; }),
+  );
+  $('#stt-hint').textContent = settings.sttEngine === 'whisper'
+    ? 'runs on this computer, free and private · downloads once on first use · bigger = more accurate'
+    : '';
+  $('#stt-hint').hidden = settings.sttEngine !== 'whisper';
   $('#stt-openai-model').value = settings.sttOpenaiModel;
+  $('#stt-openai-key').value = settings.keys.openai || '';
   refreshMics();
 }
 
-for (const b of $('#stt-engines').children) {
-  b.addEventListener('click', () => { settings.sttEngine = b.dataset.stt; saveSettings(); renderVoice(); applyDictationSettings(); });
-}
+$('#stt-openai-key').addEventListener('input', (e) => {
+  settings.keys.openai = e.target.value.trim(); // the same key as the ChatGPT translation engine
+  saveSettings();
+});
+$('#stt-key-link').addEventListener('click', (e) => { e.preventDefault(); openUrl(ENGINES.openai.keyUrl); });
 $('#stt-enabled').addEventListener('change', (e) => {
   settings.sttEnabled = e.target.checked;
   saveSettings();

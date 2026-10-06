@@ -17,6 +17,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 - [What it does](#what-it-does)
 - [Shortcuts](#shortcuts)
 - [Conversation mode (beta)](#conversation-mode-beta)
+- [Dictation models](#dictation-models)
 - [Install](#install): [Windows](#windows) · [macOS](#macos-beta)
 - [macOS notes](#macos-notes)
 - [Back-translation and the meaning check](#back-translation-and-the-meaning-check)
@@ -79,6 +80,22 @@ Tips: use the speakers, not headphones, and put the computer between you. For a 
 - **One computer, one microphone.** It works best in a quiet room, with each person close enough to the mic.
 
 **Where it's heading: hands-free turns.** After Vox2 reads a translation aloud, it starts listening on the other side by itself, walkie-talkie style, so a conversation flows without touching the computer after the first tap. Tracked in [#11](https://github.com/chrisqtruong/vox2/issues/11).
+
+## Dictation models
+
+Pick one in settings → dictation → voice model. The Whisper models are [OpenAI's open speech-recognition models](https://github.com/openai/whisper), run entirely on your computer: free, private, and they work offline once downloaded. All of them understand 99 languages. Bigger models are more accurate, especially with accents, background noise and mixed languages, and take more memory and download time.
+
+| Model | Size | Good for |
+|---|---|---|
+| **Whisper Large v3 Turbo** · most accurate | 1.5 GB (about 760 MB on graphics cards without half-precision support) | The best accuracy Vox2 offers on your own computer. A faster version of Whisper's largest model (released 2024): near-flagship accuracy at a fraction of the work. Wants a computer with a capable graphics card (any Apple Silicon Mac, or a recent Windows PC); without one it's slow. On an M1 Pro it transcribed a 6-second sentence in about 3.5 s, about as fast as Small. |
+| **Whisper Small** · default | 590 MB | A good balance of speed and accuracy on almost any computer. |
+| **Whisper Base** · lighter | 210 MB | Quicker to download and lighter on memory; fine for clear speech in a quiet room. |
+| **Whisper Tiny** · lightest | 120 MB | For older or low-memory computers. Noticeably rougher; mostly useful when the others are too slow. |
+| **OpenAI** · online | none | Sends your audio to OpenAI after each pause (models `gpt-4o-mini-transcribe` by default, `gpt-4o-transcribe`, or `whisper-1`). Uses your own OpenAI key (the same one as the ChatGPT translation engine) and is billed to it. Needs internet; not private in the way the local models are. |
+
+Each local model downloads once, the first time you dictate with it, and settings marks it "downloaded" after that. "Keep the voice model ready" decides whether it stays loaded in memory between dictations.
+
+**Why not Parakeet?** Some dictation apps recommend NVIDIA's Parakeet v3, which is very fast. It only covers English and 24 European languages (no Vietnamese, Chinese, Japanese, Korean, Arabic…), and isn't available in a form that runs inside Vox2's web view, so it's not offered.
 
 ## Install
 
@@ -159,12 +176,12 @@ With **colorblind-friendly colors** on (settings → appearance), the tiers use 
 | UI | plain HTML/CSS/JS in `resources/`, no framework or build step |
 | Global shortcuts, typing into other apps, selection grab | Rust: keyboard hook (`rdev` on Windows; on Mac a listen-only Core Graphics event tap in `hotkey.rs`), `enigo` simulated input, `arboard` clipboard |
 | Mac permissions | `permissions.rs`: checks and prompts for Input Monitoring, Accessibility, Screen Recording and Microphone |
-| Speech to text | Whisper (tiny/base/small) running locally via [transformers.js](https://huggingface.co/docs/transformers.js) + ONNX Runtime, WebGPU when available. Kept loaded after use for 2, 10 or 30 min depending on the computer's memory, and released early if memory runs low |
+| Speech to text | Whisper (tiny, base, small or large-v3-turbo; see [Dictation models](#dictation-models)) running locally via [transformers.js](https://huggingface.co/docs/transformers.js) + ONNX Runtime, WebGPU when available. Kept loaded after use for 2, 10 or 30 min depending on the computer's memory, and released early if memory runs low |
 | Back-translation score | [paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2) sentence embeddings via transformers.js, local; released from memory when idle |
-| Screen text | `xcap` capture + [Tesseract.js](https://tesseract.projectnaptha.com) OCR, local |
+| Screen text | `xcap` capture, read locally: Apple's Vision text recognizer on Mac (`ocr.rs`), [Tesseract.js](https://tesseract.projectnaptha.com) on Windows and as the Mac fallback |
 | Voices | Microsoft neural voices (Edge Read Aloud protocol, `tts.rs`), OpenAI, or system voices |
 | Translation | Google Translate web endpoint, or the Anthropic / OpenAI / Gemini APIs, called directly |
-| Updates | `tauri-plugin-updater`, minisign-signed, served from GitHub releases. The Mac build is made by GitHub Actions when a release is published and added to the same release |
+| Updates | `tauri-plugin-updater`, minisign-signed, served from GitHub releases. Releases are built for Windows and Mac by GitHub Actions (the release workflow) and published together |
 
 ## Privacy
 

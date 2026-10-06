@@ -2,6 +2,13 @@
 
 What changed in each version of Vox2, newest first. Each entry says which platforms it affects. The [GitHub releases](https://github.com/chrisqtruong/vox2/releases) have the downloads; versions before 0.4.11 are described only there.
 
+
+## Unreleased
+
+### Added
+
+- **More dictation models, in one clean list.** Settings → dictation → voice model now lists Whisper Large v3 Turbo (most accurate, 1.5 GB), Small (default), Base and Tiny, plus OpenAI online with its key field right there. Turbo runs about as fast as Small on Apple Silicon, using half precision on graphics cards that support it. Descriptions of each are in the README. *Windows and Mac.*
+
 ## 0.4.24 (2026-10-04)
 
 ### Changed
