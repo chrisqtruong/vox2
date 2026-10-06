@@ -7,6 +7,17 @@ let loaded = '';
 let device = '';
 let queue = Promise.resolve();
 
+// Large v3 Turbo is too big at full precision (2.5 GB): on graphics cards with half-precision
+// support (shader-f16, e.g. Apple Silicon) a half-precision encoder with a 4-bit decoder runs about
+// as fast as Small (measured on an M1 Pro, WebKit); elsewhere both halves are 4-bit (~760 MB).
+// The other models keep their original setup, so nobody re-downloads them.
+async function gpuDtype(model) {
+  if (model !== 'large-v3-turbo') return { encoder_model: 'fp32', decoder_model_merged: 'q4' };
+  let f16 = false;
+  try { f16 = !!(await navigator.gpu.requestAdapter())?.features?.has('shader-f16'); } catch {}
+  return f16 ? { encoder_model: 'fp16', decoder_model_merged: 'q4f16' } : { encoder_model: 'q4', decoder_model_merged: 'q4' };
+}
+
 async function hasWebGPU() {
   try { return !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch { return false; }
 }
@@ -26,9 +37,7 @@ async function load(model, announce = false) {
   // GPU is several times faster; fall back to CPU when it isn't available.
   if (await hasWebGPU()) {
     try {
-      asr = await pipeline('automatic-speech-recognition', id, {
-        device: 'webgpu', dtype: { encoder_model: 'fp32', decoder_model_merged: 'q4' }, progress_callback,
-      });
+      asr = await pipeline('automatic-speech-recognition', id, { device: 'webgpu', dtype: await gpuDtype(model), progress_callback });
       device = 'gpu';
     } catch { asr = null; }
   }

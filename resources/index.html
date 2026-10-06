@@ -163,15 +163,10 @@
           <b>tap</b> the mic or shortcut to start · it stops when you go quiet, or tap again<br>
           <b>hold</b> it to talk · let go to stop
         </p>
-        <h3>dictation engine</h3>
-        <div class="segmented" id="stt-engines">
-          <button data-stt="whisper">whisper · local, free</button>
-          <button data-stt="openai">openai · uses ChatGPT key</button>
-        </div>
+        <h3>voice model</h3>
+        <div class="engines" id="stt-models" role="radiogroup"></div>
+        <p class="hint" id="stt-hint"></p>
         <div id="stt-whisper">
-          <h3>whisper model</h3>
-          <div class="segmented" id="stt-models"></div>
-          <p class="hint" id="stt-hint"></p>
           <h3>keep the voice model ready</h3>
           <div class="segmented" id="stt-keep">
             <button data-keep="always">always · instant</button>
@@ -180,6 +175,9 @@
           <p class="hint" id="stt-keep-hint"></p>
         </div>
         <div class="fields flush" id="stt-openai">
+          <label>openai api key
+            <input id="stt-openai-key" type="password" autocomplete="off" spellcheck="false" placeholder="paste key">
+          </label>
           <label>model
             <input id="stt-openai-model" list="stt-openai-models" spellcheck="false">
             <datalist id="stt-openai-models">
@@ -188,7 +186,7 @@
               <option value="whisper-1"></option>
             </datalist>
           </label>
-          <p class="hint">sends audio to OpenAI after each pause · billed to your key</p>
+          <p class="hint">sends audio to OpenAI after each pause · billed to your key · same key as the ChatGPT engine · <a href="#" id="stt-key-link">get a key</a></p>
         </div>
         <h3>microphone</h3>
         <div class="fields flush">

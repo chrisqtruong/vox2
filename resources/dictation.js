@@ -23,7 +23,14 @@ const whisperLang = (code) => {
   return WHISPER.has(c) ? c : null; // null = let Whisper detect it
 };
 
-export const STT_MODELS = { tiny: '41 MB', base: '77 MB', small: '250 MB' };
+// The local voice models, most accurate first (sizes: what a computer with a graphics card downloads).
+// Descriptions for each are in the README ("Dictation models").
+export const STT_MODELS = {
+  'large-v3-turbo': { name: 'Whisper Large v3 Turbo', tag: 'most accurate', size: '1.5 GB' },
+  small: { name: 'Whisper Small', tag: 'default', size: '590 MB' },
+  base: { name: 'Whisper Base', tag: 'lighter', size: '210 MB' },
+  tiny: { name: 'Whisper Tiny', tag: 'lightest', size: '120 MB' },
+};
 
 const tapWorklet = URL.createObjectURL(new Blob([`
   class Tap extends AudioWorkletProcessor {
