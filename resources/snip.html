@@ -57,5 +57,18 @@
     addEventListener('contextmenu', (e) => e.preventDefault());
     T.event.listen('snip-reset', reset);
   </script>
+  <script type="module">
+    // The hint in the app's language (settings → app language), checked each time the snip opens.
+    import { setUiLang, translatePage } from './i18n.js';
+    async function useAppLanguage() {
+      try {
+        const settings = JSON.parse((await window.__TAURI__.core.invoke('load_data', { key: 'settings' })) || '{}');
+        await setUiLang(settings.uiLang || 'auto');
+        translatePage(document.body);
+      } catch {}
+    }
+    useAppLanguage();
+    addEventListener('focus', useAppLanguage);
+  </script>
 </body>
 </html>

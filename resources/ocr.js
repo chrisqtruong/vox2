@@ -2,6 +2,8 @@
 // The library and each language's data download the first time they're needed, then come from
 // cache. It's released after a few idle minutes, like the voice model.
 
+import { tr } from './i18n.js';
+
 const LIB = 'https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';
 const IDLE_MS = 3 * 60e3;
 
@@ -30,7 +32,7 @@ function loadLib() {
     const s = document.createElement('script');
     s.src = LIB;
     s.onload = () => resolve(window.Tesseract);
-    s.onerror = () => { libLoading = null; reject(new Error('could not load the text reader (offline?)')); };
+    s.onerror = () => { libLoading = null; reject(new Error(tr('could not load the text reader (offline?)'))); };
     document.head.append(s);
   });
   return libLoading;

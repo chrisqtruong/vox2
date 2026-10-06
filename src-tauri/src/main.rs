@@ -182,6 +182,16 @@ fn set_window_alpha(window: tauri::WebviewWindow, alpha: u8) {
     let _ = (window, alpha);
 }
 
+/// The tray menu in the app's language (settings → app language): the page sends the words.
+#[tauri::command]
+fn set_tray_labels(app: AppHandle, show: String, quit: String) -> Result<(), String> {
+    let tray = app.tray_by_id("main").ok_or("no tray icon")?;
+    let show = MenuItem::with_id(&app, "show", show, true, None::<&str>).map_err(|e| e.to_string())?;
+    let quit = MenuItem::with_id(&app, "quit", quit, true, None::<&str>).map_err(|e| e.to_string())?;
+    let menu = Menu::with_items(&app, &[&show, &quit]).map_err(|e| e.to_string())?;
+    tray.set_menu(Some(menu)).map_err(|e| e.to_string())
+}
+
 fn create_tray(app: &tauri::App) -> tauri::Result<()> {
     let show = MenuItem::with_id(app, "show", "Show Vox2", true, None::<&str>)?;
     let quit = MenuItem::with_id(app, "quit", "Quit Vox2", true, None::<&str>)?;
@@ -224,6 +234,7 @@ fn main() {
             secrets::secret_set,
             type_text,
             set_close_to_tray,
+            set_tray_labels,
             set_window_alpha,
             ensure_pill,
             hotkey::set_hotkey,

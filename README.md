@@ -39,6 +39,7 @@ Type, paste, speak or snip text in any app and read it, or hear it, in another l
 - **Engines.** Google Translate (free), or Claude, ChatGPT or Gemini with your own key. The AI engines add a tone setting (natural, casual, polite, formal) and a "who it's for" note so pronouns come out right (settings → translation; dimmed while Google Translate is selected).
 - **Back-translation with a match score.** See your translation turned back into your language, with a score for how much of your meaning survived (see below). Theme colors by default, or colorblind-friendly colors with symbols (settings → appearance).
 - Detect language, pinned languages, pronunciation for non-Latin scripts, 30-item history, always on top (fades while you work elsewhere), 37 themes (star your favorites to keep them on top), search in settings, self-updates.
+- **In your language.** Every menu, button and message in any of the 133 languages Vox2 translates (settings → app language; it follows your computer's language to start). Right-to-left languages flip the layout. The translations are machine-made and checked by translating them back; Vietnamese has been read in full by a person. [How it's made and checked](tools/i18n/README.md).
 - **Windows and Mac.** The same app on both; on Mac the shortcuts follow Mac conventions, and a permissions screen walks you through what macOS asks for.
 
 ## Shortcuts

@@ -7,6 +7,7 @@ What changed in each version of Vox2, newest first. Each entry says which platfo
 
 ### Added
 
+- **Vox2 in your language.** Settings → app language (at the top of settings) shows every menu, button, setting and message in any of the languages Vox2 translates, including the bubble, the snip hint and the tray menu. It starts out matching your computer's language, lists each language in its own name ("Tiếng Việt · Vietnamese") so you can always find yours and English again, flips the layout for right-to-left languages, and switches instantly. Theme, font, engine and model names stay as they are. The translations were machine-made, then checked by translating each one back into English and scoring how much meaning survived; Vietnamese was read and corrected in full. *Windows and Mac.*
 - **More dictation models, in one clean list.** Settings → dictation → voice model now lists Whisper Large v3 Turbo (most accurate, 1.5 GB), Small (default), Base and Tiny, plus OpenAI online with its key field right there. Turbo runs about as fast as Small on Apple Silicon, using half precision on graphics cards that support it. Descriptions of each are in the README. *Windows and Mac.*
 
 ## 0.4.24 (2026-10-04)

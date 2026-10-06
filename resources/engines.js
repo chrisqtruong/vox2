@@ -1,23 +1,24 @@
 import { langName } from './languages.js';
+import { tr, N_ } from './i18n.js';
 
 export const ENGINES = {
   google: {
-    name: 'Google Translate', note: 'Free · no key needed', debounce: 180,
+    name: 'Google Translate', note: N_('Free · no key needed'), debounce: 180,
   },
   claude: {
-    name: 'Claude', note: 'Anthropic API key', debounce: 450,
+    name: 'Claude', note: N_('Anthropic API key'), debounce: 450,
     keyUrl: 'https://console.anthropic.com/settings/keys',
     defaultModel: 'claude-haiku-4-5-20251001',
     models: ['claude-haiku-4-5-20251001', 'claude-sonnet-5', 'claude-opus-5-5'],
   },
   openai: {
-    name: 'ChatGPT', note: 'OpenAI API key', debounce: 450,
+    name: 'ChatGPT', note: N_('OpenAI API key'), debounce: 450,
     keyUrl: 'https://platform.openai.com/api-keys',
     defaultModel: 'gpt-4.1-mini',
     models: ['gpt-4.1-mini', 'gpt-4.1-nano', 'gpt-4o-mini', 'gpt-5-mini'],
   },
   gemini: {
-    name: 'Gemini', note: 'Google AI Studio key', debounce: 450,
+    name: 'Gemini', note: N_('Google AI Studio key'), debounce: 450,
     keyUrl: 'https://aistudio.google.com/apikey',
     defaultModel: 'gemini-flash-latest',
     models: ['gemini-flash-latest', 'gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-pro'],
@@ -215,7 +216,7 @@ export function translate(settings, job) {
   const meta = ENGINES[id];
   const key = settings.keys[id];
   if (meta.keyUrl && !key) {
-    const err = new Error(`Add your ${meta.name} API key in settings`);
+    const err = new Error(tr('Add your {engine} API key in settings', { engine: meta.name }));
     err.auth = true;
     return Promise.reject(err);
   }

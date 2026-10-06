@@ -1,0 +1,1190 @@
+{
+ "af": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "sq": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "am": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ar": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "hy": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "as": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "ay": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 2,
+  "starred": 0
+ },
+ "az": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "bm": {
+  "Clear": 2,
+  "clear": 2,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "eu": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "be": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "bn": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "bho": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 2,
+  "starred": 0
+ },
+ "bs": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "bg": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "ca": {
+  "Clear": 0,
+  "clear": 2,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 1
+ },
+ "ceb": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "ny": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "zh-CN": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "zh-TW": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "co": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "hr": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "cs": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "da": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "dv": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "doi": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "nl": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "eo": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "et": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 1
+ },
+ "ee": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 2
+ },
+ "tl": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "fi": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 2
+ },
+ "fr": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "fy": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "gl": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "ka": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 1
+ },
+ "de": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "el": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "gn": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 0,
+  "light": 2,
+  "off": 0,
+  "starred": 0
+ },
+ "gu": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ht": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 2
+ },
+ "ha": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "haw": {
+  "Clear": 0,
+  "clear": 2,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "iw": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "hi": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "hmn": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 1,
+  "done": 1,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "hu": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "is": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ig": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 1,
+  "light": 2,
+  "off": 0,
+  "starred": 0
+ },
+ "ilo": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "id": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "ga": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "it": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ja": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "jw": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "kn": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "kk": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "km": {
+  "Clear": 1,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "rw": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 2,
+  "starred": 0
+ },
+ "gom": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 1
+ },
+ "ko": {
+  "Clear": 2,
+  "clear": 1,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "kri": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 1
+ },
+ "ku": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "ckb": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 2
+ },
+ "ky": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "lo": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "la": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "lv": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "ln": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "lt": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "lg": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 2
+ },
+ "lb": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "mk": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 1
+ },
+ "mai": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "mg": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 2,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "ms": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ml": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "mt": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "mi": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "mr": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "mni-Mtei": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "lus": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "mn": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "my": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 0,
+  "light": 1,
+  "off": 2,
+  "starred": 0
+ },
+ "ne": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "no": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "or": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "om": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "ps": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "fa": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "pl": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 1
+ },
+ "pt": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "pa": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 1
+ },
+ "qu": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ro": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "ru": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "sm": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "sa": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "gd": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "nso": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 1,
+  "starred": 2
+ },
+ "sr": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "st": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "sn": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 2,
+  "starred": 0
+ },
+ "sd": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "si": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "sk": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "sl": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "so": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 1,
+  "light": 2,
+  "off": 0,
+  "starred": 0
+ },
+ "es": {
+  "Clear": 0,
+  "clear": 2,
+  "dark": 0,
+  "done": 2,
+  "light": 0,
+  "off": 0,
+  "starred": 1
+ },
+ "su": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "sw": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 1
+ },
+ "sv": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "tg": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 1,
+  "starred": 0
+ },
+ "ta": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "tt": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "te": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "th": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "ti": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "ts": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 2
+ },
+ "tr": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "tk": {
+  "Clear": 1,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ak": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 2,
+  "starred": 0
+ },
+ "uk": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "ur": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "ug": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 2
+ },
+ "uz": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "vi": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "cy": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "xh": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "yi": {
+  "Clear": 0,
+  "clear": 0,
+  "dark": 1,
+  "done": 0,
+  "light": 1,
+  "off": 0,
+  "starred": 0
+ },
+ "yo": {
+  "Clear": 0,
+  "clear": 1,
+  "dark": 0,
+  "done": 1,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ },
+ "zu": {
+  "Clear": 2,
+  "clear": 0,
+  "dark": 0,
+  "done": 0,
+  "light": 0,
+  "off": 0,
+  "starred": 0
+ }
+}
