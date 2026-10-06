@@ -56,14 +56,14 @@
 <body>
   <div class="card" id="card">
     <div class="top">
-      <span class="langs"><span id="langs">translating…</span><button class="to" id="to" hidden aria-haspopup="listbox" title="Translate into another language (Tab, then type)"></button></span>
+      <span class="langs" translate="no"><span id="langs">translating…</span><button class="to" id="to" hidden aria-haspopup="listbox"></button></span>
       <button class="close" id="close" title="Close (Esc)"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
-    <div class="src" id="src"></div>
-    <div class="out pending" id="out">…</div>
-    <div class="roman" id="roman"></div>
-    <div class="match" id="match"></div>
-    <div class="back" id="back" title="your text, translated back: what the translation says"></div>
+    <div class="src" id="src" translate="no"></div>
+    <div class="out pending" id="out" translate="no">…</div>
+    <div class="roman" id="roman" translate="no"></div>
+    <div class="match" id="match" translate="no"></div>
+    <div class="back" id="back" translate="no"></div>
     <div class="pick" id="pick" hidden>
       <input id="pick-q" placeholder="translate into…" spellcheck="false" autocomplete="off" aria-label="Translate into">
       <div id="pick-list" role="listbox"></div>
@@ -93,6 +93,20 @@
     let placedAt = 0;   // when Vox2 itself last moved it (those moves aren't you dragging)
     const MAC = /Mac/.test(navigator.platform);
     const MOD = MAC ? '⌘' : 'Ctrl+';
+    // In the app's language (settings → app language; i18n.js, loaded by the module script below).
+    const tr = (s, vars) => (window.VOX_I18N ? window.VOX_I18N.tr(s, vars) : s);
+    let uiLang = 'en';
+    // The buttons' words and tooltips (with their shortcuts), said again whenever the language changes.
+    function labelButtons() {
+      label('speak').textContent = speaking ? tr('stop') : tr('listen');
+      $('speak').title = speaking ? tr('Stop ({keys} or Esc)', { keys: `${MOD}L` }) : `${tr('Read aloud')} (${MOD}L)`;
+      label('copy').textContent = tr('copy');
+      $('copy').title = `${tr('Copy the translation')} (${MOD}C)`;
+      label('open').textContent = tr('open in Vox2');
+      $('open').title = `${tr('Open in Vox2')} (${MOD}O)`;
+      $('to').title = tr('Translate into another language (Tab, then type)');
+      $('back').title = tr('your text, translated back: what the translation says');
+    }
     const label = (id) => $(id).lastChild; // the button's text: "listen", "copy"…
 
     function place() {
@@ -119,8 +133,12 @@
         pinned = false;
         $('src').textContent = ''; $('src').classList.remove('open', 'more'); $('roman').textContent = ''; $('match').textContent = ''; $('back').textContent = ''; closePick();
         $('out').textContent = '…'; $('out').className = 'out pending';
-        label('speak').textContent = 'listen'; $('speak').title = `Read aloud (${MOD}L)`;
+        speaking = false; labelButtons();
         startReading(null);
+      }
+      if (p.ui && p.ui !== uiLang && window.VOX_I18N) {
+        uiLang = p.ui;
+        window.VOX_I18N.setUiLang(p.ui).then(() => { window.VOX_I18N.translatePage(document.body); labelButtons(); renderPick(); });
       }
       if (p.colors) for (const [k, v] of Object.entries(p.colors)) document.documentElement.style.setProperty(`--${k}`, v);
       if (p.status) { $('langs').textContent = p.status; $('to').hidden = true; }
@@ -136,10 +154,7 @@
       if (p.sayMs != null) clock = { ms: p.sayMs, at: p.sayAt, rate: p.sayRate || 1 };
       if (p.speaking != null) speaking = p.speaking;
       if (p.speaking === false) stoppedAt = Date.now();
-      if (p.speaking != null) { // the listen button doubles as stop while reading
-        label('speak').textContent = p.speaking ? 'stop' : 'listen';
-        $('speak').title = p.speaking ? `Stop (${MOD}L or Esc)` : `Read aloud (${MOD}L)`;
-      }
+      if (p.speaking != null) labelButtons(); // the listen button doubles as stop while reading
       // macOS (WebKit) doesn't run animation frames in a hidden window, and the bubble is hidden
       // until it has placed itself, so measure right away there.
       if (MAC) place(); else requestAnimationFrame(place);
@@ -202,25 +217,25 @@
     $('close').addEventListener('click', hide);
     $('copy').addEventListener('click', async () => {
       try { await navigator.clipboard.writeText($('out').textContent); } catch {}
-      label('copy').textContent = 'copied';
-      setTimeout(() => { label('copy').textContent = 'copy'; }, 900);
+      label('copy').textContent = tr('copied');
+      setTimeout(() => { label('copy').textContent = tr('copy'); }, 900);
     });
     // Match score, worked out here (the main window is usually hidden, and macOS slows hidden
     // windows down). The same check as the window's badge; gives up after 30 s rather than
     // saying "checking…" for good.
-    const TIER_NOTE = { high: 'meaning kept', mid: 'check the details', low: 'likely off' };
+    const TIER_NOTE = { high: () => tr('meaning kept'), mid: () => tr('check the details'), low: () => tr('likely off') };
     async function scoreHere(forSession, { original, translation, back, lang, target }) {
       const current = () => forSession === session;
       if (!window.VOX_SCORE) return;
       const { untranslated, matchScore, tier } = window.VOX_SCORE;
-      if (untranslated(original, translation)) return showMatch({ label: "can't check", tier: 'unchecked', note: 'part of it came through untranslated' });
-      showMatch({ label: 'checking…', tier: 'checking', note: '' });
+      if (untranslated(original, translation)) return showMatch({ label: tr("can't check"), tier: 'unchecked', note: tr('part of it came through untranslated') });
+      showMatch({ label: tr('checking…'), tier: 'checking', note: '' });
       $('back').textContent = '';
       const giveUp = setTimeout(() => { if (current()) showMatch(null); }, 30000);
       try {
         const { score } = await matchScore(original, back, lang, target);
         if (current()) {
-          showMatch({ label: `${score}% match`, tier: tier(score), note: TIER_NOTE[tier(score)] });
+          showMatch({ label: tr('{n}% match', { n: score }), tier: tier(score), note: TIER_NOTE[tier(score)]() });
           // Below "meaning kept", show what came back, so the number has its reason next to it.
           $('back').textContent = score < 85 ? back : '';
         }
@@ -251,13 +266,19 @@
     const q = $('pick-q');
     function rankLangs(text) {
       const t = text.trim().toLowerCase();
-      const all = (window.VOX_LANGS || []).filter(([code]) => code !== toCode);
+      // Names in the app's language, findable by their English names too.
+      const shown = ([code, name]) => (window.VOX_I18N ? window.VOX_I18N.langLabel(code, name) : name);
+      const all = (window.VOX_LANGS || []).filter(([code]) => code !== toCode).map((l) => [l[0], shown(l), l[1]]);
       if (!t) return all.slice(0, 6);
-      const rank = ([code, name]) => {
-        const n = name.toLowerCase();
-        if (code.toLowerCase() === t || n.startsWith(t)) return 0;
-        if (n.split(/[\s(]+/).some((w) => w.startsWith(t))) return 1;
-        return n.includes(t) ? 2 : -1;
+      const rank = ([code, name, english]) => {
+        const best = (n) => {
+          n = n.toLowerCase();
+          if (code.toLowerCase() === t || n.startsWith(t)) return 0;
+          if (n.split(/[\s(]+/).some((w) => w.startsWith(t))) return 1;
+          return n.includes(t) ? 2 : -1;
+        };
+        const r = [best(name), best(english)].filter((x) => x >= 0);
+        return r.length ? Math.min(...r) : -1;
       };
       return all.map((l) => [l, rank(l)]).filter(([, r]) => r >= 0).sort((a, b) => a[1] - b[1]).slice(0, 6).map(([l]) => l);
     }
@@ -305,7 +326,7 @@
     });
     // Shortcuts, like the window's (⌘ on Mac, Ctrl on Windows): L listen / stop, C copy, O open in
     // Vox2. They show in the buttons' tooltips.
-    for (const [id, key] of [['speak', 'L'], ['copy', 'C'], ['open', 'O']]) $(id).title += ` (${MOD}${key})`;
+    labelButtons();
     addEventListener('keydown', (e) => {
       if (!(MAC ? e.metaKey : e.ctrlKey) || e.altKey || e.shiftKey) return;
       const id = { KeyL: 'speak', KeyC: 'copy', KeyO: 'open' }[e.code];
@@ -367,6 +388,8 @@
   <script type="module">
     // The language list for "translate into…" (same names as the window's menus).
     import { LANGUAGES } from './languages.js';
+    import { tr, setUiLang, translatePage, langLabel } from './i18n.js';
+    window.VOX_I18N = { tr, setUiLang, translatePage, langLabel };
     import { matchScore, tier } from './meaning.js';
     import { untranslated } from './meaning-checks.js';
     window.VOX_LANGS = LANGUAGES;

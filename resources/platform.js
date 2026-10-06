@@ -8,6 +8,9 @@ export async function loadData(key) {
   return localStorage.getItem(key);
 }
 
+// The tray menu's words, in the app's language.
+export const setTrayLabels = (show, quit) => invoke('set_tray_labels', { show, quit }).catch(() => {});
+
 export function saveData(key, value) {
   if (native) invoke('save_data', { key, value }).catch(() => {});
   else try { localStorage.setItem(key, value); } catch {}

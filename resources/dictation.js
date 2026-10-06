@@ -1,6 +1,7 @@
 // Microphone → text. Speech is cut into segments at pauses; while you talk the
 // current segment is re-transcribed about once a second (shown as pending),
 // and when you pause it gets one last pass and becomes final.
+import { N_ } from './i18n.js';
 
 const SAMPLE_RATE = 16000;
 const TICK_MS = 80;
@@ -26,10 +27,10 @@ const whisperLang = (code) => {
 // The local voice models, most accurate first (sizes: what a computer with a graphics card downloads).
 // Descriptions for each are in the README ("Dictation models").
 export const STT_MODELS = {
-  'large-v3-turbo': { name: 'Whisper Large v3 Turbo', tag: 'most accurate', size: '1.5 GB' },
-  small: { name: 'Whisper Small', tag: 'default', size: '590 MB' },
-  base: { name: 'Whisper Base', tag: 'lighter', size: '210 MB' },
-  tiny: { name: 'Whisper Tiny', tag: 'lightest', size: '120 MB' },
+  'large-v3-turbo': { name: 'Whisper Large v3 Turbo', tag: N_('most accurate'), size: '1.5 GB' },
+  small: { name: 'Whisper Small', tag: N_('default'), size: '590 MB' },
+  base: { name: 'Whisper Base', tag: N_('lighter'), size: '210 MB' },
+  tiny: { name: 'Whisper Tiny', tag: N_('lightest'), size: '120 MB' },
 };
 
 const tapWorklet = URL.createObjectURL(new Blob([`

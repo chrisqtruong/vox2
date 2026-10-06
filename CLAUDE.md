@@ -48,6 +48,11 @@ Before changing or debugging anything that runs on the Mac (Mac-only or shared c
 - `quick.active` (a Right ⌘ tap / Ctrl+Alt+T or snip session) routes translations to the bubble. Anything that moves work back into the main window must end it: typing, dictating, and focusing the window do. A bubble you've dragged (`quick.pinned`) stays on screen when that happens, and `place_bubble` only resizes it in place (`keep`).
 - Esc reaches the page two ways: the page's own keydown while Vox2 is in front, and the `escape` event from the native keyboard watcher otherwise (`stopAudio()` handles both).
 
+## App languages
+
+- **Every word the app shows goes through `tr()`** (`resources/i18n.js`), or is plain text in the page (translated in place). Names and the user's text get `translate="no"`. After adding or changing text: `python3 tools/i18n/extract.py`, then `node tools/i18n/translate.mjs` (only new strings are sent), then the meaning check (`tools/i18n/README.md`). Commit `resources/i18n/` with the change.
+- The English language names (`languages.js`) are what the AI engines see; show names with `langLabel()` instead.
+
 ## Workflow
 
 - Branch per change, PR into `main`, merge when checks pass. Commit/push/merge only when Chris asks.

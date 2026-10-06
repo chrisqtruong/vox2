@@ -44,9 +44,9 @@
           <button class="icon" data-act="clear" title="Clear"><svg><use href="#i-x"/></svg></button>
         </div>
       </header>
-      <div class="text is-empty" contenteditable="plaintext-only" spellcheck="false" dir="auto"
+      <div class="text is-empty" translate="no" contenteditable="plaintext-only" spellcheck="false" dir="auto"
            data-placeholder="type or paste text"></div>
-      <div class="extras" hidden><div class="roman"></div><div class="back"></div></div>
+      <div class="extras" hidden translate="no"><div class="roman"></div><div class="back"></div></div>
     </section>
 
     <div class="divider">
@@ -64,14 +64,14 @@
           <button class="icon" data-act="clear" title="Clear"><svg><use href="#i-x"/></svg></button>
         </div>
       </header>
-      <div class="text is-empty" contenteditable="plaintext-only" spellcheck="false" dir="auto"
+      <div class="text is-empty" translate="no" contenteditable="plaintext-only" spellcheck="false" dir="auto"
            data-placeholder="translation"></div>
-      <div class="extras" hidden><div class="roman"></div><div class="back"></div></div>
+      <div class="extras" hidden translate="no"><div class="roman"></div><div class="back"></div></div>
     </section>
 
     <footer class="bar">
       <button class="status" id="status" title="Translation engine">
-        <span class="dot"></span><span id="status-text"></span><span id="status-fix" hidden>click to fix</span>
+        <span class="dot"></span><span id="status-text" translate="no"></span><span id="status-fix" hidden>click to fix</span>
       </button>
       <div class="bar-actions">
         <button class="update-pill" id="update-pill" hidden title="Install the update and restart">update</button>
@@ -101,6 +101,7 @@
       <p class="hint search-empty" id="settings-search-empty" hidden></p>
       <nav class="settings-nav" id="settings-nav" aria-label="Jump to">
         <button data-jump="sec-perms" id="nav-perms" hidden>permissions</button>
+        <button data-jump="sec-language">language</button>
         <button data-jump="sec-engine">translation</button>
         <button data-jump="sec-voice">dictation</button>
         <button data-jump="sec-read">read aloud</button>
@@ -113,6 +114,14 @@
         <h2 id="sec-perms">permissions</h2>
         <div class="row-line perm-entry"><span class="hint" id="perm-summary"></span><button class="chip" id="perm-open">review</button></div>
       </div>
+
+      <h2 id="sec-language">app language<span class="also-en" translate="no" hidden> · app language</span></h2>
+      <div class="fields flush">
+        <label class="ui-lang">
+          <select id="ui-lang" translate="no" aria-label="App language"></select>
+        </label>
+      </div>
+      <p class="hint" id="ui-lang-hint">the language of Vox2's menus, buttons and messages. names like themes, fonts and engines stay as they are.</p>
 
       <h2 id="sec-engine">translation</h2>
       <h3>engine</h3>
@@ -159,7 +168,7 @@
       <label class="toggle"><span>use dictation</span><input type="checkbox" id="stt-enabled"></label>
       <p class="hint toggle-hint">talk instead of typing. off hides the mic buttons and the dictate shortcut, and never loads the voice model.</p>
       <div id="stt-body">
-        <p class="hint how">
+        <p class="hint how" data-i18n="html">
           <b>tap</b> the mic or shortcut to start · it stops when you go quiet, or tap again<br>
           <b>hold</b> it to talk · let go to stop
         </p>
@@ -279,23 +288,23 @@
       <p class="hint toggle-hint">match scores use blue, amber and vermillion with a ✓ ! ✕ symbol, instead of the theme's colors, so they read the same for every kind of color vision and every theme.</p>
       <h3>font</h3>
       <div class="segmented" id="fonts">
-        <button data-font="mono" style="font-family:'Roboto Mono'">roboto mono</button>
-        <button data-font="lexend" style="font-family:'Lexend Deca'">lexend deca</button>
+        <button data-font="mono" style="font-family:'Roboto Mono'" translate="no">roboto mono</button>
+        <button data-font="lexend" style="font-family:'Lexend Deca'" translate="no">lexend deca</button>
         <button data-font="system" style="font-family:system-ui">system</button>
       </div>
       <h3>zoom</h3>
       <div class="segmented" id="zoom-controls">
-        <button data-zoom="-1" title="Zoom out (Ctrl -)">−</button>
-        <button data-zoom="0" id="zoom-value" title="Reset (Ctrl 0)">100%</button>
-        <button data-zoom="1" title="Zoom in (Ctrl +)">+</button>
+        <button data-zoom="-1" title="Zoom out">−</button>
+        <button data-zoom="0" id="zoom-value" title="Reset zoom">100%</button>
+        <button data-zoom="1" title="Zoom in">+</button>
       </div>
       <h3>theme</h3>
-      <div id="themes"></div>
+      <div id="themes" translate="no"></div>
 
       <h2>about</h2>
       <div class="about">
-        <span>Vox2 <b id="about-version">v–</b></span>
-        <a href="#" id="about-github">github.com/chrisqtruong/vox2</a>
+        <span translate="no">Vox2 <b id="about-version">v–</b></span>
+        <a href="#" id="about-github" translate="no">github.com/chrisqtruong/vox2</a>
         <span class="hint">open source · GPL-3.0</span>
       </div>
     </div>
@@ -327,7 +336,7 @@
       </div>
     </header>
     <div class="sheet-body">
-      <ol class="history-list" id="history-list"></ol>
+      <ol class="history-list" id="history-list" translate="no"></ol>
       <p class="hint empty" id="history-empty">nothing yet. finished translations show up here.</p>
     </div>
   </aside>
@@ -345,7 +354,7 @@
   <button class="voice-pill" id="voice-pill" title="Stop dictation" aria-hidden="true">
     <span class="rec"></span>
     <span class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-    <span class="lang-tag" id="voice-lang"></span>
+    <span class="lang-tag" id="voice-lang" translate="no"></span>
   </button>
 </body>
 </html>

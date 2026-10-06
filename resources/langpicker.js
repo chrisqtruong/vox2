@@ -4,13 +4,18 @@
 // already searching; ↓ / Enter / Space open it too. In the menu, ↑↓ move, Enter or Tab picks,
 // Esc cancels, and focus goes back to the button so Tab carries on from there.
 import { LANGUAGES, langName } from './languages.js';
+import { tr, langLabel } from './i18n.js';
+
+// Names in the app's language (settings → app language); searching finds the English names too.
+const shown = (code) => langLabel(code, langName(code));
 
 const PIN_SVG = '<svg viewBox="0 0 24 24"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"/></svg>';
 
 const menu = document.createElement('div');
 menu.className = 'lang-menu';
 menu.hidden = true;
-menu.innerHTML = '<input class="lang-search" placeholder="search languages" spellcheck="false" autocomplete="off">'
+menu.setAttribute('translate', 'no'); // its own words are set here, in the app's language
+menu.innerHTML = '<input class="lang-search" spellcheck="false" autocomplete="off">'
   + '<div class="lang-list" role="listbox"></div>';
 document.body.append(menu);
 const search = menu.querySelector('.lang-search');
@@ -38,12 +43,12 @@ function row(code, { pinned = false } = {}) {
   el.setAttribute('aria-selected', String(code === button.value));
   const name = document.createElement('span');
   name.className = 'name';
-  name.textContent = code === 'auto' ? 'detect language' : langName(code);
+  name.textContent = code === 'auto' ? tr('detect language') : shown(code);
   el.append(name);
   if (code !== 'auto') {
     const pin = document.createElement('span');
     pin.className = 'pin';
-    pin.title = pinned ? 'Unpin' : 'Pin to top';
+    pin.title = pinned ? tr('Unpin') : tr('Pin to top');
     pin.innerHTML = PIN_SVG;
     el.append(pin);
   }
@@ -56,14 +61,18 @@ function build() {
   const q = search.value.trim().toLowerCase();
   const nodes = [];
   if (q) {
-    if ('detect language'.includes(q)) nodes.push(row('auto'));
+    if ('detect language'.includes(q) || tr('detect language').toLowerCase().includes(q)) nodes.push(row('auto'));
     // Names that start with what you typed come first ("s" → Samoan, Serbian, Spanish… before Afrikaans),
     // then names with a word starting with it ("chin" → Chinese (Simplified)), then any other match.
-    const rank = (code, name) => {
+    const rankName = (code, name) => {
       const n = name.toLowerCase();
       if (code.toLowerCase() === q || n.startsWith(q)) return 0;
       if (n.split(/[\s(]+/).some((w) => w.startsWith(q))) return 1;
       return n.includes(q) ? 2 : -1;
+    };
+    const rank = (code, name) => {
+      const r = [rankName(code, shown(code)), rankName(code, name)].filter((x) => x >= 0);
+      return r.length ? Math.min(...r) : -1;
     };
     const found = LANGUAGES.map(([code, name]) => [code, rank(code, name)]).filter(([, r]) => r >= 0);
     for (const [code] of found.sort((x, y) => x[1] - y[1])) nodes.push(row(code, { pinned: pinned.includes(code) }));
@@ -99,6 +108,7 @@ function open(button, opts, typed = '') {
   if (owner?.button === button) return close(true);
   owner = { button, opts };
   search.value = typed;
+  search.placeholder = tr('search languages');
   menu.hidden = false;
   // Root zoom scales fixed positions, so convert screen coordinates back to CSS pixels.
   const z = parseFloat(document.documentElement.style.zoom) || 1;
@@ -157,8 +167,8 @@ export function attachLangPicker(button, opts) {
   const label = document.createElement('span');
   button.replaceChildren(label);
   const render = () => {
-    label.textContent = value !== 'auto' ? langName(value)
-      : detected ? `${langName(detected)} · detected` : 'detect language';
+    label.textContent = value !== 'auto' ? shown(value)
+      : detected ? `${shown(detected)} · ${tr('detected')}` : tr('detect language');
     button.classList.toggle('is-auto', value === 'auto');
   };
   Object.defineProperty(button, 'value', {
@@ -169,6 +179,7 @@ export function attachLangPicker(button, opts) {
     get: () => detected,
     set: (v) => { detected = v; render(); },
   });
+  button.relabel = render; // after the app's language changes
   button.setAttribute('aria-haspopup', 'listbox');
   button.addEventListener('click', () => open(button, opts));
   // Typing on the focused button opens the menu already searching ("s", "p", "a" → Spanish).

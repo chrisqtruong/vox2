@@ -1,4 +1,5 @@
 import { langName } from './languages.js';
+import { tr, N_, langLabel, translatePage, setUiLang, uiLanguages, nativeName, isRtl, uiLang } from './i18n.js';
 import { ENGINES, translate, detectLanguage, checkBack } from './engines.js';
 import { attachLangPicker } from './langpicker.js';
 import { readText, tesseractLang, joinLines } from './ocr.js';
@@ -14,7 +15,7 @@ import {
   native, loadData, saveData, setAlwaysOnTop, onWindowFocus, openUrl, onNative, setHotkey, typeText, sendPill,
   setCloseToTray, setWindowAlpha, setAutostart, resetKeys, hideWindow,
   sendBubble, openBubble, showWindow, startSnip, takeSnip, readSnipText, getSecret, setSecret, memoryInfo, resizeWindowHeight, setWindowWidth, screenWidth,
-  getPermissions, requestPermission, openPrivacy, relaunch, hideBubble,
+  getPermissions, requestPermission, openPrivacy, relaunch, hideBubble, setTrayLabels,
 } from './platform.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -55,6 +56,7 @@ const DEFAULTS = {
   fade: true, closeToTray: true, autostart: false,
   updates: 'auto', // 'auto' (install when you're not using Vox2), 'ask', or 'off'
   permCheck: true, // macOS: open the permissions sheet at startup while something's missing
+  uiLang: 'auto', // the app's own language (settings → app language): 'auto' follows the computer
   colorblind: false, // match scores in colorblind-friendly colors (with symbols) instead of theme colors
 };
 let settings = { ...DEFAULTS };
@@ -131,7 +133,7 @@ function saveSettings() {
     const value = keys[id] || '';
     if (value === (vaultKeys[id] || '')) continue;
     vaultKeys[id] = value;
-    setSecret(id, value).catch((err) => setStatus('error', `couldn't save the ${ENGINES[id].name} key: ${err}`));
+    setSecret(id, value).catch((err) => setStatus('error', `${tr("couldn't save the {engine} key", { engine: ENGINES[id].name })}: ${err}`));
   }
 }
 
@@ -153,7 +155,7 @@ async function detectCached(text) {
   const key = text.slice(0, 500);
   if (!detections.has(key)) {
     const code = await detectLanguage(key);
-    if (!code) throw new Error('could not detect the language');
+    if (!code) throw new Error(tr('could not detect the language'));
     detections.set(key, code);
     if (detections.size > 100) detections.delete(detections.keys().next().value);
   }
@@ -174,8 +176,9 @@ function updateEmpty() {
   for (const p of list) p.el.classList.toggle('is-empty', p.el.textContent.length === 0);
   const anyText = list.some((p) => p.el.textContent.length > 0);
   for (const p of list) {
-    p.el.dataset.placeholder = anyText ? 'translation…'
-      : `type or speak in ${p.lang.value === 'auto' ? 'any language' : langName(p.lang.value)}`;
+    p.el.dataset.placeholder = anyText ? tr('translation…')
+      : p.lang.value === 'auto' ? tr('type or speak in any language')
+        : tr('type or speak in {language}', { language: langLabel(p.lang.value, langName(p.lang.value)) });
   }
   if (!anyText) unfit(); // both boxes cleared: back to two equal halves
 }
@@ -370,7 +373,7 @@ function setStatus(state, message, fix = null) {
   statusEl.className = `status ${listening ? 'busy' : state}${error && fix ? ' fixable' : ''}`;
   statusText.textContent = error ? message : listening || engineLabel();
   $('#status-fix').hidden = !(error && fix); // its own label, so a long message can't push it out of view
-  statusEl.title = error ? (fix ? `${message}\nClick to open settings` : message) : 'Translation engine · click for settings';
+  statusEl.title = error ? (fix ? `${message}\n${tr('Click to open settings')}` : message) : tr('Translation engine · click for settings');
   statusFix = error ? fix : 'engine';
 }
 
@@ -486,7 +489,7 @@ const onTopToggle = $('#ontop-toggle');
 
 function applyOnTop() {
   pinBtn.setAttribute('aria-pressed', String(settings.onTop));
-  pinBtn.title = `Keep on top: ${settings.onTop ? 'on' : 'off'}`; // the shortcut shows in the bar's tooltip
+  pinBtn.title = settings.onTop ? tr('Keep on top: on') : tr('Keep on top: off'); // the shortcut shows in the bar's tooltip
   onTopToggle.checked = settings.onTop;
   setAlwaysOnTop(settings.onTop);
   applyFade();
@@ -535,8 +538,8 @@ function themeTile(name, colors) {
     star.className = 'theme-star';
     star.innerHTML = STAR_SVG;
     star.setAttribute('aria-pressed', String(starred));
-    star.setAttribute('aria-label', `${starred ? 'unstar' : 'star'} ${name}`);
-    star.title = starred ? 'Unstar' : 'Star: keep at the top';
+    star.setAttribute('aria-label', `${starred ? tr('Unstar') : tr('Star')} ${name}`);
+    star.title = starred ? tr('Unstar') : tr('Star: keep at the top');
     star.addEventListener('click', () => toggleThemeStar(name));
     tile.append(star);
   }
@@ -566,13 +569,13 @@ function renderThemes() {
   // Starred themes first, in the order they were starred (they stay in their group too).
   const starred = settings.starredThemes.filter((n) => all.has(n));
   if (starred.length) {
-    nodes.push(Object.assign(document.createElement('h3'), { textContent: 'starred' }));
+    nodes.push(Object.assign(document.createElement('h3'), { textContent: tr('starred') }));
     const g = grid();
     g.append(...starred.map((n) => themeTile(n, all.get(n))));
     nodes.push(g);
   }
   for (const { group, themes } of THEME_GROUPS) {
-    nodes.push(Object.assign(document.createElement('h3'), { textContent: group }));
+    nodes.push(Object.assign(document.createElement('h3'), { textContent: tr(group) }));
     const g = grid();
     g.append(...themes.map((t) => themeTile(t.name, t)));
     nodes.push(g);
@@ -654,8 +657,15 @@ document.addEventListener('keydown', (e) => {
   e.preventDefault();
 });
 
+// Their tooltips name the keys too: Ctrl − / 0 / + (⌘ on Mac).
+function renderZoomTitles() {
+  const mod = MAC ? '⌘' : 'Ctrl ';
+  const [out, reset, zin] = $('#zoom-controls').children;
+  out.title = `${tr('Zoom out')} (${mod}-)`;
+  reset.title = `${tr('Reset zoom')} (${mod}0)`;
+  zin.title = `${tr('Zoom in')} (${mod}+)`;
+}
 for (const b of $('#zoom-controls').children) {
-  if (MAC) b.title = b.title.replace('Ctrl ', '⌘');
   b.addEventListener('click', () => stepZoom(Number(b.dataset.zoom)));
 }
 
@@ -676,7 +686,7 @@ function renderEngines() {
     btn.setAttribute('aria-checked', String(id === settings.engine));
     btn.innerHTML = '<span class="radio"></span><span><b></b><small></small></span>';
     $('b', btn).textContent = meta.name;
-    $('small', btn).textContent = meta.note;
+    $('small', btn).textContent = tr(meta.note);
     btn.addEventListener('click', () => {
       settings.engine = id;
       saveSettings();
@@ -727,6 +737,7 @@ function openSettings(target) {
   renderPermEntry();
   renderTTS();
   renderThemes();
+  renderUiLang();
   applyFont();
   sheet.classList.add('open');
   sheet.setAttribute('aria-hidden', 'false');
@@ -805,7 +816,7 @@ function searchSettings() {
     found += shown;
   }
   searchEmpty.hidden = !q || found > 0;
-  searchEmpty.textContent = `no settings match “${searchInput.value.trim()}”`;
+  searchEmpty.textContent = tr('no settings match “{search}”', { search: searchInput.value.trim() });
   if (q) sheetBody.scrollTop = 0;
 }
 
@@ -891,11 +902,11 @@ onWhisperEvent((e) => {
     const files = Object.values(whisperProgress);
     const pct = Math.round(100 * files.reduce((n, f) => n + f.loaded, 0) / files.reduce((n, f) => n + f.total, 0));
     dictation.label = modelSaved[settings.sttModel]
-      ? `waking up voice model · ${pct}%` // already on disk: loading, not downloading
-      : `downloading voice model, one time only · ${pct}%`;
+      ? `${tr('waking up voice model')} · ${pct}%` // already on disk: loading, not downloading
+      : `${tr('downloading voice model, one time only')} · ${pct}%`;
     setStatus('idle');
   } else if (e.type === 'ready') {
-    dictation.label = `listening · whisper ${e.model} (${e.device})`;
+    dictation.label = `${tr('listening')} · whisper ${e.model} (${e.device})`;
     setStatus('idle');
   } else if (e.type === 'error') {
     dictationFailed(dictation, new Error(e.message));
@@ -925,10 +936,10 @@ function dictationFailed(st, err) {
   st.d.stop(false);
   if (dictation === st) dictation = null;
   setMicUI(null, false);
-  const msg = err.name === 'NotAllowedError' ? 'microphone access was blocked'
-    : err.name === 'NotFoundError' || err.name === 'OverconstrainedError' ? 'microphone not found (check settings)'
+  const msg = err.name === 'NotAllowedError' ? tr('microphone access was blocked')
+    : err.name === 'NotFoundError' || err.name === 'OverconstrainedError' ? tr('microphone not found (check settings)')
       : err.message;
-  setStatus('error', `dictation: ${msg}`, 'voice');
+  setStatus('error', `${tr('dictation')}: ${msg}`, 'voice');
   hidePill();
 }
 
@@ -976,7 +987,7 @@ async function startDictation(pane) {
   stopSpeech(); // talking over the read-aloud (e.g. your turn in a conversation) stops it
   const useOpenAI = settings.sttEngine === 'openai';
   if (useOpenAI && !settings.keys.openai) {
-    setStatus('error', 'dictation: add your OpenAI key under ChatGPT in settings', 'key');
+    setStatus('error', `${tr('dictation')}: ${tr('add your OpenAI key under ChatGPT in settings')}`, 'key');
     return;
   }
   if (source !== pane.key) {
@@ -1014,7 +1025,7 @@ async function startDictation(pane) {
   setMicUI(pane, true);
   showPill(pane);
   pane.root.querySelector('[data-act="mic"]').classList.add('loading');
-  st.label = useOpenAI ? 'listening · openai' : 'waking up voice model…';
+  st.label = useOpenAI ? `${tr('listening')} · OpenAI` : tr('waking up voice model…');
   setStatus('idle');
   try {
     await st.d.start({
@@ -1063,7 +1074,7 @@ function typeElsewhere(st, phrase) {
     const lead = st.typedAny && !NO_SPACE_LANGS.has(lang) ? ' ' : '';
     st.typedAny = true;
     await typeText(lead + text);
-  }).catch((err) => setStatus('error', `typing into other app: ${err.message || err}`));
+  }).catch((err) => setStatus('error', `${tr('typing into another app')}: ${err.message || err}`));
 }
 
 // Typing, clearing or swapping mid-dictation: stop listening and keep what's on screen.
@@ -1298,7 +1309,7 @@ function recordShortcut(chip) {
   const key = chip.dataset.shortcut;
   recordingShortcut = true;
   chip.classList.add('recording');
-  chip.textContent = 'press keys…';
+  chip.textContent = tr('press keys…');
   const held = []; // modifiers currently down, in the order pressed
   const done = (sc) => {
     recordingShortcut = false;
@@ -1336,7 +1347,7 @@ function recordShortcut(chip) {
     if (held.length === 1) {
       if (!LONE_OK.has(held[0])) {
         held.length = 0; // keep recording
-        chip.textContent = IS_MAC ? 'add a letter (alone: right ⌥ ⌃ ⌘ only)' : 'add a letter (alone: right Ctrl / Alt / Win only)';
+        chip.textContent = tr('add a letter (alone: only {keys})', { keys: IS_MAC ? 'right ⌥ ⌃ ⌘' : 'right Ctrl / Alt / Win' });
         return;
       }
       return done({ code: held[0] });
@@ -1355,14 +1366,17 @@ function renderShortcuts() {
   for (const b of $('#quick-result').children) b.setAttribute('aria-pressed', String(b.dataset.q === settings.quickResult));
   for (const chip of shortcutChips) {
     const sc = settings[chip.dataset.shortcut];
-    if (!chip.classList.contains('recording')) chip.textContent = sc?.code ? shortcutLabel(sc) : 'off';
+    if (!chip.classList.contains('recording')) chip.textContent = sc?.code ? shortcutLabel(sc) : tr('off');
     chip.classList.toggle('off', !sc?.code);
   }
-  $('#shortcut-hint').textContent = (native ? 'the first four work from any app; pin, fit, history and settings while Vox2 is in front' : 'these work while this window is focused')
-    + ' · click one, then press the new key · backspace turns it off'
-    + (native ? ` · a key on its own (like right ${IS_MAC ? '⌘' : 'Alt'}) fires on a quick tap; dictation's can also be held` : '');
+  $('#shortcut-hint').textContent = [
+    native ? tr('the first four work from any app; pin, fit, history and settings while Vox2 is in front') : tr('these work while this window is focused'),
+    tr('click one, then press the new key'),
+    tr('backspace turns it off'),
+    native && tr("a key on its own (like right {key}) fires on a quick tap; dictation's can also be held", { key: IS_MAC ? '⌘' : 'Alt' }),
+  ].filter(Boolean).join(' · ');
   for (const p of Object.values(panes)) {
-    p.root.querySelector('[data-act="mic"]').title = 'Tap to dictate · hold to talk'; // the key shows in its tooltip
+    p.root.querySelector('[data-act="mic"]').title = tr('Tap to dictate · hold to talk'); // the key shows in its tooltip
   }
 }
 for (const chip of shortcutChips) chip.addEventListener('click', () => recordShortcut(chip));
@@ -1398,14 +1412,15 @@ async function startBubble(anchor, status) {
   quick.session++;
   quick.openedAt = Date.now();
   await openBubble(anchor?.x, anchor?.y);
-  sendBubble({ session: quick.session, colors: themeColors(), status, source: '', translation: '' });
+  sendBubble({ session: quick.session, ui: uiLang(), colors: themeColors(), status, source: '', translation: '' });
   return quick.session;
 }
 
 function toBubble(dst, text, done, from, to) {
   if (!quick.active || dst !== quick.dst) return;
   // from / to / toCode: the bubble shows "English → [Vietnamese]" with the target as a button.
-  sendBubble({ session: quick.session, langs: `${langName(from)} → ${langName(to)}`, from: langName(from), to: langName(to), toCode: to, translation: text, done });
+  const [f, t] = [langLabel(from, langName(from)), langLabel(to, langName(to))];
+  sendBubble({ session: quick.session, langs: `${f} → ${t}`, from: f, to: t, toCode: to, translation: text, done });
 }
 
 async function quickTranslate(text, anchor, session) {
@@ -1413,12 +1428,12 @@ async function quickTranslate(text, anchor, session) {
   abandonDictation();
   const pane = quickPane();
   if (useBubble()) {
-    if (!session) session = await startBubble(anchor, 'translating…');
-    if (!text) { sendBubble({ session, error: 'nothing was selected (or that app blocks copying)' }); return; }
+    if (!session) session = await startBubble(anchor, tr('translating…'));
+    if (!text) { sendBubble({ session, error: tr('nothing was selected (or that app blocks copying)') }); return; }
     quick.dst = panes[other(pane.key)];
-    sendBubble({ session, source: text, status: 'translating…' });
+    sendBubble({ session, source: text, status: tr('translating…') });
   } else {
-    if (!text) { setStatus('error', 'nothing was selected (or that app blocks copying)'); return; }
+    if (!text) { setStatus('error', tr('nothing was selected (or that app blocks copying)')); return; }
     quick.active = false;
     showWindow();
   }
@@ -1458,15 +1473,15 @@ async function readSnipMac() {
 }
 
 onNative('snip', async ({ x, y }) => {
-  const session = useBubble() ? await startBubble({ x, y }, 'reading the text…') : 0;
-  if (!session) setStatus('busy', 'reading the text…');
+  const session = useBubble() ? await startBubble({ x, y }, tr('reading the text…')) : 0;
+  if (!session) setStatus('busy', tr('reading the text…'));
   try {
     const text = (MAC && (await readSnipMac())) || (await readText(new Blob([await takeSnip()], { type: 'image/png' }), ocrLangs()));
-    if (!text) throw new Error('no text found in that area');
+    if (!text) throw new Error(tr('no text found in that area'));
     quickTranslate(text, { x, y }, session);
   } catch (err) {
-    if (session) sendBubble({ session, error: `snip: ${err.message || err}` });
-    else { showWindow(); setStatus('error', `snip: ${err.message || err}`); }
+    if (session) sendBubble({ session, error: `${tr('snip')}: ${err.message || err}` });
+    else { showWindow(); setStatus('error', `${tr('snip')}: ${err.message || err}`); }
   }
 });
 
@@ -1501,11 +1516,11 @@ async function refreshMics(ask = false) {
   try {
     if (ask) (await navigator.mediaDevices.getUserMedia({ audio: true })).getTracks().forEach((t) => t.stop());
     const mics = await listMics();
-    micSelect.replaceChildren(new Option('system default', ''),
-      ...mics.map((m, i) => new Option(m.label || `microphone ${i + 1}`, m.deviceId)));
+    micSelect.replaceChildren(new Option(tr('system default'), ''),
+      ...mics.map((m, i) => new Option(m.label || tr('microphone {n}', { n: i + 1 }), m.deviceId)));
     micSelect.value = mics.some((m) => m.deviceId === settings.mic) ? settings.mic : '';
   } catch (err) {
-    if (ask) setStatus('error', `dictation: ${err.name === 'NotAllowedError' ? 'microphone access was blocked' : err.message}`, 'voice');
+    if (ask) setStatus('error', `${tr('dictation')}: ${err.name === 'NotAllowedError' ? tr('microphone access was blocked') : err.message}`, 'voice');
   }
 }
 
@@ -1534,9 +1549,8 @@ setInterval(async () => {
 }, 60e3);
 
 const KEEP_HINTS = {
-  always: () => 'dictation starts instantly · the model stays in memory while Vox2 is open (about 2–2.5 GB)',
-  save: () => `instant for ${awakeMinutes} minute${awakeMinutes === 1 ? '' : 's'} after you dictate (set by this computer's memory), `
-    + 'then frees it, sooner if memory runs low · waking it again takes about 2 seconds',
+  always: () => tr('dictation starts instantly · the model stays in memory while Vox2 is open (about 2–2.5 GB)'),
+  save: () => tr("instant for {n} min after you dictate (set by this computer's memory), then frees it, sooner if memory runs low · waking it again takes about 2 seconds", { n: awakeMinutes }),
 };
 
 function renderVoice() {
@@ -1563,12 +1577,12 @@ function renderVoice() {
     return b;
   };
   $('#stt-models').replaceChildren(
-    ...Object.entries(STT_MODELS).map(([m, info]) => row(info.name, [info.tag, info.size, modelSaved[m] && 'downloaded'].filter(Boolean).join(' · '),
+    ...Object.entries(STT_MODELS).map(([m, info]) => row(info.name, [tr(info.tag), info.size, modelSaved[m] && tr('downloaded')].filter(Boolean).join(' · '),
       settings.sttEngine === 'whisper' && m === settings.sttModel, () => { settings.sttEngine = 'whisper'; settings.sttModel = m; })),
-    row('OpenAI', 'online · uses your OpenAI key', settings.sttEngine === 'openai', () => { settings.sttEngine = 'openai'; }),
+    row('OpenAI', tr('online · uses your OpenAI key'), settings.sttEngine === 'openai', () => { settings.sttEngine = 'openai'; }),
   );
   $('#stt-hint').textContent = settings.sttEngine === 'whisper'
-    ? 'runs on this computer, free and private · downloads once on first use · bigger = more accurate'
+    ? tr('runs on this computer, free and private · downloads once on first use · bigger = more accurate')
     : '';
   $('#stt-hint').hidden = settings.sttEngine !== 'whisper';
   $('#stt-openai-model').value = settings.sttOpenaiModel;
@@ -1666,9 +1680,10 @@ function scoreBubble(original, translation, back, id, lang, target) {
 
 // A small themed card on hover: what the score means, the tiers, and a note if a number changed.
 // The full method is in the README (Back-Translation Fidelity Scoring).
-const TIERS = [['high', '85+', 'meaning kept'], ['mid', '65–84', 'check the details'], ['low', '<65', 'likely off']];
+const TIERS = [['high', '85+', N_('meaning kept')], ['mid', '65–84', N_('check the details')], ['low', '<65', N_('likely off')]];
 const matchTip = document.createElement('div');
 matchTip.className = 'match-tip';
+matchTip.setAttribute('translate', 'no'); // written in the app's language as it's shown
 matchTip.hidden = true;
 document.body.append(matchTip);
 
@@ -1677,20 +1692,20 @@ const escapeHtml = (t) => t.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 function showMatchTip(badge) {
   const { score, numbers, checks, missing, heShe, untranslated: copied } = badge.dataset;
   if (copied) {
-    matchTip.innerHTML = '<b>can\'t check</b>'
-      + '<p>part of your text came through untranslated, so the ↩ line just repeats it and a match score would mean nothing</p>'
-      + '<p>usually: gibberish, a garbled snip, a typo-heavy passage, or text that\'s already in the other language</p>'
-      + `<p class="missing">not translated: <span>${copied.split('\n').slice(0, 8).map(escapeHtml).join(' ')}${copied.split('\n').length > 8 ? ' …' : ''}</span></p>`;
+    matchTip.innerHTML = `<b>${tr("can't check")}</b>`
+      + `<p>${tr('part of your text came through untranslated, so the ↩ line just repeats it and a match score would mean nothing')}</p>`
+      + `<p>${tr("usually: gibberish, a garbled snip, a typo-heavy passage, or text that's already in the other language")}</p>`
+      + `<p class="missing">${tr('not translated:')} <span>${copied.split('\n').slice(0, 8).map(escapeHtml).join(' ')}${copied.split('\n').length > 8 ? ' …' : ''}</span></p>`;
     return placeMatchTip(badge);
   }
   const t = tier(Number(score));
-  matchTip.innerHTML = `<b class="${t}">${score}% match</b>`
-    + '<p>how much of your meaning survived the round trip, compared by meaning, not exact words</p>'
-    + TIERS.map(([k, range, label]) => `<div class="tier ${k}${k === t ? ' on' : ''}"><i></i><span>${range}</span>${label}</div>`).join('')
-    + (numbers ? '<p class="warn">a number changed, so it\'s capped at 60%</p>' : '')
-    + (checks ? checks.split('\n').map((c) => `<p class="warn">${escapeHtml(c)}, so ${Number(score) > 60 ? 'it\'s kept below 85%' : 'it\'s capped at 60%'}</p>`).join('') : '')
-    + (missing ? `<p class="missing">didn't come back: ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '')
-    + (heShe ? `<p class="missing">pronouns can't be checked: ${escapeHtml(heShe)} pronouns usually don't say he, she or they, so a change wouldn't come back</p>` : '');
+  matchTip.innerHTML = `<b class="${t}">${tr('{n}% match', { n: score })}</b>`
+    + `<p>${tr('how much of your meaning survived the round trip, compared by meaning, not exact words')}</p>`
+    + TIERS.map(([k, range, label]) => `<div class="tier ${k}${k === t ? ' on' : ''}"><i></i><span>${range}</span>${tr(label)}</div>`).join('')
+    + (numbers ? `<p class="warn">${tr("a number changed, so it's capped at 60%")}</p>` : '')
+    + (checks ? checks.split('\n').map((c) => `<p class="warn">${escapeHtml(checkText(c))}, ${Number(score) > 60 ? tr("so it's kept below 85%") : tr("so it's capped at 60%")}</p>`).join('') : '')
+    + (missing ? `<p class="missing">${tr("didn't come back:")} ${missing.split('\n').map((w) => `<span>${w}</span>`).join(', ')}</p>` : '')
+    + (heShe ? `<p class="missing">${tr("pronouns can't be checked: {language} pronouns usually don't say he, she or they, so a change wouldn't come back", { language: escapeHtml(heShe) })}</p>` : '');
   placeMatchTip(badge);
 }
 
@@ -1711,27 +1726,27 @@ async function showMatch(backLine, original, translation, back, id, lang, target
   const copied = untranslated(original, translation);
   if (copied) {
     badge.className = 'match unchecked';
-    badge.textContent = 'can\'t check';
+    badge.textContent = tr("can't check");
     badge.dataset.untranslated = copied.join('\n');
     backLine.append(' ', badge);
     markChanged(backLine, copied);
     return;
   }
   badge.className = 'match checking';
-  badge.textContent = 'checking…';
-  badge.title = 'checking meaning (first time downloads a ~120 MB model)';
+  badge.textContent = tr('checking…');
+  badge.title = tr('checking meaning (first time downloads a ~120 MB model)');
   backLine.append(' ', badge);
   try {
     const { score, numbersDiffer, checks, changed, missing, heSheUnchecked } = await matchScore(original, back, lang, target);
     if (id !== extrasJob) return;
     badge.className = `match ${tier(score)}`;
-    badge.textContent = `${score}% match`;
+    badge.textContent = tr('{n}% match', { n: score });
     badge.removeAttribute('title');
     badge.dataset.score = score;
     if (numbersDiffer) badge.dataset.numbers = '1';
     if (checks.length) badge.dataset.checks = checks.map((c) => c.detail).join('\n');
     if (missing.length) badge.dataset.missing = missing.join('\n');
-    if (heSheUnchecked) badge.dataset.heShe = langName(target);
+    if (heSheUnchecked) badge.dataset.heShe = langLabel(target, langName(target));
     markChanged(backLine, changed);
   } catch {
     badge.remove(); // no model (e.g. offline the first time): just leave the score out
@@ -1750,8 +1765,8 @@ function renderTone() {
   $('#tone-row').classList.toggle('unavailable', !ai);
   for (const el of $('#tone-row').querySelectorAll('button, input')) el.disabled = !ai;
   $('#tone-hint').textContent = ai
-    ? 'helps pick the right pronouns and politeness'
-    : `pick Claude, ChatGPT or Gemini above to use tone and "who it's for" · Google Translate can't adjust them`;
+    ? tr('helps pick the right pronouns and politeness')
+    : tr(`pick Claude, ChatGPT or Gemini above to use tone and "who it's for" · Google Translate can't adjust them`);
   for (const b of $('#tones').children) b.setAttribute('aria-pressed', String(b.dataset.tone === settings.tone));
   $('#tone-note').value = settings.toneNote;
   $('#show-roman').checked = settings.showRoman;
@@ -1795,7 +1810,7 @@ function renderWindowOpts() {
   $('#native-window-opts').hidden = !native;
   $('#tray-toggle').checked = settings.closeToTray;
   $('#autostart-toggle').checked = settings.autostart;
-  $('#autostart-toggle').closest('label').firstElementChild.textContent = MAC ? 'start at login' : 'start with Windows';
+  $('#autostart-toggle').closest('label').firstElementChild.textContent = MAC ? tr('start at login') : tr('start with Windows');
 }
 $('#fade-toggle').addEventListener('change', (e) => { settings.fade = e.target.checked; saveSettings(); applyFade(); });
 $('#tray-toggle').addEventListener('change', (e) => { settings.closeToTray = e.target.checked; saveSettings(); setCloseToTray(settings.closeToTray); });
@@ -1823,6 +1838,7 @@ function tipShortcut(btn) {
 }
 const barTip = document.createElement('div');
 barTip.className = 'bar-tip';
+barTip.setAttribute('translate', 'no');
 barTip.hidden = true;
 document.body.append(barTip);
 let barTipTimer = null;
@@ -1937,13 +1953,13 @@ async function cycleFit() {
   } else {
     await fitWindow();
   }
-  flashHud({ fit: 'fit to text', wide: 'wide', compact: 'compact' }[next]);
+  flashHud({ fit: tr('fit to text'), wide: tr('wide'), compact: tr('compact') }[next]);
   fitCycle.mode = next;
   fitCycle.last = fitKey();
 }
 
 $('#fit-btn').hidden = !native;
-$('#fit-btn').addEventListener('click', () => cycleFit().catch((err) => setStatus('error', `fit window: ${err.message || err}`)));
+$('#fit-btn').addEventListener('click', () => cycleFit().catch((err) => setStatus('error', `${tr('fit window')}: ${err.message || err}`)));
 
 /* ---------- conversation mode ---------- */
 
@@ -1956,14 +1972,14 @@ function applyConversation() {
   document.body.classList.toggle('conversation', on);
   const btn = $('#conv-btn');
   btn.setAttribute('aria-pressed', String(on));
-  btn.title = on ? 'Conversation mode: on (each side speaks, Vox2 answers aloud)' : 'Conversation mode: off';
+  btn.title = on ? tr('Conversation mode: on (each side speaks, Vox2 answers aloud)') : tr('Conversation mode: off');
   if (!on) speakWhenTranslated = null;
 }
 $('#conv-btn').addEventListener('click', () => {
   settings.conversation = !settings.conversation;
   saveSettings();
   applyConversation();
-  flashHud(settings.conversation ? 'conversation on' : 'conversation off');
+  flashHud(settings.conversation ? tr('conversation on') : tr('conversation off'));
   if (settings.conversation && !settings.sttEnabled) {
     settings.sttEnabled = true; // conversation needs the mic
     saveSettings();
@@ -1985,31 +2001,31 @@ const updater = window.__TAURI__?.updater;
 let found = null; // { update, downloaded }
 let appVersion = '';
 
-function setUpdateStatus(text) { $('#update-status').textContent = text; }
+function setUpdateStatus(text) { $('#update-status').textContent = text; delete $('#update-status').dataset.plain; }
 
 async function checkForUpdates(manual = false) {
   if (!updater || (!manual && settings.updates === 'off')) return;
-  if (manual) setUpdateStatus('checking…');
+  if (manual) setUpdateStatus(tr('checking…'));
   try {
     const update = await updater.check();
-    if (!update) { setUpdateStatus(`you have the latest version (v${appVersion})`); return; }
+    if (!update) { setUpdateStatus(tr('you have the latest version (v{version})', { version: appVersion })); return; }
     if (!found || found.update.version !== update.version) found = { update, downloaded: false };
-    setUpdateStatus(`v${update.version} is available`);
+    setUpdateStatus(tr('v{version} is available', { version: update.version }));
     if (settings.updates === 'auto') {
       if (manual) return installUpdate(); // you asked: install right now
       await downloadUpdate();
       installWhenIdle();
     } else {
       $('#update-pill').hidden = false;
-      $('#update-pill').title = `Vox2 v${update.version} is ready · click to install and restart`;
+      $('#update-pill').title = tr('Vox2 v{version} is ready · click to install and restart', { version: update.version });
     }
   } catch (err) {
     // Offline, GitHub hiccup, etc. Only worth mentioning if you asked. A release with no build
     // for this computer yet (the Mac one is added a few minutes after the Windows one) isn't
     // an error, there's just nothing to install.
     const msg = err?.message || String(err);
-    if (/fallback platforms|platforms` object/.test(msg)) setUpdateStatus(manual ? `you have the latest version for this computer (v${appVersion})` : '');
-    else setUpdateStatus(manual ? `couldn't check right now (${msg})` : '');
+    if (/fallback platforms|platforms` object/.test(msg)) setUpdateStatus(manual ? tr('you have the latest version for this computer (v{version})', { version: appVersion }) : '');
+    else setUpdateStatus(manual ? `${tr("couldn't check right now")} (${msg})` : '');
   }
 }
 
@@ -2021,26 +2037,26 @@ async function downloadUpdate() {
     if (e.event === 'Started') total = e.data.contentLength || 0;
     if (e.event === 'Progress') {
       got += e.data.chunkLength;
-      if (total) setUpdateStatus(`downloading v${found.update.version} · ${Math.round((got / total) * 100)}%`);
+      if (total) setUpdateStatus(`${tr('downloading v{version}', { version: found.update.version })} · ${Math.round((got / total) * 100)}%`);
     }
   });
   found.downloaded = true;
-  setUpdateStatus(`v${found.update.version} downloaded`);
+  setUpdateStatus(tr('v{version} downloaded', { version: found.update.version }));
 }
 
 async function installUpdate() {
   if (!found) return;
-  $('#update-pill').textContent = 'updating…';
+  $('#update-pill').textContent = tr('updating…');
   try {
     await downloadUpdate();
-    setUpdateStatus(`installing v${found.update.version}… Vox2 will restart`);
+    setUpdateStatus(tr('installing v{version}… Vox2 will restart', { version: found.update.version }));
     await found.update.install(); // on Windows the installer takes over and Vox2 closes here
     await window.__TAURI__.process.relaunch();
   } catch (err) {
-    $('#update-pill').textContent = 'update';
+    $('#update-pill').textContent = tr('update');
     const msg = err?.message || String(err);
-    setUpdateStatus(`update failed: ${msg}`);
-    setStatus('error', `update failed: ${msg}`);
+    setUpdateStatus(`${tr('update failed')}: ${msg}`);
+    setStatus('error', `${tr('update failed')}: ${msg}`);
     found.downloaded = false; // start clean next time
   }
 }
@@ -2054,7 +2070,7 @@ addEventListener('blur', () => setTimeout(installWhenIdle, 2000));
 
 $('#update-pill').addEventListener('click', installUpdate);
 $('#about-github').addEventListener('click', (e) => { e.preventDefault(); openUrl('https://github.com/chrisqtruong/vox2'); });
-if (!native) $('#about-version').textContent = 'web preview';
+if (!native) $('#about-version').textContent = 'web preview'; // development only
 $('#update-check').addEventListener('click', () => checkForUpdates(true));
 for (const b of $('#update-modes').children) {
   b.addEventListener('click', () => {
@@ -2067,7 +2083,10 @@ for (const b of $('#update-modes').children) {
 
 function renderUpdates() {
   for (const b of $('#update-modes').children) b.setAttribute('aria-pressed', String(b.dataset.u === settings.updates));
-  if (!$('#update-status').textContent && appVersion) $('#update-status').textContent = `version ${appVersion}`;
+  if (appVersion && (!$('#update-status').textContent || $('#update-status').dataset.plain)) {
+    $('#update-status').textContent = tr('version {version}', { version: appVersion });
+    $('#update-status').dataset.plain = '1'; // just the version: re-say it if the language changes
+  }
 }
 
 if (native) {
@@ -2086,7 +2105,7 @@ function setSpeakUI(pane, on) {
     const btn = p.root.querySelector('[data-act="speak"]');
     const active = on && p === pane;
     btn.setAttribute('aria-pressed', String(active));
-    btn.title = active ? 'Stop (Esc)' : 'Read aloud';
+    btn.title = active ? tr('Stop (Esc)') : tr('Read aloud');
     $('use', btn).setAttribute('href', active ? '#i-stop' : '#i-speak');
   }
   if (quick.active) sendBubble({ session: quick.session, speaking: on && pane === quick.dst });
@@ -2160,7 +2179,7 @@ async function readAloud(pane) {
   // No natural voice for this language → fall back to the computer's own voices.
   const engine = settings.ttsEngine === 'neural' && !voicesFor(lang).length ? 'system' : settings.ttsEngine;
   if (engine === 'openai' && !settings.keys.openai) {
-    setStatus('error', 'read aloud: add your OpenAI key under ChatGPT in settings', 'key');
+    setStatus('error', `${tr('read aloud')}: ${tr('add your OpenAI key under ChatGPT in settings')}`, 'key');
     return;
   }
   speakingPane = pane;
@@ -2189,7 +2208,7 @@ async function readAloud(pane) {
     endReading(pane);
     speakingPane = null;
     setSpeakUI(null, false);
-    setStatus('error', `read aloud: ${err.message || err}`, 'read');
+    setStatus('error', `${tr('read aloud')}: ${err.message || err}`, 'read');
   }
 }
 
@@ -2199,7 +2218,7 @@ for (const pane of Object.values(panes)) {
 
 /* speed and volume: the speed popover from each box and the settings rows share one state; volume lives in settings */
 
-const SPEEDS = { 0.75: 'slow', 1: 'normal', 1.25: 'fast' };
+const SPEEDS = { 0.75: N_('slow'), 1: N_('normal'), 1.25: N_('fast') };
 const playback = $('#playback');
 
 function applyPlayback() {
@@ -2217,7 +2236,7 @@ function applyPlayback() {
   const icon = { 0.75: '#i-turtle', 1.25: '#i-hare' }[settings.ttsSpeed];
   for (const btn of document.querySelectorAll('[data-act="playback"]')) {
     btn.innerHTML = icon ? `<svg><use href="${icon}"/></svg>` : '1×';
-    btn.title = `Reading speed: ${SPEEDS[settings.ttsSpeed]} (${settings.ttsSpeed}×)`;
+    btn.title = `${tr('Reading speed')}: ${tr(SPEEDS[settings.ttsSpeed])} (${settings.ttsSpeed}×)`;
   }
 }
 
@@ -2268,10 +2287,10 @@ function renderTTS() {
   const langs = [...new Set(Object.values(panes).map(langOf))];
   $('#tts-voice-pickers').replaceChildren(...langs.map((lang) => {
     const label = document.createElement('label');
-    label.textContent = langName(lang).toLowerCase();
+    label.textContent = langLabel(lang, langName(lang)).toLowerCase();
     const voices = voicesFor(lang);
     if (!voices.length) {
-      label.append(Object.assign(document.createElement('span'), { className: 'hint', textContent: 'no natural voice yet · uses system voice' }));
+      label.append(Object.assign(document.createElement('span'), { className: 'hint', textContent: tr('no natural voice yet · uses system voice') }));
       return label;
     }
     const select = document.createElement('select');
@@ -2287,9 +2306,9 @@ function renderTTS() {
   ov.value = settings.ttsOpenaiVoice;
 
   $('#tts-hint').textContent = {
-    neural: native ? 'Microsoft’s natural voices, free · needs internet' : 'natural voices need the desktop app · using system voices here',
-    openai: 'very natural · billed to your OpenAI key',
-    system: 'voices installed on this computer · works offline, sounds more robotic',
+    neural: native ? tr('Microsoft’s natural voices, free · needs internet') : tr('natural voices need the desktop app · using system voices here'),
+    openai: tr('very natural · billed to your OpenAI key'),
+    system: tr('voices installed on this computer · works offline, sounds more robotic'),
   }[settings.ttsEngine];
 }
 
@@ -2344,10 +2363,12 @@ function toggleStar(h) {
 
 function ago(t) {
   const m = Math.round((Date.now() - t) / 60e3);
-  if (m < 1) return 'just now';
-  if (m < 60) return `${m}m ago`;
-  if (m < 60 * 24) return `${Math.round(m / 60)}h ago`;
-  return `${Math.round(m / 1440)}d ago`;
+  // In the app's language: "5 phút trước", "il y a 2 heures"…
+  const rel = new Intl.RelativeTimeFormat(document.documentElement.lang || 'en', { numeric: 'auto', style: 'short' });
+  if (m < 1) return rel.format(0, 'second'); // "now"
+  if (m < 60) return rel.format(-m, 'minute');
+  if (m < 60 * 24) return rel.format(-Math.round(m / 60), 'hour');
+  return rel.format(-Math.round(m / 1440), 'day');
 }
 
 function renderHistory() {
@@ -2356,14 +2377,14 @@ function renderHistory() {
     const li = document.createElement('li');
     const btn = document.createElement('button');
     btn.className = 'entry';
-    btn.title = 'Open this translation';
-    for (const [cls, text] of [['src', h.src], ['dst', h.dst], ['meta', `${langName(h.from)} → ${langName(h.to)} · ${ago(h.time)}`]]) {
+    btn.title = tr('Open this translation');
+    for (const [cls, text] of [['src', h.src], ['dst', h.dst], ['meta', `${langLabel(h.from, langName(h.from))} → ${langLabel(h.to, langName(h.to))} · ${ago(h.time)}`]]) {
       btn.append(Object.assign(document.createElement('span'), { className: cls, textContent: text }));
     }
     btn.addEventListener('click', () => restoreHistory(h));
     const star = document.createElement('button');
     star.className = 'star';
-    star.title = h.starred ? 'Unstar' : 'Star (keep forever)';
+    star.title = h.starred ? tr('Unstar') : tr('Star (keep forever)');
     star.setAttribute('aria-pressed', String(!!h.starred));
     star.innerHTML = '<svg><use href="#i-star"/></svg>';
     star.addEventListener('click', () => toggleStar(h));
@@ -2372,7 +2393,7 @@ function renderHistory() {
   }));
   $('#history-empty').hidden = history.length > 0;
   $('#history-clear').hidden = !history.some((h) => !h.starred);
-  $('#history-clear').title = 'Clear recents (starred stay)';
+  $('#history-clear').title = tr('Clear recents (starred stay)');
 }
 
 // Arrow keys in history: ↓ / ↑ move between translations (↓ from anywhere starts at the top),
@@ -2443,10 +2464,11 @@ $('#history-clear').addEventListener('click', () => {
    getPermissions() returns null there and none of this shows. */
 const permSheet = $('#perms');
 const PERMS = [
-  { id: 'input', name: 'input monitoring', why: 'hears your shortcuts while you’re in other apps' },
-  { id: 'accessibility', name: 'accessibility', why: 'typing what you dictate, translating selected text' },
-  { id: 'screen', name: 'screen recording', why: 'snip & translate: reads the part of the screen you box' },
-  { id: 'microphone', name: 'microphone', why: 'dictation' },
+  // Names as macOS's System Settings calls them (translated the way macOS does in each language).
+  { id: 'input', name: N_('input monitoring'), why: N_('hears your shortcuts while you’re in other apps') },
+  { id: 'accessibility', name: N_('accessibility'), why: N_('typing what you dictate, translating selected text') },
+  { id: 'screen', name: N_('screen recording'), why: N_('snip & translate: reads the part of the screen you box') },
+  { id: 'microphone', name: N_('microphone'), why: N_('dictation') },
 ];
 const RESTART_PERMS = ['screen', 'input']; // macOS only notices these after a restart
 let permsAtLaunch = null; // what was allowed when Vox2 started
@@ -2474,20 +2496,21 @@ function renderPerms() {
   $('#perm-list').replaceChildren(...permsNeeded().map((x) => {
     const li = document.createElement('li');
     li.innerHTML = '<div><b></b><small></small></div>';
-    $('b', li).textContent = x.name;
-    $('small', li).textContent = x.why;
+    $('b', li).textContent = tr(x.name);
+    $('small', li).textContent = tr(x.why);
     if (permGranted(perms, x.id)) {
-      li.insertAdjacentHTML('beforeend', '<span class="ok"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg>allowed</span>');
+      li.insertAdjacentHTML('beforeend', '<span class="ok"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span>');
+      li.lastElementChild.append(tr('allowed'));
     } else {
       const btn = document.createElement('button');
       const first = x.id === 'microphone' ? perms.microphone === 'ask' : !asked.has(x.id);
       btn.className = first ? 'chip go' : 'chip';
-      btn.textContent = first ? 'allow' : 'open settings';
+      btn.textContent = first ? tr('allow') : tr('open settings');
       btn.addEventListener('click', () => askPermission(x.id));
       li.append(btn);
       // macOS only re-checks these when Vox2 starts, so the row can't tick itself off.
       if (RESTART_PERMS.includes(x.id) && asked.has(x.id)) {
-        $('small', li).textContent = 'switched it on in System Settings? restart Vox2 to finish';
+        $('small', li).textContent = tr('switched it on in System Settings? restart Vox2 to finish');
       }
     }
     return li;
@@ -2531,7 +2554,7 @@ function renderPermEntry() {
   $('#nav-perms').hidden = !perms;
   if (!perms) return;
   const missing = permsMissing(perms).length;
-  $('#perm-summary').textContent = missing ? `${missing} still needed` : 'all allowed';
+  $('#perm-summary').textContent = missing ? tr('{n} still needed', { n: missing }) : tr('all allowed');
 }
 
 $('#perms-done').addEventListener('click', closePerms);
@@ -2540,6 +2563,96 @@ $('#perm-restart-btn').addEventListener('click', () => relaunch());
 $('#perm-startup').addEventListener('change', (e) => { settings.permCheck = e.target.checked; saveSettings(); });
 // Coming back from System Settings: check right away instead of waiting for the next tick.
 addEventListener('focus', () => { if (permSheet.classList.contains('open')) checkPerms(); });
+
+/* ---------- app language ---------- */
+
+// Every word Vox2 shows, in the language picked here (i18n.js). The list names each language in
+// itself ("Tiếng Việt · Vietnamese") so you can find yours, and find English again, whatever
+// the app is showing.
+const uiLangSelect = $('#ui-lang');
+
+const renderKeyStore = () => {
+  if (keysInVault) $('#key-store').textContent = MAC ? tr("locked in your Mac's Keychain, only on this computer") : tr('locked in Windows Credential Manager, only on this computer');
+};
+
+// The names of meaning-check findings (meaning-checks.js writes them in English, and its wording is
+// part of what the benchmark measures, so it stays as it is): said again in the app's language.
+const CHECK_TEXT = [
+  [/^an "unless" \(if not\) appeared$/, () => tr('an "unless" (if not) appeared')],
+  [/^an "unless" \(if not\) from your text didn't come back$/, () => tr(`an "unless" (if not) from your text didn't come back`)],
+  [/^a "not" \(or "no", "never"…\) appeared$/, () => tr('a "not" (or "no", "never"…) appeared')],
+  [/^a "not" \(or "no", "never"…\) from your text didn't come back$/, () => tr(`a "not" (or "no", "never"…) from your text didn't come back`)],
+  [/^a pronoun changed \(he ↔ she\)$/, () => tr('a pronoun changed (he ↔ she)')],
+  [/^a gendered pronoun appeared where you wrote "(.*)"$/, (m) => tr('a gendered pronoun appeared where you wrote "{word}"', { word: m[1] })],
+  [/^your pronoun "(.*)" didn't come back \(most languages don't have it\)$/, (m) => tr(`your pronoun "{word}" didn't come back (most languages don't have it)`, { word: m[1] })],
+  [/^a gender appeared: "(.*)" where you wrote "(.*)"$/, (m) => tr('a gender appeared: "{added}" where you wrote "{word}"', { added: m[1], word: m[2] })],
+  [/^a unit changed: "(.*)" became "(.*)"$/, (m) => tr('a unit changed: "{from}" became "{to}"', { from: m[1], to: m[2] })],
+  [/^"(.*)" became "(.*)"$/, (m) => tr('"{from}" became "{to}"', { from: m[1], to: m[2] })],
+  [/^a day or month changed$/, () => tr('a day or month changed')],
+  [/^part of what you wrote may be missing$/, () => tr('part of what you wrote may be missing')],
+];
+function checkText(detail) {
+  for (const [re, say] of CHECK_TEXT) { const m = detail.match(re); if (m) return say(m); }
+  return detail;
+}
+
+// Theme group names (themes.js), for the extractor: N_('dark') N_('contrast') N_('colorful') N_('light')
+
+async function renderUiLang() {
+  const langs = await uiLanguages();
+  const english = Object.fromEntries(langs);
+  const name = (code) => {
+    const own = nativeName(code);
+    return own && own.toLowerCase() !== english[code].toLowerCase() ? `${own} · ${english[code]}` : english[code];
+  };
+  const sorted = langs.map(([code]) => [code, name(code)]).sort((a, b) => a[1].localeCompare(b[1]));
+  const now = uiLang();
+  uiLangSelect.replaceChildren(
+    new Option(`${tr('match this computer')} (${(nativeName(now) || english[now] || now)})`, 'auto'),
+    ...sorted.map(([code, label]) => new Option(label, code)),
+  );
+  uiLangSelect.value = settings.uiLang;
+  // The heading also says "app language" in English, so it can always be found again.
+  $('#sec-language .also-en').hidden = now === 'en';
+}
+
+uiLangSelect.addEventListener('change', async () => {
+  settings.uiLang = uiLangSelect.value;
+  saveSettings();
+  await applyUiLang();
+  uiLangSelect.focus();
+});
+
+// Load the language and say everything again in it. At startup the rest renders right after.
+async function applyUiLang(starting = false) {
+  const code = await setUiLang(settings.uiLang);
+  document.documentElement.dir = isRtl(code) ? 'rtl' : 'ltr';
+  translatePage(document.body);
+  renderZoomTitles();
+  renderKeyStore();
+  setTrayLabels(tr('Show Vox2'), tr('Quit Vox2'));
+  if (starting) return;
+  for (const p of Object.values(panes)) p.lang.relabel();
+  applyOnTop();
+  applyConversation();
+  applyPlayback();
+  setSpeakUI(speakingPane, !!speakingPane);
+  renderShortcuts();
+  renderTone();
+  renderWindowOpts();
+  renderEngines();
+  renderVoice();
+  renderUpdates();
+  renderPermEntry();
+  renderTTS();
+  renderThemes();
+  renderUiLang();
+  updateEmpty();
+  setStatus('idle');
+  if (historySheet.classList.contains('open')) renderHistory();
+  if (permSheet.classList.contains('open')) renderPerms();
+  searchSections = null; // settings search reads the new words
+}
 
 /* ---------- keyboard: a short Tab loop, and shortcuts for the small buttons ---------- */
 
@@ -2580,7 +2693,7 @@ document.addEventListener('keydown', (e) => {
 /* ---------- start ---------- */
 
 await loadSettings();
-if (keysInVault) $('#key-store').textContent = `locked in ${MAC ? "your Mac's Keychain" : 'Windows Credential Manager'}, only on this computer`;
+await applyUiLang(true);
 history = await load('history', []);
 for (const pane of Object.values(panes)) {
   attachLangPicker(pane.lang, {
